@@ -75,6 +75,18 @@ class RandomEnemies(Choice):
     option_enemy_vanilla = 0
     option_enemy_random = 1
 
+class EnemyScaling(Choice):
+    """
+    Sets the level scaling for enemies.
+
+    Average Level: Enemies are scaled to the average level of your units.
+    Highest Level: Enemies are scaled to your highest level unit.
+    """
+    display_name = "Enemy Level Scaling"
+    default = 0
+    option_average_level = 0
+    option_highest_level = 1
+
 
 class DoubleExp(Toggle):
     """
@@ -159,6 +171,7 @@ option_definitions: Dict[str, Option] = {
     "starting_abilities": StartingAbilitiesMastered,
     "job_unlock_req": JobUnlockReq,
     "randomize_enemies": RandomEnemies,
+    "scaling": EnemyScaling,
     "double_exp": DoubleExp,
     "gate_num": GateNumber,
     "gate_items": GateItems,

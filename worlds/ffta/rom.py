@@ -137,8 +137,16 @@ def generate_output(multiworld: MultiWorld, player: int, output_directory: str) 
     _set_bytes_little_endian(patched_rom, 0xcf802, 2, 0x0428)
     _set_bytes_little_endian(patched_rom, 0xcf807, 1, 0x0F)
 
+    # Set max level to 99
+    _set_bytes_little_endian(patched_rom, 0x0c9bae, 1, 0x63)
+    _set_bytes_little_endian(patched_rom, 0x0c9baa, 1, 0x63)
+    _set_bytes_little_endian(patched_rom, 0x12e672, 1, 0x62)
 
-    # TO DO: Scale to highest unit
+    # Scale to the highest unit
+    if multiworld.scaling[player].value == 1:
+        _set_bytes_little_endian(patched_rom, 0xca088, 4, 0x42a07950)
+        _set_bytes_little_endian(patched_rom, 0xca08d, 7, 0x000000001c04dd)
+        _set_bytes_little_endian(patched_rom, 0xca0aa, 2, 0x1c20)
 
     # Set quick options to on
     #_set_bytes_little_endian(patched_rom, 0x51ba4e, 2, 0x03c8)

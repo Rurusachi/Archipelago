@@ -359,7 +359,6 @@ def generate_output(multiworld: MultiWorld, player: int, output_directory: str) 
         _set_bytes_little_endian(patched_rom, 0xb390dc + i, 1, location_ids[i])
 
     set_items(patched_rom, multiworld, player)
-    unlock_mission(patched_rom, data, 118)
 
     outfile_player_name = f"_P{player}"
     outfile_player_name += f"_{multiworld.get_file_safe_player_name(player).replace(' ', '_')}" \

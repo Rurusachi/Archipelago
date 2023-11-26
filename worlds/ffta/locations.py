@@ -408,12 +408,10 @@ FFTALocations: typing.List[FFTALocationData] = [
     FFTALocationData("No Jumping Reward 2", 392, 0x561a72),
 ]
 
-print(len(FFTALocations))
 bitflag_index = 2
 byte_i = 0
 # Setting up the mission complete flags
 for index in range(0, len(FFTALocations), 2):
-    print(index)
     #if byte_i == 2 and bitflag_index == 5:
     #    bitflag_index = 6
 

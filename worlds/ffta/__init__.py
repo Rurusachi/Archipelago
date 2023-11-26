@@ -183,6 +183,7 @@ class FFTAWorld(World):
 
         options = [
             "final_mission",
+            "job_unlock_req"
         ]
         for option_name in options:
             option = getattr(self.multiworld, option_name)[self.player]

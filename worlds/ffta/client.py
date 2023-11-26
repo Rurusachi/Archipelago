@@ -3,7 +3,7 @@ import time
 import logging
 import sys
 
-from .options import FinalMission
+from .options import FinalMission, JobUnlockReq
 
 if "worlds._bizhawk" not in sys.modules:
     import importlib
@@ -49,6 +49,7 @@ class FFTAClient(BizHawkClient):
     pending_death_link: bool = False
     sending_death_link: bool = False
     death_link: bool = False
+    job_unlock: bool = False
     goal_flag: int
     goal_id: int = 0
 
@@ -101,6 +102,10 @@ class FFTAClient(BizHawkClient):
 
             elif ctx.slot_data["final_mission"] == FinalMission.option_decision_time:
                 self.goal_id = 0x93
+
+            if ctx.slot_data["job_unlock_req"] == JobUnlockReq.option_job_items:
+                self.job_unlock = True
+
         try:
             offset = 41234532
             flag_list = [(0x2001FD0, 50, "System Bus"), (0x2001FD1, 1, "System Bus"),
@@ -112,14 +117,13 @@ class FFTAClient(BizHawkClient):
             received_items = int.from_bytes(read_result[2], "little")
             mission_items = read_result[4]
 
-            # Remove the archipelago and job unlock items
+            # Remove the archipelago and job unlock mission items
             for byte_i, item in enumerate(mission_items):
                 if item == 0x0E or item == 0x45:
                     await bizhawk.write(ctx.bizhawk_ctx, [(0x2002B08 + byte_i, bytes([0x00]), "System Bus")])
 
             goal_flag = read_result[5]
 
-            scouted_locations = []
             local_checked_locations = set()
             game_clear = False
 
@@ -157,25 +161,27 @@ class FFTAClient(BizHawkClient):
                                 location_id = mission[0].rom_address
                                 if location_id in ctx.server_locations:
                                     local_checked_locations.add(location_id)
-                                    ctx.locations_scouted.add(location_id)
-                                    await ctx.send_msgs([{
-                                        "cmd": "LocationScouts",
-                                        "locations": [location_id]
-                                    }])
 
-                                    scouted_locations.append(location_id)
+                                    # Send location scouts for local job unlock items
+                                    if self.job_unlock:
+                                        await ctx.send_msgs([{
+                                            "cmd": "LocationScouts",
+                                            "locations": [location_id]
+                                        }])
+
                                     # Make the mission not repeatable after completing it
                                     #await bizhawk.write(ctx.bizhawk_ctx, [(location_id + 0x1f, [0xC0], "System Bus")])
 
                                 location_id2 = mission[1].rom_address
                                 if location_id2 in ctx.server_locations:
                                     local_checked_locations.add(location_id2)
-                                    await ctx.send_msgs([{
-                                        "cmd": "LocationScouts",
-                                        "locations": [location_id2]
-                                    }])
 
-                                    scouted_locations.append(location_id2)
+                                    if self.job_unlock:
+                                        await ctx.send_msgs([{
+                                            "cmd": "LocationScouts",
+                                            "locations": [location_id2]
+                                        }])
+
 
 
 
@@ -226,12 +232,15 @@ class FFTAClient(BizHawkClient):
             guard_list = [(0x200f85c, [0x00], "System Bus"), (0x2019EB9, [0x01], "System Bus")]
 
             # Check local locations for job unlock items then unlock that job, find a better way to do this later
-            if len(ctx.locations_info) > 0:
-                for location in ctx.locations_info:
-                    scouted_location = ctx.locations_info[location]
-                    if scouted_location.item - 41234532 >= 0x521aac:
-                        await bizhawk.guarded_write(ctx.bizhawk_ctx, [
-                            (scouted_location.item - 41234532 + 0x8000000, [0x00], "System Bus")], guard_list)
+            if self.job_unlock:
+                if len(ctx.locations_info) > 0:
+
+                    # Copy dict to avoid resizing issues during iteration
+                    for location in ctx.locations_info.copy():
+                        scouted_location = ctx.locations_info[location]
+                        if scouted_location.item - 41234532 >= 0x521aac:
+                            await bizhawk.guarded_write(ctx.bizhawk_ctx, [
+                                (scouted_location.item - 41234532 + 0x8000000, [0x00], "System Bus")], guard_list)
 
             job_unlock_item = 0x1bc
 

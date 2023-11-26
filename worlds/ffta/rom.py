@@ -204,8 +204,8 @@ def generate_output(multiworld: MultiWorld, player: int, output_directory: str) 
         _set_bytes_little_endian(patched_rom, mission.memory + MissionOffsets.required_job, 2, 0x00)
         _set_bytes_little_endian(patched_rom, mission.memory + MissionOffsets.required_skill, 2, 0x00)
 
-        # Hiding mission rewards with ??? bags, also making missions not cancelable, was 0xC0 originally
-        #_set_bytes_little_endian(patched_rom, mission.memory + MissionOffsets.mission_display, 1, 0xC0)
+        # Hiding mission rewards with ??? bags, also making missions not cancelable
+        _set_bytes_little_endian(patched_rom, mission.memory + MissionOffsets.mission_display, 1, 0xC0)
 
         # Hide ??? cards
         _set_bytes_little_endian(patched_rom, mission.memory + MissionOffsets.mission_display + 1, 1, 0x00)

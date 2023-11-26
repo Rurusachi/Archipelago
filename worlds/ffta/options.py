@@ -75,6 +75,7 @@ class RandomEnemies(Choice):
     option_enemy_vanilla = 0
     option_enemy_random = 1
 
+
 class EnemyScaling(Choice):
     """
     Sets the level scaling for enemies.

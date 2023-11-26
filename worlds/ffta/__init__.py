@@ -638,6 +638,9 @@ class FFTAWorld(World):
 
         # Randomize location nodes on map
         self.random.shuffle(location_ids)
+
+        # Add Ambervale to the end
+        location_ids.append(0x08)
         generate_output(self.multiworld, self.player, output_directory)
 
 

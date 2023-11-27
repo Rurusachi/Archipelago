@@ -683,6 +683,10 @@ def create_item_label_to_code_map() -> Dict[str, int]:
     offset = 41234532
     label_to_code_map: Dict[str, int] = {}
     for item in AllItems:
-        label_to_code_map[item.itemName] = item.itemID + offset
+        if item.itemID >= 0x521aac:
+            label_to_code_map[item.itemName] = item.itemID - 0x521800 + offset
+
+        else:
+            label_to_code_map[item.itemName] = item.itemID + offset
 
     return label_to_code_map

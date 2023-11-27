@@ -238,9 +238,9 @@ class FFTAClient(BizHawkClient):
                     # Copy dict to avoid resizing issues during iteration
                     for location in ctx.locations_info.copy():
                         scouted_location = ctx.locations_info[location]
-                        if scouted_location.item - 41234532 >= 0x521aac:
+                        if scouted_location.item - 41234532 >= 0x2ac:
                             await bizhawk.guarded_write(ctx.bizhawk_ctx, [
-                                (scouted_location.item - 41234532 + 0x8000000, [0x00], "System Bus")], guard_list)
+                                (scouted_location.item - 41234532 + 0x8521800, [0x00], "System Bus")], guard_list)
 
             job_unlock_item = 0x1bc
 
@@ -253,10 +253,10 @@ class FFTAClient(BizHawkClient):
                 if not_moving:
 
                     # Checking if next item is a job unlock item
-                    if next_item.item - 41234532 >= 0x521aac:
+                    if next_item.item - 41234532 >= 0x2ac:
 
                         await bizhawk.guarded_write(ctx.bizhawk_ctx,
-                                                    [(next_item.item - 41234532 + 0x8000000, [0x00], "System Bus"),
+                                                    [(next_item.item - 41234532 + 0x8521800, [0x00], "System Bus"),
                                                      (0x2002c10, [0x00], "System Bus"),
                                                      (0x200fd2b, [0x00], "System Bus"),
                                                      (0x201f46c, job_unlock_item.to_bytes(2, "little"), "System Bus"),
@@ -271,9 +271,9 @@ class FFTAClient(BizHawkClient):
                     elif len(ctx.items_received) - received_items > 1:
                         item_after = ctx.items_received[received_items + 1]
 
-                        if item_after.item - 41234532 >= 0x521aac:
+                        if item_after.item - 41234532 >= 0x2ac:
                             await bizhawk.guarded_write(ctx.bizhawk_ctx,
-                            [(item_after.item - 41234532 + 0x8000000, [0x00], "System Bus"),
+                            [(item_after.item - 41234532 + 0x8521800, [0x00], "System Bus"),
                              (0x2002c10, [0x00], "System Bus"),
                              (0x200fd2b, [0x00], "System Bus"),
                              (0x201f46c, (next_item.item - 41234532).to_bytes(2, "little"),

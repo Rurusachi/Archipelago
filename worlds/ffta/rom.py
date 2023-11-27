@@ -4,6 +4,8 @@ import random
 
 
 import bsdiff4
+
+import Utils
 from settings import get_settings
 
 from BaseClasses import MultiWorld
@@ -65,7 +67,7 @@ def randomize_judge(rom: bytearray, data, index: int, random_index: int):
     _set_bytes_little_endian(rom, data.formations[index].memory + UnitOffsets.unit_item3, 2, 0x00)
 
 
-def generate_output(multiworld: MultiWorld, player: int, output_directory: str) -> None:
+def generate_output(world, player: int, output_directory: str) -> None:
     base_rom = get_base_rom_as_bytes()
     base_patch = pkgutil.get_data(__name__, "data/base_patch.bsdiff4")
     patched_rom = bytearray(bsdiff4.patch(base_rom, base_patch))
@@ -143,7 +145,7 @@ def generate_output(multiworld: MultiWorld, player: int, output_directory: str) 
     _set_bytes_little_endian(patched_rom, 0x12e672, 1, 0x62)
 
     # Scale to the highest unit
-    if multiworld.scaling[player].value == 1:
+    if world.options.scaling == 1:
         _set_bytes_little_endian(patched_rom, 0xca088, 4, 0x42a07950)
         _set_bytes_little_endian(patched_rom, 0xca08d, 7, 0x000000001c04dd)
         _set_bytes_little_endian(patched_rom, 0xca0aa, 2, 0x1c20)
@@ -152,7 +154,7 @@ def generate_output(multiworld: MultiWorld, player: int, output_directory: str) 
     #_set_bytes_little_endian(patched_rom, 0x51ba4e, 2, 0x03c8)
 
     # Double EXP option
-    if multiworld.double_exp[player].value == 1:
+    if world.options.double_exp == 1:
         _set_bytes_little_endian(patched_rom, 0x12e658, 2, 0x08e5)
 
     # Make all missions game over instead of fail
@@ -212,19 +214,19 @@ def generate_output(multiworld: MultiWorld, player: int, output_directory: str) 
 
 # Job unlock options
     # Unlock all jobs
-    if multiworld.job_unlock_req[player].value == 1:
+    if world.options.job_unlock_req == 1:
         for jobs in data.jobs:
             _set_bytes_little_endian(patched_rom, jobs.memory + JobOffsets.job_requirement, 1, 0x00)
 
     # Lock all jobs
-    elif multiworld.job_unlock_req[player].value == 2 or multiworld.job_unlock_req[player].value == 3:
+    elif world.options.job_unlock_req == 2 or world.options.job_unlock_req == 3:
         for jobs in data.jobs:
             _set_bytes_little_endian(patched_rom, jobs.memory + JobOffsets.job_requirement, 1, 0xFF)
 
     # Unlock starting job based on if the requirements are vanilla and units are randomized
-    if multiworld.job_unlock_req[player].value == 0 and multiworld.starting_units[player].value == 1 or \
-       multiworld.job_unlock_req[player].value == 0 and multiworld.starting_units[player].value == 2 or \
-       multiworld.job_unlock_req[player].value == 0 and multiworld.starting_units[player].value == 3:
+    if world.options.job_unlock_req == 0 and world.options.starting_units == 1 or \
+       world.options.job_unlock_req == 0 and world.options.starting_units == 2 or \
+       world.options.job_unlock_req == 0 and world.options.starting_units == 3:
         _set_bytes_little_endian(patched_rom, data.jobs[randomized_jobs[0]].memory + JobOffsets.job_requirement, 1,
                                      0x00)
         _set_bytes_little_endian(patched_rom, data.jobs[randomized_jobs[1]].memory + JobOffsets.job_requirement, 1,
@@ -246,16 +248,16 @@ def generate_output(multiworld: MultiWorld, player: int, output_directory: str) 
     #for abilities in data.abilities:
     #    _set_bytes_little_endian(patched_rom, abilities.memory + AbilityOffsets.mp_cost, 1, 0x00)
 
-    gate_number = multiworld.gate_num[player].value
-    if gate_number > 30 and multiworld.final_unlock[player].value == 1:
+    gate_number = world.options.gate_num
+    if gate_number > 30 and world.options.final_unlock == 1:
         gate_number = 30
 
-    set_up_gates(patched_rom, data, gate_number, multiworld.gate_items[player].value,
-                 multiworld.final_unlock[player].value, multiworld.final_mission[player].value)
+    set_up_gates(patched_rom, data, gate_number, world.options.gate_items,
+                 world.options.final_unlock, world.options.final_mission)
 
 
 # Totema goal
-    if multiworld.final_unlock[player].value == 1:
+    if world.options.final_unlock == 1:
         unlock_mission(patched_rom, data, 4)
 
         # Totema goal required items
@@ -271,18 +273,18 @@ def generate_output(multiworld: MultiWorld, player: int, output_directory: str) 
         set_mission_requirement(patched_rom, data, 17, 14)
 
         # Set Royal Valley to be the final mission if it is chosen in the options
-        if multiworld.final_mission[player].value == 0:
+        if world.options.final_mission == 0:
             set_mission_requirement(patched_rom, data, 23, 17)
 
         # Set Decision Time to be the final mission
-        elif multiworld.final_mission[player].value == 1:
+        elif world.options.final_mission == 1:
             set_mission_requirement(patched_rom, data, 393, 17)
 
     # Randomize starting units and set mastered abilities
     for index in range(6):
-        if multiworld.starting_units[player].value == 1 or \
-           multiworld.starting_units[player].value == 2 or \
-           multiworld.starting_units[player].value == 3:
+        if world.options.starting_units == 1 or \
+           world.options.starting_units == 2 or \
+           world.options.starting_units == 3:
 
             randomize_unit(patched_rom, data, index)
 
@@ -292,10 +294,10 @@ def generate_output(multiworld: MultiWorld, player: int, output_directory: str) 
                                  10)
             else:
                 master_abilities(patched_rom, data, index, get_job_abilities(randomized_jobs[index]),
-                                 multiworld.starting_abilities[player].value)
+                                 world.options.starting_abilities)
 
             # Set the basic weapons and equipment if the option is selected
-            if multiworld.starting_unit_equip[player].value == 0:
+            if world.options.starting_unit_equip == 0:
                 _set_bytes_little_endian(patched_rom, data.formations[index].memory + UnitOffsets.unit_item1, 2,
                                          basic_weapon[index])
                 _set_bytes_little_endian(patched_rom, data.formations[index].memory + UnitOffsets.unit_item2, 2,
@@ -303,26 +305,26 @@ def generate_output(multiworld: MultiWorld, player: int, output_directory: str) 
                 _set_bytes_little_endian(patched_rom, data.formations[index].memory + UnitOffsets.unit_item3, 2, 0x00)
 
     # Master abilities if units aren't randomized
-    if multiworld.starting_units[player].value == 0:
+    if world.options.starting_units == 0:
         master_abilities(patched_rom, data, 0, get_job_abilities(JobID.soldier),
-                         multiworld.starting_abilities[player].value)
+                         world.options.starting_abilities)
         master_abilities(patched_rom, data, 1, get_job_abilities(JobID.blackmagemog),
-                         multiworld.starting_abilities[player].value)
+                         world.options.starting_abilities)
         master_abilities(patched_rom, data, 2, get_job_abilities(JobID.soldier),
-                         multiworld.starting_abilities[player].value)
+                         world.options.starting_abilities)
         master_abilities(patched_rom, data, 3, get_job_abilities(JobID.whitemonk),
-                         multiworld.starting_abilities[player].value)
+                         world.options.starting_abilities)
         master_abilities(patched_rom, data, 4, get_job_abilities(JobID.whitemagemou),
-                         multiworld.starting_abilities[player].value)
+                         world.options.starting_abilities)
         master_abilities(patched_rom, data, 5, get_job_abilities(JobID.archervra),
-                         multiworld.starting_abilities[player].value)
+                         world.options.starting_abilities)
 
     # Scale levels
     for index in range(6, 0xA46):
-        # changes from 2 to 1 for bytes just to see something if the placement
+
         _set_bytes_little_endian(patched_rom, data.formations[index].memory + UnitOffsets.level, 2, 0)
         # Randomize enemies
-        if multiworld.randomize_enemies[player].value == 1:
+        if world.options.randomize_enemies == 1:
             if patched_rom[data.formations[index].memory] == 0x01:
 
                 randomize_unit(patched_rom, data, index)
@@ -358,18 +360,18 @@ def generate_output(multiworld: MultiWorld, player: int, output_directory: str) 
     for i in range(0, len(location_ids)):
         _set_bytes_little_endian(patched_rom, 0xb390dc + i, 1, location_ids[i])
 
-    set_items(patched_rom, multiworld, player)
+    set_items(patched_rom, world.multiworld, player)
 
     outfile_player_name = f"_P{player}"
-    outfile_player_name += f"_{multiworld.get_file_safe_player_name(player).replace(' ', '_')}" \
-        if multiworld.player_name[player] != f"Player{player}" else ""
+    outfile_player_name += f"_{world.multiworld.get_file_safe_player_name(player).replace(' ', '_')}" \
+        if world.multiworld.player_name[player] != f"Player{player}" else ""
 
-    output_path = os.path.join(output_directory, f"AP_{multiworld.seed_name}{outfile_player_name}.gba")
+    output_path = Utils.output_path(output_directory, f"AP_{world.multiworld.seed_name}{outfile_player_name}.gba")
     with open(output_path, "wb") as outfile:
         outfile.write(patched_rom)
     patch = FFTADeltaPatch(os.path.splitext(output_path)[0] + ".apffta"
                                                               ,player=player,
-                                                               player_name=multiworld.player_name[player], patched_path=output_path)
+                                                               player_name=world.multiworld.player_name[player], patched_path=output_path)
 
     patch.write()
 
@@ -457,7 +459,7 @@ def set_items(patched_rom: bytearray, multiworld, player) -> None:
 
         if location.item.code is not None:
             if location.item.player == player:
-                if location.item.code - offset >= 0x521aac:
+                if location.item.code - offset >= 0x2ac:
                     _set_bytes_little_endian(patched_rom, location.address, 2, 0x1bc)
 
                 else:

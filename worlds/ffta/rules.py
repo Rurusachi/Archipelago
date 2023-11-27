@@ -4,7 +4,7 @@ from .items import MissionUnlockItems
 
 def set_rules(world) -> None:
 
-    if world.multiworld.final_unlock[world.player].value == 1:
+    if world.options.final_unlock == 1:
         add_rule(world.multiworld.get_entrance("Totema 1", world.player),
                  lambda state: state.has("Water Sigil", world.player))
 
@@ -20,12 +20,12 @@ def set_rules(world) -> None:
         add_rule(world.multiworld.get_entrance("Totema 5", world.player),
                  lambda state: state.has("Old Statue", world.player))
 
-    num_gates = world.multiworld.gate_num[world.player].value
+    num_gates = world.options.gate_num
 
     add_rule(world.multiworld.get_entrance("Gate 2", world.player),
         lambda state: state.has("Magic Trophy", world.player))
 
-    if world.multiworld.gate_items[world.player].value == 1:
+    if world.options.gate_items == 1:
         add_rule(world.multiworld.get_entrance("Gate 2", world.player),
             lambda state: state.has("Fight Trophy", world.player))
 
@@ -35,7 +35,7 @@ def set_rules(world) -> None:
     add_rule(world.multiworld.get_entrance("Gate 3", world.player),
              lambda state: state.has("Magic Medal", world.player))
 
-    if world.multiworld.gate_items[world.player].value == 1:
+    if world.options.gate_items == 1:
         add_rule(world.multiworld.get_entrance("Gate 3", world.player),
                  lambda state: state.has("Ancient Medal", world.player))
 
@@ -45,7 +45,7 @@ def set_rules(world) -> None:
     add_rule(world.multiworld.get_entrance("Gate 4", world.player),
              lambda state: state.has("Choco Bread", world.player))
 
-    if world.multiworld.gate_items[world.player].value == 1:
+    if world.options.gate_items == 1:
         add_rule(world.multiworld.get_entrance("Gate 4", world.player),
                  lambda state: state.has("Choco Gratin", world.player))
 
@@ -55,7 +55,7 @@ def set_rules(world) -> None:
     add_rule(world.multiworld.get_entrance("Gate 5", world.player),
              lambda state: state.has("Black Thread", world.player))
 
-    if world.multiworld.gate_items[world.player].value == 1:
+    if world.options.gate_items == 1:
         add_rule(world.multiworld.get_entrance("Gate 5", world.player),
                  lambda state: state.has("White Thread", world.player))
 
@@ -65,7 +65,7 @@ def set_rules(world) -> None:
     add_rule(world.multiworld.get_entrance("Gate 6", world.player),
              lambda state: state.has("Thunderstone", world.player))
 
-    if world.multiworld.gate_items[world.player].value == 1:
+    if world.options.gate_items == 1:
         add_rule(world.multiworld.get_entrance("Gate 6", world.player),
                  lambda state: state.has("Stormstone", world.player))
 
@@ -75,7 +75,7 @@ def set_rules(world) -> None:
     add_rule(world.multiworld.get_entrance("Gate 7", world.player),
              lambda state: state.has("Ahriman Eye", world.player))
 
-    if world.multiworld.gate_items[world.player].value == 1:
+    if world.options.gate_items == 1:
         add_rule(world.multiworld.get_entrance("Gate 7", world.player),
                  lambda state: state.has("Ahriman Wing", world.player))
 
@@ -85,7 +85,7 @@ def set_rules(world) -> None:
     add_rule(world.multiworld.get_entrance("Gate 8", world.player),
              lambda state: state.has("Magic Cloth", world.player))
 
-    if world.multiworld.gate_items[world.player].value == 1:
+    if world.options.gate_items == 1:
         add_rule(world.multiworld.get_entrance("Gate 8", world.player),
                  lambda state: state.has("Magic Cotton", world.player))
 
@@ -95,7 +95,7 @@ def set_rules(world) -> None:
     add_rule(world.multiworld.get_entrance("Gate 9", world.player),
              lambda state: state.has("Adaman Alloy", world.player))
 
-    if world.multiworld.gate_items[world.player].value == 1:
+    if world.options.gate_items == 1:
         add_rule(world.multiworld.get_entrance("Gate 9", world.player),
                  lambda state: state.has("Mysidia Alloy", world.player))
 
@@ -105,7 +105,7 @@ def set_rules(world) -> None:
     add_rule(world.multiworld.get_entrance("Gate 10", world.player),
              lambda state: state.has("Elda's Cup", world.player))
 
-    if world.multiworld.gate_items[world.player].value == 1:
+    if world.options.gate_items == 1:
         add_rule(world.multiworld.get_entrance("Gate 10", world.player),
                  lambda state: state.has("Gold Vessel", world.player))
 
@@ -115,7 +115,7 @@ def set_rules(world) -> None:
     add_rule(world.multiworld.get_entrance("Gate 11", world.player),
              lambda state: state.has("Kiddy Bread", world.player))
 
-    if world.multiworld.gate_items[world.player].value == 1:
+    if world.options.gate_items == 1:
         add_rule(world.multiworld.get_entrance("Gate 11", world.player),
                  lambda state: state.has("Grownup Bread", world.player))
 
@@ -125,7 +125,7 @@ def set_rules(world) -> None:
     add_rule(world.multiworld.get_entrance("Gate 12", world.player),
              lambda state: state.has("Danbukwood", world.player))
 
-    if world.multiworld.gate_items[world.player].value == 1:
+    if world.options.gate_items == 1:
         add_rule(world.multiworld.get_entrance("Gate 12", world.player),
                  lambda state: state.has("Moonwood", world.player))
 
@@ -135,7 +135,7 @@ def set_rules(world) -> None:
     add_rule(world.multiworld.get_entrance("Gate 13", world.player),
              lambda state: state.has("Dragon Bone", world.player))
 
-    if world.multiworld.gate_items[world.player].value == 1:
+    if world.options.gate_items == 1:
         add_rule(world.multiworld.get_entrance("Gate 13", world.player),
                  lambda state: state.has("Animal Bone", world.player))
 
@@ -145,7 +145,7 @@ def set_rules(world) -> None:
     add_rule(world.multiworld.get_entrance("Gate 14", world.player),
              lambda state: state.has("Magic Fruit", world.player))
 
-    if world.multiworld.gate_items[world.player].value == 1:
+    if world.options.gate_items == 1:
         add_rule(world.multiworld.get_entrance("Gate 14", world.player),
                  lambda state: state.has("Power Fruit", world.player))
 
@@ -155,7 +155,7 @@ def set_rules(world) -> None:
     add_rule(world.multiworld.get_entrance("Gate 15", world.player),
              lambda state: state.has("Malboro Wine", world.player))
 
-    if world.multiworld.gate_items[world.player].value == 1:
+    if world.options.gate_items == 1:
         add_rule(world.multiworld.get_entrance("Gate 15", world.player),
                  lambda state: state.has("Gedegg Soup", world.player))
 
@@ -165,7 +165,7 @@ def set_rules(world) -> None:
     add_rule(world.multiworld.get_entrance("Gate 16", world.player),
              lambda state: state.has("Encyclopedia", world.player))
 
-    if world.multiworld.gate_items[world.player].value == 1:
+    if world.options.gate_items == 1:
         add_rule(world.multiworld.get_entrance("Gate 16", world.player),
                  lambda state: state.has("Dictionary", world.player))
 
@@ -175,7 +175,7 @@ def set_rules(world) -> None:
     add_rule(world.multiworld.get_entrance("Gate 17", world.player),
              lambda state: state.has("Rat Tail", world.player))
 
-    if world.multiworld.gate_items[world.player].value == 1:
+    if world.options.gate_items == 1:
         add_rule(world.multiworld.get_entrance("Gate 17", world.player),
                  lambda state: state.has("Rabbit Tail", world.player))
 
@@ -185,7 +185,7 @@ def set_rules(world) -> None:
     add_rule(world.multiworld.get_entrance("Gate 18", world.player),
              lambda state: state.has("Stasis Rope", world.player))
 
-    if world.multiworld.gate_items[world.player].value == 1:
+    if world.options.gate_items == 1:
         add_rule(world.multiworld.get_entrance("Gate 18", world.player),
                  lambda state: state.has("Mythril Pick", world.player))
 
@@ -195,7 +195,7 @@ def set_rules(world) -> None:
     add_rule(world.multiworld.get_entrance("Gate 19", world.player),
              lambda state: state.has("Clock Gear", world.player))
 
-    if world.multiworld.gate_items[world.player].value == 1:
+    if world.options.gate_items == 1:
         add_rule(world.multiworld.get_entrance("Gate 19", world.player),
                  lambda state: state.has("Gun Gear", world.player))
 
@@ -205,7 +205,7 @@ def set_rules(world) -> None:
     add_rule(world.multiworld.get_entrance("Gate 20", world.player),
              lambda state: state.has("Blood Shawl", world.player))
 
-    if world.multiworld.gate_items[world.player].value == 1:
+    if world.options.gate_items == 1:
         add_rule(world.multiworld.get_entrance("Gate 20", world.player),
                  lambda state: state.has("Blood Apple", world.player))
 
@@ -215,7 +215,7 @@ def set_rules(world) -> None:
     add_rule(world.multiworld.get_entrance("Gate 21", world.player),
              lambda state: state.has("Eldagusto", world.player))
 
-    if world.multiworld.gate_items[world.player].value == 1:
+    if world.options.gate_items == 1:
         add_rule(world.multiworld.get_entrance("Gate 21", world.player),
                  lambda state: state.has("Cyril Ice", world.player))
 
@@ -225,7 +225,7 @@ def set_rules(world) -> None:
     add_rule(world.multiworld.get_entrance("Gate 22", world.player),
              lambda state: state.has("Crystal", world.player))
 
-    if world.multiworld.gate_items[world.player].value == 1:
+    if world.options.gate_items == 1:
         add_rule(world.multiworld.get_entrance("Gate 22", world.player),
                  lambda state: state.has("Trichord", world.player))
 
@@ -235,7 +235,7 @@ def set_rules(world) -> None:
     add_rule(world.multiworld.get_entrance("Gate 23", world.player),
              lambda state: state.has("Tranquil Box", world.player))
 
-    if world.multiworld.gate_items[world.player].value == 1:
+    if world.options.gate_items == 1:
         add_rule(world.multiworld.get_entrance("Gate 23", world.player),
                  lambda state: state.has("Flower Vase", world.player))
 
@@ -245,7 +245,7 @@ def set_rules(world) -> None:
     add_rule(world.multiworld.get_entrance("Gate 24", world.player),
              lambda state: state.has("Cat's Tears", world.player))
 
-    if world.multiworld.gate_items[world.player].value == 1:
+    if world.options.gate_items == 1:
         add_rule(world.multiworld.get_entrance("Gate 24", world.player),
                  lambda state: state.has("Dame's Blush", world.player))
 
@@ -255,7 +255,7 @@ def set_rules(world) -> None:
     add_rule(world.multiworld.get_entrance("Gate 25", world.player),
              lambda state: state.has("Justice Badge", world.player))
 
-    if world.multiworld.gate_items[world.player].value == 1:
+    if world.options.gate_items == 1:
         add_rule(world.multiworld.get_entrance("Gate 25", world.player),
                  lambda state: state.has("Friend Badge", world.player))
 
@@ -265,7 +265,7 @@ def set_rules(world) -> None:
     add_rule(world.multiworld.get_entrance("Gate 26", world.player),
              lambda state: state.has("Love Potion", world.player))
 
-    if world.multiworld.gate_items[world.player].value == 1:
+    if world.options.gate_items == 1:
         add_rule(world.multiworld.get_entrance("Gate 26", world.player),
                  lambda state: state.has("Tonberry Lamp", world.player))
 
@@ -275,7 +275,7 @@ def set_rules(world) -> None:
     add_rule(world.multiworld.get_entrance("Gate 27", world.player),
              lambda state: state.has("Runba's Tale", world.player))
 
-    if world.multiworld.gate_items[world.player].value == 1:
+    if world.options.gate_items == 1:
         add_rule(world.multiworld.get_entrance("Gate 27", world.player),
                  lambda state: state.has("The Hero Gaol", world.player))
 
@@ -285,7 +285,7 @@ def set_rules(world) -> None:
     add_rule(world.multiworld.get_entrance("Gate 28", world.player),
              lambda state: state.has("Mind Ceffyl", world.player))
 
-    if world.multiworld.gate_items[world.player].value == 1:
+    if world.options.gate_items == 1:
         add_rule(world.multiworld.get_entrance("Gate 28", world.player),
                  lambda state: state.has("Body Ceffyl", world.player))
 
@@ -295,7 +295,7 @@ def set_rules(world) -> None:
     add_rule(world.multiworld.get_entrance("Gate 29", world.player),
              lambda state: state.has("Ancient Bills", world.player))
 
-    if world.multiworld.gate_items[world.player].value == 1:
+    if world.options.gate_items == 1:
         add_rule(world.multiworld.get_entrance("Gate 29", world.player),
                  lambda state: state.has("Ancient Coins", world.player))
 
@@ -305,7 +305,7 @@ def set_rules(world) -> None:
     add_rule(world.multiworld.get_entrance("Gate 30", world.player),
              lambda state: state.has("Blue Rose", world.player))
 
-    if world.multiworld.gate_items[world.player].value == 1:
+    if world.options.gate_items == 1:
         add_rule(world.multiworld.get_entrance("Gate 30", world.player),
                  lambda state: state.has("White Flowers", world.player))
 
@@ -315,7 +315,7 @@ def set_rules(world) -> None:
     add_rule(world.multiworld.get_entrance("Gate 31", world.player),
              lambda state: state.has("Gysahl Greens", world.player))
 
-    if world.multiworld.gate_items[world.player].value == 1:
+    if world.options.gate_items == 1:
         add_rule(world.multiworld.get_entrance("Gate 31", world.player),
                  lambda state: state.has("Chocobo Egg", world.player))
 
@@ -325,7 +325,7 @@ def set_rules(world) -> None:
     add_rule(world.multiworld.get_entrance("Gate 32", world.player),
              lambda state: state.has("Delta Fang", world.player))
 
-    if world.multiworld.gate_items[world.player].value == 1:
+    if world.options.gate_items == 1:
         add_rule(world.multiworld.get_entrance("Gate 32", world.player),
                  lambda state: state.has("Esteroth", world.player))
 
@@ -335,7 +335,7 @@ def set_rules(world) -> None:
     add_rule(world.multiworld.get_entrance("Gate 33", world.player),
              lambda state: state.has("Moon Bloom", world.player))
 
-    if world.multiworld.gate_items[world.player].value == 1:
+    if world.options.gate_items == 1:
         add_rule(world.multiworld.get_entrance("Gate 33", world.player),
                  lambda state: state.has("Telaq Flowers", world.player))
 

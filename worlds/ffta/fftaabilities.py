@@ -108,8 +108,8 @@ def master_abilities(rom: bytearray, data, index: int, ability_list: List[Tuple]
 
     # Always master learn for blue mage
     elif ability_list == JobAbilities.bluemage:
-        set_mastered_ability(rom, data.formations[index].memory + UnitOffsets.abilities + JobAbilities.bluemage[0][0],
-                             JobAbilities.bluemage[0][1])
+        set_mastered_ability(rom, data.formations[index].memory + UnitOffsets.abilities + 14,
+                             3)
 
     # Shuffle the abilities
     random.shuffle(ability_list)
@@ -224,7 +224,7 @@ def get_job_abilities(job: int):
         return JobAbilities.assassin
 
     elif job == JobID.sniper:
-        return JobAbilities.assassin
+        return JobAbilities.sniper
 
     elif job == JobID.animist:
         return JobAbilities.animist

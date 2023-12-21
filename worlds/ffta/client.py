@@ -5,29 +5,12 @@ import sys
 
 from .options import FinalMission, JobUnlockReq
 
-if "worlds._bizhawk" not in sys.modules:
-    import importlib
-    import os
-    import zipimport
-
-    bh_apworld_path = os.path.join(os.path.dirname(sys.modules["worlds"].__file__), "_bizhawk.apworld")
-    if os.path.isfile(bh_apworld_path):
-        importer = zipimport.zipimporter(bh_apworld_path)
-        spec = importer.find_spec(os.path.basename(bh_apworld_path).rsplit(".", 1)[0])
-        mod = importlib.util.module_from_spec(spec)
-        mod.__package__ = f"worlds.{mod.__package__}"
-        mod.__name__ = f"worlds.{mod.__name__}"
-        sys.modules[mod.__name__] = mod
-        importer.exec_module(mod)
-    elif not os.path.isdir(os.path.splitext(bh_apworld_path)[0]):
-        logging.error("Did not find _bizhawk.apworld required to play Final Fantasy Tactics Advance.")
-
 
 from NetUtils import ClientStatus
 import worlds._bizhawk as bizhawk
 from worlds._bizhawk.client import BizHawkClient
 from .items import AbilityItems
-from .locations import (MissionGroups, bitflags)
+from .locations import (MissionGroups, DispatchMissionGroups, bitflags)
 from worlds.LauncherComponents import SuffixIdentifier, components
 
 if TYPE_CHECKING:
@@ -93,18 +76,26 @@ class FFTAClient(BizHawkClient):
         ctx.last_death_link = time.time()
         self.pending_death_link = True
     """
-
+    async def set_auth(self, ctx: "BizHawkClientContext") -> None:
+        slot_name_bytes = (await bizhawk.read(ctx.bizhawk_ctx, [(0xAAABD0, 64, "ROM")]))[0]
+        ctx.auth = bytes([byte for byte in slot_name_bytes if byte != 0]).decode("utf-8")
+        
     async def game_watcher(self, ctx: BizHawkClientContext) -> None:
-
         if ctx.slot_data is not None:
             if ctx.slot_data["final_mission"] == FinalMission.option_royal_valley:
                 self.goal_id = 0x64
 
             elif ctx.slot_data["final_mission"] == FinalMission.option_decision_time:
                 self.goal_id = 0x93
+                
+            if "job_unlock_req" in ctx.slot_data:
+                if ctx.slot_data["job_unlock_req"] == JobUnlockReq.option_job_items:
+                    self.job_unlock = True
 
-            if ctx.slot_data["job_unlock_req"] == JobUnlockReq.option_job_items:
-                self.job_unlock = True
+            #if ctx.slot_data["job_unlock_req"] == JobUnlockReq.option_job_items:
+            #    self.job_unlock = True
+            
+        
 
         try:
             offset = 41234532
@@ -117,12 +108,13 @@ class FFTAClient(BizHawkClient):
             received_items = int.from_bytes(read_result[2], "little")
             mission_items = read_result[4]
 
+
             # Remove the archipelago and job unlock mission items
             for byte_i, item in enumerate(mission_items):
                 if item == 0x0E or item == 0x45:
                     await bizhawk.write(ctx.bizhawk_ctx, [(0x2002B08 + byte_i, bytes([0x00]), "System Bus")])
 
-            goal_flag = read_result[5]
+            self.goal_flag = read_result[5]
 
             local_checked_locations = set()
             game_clear = False
@@ -144,9 +136,9 @@ class FFTAClient(BizHawkClient):
                 elif unit_ram[0] != 0x00:
                     self.sending_death_link = False
             """
-
+         
             # Check if goal status is reached
-            if goal_flag[0] == self.goal_id and self.goal_id != 0:
+            if self.goal_flag[0] == self.goal_id and self.goal_id != 0:
                 game_clear = True
 
             # Check set flags
@@ -161,7 +153,6 @@ class FFTAClient(BizHawkClient):
                                 location_id = mission[0].rom_address
                                 if location_id in ctx.server_locations:
                                     local_checked_locations.add(location_id)
-
                                     # Send location scouts for local job unlock items
                                     if self.job_unlock:
                                         await ctx.send_msgs([{
@@ -182,7 +173,28 @@ class FFTAClient(BizHawkClient):
                                             "locations": [location_id2]
                                         }])
 
+                        for mission in DispatchMissionGroups:
+                            if byte & (1 << i) == mission[2] and byte_i == mission[3]:
+                                location_id = mission[0].rom_address
+                                if location_id in ctx.server_locations:
+                                    local_checked_locations.add(location_id)
+                                    # Send location scouts for local job unlock items
+                                    if self.job_unlock:
+                                        await ctx.send_msgs([{
+                                            "cmd": "LocationScouts",
+                                            "locations": [location_id]
+                                        }])
 
+
+                                location_id2 = mission[1].rom_address
+                                if location_id2 in ctx.server_locations:
+                                    local_checked_locations.add(location_id2)
+
+                                    if self.job_unlock:
+                                        await ctx.send_msgs([{
+                                            "cmd": "LocationScouts",
+                                            "locations": [location_id2]
+                                        }])
 
 
 
@@ -207,11 +219,6 @@ class FFTAClient(BizHawkClient):
                 #                          (0x2000272, [0x10], "System Bus"),
                #                           (0x200025d, [0x01], "System Bus")])
 
-                        #if flag_id == self.goal_flag:
-                        #    game_clear = True
-
-                        #if flag_id in EVENT_FLAG_MAP:
-                        #    local_set_events[EVENT_FLAG_MAP[flag_id]] = True
 
             # Send locations
             if local_checked_locations != self.local_checked_locations:
@@ -234,7 +241,6 @@ class FFTAClient(BizHawkClient):
             # Check local locations for job unlock items then unlock that job, find a better way to do this later
             if self.job_unlock:
                 if len(ctx.locations_info) > 0:
-
                     # Copy dict to avoid resizing issues during iteration
                     for location in ctx.locations_info.copy():
                         scouted_location = ctx.locations_info[location]
@@ -254,7 +260,6 @@ class FFTAClient(BizHawkClient):
 
                     # Checking if next item is a job unlock item
                     if next_item.item - 41234532 >= 0x2ac:
-
                         await bizhawk.guarded_write(ctx.bizhawk_ctx,
                                                     [(next_item.item - 41234532 + 0x8521800, [0x00], "System Bus"),
                                                      (0x2002c10, [0x00], "System Bus"),

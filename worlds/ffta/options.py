@@ -2,7 +2,7 @@
 Option definitions for Final Fantasy Tactics Advance
 """
 from typing import Dict
-
+from dataclasses import dataclass
 from Options import Choice, DefaultOnToggle, Option, OptionSet, Range, Toggle, FreeText, DeathLink
 
 
@@ -13,14 +13,18 @@ class StartingUnits(Choice):
     Vanilla: The same starting units as the original game
     Shuffle: Jobs are randomized within the original starting races of the game.
     Random: Jobs and race of the starting units are randomized
+    Balanced: Ensures two attacker jobs, two magic jobs, and two support jobs. Excludes morphers, beastmasters, and gadgeteers.
     Random Monster: Starting units jobs and race are randomized with monster units also in the pool
+
+    Note: Monsters are unable to change jobs, equip anything or use items.
     """
     display_name = "Starting units"
     default = 0
     option_starting_vanilla = 0
     option_starting_shuffle = 1
     option_starting_random = 2
-    option_random_monster = 3
+    option_starting_balanced = 3
+    option_random_monster = 4
 
 
 class StartingUnitEquip(Choice):
@@ -54,6 +58,8 @@ class JobUnlockReq(Choice):
     All Unlocked: All jobs are unlocked from the start
     All Locked: All jobs are locked. The unit must use their assigned job and cannot change
     Job unlock items: All jobs are locked at the start and must be unlocked through job unlock items
+    
+    (Job unlock items adds potentially 42 items to the pool)
     """
     display_name = "Job Unlock Requirements"
     default = 0
@@ -96,11 +102,20 @@ class DoubleExp(Toggle):
     display_name = "Double EXP"
     default = 0
 
+class StartingGil(Range):
+    """
+    Sets the amount of gil you will start with.
+    """
+    display_name = "Starting gil"
+    default = 5000
+    range_start = 0
+    range_end = 99999999
 
 class GateNumber(Range):
     """
     Sets the number of mission gates. Each gate contains four missions each. Expect an hour added for every gate.
     Royal Valley or Decision Time will always be the last mission depending on options.
+
     (8 locations added for each gate)
     """
     display_name = "Number of mission gates"
@@ -109,15 +124,50 @@ class GateNumber(Range):
     range_end = 31
 
 
-class GateItems(Choice):
+class GatePaths(Range):
     """
-    Sets the number of required items for each mission gate.
+    Sets the number of branching mission gates paths. Each must currently still
+    be progressed through to unlock the final mission.
+    Useful for higher mission gate counts.
+    """
+    display_name = "Mission gate paths"
+    default = 1
+    range_start = 1
+    range_end = 3
+
+
+class DispatchMissions(Range):
+    """
+    Sets the number of dispatch missions per gate. Each dispatch mission adds two locations for each gate.
+    """
+    display_name = "Number of dispatch missions"
+    default = 0
+    range_start = 0
+    range_end = 6
+
+class DispatchRandom(Toggle):
+    """
+    Randomizes the order of the dispatch mission. Setting only has effect is dispatch missions setting is more than 0.
+    """
+    display_name = "Randomize dispatch missions"
+    default = 0
+
+
+class GateUnlock(Choice):
+    """
+    Sets how the mission gates are unlocked
+    One Mission item: Mission gates are unlocked by one mission item. Gate unlocks both encounter and dispatch missions.
+    Two Mission items: Mission gates are unlocked by two mission items. Gate unlocks both encounter and dispatch missions.
+    Dispatch mission gate: Dispatch missions are separated into their own gate sequence which each require an item.
+    Dispatch missions must be more than 0 for this setting or it will default to one mission item.
+
     (Adds 1 or 2 progression items to the pool for each gate depending on the setting)
     """
     display_name = "Number of required gate unlock items"
     default = 0
     option_one = 0
     option_two = 1
+    option_dispatch_gate = 2
 
 
 class MissionOrder(Choice):
@@ -165,6 +215,23 @@ class FinalMissionUnlock(Choice):
     option_totema = 1
 
 
+class QuickOptions(Toggle):
+    """
+    Enables quick options by default which turn off attack names, exp popups, and turns on
+    fast text and fast cursor. All of these can be tweaked in the game options. 
+    """
+    display_name = "Turn on quick options by default"
+    default = 0
+
+
+class ForceRecruitment(Toggle):
+    """
+    Forces every mission to give a new recruit. 
+    """
+    display_name = "Force recruitment"
+    default = 0
+
+
 option_definitions: Dict[str, Option] = {
     #"death_link": DeathLink,
     "starting_units": StartingUnits,
@@ -174,9 +241,16 @@ option_definitions: Dict[str, Option] = {
     "randomize_enemies": RandomEnemies,
     "scaling": EnemyScaling,
     "double_exp": DoubleExp,
+    "starting_gil": StartingGil,
     "gate_num": GateNumber,
-    "gate_items": GateItems,
+    "gate_paths": GatePaths,
+    "dispatch": DispatchMissions,
+    #"dispatch_chance": DispatchChance,
+    "randomize_dispatch": DispatchRandom,
+    "gate_items": GateUnlock,
     "mission_order": MissionOrder,
     "final_mission": FinalMission,
-    "final_unlock": FinalMissionUnlock
+    "final_unlock": FinalMissionUnlock,
+    "quick_options": QuickOptions,
+    "force_recruitment": ForceRecruitment
 }

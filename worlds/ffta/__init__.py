@@ -12,8 +12,7 @@ from .client import FFTAClient
 
 from BaseClasses import ItemClassification, MultiWorld, Tutorial
 from worlds.AutoWorld import WebWorld, World
-from .data import get_random_job, randomized_jobs, randomized_judge, randomized_weapons, randomized_equip, JobID, location_ids, \
-    judge_weapon, judge_equip, basic_weapon, basic_equip
+from .data import get_random_job, JobID, attacker_jobs, magic_jobs, support_jobs
 from .regions import create_regions
 from .rules import set_rules
 
@@ -61,29 +60,39 @@ class FFTAWorld(World):
     """
     game = "Final Fantasy Tactics Advance"
     web = FFTAWebWorld()
-    option_definitions = option_definitions
     topology_present = True
 
-    settings_key = "ffta_settings"
+    settings_key = "ffta_options"
     settings: ClassVar[FFTASettings]
+
+    option_definitions = option_definitions
 
     data_version = 0
     required_client_version = (0, 4, 3)
 
     item_name_to_id = create_item_label_to_code_map()
     location_name_to_id = create_location_label_to_id_map()
+        
+    randomized_jobs = []
+    balanced_jobs = []
+    randomized_judge = []
+    judge_weapon = []
+    judge_equip = []
+    randomized_weapons = []
+    randomized_equip = []
+    randomized_abilities = []
+    basic_weapon = []
+    basic_equip = []
+    MissionGroups = []
+    DispatchMissionGroups = []
+    location_ids = []
+    
 
     def get_filler_item_name(self) -> str:
-        return self.random.choice("Phoenix Down", "X-Potion", "Elixir", "Cure-All")
-
-    def _get_ffta_data(self):
-        return {
-            'world_seed': self.multiworld.per_slot_randoms[self.player].getrandbits(32),
-            'seed_name': self.multiworld.seed_name,
-            'player_name': self.multiworld.get_player_name(self.player),
-            'player_id': self.player,
-            'race': self.multiworld.is_race,
-        }
+        filler = ["Potion", "Hi-Potion", "X-Potion", "Ether", "Elixir", "Antidote",
+        "Eye Drops", "Echo Screen", "Maiden's Kiss", "Soft", "Holy Water", "Bandage",
+        "Cureall", "Phoenix Down"]
+        return self.random.choice(filler)
 
     def create_regions(self) -> None:
         create_regions(self, self.player)
@@ -93,17 +102,17 @@ class FFTAWorld(World):
         required_items = []
 
         item_index = 0
-        for i in range(0, self.options.gate_num):
+        for i in range(0, self.multiworld.gate_num[self.player].value):
             required_items.append(MissionUnlockItems[item_index].itemName)
 
             # Add second item for the gate unlock
-            if self.options.gate_items:
+            if self.multiworld.gate_items[self.player].value == 1 or self.multiworld.gate_items[self.player].value == 2:
                 required_items.append(MissionUnlockItems[item_index + 1].itemName)
 
             item_index = item_index + 2
 
         # Add totema unlock items to pool if option is selected
-        if self.options.final_unlock:
+        if self.multiworld.final_unlock[self.player].value == 1:
             for i in range(0, len(TotemaUnlockItems)):
                 required_items.append(TotemaUnlockItems[i].itemName)
 
@@ -112,21 +121,22 @@ class FFTAWorld(World):
             self.multiworld.itempool.append(self.create_item(itemName))
 
         # Count number of mission reward locations, account for totema goal
-        gate_number = self.options.gate_num
-        if gate_number > 30 and self.options.final_unlock == 1:
+        gate_number = self.multiworld.gate_num[self.player].value
+        if gate_number > 30 and self.multiworld.final_unlock[self.player].value == 1:
             gate_number = 30
 
-        unfilled_locations = gate_number * 8 + 1
+        dispatch_number = self.multiworld.dispatch[self.player].value * 2
+        unfilled_locations = gate_number * 8 + gate_number * dispatch_number + 1
 
         # Add totema mission locations to unfilled location count
-        if self.options.final_unlock:
+        if self.multiworld.final_unlock[self.player].value == 1:
             unfilled_locations = unfilled_locations + 10
 
         useful_items = []
         for item in AllItems:
             if item.progression == ItemClassification.useful:
 
-                if item.itemID >= 0x521aac and self.options.job_unlock_req != 3:
+                if item.itemID >= 0x2ac and self.multiworld.job_unlock_req[self.player].value != 3:
                     continue
                 else:
                     useful_items += [item.itemName]
@@ -137,7 +147,10 @@ class FFTAWorld(World):
         items_remaining = unfilled_locations - len(required_items)
 
         for i in range(items_remaining - 1):
-            self.multiworld.itempool.append(self.create_item(useful_items[i]))
+            if i > len(useful_items) - 1:
+                self.multiworld.itempool.append(self.create_filler())
+            else:
+                self.multiworld.itempool.append(self.create_item(useful_items[i]))
 
         #filler_spots = len(self.multiworld.get_filled_locations()) - len(self.multiworld.get_unfilled_locations())
         #for i in range(filler_spots):
@@ -150,16 +163,43 @@ class FFTAWorld(World):
         # Setting the victory item at the victory location
         victory_event = FFTAItem('Victory', ItemClassification.progression, None, self.player)
 
-        if self.options.final_mission == 0:
+        if self.multiworld.final_mission[self.player].value == 0:
             self.multiworld.get_location("Royal Valley", self.player)\
                 .place_locked_item(victory_event)
 
-        elif self.options.final_mission == 1:
+        elif self.multiworld.final_mission[self.player].value == 1:
             self.multiworld.get_location("Decision Time", self.player) \
                 .place_locked_item(victory_event)
 
         self.multiworld.completion_condition[self.player] =\
             lambda state: state.has("Victory", self.player)
+
+
+        if self.multiworld.gate_paths[self.player].value == 2:
+            path1_complete = FFTAItem('Path 1 Complete', ItemClassification.progression, None, self.player)
+            path2_complete = FFTAItem('Path 2 Complete', ItemClassification.progression, None, self.player)
+
+            self.multiworld.get_location("Path 1 Completion", self.player) \
+                .place_locked_item(path1_complete)
+
+            self.multiworld.get_location("Path 2 Completion", self.player) \
+                .place_locked_item(path2_complete)
+
+        elif self.multiworld.gate_paths[self.player].value == 3:
+            path1_complete = FFTAItem('Path 1 Complete', ItemClassification.progression, None, self.player)
+            path2_complete = FFTAItem('Path 2 Complete', ItemClassification.progression, None, self.player)
+            path3_complete = FFTAItem('Path 3 Complete', ItemClassification.progression, None, self.player)
+
+            self.multiworld.get_location("Path 1 Completion", self.player) \
+                .place_locked_item(path1_complete)
+
+            self.multiworld.get_location("Path 2 Completion", self.player) \
+                .place_locked_item(path2_complete)
+
+            self.multiworld.get_location("Path 3 Completion", self.player) \
+                .place_locked_item(path3_complete)
+
+
 
     @classmethod
     def stage_assert_generate(cls, multiworld: MultiWorld):
@@ -187,7 +227,7 @@ class FFTAWorld(World):
         return FFTAItem(item.itemName, item.progression, item.itemID + offset, self.player)
 
     def generate_output(self, output_directory: str) -> None:
-
+    
         # Import this from data instead
         human = 0
         bangaa = 1
@@ -197,68 +237,120 @@ class FFTAWorld(World):
         monster = 5
         all = 6
         all_with_monster = 7
+        
+        self.randomized_jobs = []
+        self.balanced_jobs = []
+        self.randomized_judge = []
+        self.judge_weapon = []
+        self.judge_equip = []
+        self.randomized_weapons = []
+        self.randomized_equip = []
+        self.randomized_abilities = []
+        self.basic_weapon = []
+        self.basic_equip = []
+
+        if self.multiworld.starting_units[self.player].value == 3:
+            self.balanced_jobs.append(self.random.choice(attacker_jobs))
+            self.balanced_jobs.append(self.random.choice(attacker_jobs))
+            self.balanced_jobs.append(self.random.choice(magic_jobs))
+            self.balanced_jobs.append(self.random.choice(magic_jobs))
+            self.balanced_jobs.append(self.random.choice(support_jobs))
+            self.balanced_jobs.append(self.random.choice(support_jobs))
+            self.random.shuffle(self.balanced_jobs)
 
         def randomize_starting(random_choice: int):
 
             # Randomize job for Marche
-            randomized_jobs.append(get_random_job(self.random, random_choice))
 
-            if self.options.starting_unit_equip == 0:
-                basic_weapon.append(get_basic_weapon(randomized_jobs[0]))
-                basic_equip.append(get_basic_equip(randomized_jobs[0]))
+            # Add balanced job if selected
+            if self.multiworld.starting_units[self.player].value == 3:
+                self.randomized_jobs.append(self.balanced_jobs[0])
 
-            randomized_weapons.append(get_valid_weapon(randomized_jobs[0]))
-            randomized_equip.append(get_valid_equip(randomized_jobs[0]))
+            else:
+                self.randomized_jobs.append(get_random_job(self.random, random_choice))
+
+            if self.multiworld.starting_unit_equip[self.player].value == 0:
+                self.basic_weapon.append(get_basic_weapon(self.randomized_jobs[0]))
+                self.basic_equip.append(get_basic_equip(self.randomized_jobs[0]))
+
+            self.randomized_weapons.append(get_valid_weapon(self.randomized_jobs[0]))
+            self.randomized_equip.append(get_valid_equip(self.randomized_jobs[0]))
 
             # Randomize job for Montblanc
-            randomized_jobs.append(get_random_job(self.random, random_choice))
 
-            if self.options.starting_unit_equip == 0:
-                basic_weapon.append(get_basic_weapon(randomized_jobs[1]))
-                basic_equip.append(get_basic_equip(randomized_jobs[1]))
+            if self.multiworld.starting_units[self.player].value == 3:
+                self.randomized_jobs.append(self.balanced_jobs[1])
 
-            randomized_weapons.append(get_valid_weapon(randomized_jobs[1]))
-            randomized_equip.append(get_valid_equip(randomized_jobs[1]))
+            else:
+                self.randomized_jobs.append(get_random_job(self.random, random_choice))
+
+            if self.multiworld.starting_unit_equip[self.player].value == 0:
+
+                self.basic_weapon.append(get_basic_weapon(self.randomized_jobs[1]))
+                self.basic_equip.append(get_basic_equip(self.randomized_jobs[1]))
+
+            self.randomized_weapons.append(get_valid_weapon(self.randomized_jobs[1]))
+            self.randomized_equip.append(get_valid_equip(self.randomized_jobs[1]))
 
             # Randomize job for third clan member
-            randomized_jobs.append(get_random_job(self.random, random_choice))
 
-            if self.options.starting_unit_equip == 0:
-                basic_weapon.append(get_basic_weapon(randomized_jobs[2]))
-                basic_equip.append(get_basic_equip(randomized_jobs[2]))
+            if self.multiworld.starting_units[self.player].value == 3:
+                self.randomized_jobs.append(self.balanced_jobs[2])
 
-            randomized_weapons.append(get_valid_weapon(randomized_jobs[2]))
-            randomized_equip.append(get_valid_equip(randomized_jobs[2]))
+            else:
+                self.randomized_jobs.append(get_random_job(self.random, random_choice))
+
+            if self.multiworld.starting_unit_equip[self.player].value == 0:
+                self.basic_weapon.append(get_basic_weapon(self.randomized_jobs[2]))
+                self.basic_equip.append(get_basic_equip(self.randomized_jobs[2]))
+
+            self.randomized_weapons.append(get_valid_weapon(self.randomized_jobs[2]))
+            self.randomized_equip.append(get_valid_equip(self.randomized_jobs[2]))
 
             # Randomize job for fourth clan member
-            randomized_jobs.append(get_random_job(self.random, random_choice))
 
-            if self.options.starting_unit_equip == 0:
-                basic_weapon.append(get_basic_weapon(randomized_jobs[3]))
-                basic_equip.append(get_basic_equip(randomized_jobs[3]))
+            if self.multiworld.starting_units[self.player].value == 3:
+                self.randomized_jobs.append(self.balanced_jobs[3])
 
-            randomized_weapons.append(get_valid_weapon(randomized_jobs[3]))
-            randomized_equip.append(get_valid_equip(randomized_jobs[3]))
+            else:
+                self.randomized_jobs.append(get_random_job(self.random, random_choice))
+
+            if self.multiworld.starting_unit_equip[self.player].value == 0:
+                self.basic_weapon.append(get_basic_weapon(self.randomized_jobs[3]))
+                self.basic_equip.append(get_basic_equip(self.randomized_jobs[3]))
+
+            self.randomized_weapons.append(get_valid_weapon(self.randomized_jobs[3]))
+            self.randomized_equip.append(get_valid_equip(self.randomized_jobs[3]))
 
             # Randomize job for fifth clan member
-            randomized_jobs.append(get_random_job(self.random, random_choice))
 
-            if self.options.starting_unit_equip == 0:
-                basic_weapon.append(get_basic_weapon(randomized_jobs[4]))
-                basic_equip.append(get_basic_equip(randomized_jobs[4]))
+            if self.multiworld.starting_units[self.player].value == 3:
+                self.randomized_jobs.append(self.balanced_jobs[4])
 
-            randomized_weapons.append(get_valid_weapon(randomized_jobs[4]))
-            randomized_equip.append(get_valid_equip(randomized_jobs[4]))
+            else:
+                self.randomized_jobs.append(get_random_job(self.random, random_choice))
+
+            if self.multiworld.starting_unit_equip[self.player].value == 0:
+                self.basic_weapon.append(get_basic_weapon(self.randomized_jobs[4]))
+                self.basic_equip.append(get_basic_equip(self.randomized_jobs[4]))
+
+            self.randomized_weapons.append(get_valid_weapon(self.randomized_jobs[4]))
+            self.randomized_equip.append(get_valid_equip(self.randomized_jobs[4]))
 
             # Randomize job for sixth clan member
-            randomized_jobs.append(get_random_job(self.random, random_choice))
 
-            if self.options.starting_unit_equip == 0:
-                basic_weapon.append(get_basic_weapon(randomized_jobs[5]))
-                basic_equip.append(get_basic_equip(randomized_jobs[5]))
+            if self.multiworld.starting_units[self.player].value == 3:
+                self.randomized_jobs.append(self.balanced_jobs[5])
 
-            randomized_weapons.append(get_valid_weapon(randomized_jobs[5]))
-            randomized_equip.append(get_valid_equip(randomized_jobs[5]))
+            else:
+                self.randomized_jobs.append(get_random_job(self.random, random_choice))
+
+            if self.multiworld.starting_unit_equip[self.player].value == 0:
+                self.basic_weapon.append(get_basic_weapon(self.randomized_jobs[5]))
+                self.basic_equip.append(get_basic_equip(self.randomized_jobs[5]))
+
+            self.randomized_weapons.append(get_valid_weapon(self.randomized_jobs[5]))
+            self.randomized_equip.append(get_valid_equip(self.randomized_jobs[5]))
 
         def get_valid_weapon(job: int):
 
@@ -543,94 +635,99 @@ class FFTAWorld(World):
                 return equip
 
         # Append randomized units even if randomization is turned off to allow for random enemies to work
-        if self.options.starting_units == 2 or \
-           self.options.starting_units == 0:
+        if self.multiworld.starting_units[self.player].value == 2 or \
+           self.multiworld.starting_units[self.player].value == 0 or \
+           self.multiworld.starting_units[self.player].value == 3:
             randomize_starting(all)
 
         # Shuffle starting unit jobs within their race
-        elif self.options.starting_units == 1:
-            randomized_jobs.append(get_random_job(self.random, human))
+        elif self.multiworld.starting_units[self.player].value == 1:
+            self.randomized_jobs.append(get_random_job(self.random, human))
 
-            if self.options.starting_unit_equip == 0:
-                basic_weapon.append(get_basic_weapon(randomized_jobs[0]))
-                basic_equip.append(get_basic_equip(randomized_jobs[0]))
+            if self.multiworld.starting_unit_equip[self.player].value == 0:
+                self.basic_weapon.append(get_basic_weapon(self.randomized_jobs[0]))
+                self.basic_equip.append(get_basic_equip(self.randomized_jobs[0]))
 
-            randomized_weapons.append(get_valid_weapon(randomized_jobs[0]))
-            randomized_equip.append(get_valid_equip(randomized_jobs[0]))
+            self.randomized_weapons.append(get_valid_weapon(self.randomized_jobs[0]))
+            self.randomized_equip.append(get_valid_equip(self.randomized_jobs[0]))
 
             # Randomize job for Montblanc
-            randomized_jobs.append(get_random_job(self.random, moogle))
+            self.randomized_jobs.append(get_random_job(self.random, moogle))
 
-            if self.options.starting_unit_equip == 0:
-                basic_weapon.append(get_basic_weapon(randomized_jobs[1]))
-                basic_equip.append(get_basic_equip(randomized_jobs[1]))
+            if self.multiworld.starting_unit_equip[self.player].value == 0:
+                self.basic_weapon.append(get_basic_weapon(self.randomized_jobs[1]))
+                self.basic_equip.append(get_basic_equip(self.randomized_jobs[1]))
 
-            randomized_weapons.append(get_valid_weapon(randomized_jobs[1]))
-            randomized_equip.append(get_valid_equip(randomized_jobs[1]))
+            self.randomized_weapons.append(get_valid_weapon(self.randomized_jobs[1]))
+            self.randomized_equip.append(get_valid_equip(self.randomized_jobs[1]))
 
             # Randomize job for third clan member
-            randomized_jobs.append(get_random_job(self.random, human))
+            self.randomized_jobs.append(get_random_job(self.random, human))
 
-            if self.options.starting_unit_equip == 0:
-                basic_weapon.append(get_basic_weapon(randomized_jobs[2]))
-                basic_equip.append(get_basic_equip(randomized_jobs[2]))
+            if self.multiworld.starting_unit_equip[self.player].value == 0:
+                self.basic_weapon.append(get_basic_weapon(self.randomized_jobs[2]))
+                self.basic_equip.append(get_basic_equip(self.randomized_jobs[2]))
 
-            randomized_weapons.append(get_valid_weapon(randomized_jobs[2]))
-            randomized_equip.append(get_valid_equip(randomized_jobs[2]))
+            self.randomized_weapons.append(get_valid_weapon(self.randomized_jobs[2]))
+            self.randomized_equip.append(get_valid_equip(self.randomized_jobs[2]))
 
             # Randomize job for fourth clan member
-            randomized_jobs.append(get_random_job(self.random, bangaa))
+            self.randomized_jobs.append(get_random_job(self.random, bangaa))
 
-            if self.options.starting_unit_equip == 0:
-                basic_weapon.append(get_basic_weapon(randomized_jobs[3]))
-                basic_equip.append(get_basic_equip(randomized_jobs[3]))
+            if self.multiworld.starting_unit_equip[self.player].value == 0:
+                self.basic_weapon.append(get_basic_weapon(self.randomized_jobs[3]))
+                self.basic_equip.append(get_basic_equip(self.randomized_jobs[3]))
 
-            randomized_weapons.append(get_valid_weapon(randomized_jobs[3]))
-            randomized_equip.append(get_valid_equip(randomized_jobs[3]))
+            self.randomized_weapons.append(get_valid_weapon(self.randomized_jobs[3]))
+            self.randomized_equip.append(get_valid_equip(self.randomized_jobs[3]))
 
             # Randomize job for fifth clan member
-            randomized_jobs.append(get_random_job(self.random, mou))
+            self.randomized_jobs.append(get_random_job(self.random, mou))
 
-            if self.options.starting_unit_equip == 0:
-                basic_weapon.append(get_basic_weapon(randomized_jobs[4]))
-                basic_equip.append(get_basic_equip(randomized_jobs[4]))
+            if self.multiworld.starting_unit_equip[self.player].value == 0:
+                self.basic_weapon.append(get_basic_weapon(self.randomized_jobs[4]))
+                self.basic_equip.append(get_basic_equip(self.randomized_jobs[4]))
 
-            randomized_weapons.append(get_valid_weapon(randomized_jobs[4]))
-            randomized_equip.append(get_valid_equip(randomized_jobs[4]))
+            self.randomized_weapons.append(get_valid_weapon(self.randomized_jobs[4]))
+            self.randomized_equip.append(get_valid_equip(self.randomized_jobs[4]))
 
             # Randomize job for sixth clan member
-            randomized_jobs.append(get_random_job(self.random, viera))
+            self.randomized_jobs.append(get_random_job(self.random, viera))
 
-            if self.options.starting_unit_equip == 0:
-                basic_weapon.append(get_basic_weapon(randomized_jobs[5]))
-                basic_equip.append(get_basic_equip(randomized_jobs[5]))
+            if self.multiworld.starting_unit_equip[self.player].value == 0:
+                self.basic_weapon.append(get_basic_weapon(self.randomized_jobs[5]))
+                self.basic_equip.append(get_basic_equip(self.randomized_jobs[5]))
 
-            randomized_weapons.append(get_valid_weapon(randomized_jobs[5]))
-            randomized_equip.append(get_valid_equip(randomized_jobs[5]))
+            self.randomized_weapons.append(get_valid_weapon(self.randomized_jobs[5]))
+            self.randomized_equip.append(get_valid_equip(self.randomized_jobs[5]))
 
-        elif self.options.starting_units == 3:
+        elif self.multiworld.starting_units[self.player].value == 4:
             randomize_starting(all_with_monster)
 
-        if self.options.randomize_enemies == 1:
+        if self.multiworld.randomize_enemies[self.player].value == 1:
             for index in range(6, 0xA46):
-                randomized_jobs.append(get_random_job(self.random, all_with_monster))
-                randomized_weapons.append(get_valid_weapon(randomized_jobs[index]))
-                randomized_equip.append(get_valid_equip(randomized_jobs[index]))
+                self.randomized_jobs.append(get_random_job(self.random, all_with_monster))
+                self.randomized_weapons.append(get_valid_weapon(self.randomized_jobs[index]))
+                self.randomized_equip.append(get_valid_equip(self.randomized_jobs[index]))
 
         # Always randomize the judge encounters for now
         for index in range(0, 5):
-            randomized_judge.append(get_random_job(self.random, all))
-            judge_weapon.append(get_valid_weapon(randomized_judge[index]))
-            judge_equip.append(get_valid_equip(randomized_judge[index]))
+            self.randomized_judge.append(get_random_job(self.random, all))
+            self.judge_weapon.append(get_valid_weapon(self.randomized_judge[index]))
+            self.judge_equip.append(get_valid_equip(self.randomized_judge[index]))
 
         # print(self.random_data.all_abilities)
         # self.random.shuffle(self.random_data.all_abilities)
 
+        self.location_ids = [0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x09, 0x0a, 0x0b, 0x0c,
+                0x0d, 0x0e, 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18,
+                0x19, 0x1a, 0x1b, 0x1c, 0x1d]
+
         # Randomize location nodes on map
-        self.random.shuffle(location_ids)
+        self.random.shuffle(self.location_ids)
 
         # Add Ambervale to the end
-        location_ids.append(0x08)
+        self.location_ids.append(0x08)
         generate_output(self, self.player, output_directory)
 
 

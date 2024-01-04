@@ -111,6 +111,7 @@ class StartingGil(Range):
     range_start = 0
     range_end = 99999999
 
+
 class GateNumber(Range):
     """
     Sets the number of mission gates. Each gate contains four missions each. Expect an hour added for every gate.
@@ -121,7 +122,7 @@ class GateNumber(Range):
     display_name = "Number of mission gates"
     default = 6
     range_start = 1
-    range_end = 31
+    range_end = 30
 
 
 class GatePaths(Range):
@@ -144,6 +145,7 @@ class DispatchMissions(Range):
     default = 0
     range_start = 0
     range_end = 6
+
 
 class DispatchRandom(Toggle):
     """

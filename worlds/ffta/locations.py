@@ -325,17 +325,18 @@ FFTALocations: typing.List[FFTALocationData] = [
     FFTALocationData("Wyrms Awaken Reward 1", 103, 0x55cb6a),
     FFTALocationData("Wyrms Awaken Reward 2", 103, 0x55cb6c),
 
-    FFTALocationData("Yellow Powerz Reward 1", 104, 0x55cbb0),
-    FFTALocationData("Yellow Powerz Reward 2", 104, 0x55cbb2),
+    # League missions currently not working
+    #FFTALocationData("Yellow Powerz Reward 1", 104, 0x55cbb0),
+    #FFTALocationData("Yellow Powerz Reward 2", 104, 0x55cbb2),
 
-    FFTALocationData("Blue Geniuses Reward 1", 105, 0x55cbf6),
-    FFTALocationData("Blue Geniuses Reward 2", 105, 0x55cbf8),
+    #FFTALocationData("Blue Geniuses Reward 1", 105, 0x55cbf6),
+    #FFTALocationData("Blue Geniuses Reward 2", 105, 0x55cbf8),
 
-    FFTALocationData("Brown Rabbits Reward 1", 106, 0x55cc3c),
-    FFTALocationData("Brown Rabbits Reward 2", 106, 0x55cc3e),
+    #FFTALocationData("Brown Rabbits Reward 1", 106, 0x55cc3c),
+    #FFTALocationData("Brown Rabbits Reward 2", 106, 0x55cc3e),
 
-    FFTALocationData("White Kupos Reward 1", 107, 0x55cc82),
-    FFTALocationData("White Kupos Reward 2", 107, 0x55cc84),
+    #FFTALocationData("White Kupos Reward 1", 107, 0x55cc82),
+    #FFTALocationData("White Kupos Reward 2", 107, 0x55cc84),
 
     FFTALocationData("Mythril Rush Reward 1", 108, 0x55ccc8),
     FFTALocationData("Mythril Rush Reward 2", 108, 0x55ccca),
@@ -983,6 +984,10 @@ for index in range(0, len(FFTALocations), 2):
         bitflag_index = 3
 
     elif byte_i == 8 and bitflag_index == 5:
+        bitflag_index = 6
+
+    # Skipping the league mission bitflags for now
+    elif byte_i == 13 and bitflag_index == 2:
         bitflag_index = 6
 
     elif byte_i == 14 and bitflag_index == 2:

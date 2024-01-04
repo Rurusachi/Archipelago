@@ -71,11 +71,10 @@ def generate_output(world, player: int, output_directory: str) -> None:
 
     data = FFTAData(patched_rom)
     
-    if world.multiworld.dispatch[world.player].value > 0: 
-        for i in range(125, 330):
-            set_bytes(patched_rom, data.missions[i].memory + MissionOffsets.dispatch_ability, 1, 0x0)
+    #if world.multiworld.dispatch[world.player].value > 0:
+    #    for i in range(125, 330):
+    #        set_bytes(patched_rom, data.missions[i].memory + MissionOffsets.dispatch_ability, 1, 0x0)
 
-    
     # Fix Present day
     set_bytes(patched_rom, 0x563b79, 1, 0x4b)
 
@@ -181,24 +180,7 @@ def generate_output(world, player: int, output_directory: str) -> None:
         set_bytes(patched_rom, mission.memory + MissionOffsets.unlockflag3 + 1, 1, 0x00)
         set_bytes(patched_rom, mission.memory + MissionOffsets.unlockflag3 + 2, 1, 0x00)
 
-        #set_bytes(patched_rom, mission.memory + MissionOffsets.type, 2, 0x00)
-        if patched_rom[mission.memory + MissionOffsets.type] == 0x0D:
-            set_bytes(patched_rom, mission.memory + MissionOffsets.type, 1, 0x0A)
 
-        # Dispatch missions
-        elif patched_rom[mission.memory + MissionOffsets.type] == 0x00:
-            set_bytes(patched_rom, mission.memory + MissionOffsets.type, 1, 0x00)
-        #    set_bytes(patched_rom, mission.memory + 0x10, 1, 0x03)
-
-        elif patched_rom[mission.memory + MissionOffsets.type] == 0x02:
-            set_bytes(patched_rom, mission.memory + MissionOffsets.type, 1, 0x02)
-        
-        elif patched_rom[mission.memory + MissionOffsets.type] == 0x10:
-            set_bytes(patched_rom, mission.memory + MissionOffsets.type, 1, 0x10)
-
-        else:
-            # was 0x0A before
-            set_bytes(patched_rom, mission.memory + MissionOffsets.type, 1, 0x0A)
 
         set_bytes(patched_rom, mission.memory + MissionOffsets.rank, 2, 0x30)
         set_bytes(patched_rom, mission.memory + MissionOffsets.ap_reward, 1, 0x05)
@@ -223,6 +205,29 @@ def generate_output(world, player: int, output_directory: str) -> None:
 
         # Hide ??? cards
         set_bytes(patched_rom, mission.memory + MissionOffsets.mission_display + 1, 1, 0x00)
+
+        # set_bytes(patched_rom, mission.memory + MissionOffsets.type, 2, 0x00)
+        if patched_rom[mission.memory + MissionOffsets.type] == 0x0D:
+            set_bytes(patched_rom, mission.memory + MissionOffsets.type, 1, 0x0A)
+
+        # Dispatch missions
+        elif patched_rom[mission.memory + MissionOffsets.type] == 0x00:
+            set_bytes(patched_rom, mission.memory + MissionOffsets.type, 1, 0x00)
+            set_bytes(patched_rom, mission.memory + MissionOffsets.dispatch_ability, 1, 0x0)
+        #    set_bytes(patched_rom, mission.memory + 0x10, 1, 0x03)
+
+        elif patched_rom[mission.memory + MissionOffsets.type] == 0x02:
+            set_bytes(patched_rom, mission.memory + MissionOffsets.type, 1, 0x02)
+
+        # Make free missions all dispatch missions for now
+        elif patched_rom[mission.memory + MissionOffsets.type] >= 0x10:
+            set_bytes(patched_rom, mission.memory + MissionOffsets.type, 1, 0x00)
+            set_bytes(patched_rom, mission.memory + MissionOffsets.dispatch_ability, 1, 0x0)
+
+        else:
+            # was 0x0A before
+            set_bytes(patched_rom, mission.memory + MissionOffsets.type, 1, 0x0A)
+
 
 # Job unlock options
     # Unlock all jobs
@@ -385,14 +390,13 @@ def generate_output(world, player: int, output_directory: str) -> None:
     player_name = world.multiworld.get_file_safe_player_name(world.player)
     for i, byte in enumerate(player_name.encode("utf-8")):
         set_bytes(patched_rom, 0xAAABD0 + i, 1, byte)
-    
- 
+
     out_file_name = world.multiworld.get_out_file_name_base(world.player)
     output_path = os.path.join(output_directory, f"{out_file_name}.gba")
     with open(output_path, "wb") as out_file:
         out_file.write(patched_rom)
     patch = FFTADeltaPatch(os.path.splitext(output_path)[0] + ".apffta", player=world.player,
-                                 player_name=player_name, patched_path=output_path)
+                           player_name=player_name, patched_path=output_path)
 
     patch.write()
     
@@ -496,15 +500,15 @@ def set_up_gates(patched_rom: bytearray, data: FFTAData, num_gates: int, req_ite
             item_index = item_index + 2
 
     elif world.multiworld.gate_paths[world.player].value == 2:
-        for i in range(2, num_gates - 2):
-
+        for i in range(2, num_gates):
             for j in range(3):
 
+                print(mission_index)
                 set_mission_requirement(patched_rom, data, world.MissionGroups[mission_index][0].mission_id,
                                         world.MissionGroups[mission_unlock][0].mission_id)
                 mission_index = mission_index + 1
 
-            set_mission_requirement(patched_rom, data, world.MissionGroups[mission_index + 5][0].mission_id,
+            set_mission_requirement(patched_rom, data, world.MissionGroups[mission_index + 4][0].mission_id,
                                     world.MissionGroups[mission_unlock][0].mission_id)
 
             for k in range(0, dispatch):

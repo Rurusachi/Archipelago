@@ -7,6 +7,7 @@ from typing import ClassVar, Dict, Any
 import settings
 import sys
 import logging
+from Utils import visualize_regions
 
 from .client import FFTAClient
 
@@ -173,7 +174,6 @@ class FFTAWorld(World):
 
         self.multiworld.completion_condition[self.player] =\
             lambda state: state.has("Victory", self.player)
-
 
         if self.multiworld.gate_paths[self.player].value == 2:
             path1_complete = FFTAItem('Path 1 Complete', ItemClassification.progression, None, self.player)
@@ -728,7 +728,11 @@ class FFTAWorld(World):
 
         # Add Ambervale to the end
         self.location_ids.append(0x08)
+
+        visualize_regions(self.multiworld.get_region("Menu", self.player), "ffta.puml", show_entrance_names=True)
+
         generate_output(self, self.player, output_directory)
+
 
 
 

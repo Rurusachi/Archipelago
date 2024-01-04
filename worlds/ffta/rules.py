@@ -6,20 +6,20 @@ def set_rules(world) -> None:
 
     # Set final mission unlock to require all paths based on settings
     if world.multiworld.gate_paths[world.player].value == 2:
-        add_rule(world.multiworld.get_entrance("Final Mission Gate", world.player),
+        add_rule(world.multiworld.get_location("Royal Valley", world.player),
                  lambda state: state.has("Path 1 Complete", world.player))
 
-        add_rule(world.multiworld.get_entrance("Final Mission Gate", world.player),
+        add_rule(world.multiworld.get_location("Royal Valley", world.player),
                  lambda state: state.has("Path 2 Complete", world.player))
 
     elif world.multiworld.gate_paths[world.player].value == 3:
-        add_rule(world.multiworld.get_entrance("Final Mission Gate", world.player),
+        add_rule(world.multiworld.get_location("Royal Valley", world.player),
                  lambda state: state.has("Path 1 Complete", world.player))
 
-        add_rule(world.multiworld.get_entrance("Final Mission Gate", world.player),
+        add_rule(world.multiworld.get_location("Royal Valley", world.player),
                  lambda state: state.has("Path 2 Complete", world.player))
 
-        add_rule(world.multiworld.get_entrance("Final Mission Gate", world.player),
+        add_rule(world.multiworld.get_location("Royal Valley", world.player),
                  lambda state: state.has("Path 3 Complete", world.player))
 
     if world.multiworld.final_unlock[world.player].value == 1:

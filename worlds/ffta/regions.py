@@ -84,7 +84,6 @@ def create_regions(world, player) -> None:
     world.DispatchMissionGroups = []
     world.DispatchMissionGroups = DispatchMissionGroups.copy()
 
-    print(len(world.MissionGroups))
     menu_region = Region("Menu", player, world.multiworld)
     world.multiworld.regions.append(menu_region)
 
@@ -363,6 +362,7 @@ def create_regions(world, player) -> None:
             menu_region.connect(dispatch_gate_1)
 
     elif world.multiworld.gate_paths[world.player].value == 2:
+
         for x in range(len(valid_gates)):
             if x == len(valid_gates) - 1:
                 last_gate = True
@@ -390,8 +390,6 @@ def create_regions(world, player) -> None:
         for x in range(1, len(path2)):
             path2[x - 1].connect(path2[x], path2[x].name)
 
-
-
         if world.multiworld.gate_items[world.player].value == 2:
             menu_region.connect(dispatch_gate_1)
 
@@ -414,9 +412,8 @@ def create_regions(world, player) -> None:
         path1_complete.connect(final_mission, final_mission.name)
         path2_complete.connect(final_mission, final_mission.name)
 
-
     elif world.multiworld.gate_paths[world.player].value == 3:
-        for x in range(len(valid_gates)):
+        for x in range(len(valid_gates) - 1):
             if x == len(valid_gates) - 1:
                 last_gate = True
 
@@ -436,24 +433,41 @@ def create_regions(world, player) -> None:
         # look into adding gate_1.name?
         menu_region.connect(gate_1)
 
-        gate_1.connect(path1[0])
-        gate_1.connect(path2[0])
-        gate_1.connect(path3[0])
+        gate_1.connect(path1[0], path1[0].name)
+        gate_1.connect(path2[0], path2[0].name)
+        gate_1.connect(path3[0], path3[0].name)
 
         for x in range(1, len(path1)):
             print(path1[x - 1])
             print(path1[x])
             path1[x - 1].connect(path1[x], path1[x].name)
 
-        gate_1.connect(path1[0], path1[0].name)
-
         for x in range(1, len(path2)):
             path2[x - 1].connect(path2[x], path2[x].name)
 
-        gate_1.connect(path2[0], path2[0].name)
+        for x in range(1, len(path2)):
+            path3[x - 1].connect(path3[x], path3[x].name)
 
         if world.multiworld.gate_items[world.player].value == 2:
             menu_region.connect(dispatch_gate_1)
+
+        path1_complete_location = FFTALocation(player, 'Path 1 Completion', None)
+
+        path1_complete.locations.append(path1_complete_location)
+        path1_complete_location.parent_region = path1_complete
+        world.multiworld.regions.append(path1_complete)
+
+        path2_complete_location = FFTALocation(player, 'Path 2 Completion', None)
+
+        path2_complete.locations.append(path2_complete_location)
+        path2_complete_location.parent_region = path2_complete
+        world.multiworld.regions.append(path2_complete)
+
+        path3_complete_location = FFTALocation(player, 'Path 3 Completion', None)
+
+        path3_complete.locations.append(path3_complete_location)
+        path3_complete_location.parent_region = path3_complete
+        world.multiworld.regions.append(path3_complete)
 
         path1[-1].connect(path1_complete, path1_complete.name)
         path2[-1].connect(path2_complete, path2_complete.name)

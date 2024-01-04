@@ -239,12 +239,15 @@ class FFTAClient(BizHawkClient):
             guard_list = [(0x200f85c, [0x00], "System Bus"), (0x2019EB9, [0x01], "System Bus")]
 
             # Check local locations for job unlock items then unlock that job, find a better way to do this later
+            
+        
             if self.job_unlock:
                 if len(ctx.locations_info) > 0:
                     # Copy dict to avoid resizing issues during iteration
                     for location in ctx.locations_info.copy():
                         scouted_location = ctx.locations_info[location]
                         if scouted_location.item - 41234532 >= 0x2ac:
+                            print(hex(scouted_location.item))
                             await bizhawk.guarded_write(ctx.bizhawk_ctx, [
                                 (scouted_location.item - 41234532 + 0x8521800, [0x00], "System Bus")], guard_list)
 

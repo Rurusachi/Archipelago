@@ -14,6 +14,7 @@ from .data import (FFTAData, UnitOffsets, MissionOffsets, JobOffsets, JobID)
 from .items import (MissionUnlockItems)
 from .fftaabilities import master_abilities, get_job_abilities
 
+
 class FFTADeltaPatch(APDeltaPatch):
     game = "Final Fantasy Tactics Advance"
     hash = "cd99cdde3d45554c1b36fbeb8863b7bd"
@@ -180,8 +181,6 @@ def generate_output(world, player: int, output_directory: str) -> None:
         set_bytes(patched_rom, mission.memory + MissionOffsets.unlockflag3 + 1, 1, 0x00)
         set_bytes(patched_rom, mission.memory + MissionOffsets.unlockflag3 + 2, 1, 0x00)
 
-
-
         set_bytes(patched_rom, mission.memory + MissionOffsets.rank, 2, 0x30)
         set_bytes(patched_rom, mission.memory + MissionOffsets.ap_reward, 1, 0x05)
         set_bytes(patched_rom, mission.memory + MissionOffsets.gil_reward, 1, 0x05)
@@ -199,6 +198,9 @@ def generate_output(world, player: int, output_directory: str) -> None:
         set_bytes(patched_rom, mission.memory + MissionOffsets.timeout_days, 1, 0x00)
         set_bytes(patched_rom, mission.memory + MissionOffsets.required_job, 2, 0x00)
         set_bytes(patched_rom, mission.memory + MissionOffsets.required_skill, 2, 0x00)
+
+        # Make all dispatch missions guarantee success
+        set_bytes(patched_rom, mission.memory + MissionOffsets.dispatch_ability, 2, 0x00)
 
         # Hiding mission rewards with ??? bags, also making missions not cancelable
         set_bytes(patched_rom, mission.memory + MissionOffsets.mission_display, 1, 0xC0)
@@ -416,7 +418,6 @@ def set_up_gates(patched_rom: bytearray, data: FFTAData, num_gates: int, req_ite
     elif world.multiworld.gate_paths[world.player].value == 3:
         unlock_mission(patched_rom, data, world.MissionGroups[11][0].mission_id)
 
-
     for i in range(0, dispatch):
         unlock_mission(patched_rom, data, world.DispatchMissionGroups[i][0].mission_id)
 
@@ -466,6 +467,7 @@ def set_up_gates(patched_rom: bytearray, data: FFTAData, num_gates: int, req_ite
             set_mission_requirement(patched_rom, data, world.MissionGroups[mission_index + 5][0].mission_id,
                                     world.MissionGroups[mission_unlock][0].mission_id)
 
+            # Add dispatch missions based on settings
             for k in range(0, dispatch):
 
                 if world.multiworld.gate_items[world.player].value == 2:
@@ -502,8 +504,6 @@ def set_up_gates(patched_rom: bytearray, data: FFTAData, num_gates: int, req_ite
     elif world.multiworld.gate_paths[world.player].value == 2:
         for i in range(2, num_gates):
             for j in range(3):
-
-                print(mission_index)
                 set_mission_requirement(patched_rom, data, world.MissionGroups[mission_index][0].mission_id,
                                         world.MissionGroups[mission_unlock][0].mission_id)
                 mission_index = mission_index + 1
@@ -548,13 +548,27 @@ def set_up_gates(patched_rom: bytearray, data: FFTAData, num_gates: int, req_ite
     # Set final mission to unlock after all the gates if all mission gates option is selected
     if final_unlock == 0:
 
-        # Unlock Royal Valley if it is selected to be the final mission
-        if final_mission == 0:
-            set_mission_requirement(patched_rom, data, 23, world.MissionGroups[mission_unlock][0].mission_id)
+        if world.multiworld.gate_paths[world.player].value == 1:
 
-        # Unlock Decision Time as the final mission
-        elif final_mission == 1:
-            set_mission_requirement(patched_rom, data, 393, world.MissionGroups[mission_unlock][0].mission_id)
+            # Unlock Royal Valley if it is selected to be the final mission
+            if final_mission == 0:
+                set_mission_requirement(patched_rom, data, 23, world.MissionGroups[mission_unlock][0].mission_id)
+
+            # Unlock Decision Time as the final mission
+            elif final_mission == 1:
+                set_mission_requirement(patched_rom, data, 393, world.MissionGroups[mission_unlock][0].mission_id)
+
+        # Set all final missions in paths to unlock the final mission
+        elif world.multiworld.gate_paths[world.player].value == 2:
+
+            # Unlock Royal Valley if it is selected to be the final mission
+            if final_mission == 0:
+                set_mission_requirement(patched_rom, data, 23, world.MissionGroups[mission_unlock][0].mission_id)
+                set_mission_requirement(patched_rom, data, 23, world.MissionGroups[mission_unlock + 1][0].mission_id)
+
+            # Unlock Decision Time as the final mission
+            elif final_mission == 1:
+                set_mission_requirement(patched_rom, data, 393, world.MissionGroups[mission_unlock][0].mission_id)
 
 
 def set_mission_requirement(patched_rom: bytearray, data: FFTAData, current_mission_ID: int, previous_mission_ID: int) -> None:

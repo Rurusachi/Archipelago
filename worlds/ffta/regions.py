@@ -49,9 +49,6 @@ def create_gates(num_gate: int, gate: Region, world, last_gate: bool, FFTAValidL
     for i in range(num_missions):
         index = location_index + i
         gate.locations.append(FFTAValidLocations[index])
-        print(gate)
-        print(index)
-        print(FFTAValidLocations[index])
         FFTAValidLocations[index].parent_region = gate
 
     if world.multiworld.gate_items[world.player].value == 2:
@@ -69,7 +66,6 @@ def create_gates(num_gate: int, gate: Region, world, last_gate: bool, FFTAValidL
 
 def create_regions(world, player) -> None:
 
-    print("length of mission groups")
     FFTAValidLocations = []
     FFTAValidDispatch = []
     gates = []
@@ -328,8 +324,15 @@ def create_regions(world, player) -> None:
 
     gate_number = world.multiworld.gate_num[world.player].value
 
+    # Might need to change this to 29 for now because of removal of missions
     if gate_number > 30 and world.multiworld.final_unlock[world.player].value == 1:
         gate_number = 30
+
+    if world.multiworld.gate_paths[world.player].value == 2:
+        gate_number = gate_number + 1
+
+    elif world.multiworld.gate_paths[world.player].value == 3:
+        gate_number = gate_number + 2
 
     # Add number of gates based on settings
     for i in range(gate_number + 1):
@@ -345,7 +348,11 @@ def create_regions(world, player) -> None:
                 last_gate = True
 
             if world.multiworld.gate_items[world.player].value == 2:
-                create_gates(x, valid_gates[x], world, last_gate, FFTAValidLocations, FFTAValidDispatch, valid_dispatch[x])
+                if last_gate:
+                    create_gates(x, valid_gates[x], world, last_gate, FFTAValidLocations, FFTAValidDispatch,
+                                 0)
+                else:
+                    create_gates(x, valid_gates[x], world, last_gate, FFTAValidLocations, FFTAValidDispatch, valid_dispatch[x])
 
             else:
                 create_gates(x, valid_gates[x], world, last_gate, FFTAValidLocations, FFTAValidDispatch, 0)
@@ -364,7 +371,7 @@ def create_regions(world, player) -> None:
     elif world.multiworld.gate_paths[world.player].value == 2:
 
         for x in range(len(valid_gates)):
-            if x == len(valid_gates) - 1:
+            if x == len(valid_gates) - 2:
                 last_gate = True
 
             if world.multiworld.gate_items[world.player].value == 2:
@@ -413,8 +420,8 @@ def create_regions(world, player) -> None:
         path2_complete.connect(final_mission, final_mission.name)
 
     elif world.multiworld.gate_paths[world.player].value == 3:
-        for x in range(len(valid_gates) - 1):
-            if x == len(valid_gates) - 1:
+        for x in range(len(valid_gates)):
+            if x == len(valid_gates) - 3:
                 last_gate = True
 
             if world.multiworld.gate_items[world.player].value == 2:
@@ -438,14 +445,12 @@ def create_regions(world, player) -> None:
         gate_1.connect(path3[0], path3[0].name)
 
         for x in range(1, len(path1)):
-            print(path1[x - 1])
-            print(path1[x])
             path1[x - 1].connect(path1[x], path1[x].name)
 
         for x in range(1, len(path2)):
             path2[x - 1].connect(path2[x], path2[x].name)
 
-        for x in range(1, len(path2)):
+        for x in range(1, len(path3)):
             path3[x - 1].connect(path3[x], path3[x].name)
 
         if world.multiworld.gate_items[world.player].value == 2:
@@ -477,8 +482,6 @@ def create_regions(world, player) -> None:
         path1_complete.connect(final_mission, final_mission.name)
         path2_complete.connect(final_mission, final_mission.name)
         path3_complete.connect(final_mission, final_mission.name)
-
-
 
     # Set up regions for totema unlock option
     if world.multiworld.final_unlock[world.player].value == 1:
@@ -525,7 +528,6 @@ def create_regions(world, player) -> None:
         totema3.connect(totema4, "Totema 4")
         totema4.connect(totema5, "Totema 5")
         totema5.connect(final_mission)
-
 
     # Set the final mission to connect to the last mission in the path
     if world.multiworld.gate_paths[world.player].value == 1:

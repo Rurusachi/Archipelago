@@ -40,6 +40,12 @@ def set_rules(world) -> None:
 
     num_gates = world.multiworld.gate_num[world.player].value
 
+    if world.multiworld.gate_paths[world.player].value == 2:
+        num_gates = num_gates + 1
+
+    elif world.multiworld.gate_paths[world.player].value == 3:
+        num_gates = num_gates + 2
+
     add_rule(world.multiworld.get_entrance("Gate 2", world.player),
         lambda state: state.has("Magic Trophy", world.player))
 

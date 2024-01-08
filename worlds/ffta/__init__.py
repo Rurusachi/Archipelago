@@ -103,7 +103,16 @@ class FFTAWorld(World):
         required_items = []
 
         item_index = 0
-        for i in range(0, self.multiworld.gate_num[self.player].value):
+        req_gate_num = self.multiworld.gate_num[self.player].value
+
+        # Add progression items with multiple mission gate paths
+        if self.multiworld.gate_paths[self.player].value == 2:
+            req_gate_num = req_gate_num + 1
+
+        elif self.multiworld.gate_paths[self.player].value == 3:
+            req_gate_num = req_gate_num + 2
+
+        for i in range(0, req_gate_num):
             required_items.append(MissionUnlockItems[item_index].itemName)
 
             # Add second item for the gate unlock
@@ -147,15 +156,18 @@ class FFTAWorld(World):
 
         items_remaining = unfilled_locations - len(required_items)
 
+        # Add extra locations for multiple gate paths
+        if self.multiworld.gate_paths[self.player].value == 2:
+            items_remaining = items_remaining + 2
+
+        elif self.multiworld.gate_paths[self.player].value == 3:
+            items_remaining = items_remaining + 4
+
         for i in range(items_remaining - 1):
             if i > len(useful_items) - 1:
                 self.multiworld.itempool.append(self.create_filler())
             else:
                 self.multiworld.itempool.append(self.create_item(useful_items[i]))
-
-        #filler_spots = len(self.multiworld.get_filled_locations()) - len(self.multiworld.get_unfilled_locations())
-        #for i in range(filler_spots):
-        #    self.multiworld.itempool.append(self.create_filler())
 
     def set_rules(self) -> None:
         set_rules(self)

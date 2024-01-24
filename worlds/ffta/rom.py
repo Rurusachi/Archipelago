@@ -72,7 +72,7 @@ def generate_output(world, player: int, output_directory: str) -> None:
 
     data = FFTAData(patched_rom)
     
-    #if world.multiworld.dispatch[world.player].value > 0:
+    #if world.options.dispatch.value > 0:
     #    for i in range(125, 330):
     #        set_bytes(patched_rom, data.missions[i].memory + MissionOffsets.dispatch_ability, 1, 0x0)
 
@@ -147,22 +147,22 @@ def generate_output(world, player: int, output_directory: str) -> None:
     set_bytes(patched_rom, 0x12e672, 1, 0x62)
     
     # Set quick options to on
-    if world.multiworld.quick_options[world.player].value == 1:
+    if world.options.quick_options.value == 1:
         set_bytes(patched_rom, 0x51ba4e, 2, 0x03c8)
         
     # Guarantee recruitment option
-    if world.multiworld.force_recruitment[world.player].value == 1:
+    if world.options.force_recruitment.value == 1:
         set_bytes(patched_rom, 0xd2494, 2, 0x2000)    
 
     # Scale to the highest unit
-    if world.multiworld.scaling[world.player].value == 1:
+    if world.options.scaling.value == 1:
         set_bytes(patched_rom, 0xca088, 4, 0x42a07950)
         set_bytes(patched_rom, 0xca08d, 7, 0x000000001c04dd)
         set_bytes(patched_rom, 0xca0aa, 2, 0x1c20)
 
 
     # Double EXP option
-    if world.multiworld.double_exp[world.player].value == 1:
+    if world.options.double_exp.value == 1:
         set_bytes(patched_rom, 0x12e658, 2, 0x08e5)
 
     # Make all missions game over instead of fail
@@ -233,19 +233,19 @@ def generate_output(world, player: int, output_directory: str) -> None:
 
 # Job unlock options
     # Unlock all jobs
-    if world.multiworld.job_unlock_req[world.player].value == 1:
+    if world.options.job_unlock_req.value == 1:
         for jobs in data.jobs:
             set_bytes(patched_rom, jobs.memory + JobOffsets.job_requirement, 1, 0x00)
 
     # Lock all jobs
-    elif world.multiworld.job_unlock_req[world.player].value == 2 or world.multiworld.job_unlock_req[world.player].value == 3:
+    elif world.options.job_unlock_req.value == 2 or world.options.job_unlock_req.value == 3:
         for jobs in data.jobs:
             set_bytes(patched_rom, jobs.memory + JobOffsets.job_requirement, 1, 0xFF)
 
     # Unlock starting job based on if the requirements are vanilla and units are randomized
-    if world.multiworld.job_unlock_req[world.player].value == 0 and world.multiworld.starting_units[world.player].value == 1 or \
-       world.multiworld.job_unlock_req[world.player].value == 0 and world.multiworld.starting_units[world.player].value == 2 or \
-       world.multiworld.job_unlock_req[world.player].value == 0 and world.multiworld.starting_units[world.player].value == 3:
+    if world.options.job_unlock_req.value == 0 and world.options.starting_units.value == 1 or \
+       world.options.job_unlock_req.value == 0 and world.options.starting_units.value == 2 or \
+       world.options.job_unlock_req.value == 0 and world.options.starting_units.value == 3:
         set_bytes(patched_rom, data.jobs[world.randomized_jobs[0]].memory + JobOffsets.job_requirement, 1,
                                      0x00)
         set_bytes(patched_rom, data.jobs[world.randomized_jobs[1]].memory + JobOffsets.job_requirement, 1,
@@ -267,17 +267,17 @@ def generate_output(world, player: int, output_directory: str) -> None:
     #for abilities in data.abilities:
     #    set_bytes(patched_rom, abilities.memory + AbilityOffsets.mp_cost, 1, 0x00)
     
-    gate_number = world.multiworld.gate_num[world.player].value
-    if gate_number > 30 and world.multiworld.final_unlock[world.player].value == 1:
+    gate_number = world.options.gate_num.value
+    if gate_number > 30 and world.options.final_unlock.value == 1:
         gate_number = 30
 
-    set_up_gates(patched_rom, data, gate_number, world.multiworld.gate_items[world.player].value,
-                 world.multiworld.final_unlock[world.player].value, world.multiworld.final_mission[world.player].value,
-                 world.multiworld.dispatch[world.player].value, world)
+    set_up_gates(patched_rom, data, gate_number, world.options.gate_items.value,
+                 world.options.final_unlock.value, world.options.final_mission.value,
+                 world.options.dispatch.value, world)
 
 
 # Totema goal
-    if world.multiworld.final_unlock[world.player].value == 1:
+    if world.options.final_unlock.value == 1:
         unlock_mission(patched_rom, data, 4)
 
         # Totema goal required items
@@ -293,15 +293,15 @@ def generate_output(world, player: int, output_directory: str) -> None:
         set_mission_requirement(patched_rom, data, 17, 14)
 
         # Set Royal Valley to be the final mission if it is chosen in the options
-        if world.multiworld.final_mission[world.player].value == 0:
+        if world.options.final_mission.value == 0:
             set_mission_requirement(patched_rom, data, 23, 17)
 
         # Set Decision Time to be the final mission
-        elif world.multiworld.final_mission[world.player].value == 1:
+        elif world.options.final_mission.value == 1:
             set_mission_requirement(patched_rom, data, 393, 17)
 
     # Randomize starting units and set mastered abilities
-    if world.multiworld.starting_units[world.player].value != 0:
+    if world.options.starting_units.value != 0:
         for index in range(6):
 
             randomize_unit(patched_rom, data, index, world)
@@ -312,10 +312,10 @@ def generate_output(world, player: int, output_directory: str) -> None:
                                  10)
             else:
                 master_abilities(patched_rom, data, index, get_job_abilities(world.randomized_jobs[index]),
-                                 world.multiworld.starting_abilities[world.player].value)
+                                 world.options.starting_abilities.value)
 
             # Set the basic weapons and equipment if the option is selected
-            if world.multiworld.starting_unit_equip[world.player].value == 0:
+            if world.options.starting_unit_equip.value == 0:
                 set_bytes(patched_rom, data.formations[index].memory + UnitOffsets.unit_item1, 2,
                                          world.basic_weapon[index])
                 set_bytes(patched_rom, data.formations[index].memory + UnitOffsets.unit_item2, 2,
@@ -323,19 +323,19 @@ def generate_output(world, player: int, output_directory: str) -> None:
                 set_bytes(patched_rom, data.formations[index].memory + UnitOffsets.unit_item3, 2, 0x00)
 
     # Master abilities if units aren't randomized
-    if world.multiworld.starting_units[world.player].value == 0:
+    if world.options.starting_units.value == 0:
         master_abilities(patched_rom, data, 0, get_job_abilities(JobID.soldier),
-                         world.multiworld.starting_abilities[world.player].value)
+                         world.options.starting_abilities.value)
         master_abilities(patched_rom, data, 1, get_job_abilities(JobID.blackmagemog),
-                         world.multiworld.starting_abilities[world.player].value)
+                         world.options.starting_abilities.value)
         master_abilities(patched_rom, data, 2, get_job_abilities(JobID.soldier),
-                         world.multiworld.starting_abilities[world.player].value)
+                         world.options.starting_abilities.value)
         master_abilities(patched_rom, data, 3, get_job_abilities(JobID.whitemonk),
-                         world.multiworld.starting_abilities[world.player].value)
+                         world.options.starting_abilities.value)
         master_abilities(patched_rom, data, 4, get_job_abilities(JobID.whitemagemou),
-                         world.multiworld.starting_abilities[world.player].value)
+                         world.options.starting_abilities.value)
         master_abilities(patched_rom, data, 5, get_job_abilities(JobID.archervra),
-                         world.multiworld.starting_abilities[world.player].value)
+                         world.options.starting_abilities.value)
 
     # Randomize enemies
     
@@ -343,7 +343,7 @@ def generate_output(world, player: int, output_directory: str) -> None:
     
         set_bytes(patched_rom, data.formations[index].memory + UnitOffsets.level, 1, 0)
         
-        if world.multiworld.randomize_enemies[world.player].value == 1:
+        if world.options.randomize_enemies.value == 1:
             if patched_rom[data.formations[index].memory] == 0x01:
 
                 randomize_unit(patched_rom, data, index, world)
@@ -376,7 +376,7 @@ def generate_output(world, player: int, output_directory: str) -> None:
     set_bytes(patched_rom, 0x52eaf8, 2, 0x00)
 
     # Set option for job items in the ROM
-    #if world.multiworld.job_unlock_req[world.player].value == 3:
+    #if world.options.job_unlock_req.value == 3:
     #    set_bytes(patched_rom, 0xAAAAD0, 1, 0x01)
 
     # Randomize locations on map
@@ -386,7 +386,7 @@ def generate_output(world, player: int, output_directory: str) -> None:
     set_items(patched_rom, world.multiworld, player)
 
     # Set the starting gil amount
-    starting_gil = world.multiworld.starting_gil[world.player].value
+    starting_gil = world.options.starting_gil.value
     set_bytes(patched_rom, 0x986c, 4, starting_gil)
  
     player_name = world.multiworld.get_file_safe_player_name(world.player)
@@ -412,10 +412,11 @@ def set_up_gates(patched_rom: bytearray, data: FFTAData, num_gates: int, req_ite
     unlock_mission(patched_rom, data, world.MissionGroups[2][0].mission_id)
     unlock_mission(patched_rom, data, world.MissionGroups[3][0].mission_id)
 
-    if world.multiworld.gate_paths[world.player].value == 2:
+    if world.options.gate_paths.value == 2:
         unlock_mission(patched_rom, data, world.MissionGroups[7][0].mission_id)
 
-    elif world.multiworld.gate_paths[world.player].value == 3:
+    elif world.options.gate_paths.value == 3:
+        unlock_mission(patched_rom, data, world.MissionGroups[7][0].mission_id)
         unlock_mission(patched_rom, data, world.MissionGroups[11][0].mission_id)
 
     for i in range(0, dispatch):
@@ -427,7 +428,7 @@ def set_up_gates(patched_rom: bytearray, data: FFTAData, num_gates: int, req_ite
     if req_items == 1 or req_items == 2:
         req_item2 = MissionUnlockItems[1].itemID
 
-    if world.multiworld.gate_items[world.player].value == 2:
+    if world.options.gate_items.value == 2:
         set_required_items(patched_rom, data, world.MissionGroups[3][0].mission_id, MissionUnlockItems[0].itemID,
                            0)
         set_required_items(patched_rom, data, world.DispatchMissionGroups[dispatch - 1][0].mission_id, req_item2,
@@ -454,7 +455,7 @@ def set_up_gates(patched_rom: bytearray, data: FFTAData, num_gates: int, req_ite
 
         return
 
-    if world.multiworld.gate_paths[world.player].value == 1:
+    if world.options.gate_paths.value == 1:
 
         for i in range(2, num_gates + 1):
 
@@ -470,7 +471,7 @@ def set_up_gates(patched_rom: bytearray, data: FFTAData, num_gates: int, req_ite
             # Add dispatch missions based on settings
             for k in range(0, dispatch):
 
-                if world.multiworld.gate_items[world.player].value == 2:
+                if world.options.gate_items.value == 2:
                     set_mission_requirement(patched_rom, data, world.DispatchMissionGroups[dispatch_index][0].mission_id,
                                             world.DispatchMissionGroups[dispatch_unlock][0].mission_id)
 
@@ -487,7 +488,7 @@ def set_up_gates(patched_rom: bytearray, data: FFTAData, num_gates: int, req_ite
                 req_item2 = MissionUnlockItems[item_index + 1].itemID
 
             # Add required item to dispatch mission gates if option is selected
-            if world.multiworld.gate_items[world.player].value == 2:
+            if world.options.gate_items.value == 2:
                 set_required_items(patched_rom, data, world.DispatchMissionGroups[dispatch_unlock][0].mission_id,
                                    req_item2,
                                    0)
@@ -501,7 +502,7 @@ def set_up_gates(patched_rom: bytearray, data: FFTAData, num_gates: int, req_ite
 
             item_index = item_index + 2
 
-    elif world.multiworld.gate_paths[world.player].value == 2:
+    elif world.options.gate_paths.value == 2:
         for i in range(2, num_gates):
             for j in range(3):
                 set_mission_requirement(patched_rom, data, world.MissionGroups[mission_index][0].mission_id,
@@ -513,7 +514,7 @@ def set_up_gates(patched_rom: bytearray, data: FFTAData, num_gates: int, req_ite
 
             for k in range(0, dispatch):
 
-                if world.multiworld.gate_items[world.player].value == 2:
+                if world.options.gate_items.value == 2:
                     set_mission_requirement(patched_rom, data, world.DispatchMissionGroups[dispatch_index][0].mission_id,
                                             world.DispatchMissionGroups[dispatch_unlock][0].mission_id)
 
@@ -531,7 +532,52 @@ def set_up_gates(patched_rom: bytearray, data: FFTAData, num_gates: int, req_ite
                 req_item2 = MissionUnlockItems[item_index + 1].itemID
 
             # Add required item to dispatch mission gates if option is selected
-            if world.multiworld.gate_items[world.player].value == 2:
+            if world.options.gate_items.value == 2:
+                set_required_items(patched_rom, data, world.DispatchMissionGroups[dispatch_unlock][0].mission_id,
+                                   req_item2,
+                                   0)
+                set_required_items(patched_rom, data, world.MissionGroups[mission_unlock][0].mission_id,
+                                   MissionUnlockItems[item_index].itemID,
+                                   0)
+
+            else:
+                set_required_items(patched_rom, data, world.MissionGroups[mission_unlock][0].mission_id, MissionUnlockItems[item_index].itemID,
+                                   req_item2)
+
+            item_index = item_index + 2
+
+    elif world.options.gate_paths.value == 3:
+        
+        for i in range(2, num_gates):
+            for j in range(3):
+                set_mission_requirement(patched_rom, data, world.MissionGroups[mission_index][0].mission_id,
+                                        world.MissionGroups[mission_unlock][0].mission_id)
+                mission_index = mission_index + 1
+
+            set_mission_requirement(patched_rom, data, world.MissionGroups[mission_index + 4][0].mission_id,
+                                    world.MissionGroups[mission_unlock][0].mission_id)
+
+            for k in range(0, dispatch):
+
+                if world.options.gate_items.value == 2:
+                    set_mission_requirement(patched_rom, data, world.DispatchMissionGroups[dispatch_index][0].mission_id,
+                                            world.DispatchMissionGroups[dispatch_unlock][0].mission_id)
+
+                else:
+                    set_mission_requirement(patched_rom, data, world.DispatchMissionGroups[dispatch_index][0].mission_id,
+                                            world.MissionGroups[mission_unlock][0].mission_id)
+
+                dispatch_index = dispatch_index + 1
+
+            mission_index = mission_index + 1
+            mission_unlock = mission_unlock + 4
+            dispatch_unlock = dispatch_unlock + dispatch
+
+            if req_items == 1 or req_items == 2:
+                req_item2 = MissionUnlockItems[item_index + 1].itemID
+
+            # Add required item to dispatch mission gates if option is selected
+            if world.options.gate_items.value == 2:
                 set_required_items(patched_rom, data, world.DispatchMissionGroups[dispatch_unlock][0].mission_id,
                                    req_item2,
                                    0)
@@ -548,7 +594,7 @@ def set_up_gates(patched_rom: bytearray, data: FFTAData, num_gates: int, req_ite
     # Set final mission to unlock after all the gates if all mission gates option is selected
     if final_unlock == 0:
 
-        if world.multiworld.gate_paths[world.player].value == 1:
+        if world.options.gate_paths.value == 1:
 
             # Unlock Royal Valley if it is selected to be the final mission
             if final_mission == 0:
@@ -559,16 +605,47 @@ def set_up_gates(patched_rom: bytearray, data: FFTAData, num_gates: int, req_ite
                 set_mission_requirement(patched_rom, data, 393, world.MissionGroups[mission_unlock][0].mission_id)
 
         # Set all final missions in paths to unlock the final mission
-        elif world.multiworld.gate_paths[world.player].value == 2:
+        elif world.options.gate_paths.value == 2:
 
             # Unlock Royal Valley if it is selected to be the final mission
             if final_mission == 0:
-                set_mission_requirement(patched_rom, data, 23, world.MissionGroups[mission_unlock][0].mission_id)
-                set_mission_requirement(patched_rom, data, 23, world.MissionGroups[mission_unlock + 1][0].mission_id)
+                set_bytes(patched_rom, data.missions[23].memory + MissionOffsets.unlockflag1, 1,
+                          world.MissionGroups[mission_unlock][0].mission_id + 2)
+                set_bytes(patched_rom, data.missions[23].memory + MissionOffsets.unlockflag1 + 0x01, 1,
+                          0x03)
+                set_bytes(patched_rom, data.missions[23].memory + MissionOffsets.unlockflag1 + 0x02, 1,
+                          0x01)
+                set_bytes(patched_rom, data.missions[23].memory + MissionOffsets.unlockflag2, 1,
+                          world.MissionGroups[mission_unlock + 1][0].mission_id)
+                set_bytes(patched_rom, data.missions[23].memory + MissionOffsets.unlockflag2 + 1, 1,
+                          0x03)
+                set_bytes(patched_rom, data.missions[23].memory + MissionOffsets.unlockflag2 + 2, 1,
+                          0x01)
+                set_bytes(patched_rom, data.missions[23].memory + MissionOffsets.unlockflag3, 1, 0x00)
+                set_bytes(patched_rom, data.missions[23].memory + MissionOffsets.unlockflag3 + 1, 1,
+                          0x00)
+                set_bytes(patched_rom, data.missions[23].memory + MissionOffsets.unlockflag3 + 2, 1,
+                          0x00)
 
             # Unlock Decision Time as the final mission
             elif final_mission == 1:
-                set_mission_requirement(patched_rom, data, 393, world.MissionGroups[mission_unlock][0].mission_id)
+                set_bytes(patched_rom, data.missions[393].memory + MissionOffsets.unlockflag1, 1,
+                          world.MissionGroups[mission_unlock][0].mission_id + 2)
+                set_bytes(patched_rom, data.missions[393].memory + MissionOffsets.unlockflag1 + 0x01, 1,
+                          0x03)
+                set_bytes(patched_rom, data.missions[393].memory + MissionOffsets.unlockflag1 + 0x02, 1,
+                          0x01)
+                set_bytes(patched_rom, data.missions[393].memory + MissionOffsets.unlockflag2, 1,
+                          world.MissionGroups[mission_unlock + 1][0].mission_id)
+                set_bytes(patched_rom, data.missions[393].memory + MissionOffsets.unlockflag2 + 1, 1,
+                          0x03)
+                set_bytes(patched_rom, data.missions[393].memory + MissionOffsets.unlockflag2 + 2, 1,
+                          0x01)
+                set_bytes(patched_rom, data.missions[393].memory + MissionOffsets.unlockflag3, 1, 0x00)
+                set_bytes(patched_rom, data.missions[393].memory + MissionOffsets.unlockflag3 + 1, 1,
+                          0x00)
+                set_bytes(patched_rom, data.missions[393].memory + MissionOffsets.unlockflag3 + 2, 1,
+                          0x00)
 
 
 def set_mission_requirement(patched_rom: bytearray, data: FFTAData, current_mission_ID: int, previous_mission_ID: int) -> None:

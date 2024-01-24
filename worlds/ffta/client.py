@@ -94,8 +94,6 @@ class FFTAClient(BizHawkClient):
 
             #if ctx.slot_data["job_unlock_req"] == JobUnlockReq.option_job_items:
             #    self.job_unlock = True
-            
-        
 
         try:
             offset = 41234532
@@ -107,7 +105,6 @@ class FFTAClient(BizHawkClient):
             flag_bytes = read_result[0]
             received_items = int.from_bytes(read_result[2], "little")
             mission_items = read_result[4]
-
 
             # Remove the archipelago and job unlock mission items
             for byte_i, item in enumerate(mission_items):
@@ -185,7 +182,6 @@ class FFTAClient(BizHawkClient):
                                             "locations": [location_id]
                                         }])
 
-
                                 location_id2 = mission[1].rom_address
                                 if location_id2 in ctx.server_locations:
                                     local_checked_locations.add(location_id2)
@@ -239,8 +235,7 @@ class FFTAClient(BizHawkClient):
             guard_list = [(0x200f85c, [0x00], "System Bus"), (0x2019EB9, [0x01], "System Bus")]
 
             # Check local locations for job unlock items then unlock that job, find a better way to do this later
-            
-        
+
             if self.job_unlock:
                 if len(ctx.locations_info) > 0:
                     # Copy dict to avoid resizing issues during iteration
@@ -248,8 +243,8 @@ class FFTAClient(BizHawkClient):
                         scouted_location = ctx.locations_info[location]
                         if scouted_location.item - 41234532 >= 0x2ac:
                             print(hex(scouted_location.item))
-                            await bizhawk.guarded_write(ctx.bizhawk_ctx, [
-                                (scouted_location.item - 41234532 + 0x8521800, [0x00], "System Bus")], guard_list)
+                            await bizhawk.write(ctx.bizhawk_ctx, [
+                                (scouted_location.item - 41234532 + 0x8521800, [0x00], "System Bus")])
 
             job_unlock_item = 0x1bc
 

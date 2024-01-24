@@ -37,13 +37,13 @@ def create_gates(num_gate: int, gate: Region, world, last_gate: bool, FFTAValidL
         location_index = (num_gate - 1) * 8 + 6
         num_missions = 8
 
-    num_dispatch = world.multiworld.dispatch[world.player].value * 2
+    num_dispatch = world.options.dispatch.value * 2
     dispatch_index = num_dispatch * num_gate
     
     world.multiworld.regions.append(gate)
 
     # Add dispatch gate regions if option is selected
-    if world.multiworld.gate_items[world.player].value == 2:
+    if world.options.gate_items.value == 2:
         world.multiworld.regions.append(dispatch_gate)
 
     for i in range(num_missions):
@@ -51,7 +51,7 @@ def create_gates(num_gate: int, gate: Region, world, last_gate: bool, FFTAValidL
         gate.locations.append(FFTAValidLocations[index])
         FFTAValidLocations[index].parent_region = gate
 
-    if world.multiworld.gate_items[world.player].value == 2:
+    if world.options.gate_items.value == 2:
         for j in range(num_dispatch):
             index = dispatch_index + j
             dispatch_gate.locations.append(FFTAValidDispatch[index])
@@ -88,7 +88,7 @@ def create_regions(world, player) -> None:
     #   FFTAValidLocations.append(location)
 
     # Adding totema missions to list and deleting them from mission groups
-    if world.multiworld.final_unlock[world.player].value == 1:
+    if world.options.final_unlock.value == 1:
         TotemaLocations.append(FFTALocation(player, world.MissionGroups[4][0].name, world.MissionGroups[4][0].rom_address))
         TotemaLocations.append(FFTALocation(player, world.MissionGroups[4][1].name, world.MissionGroups[4][1].rom_address))
 
@@ -115,31 +115,31 @@ def create_regions(world, player) -> None:
         del world.MissionGroups[13]
 
     # Having the story missions be the gate unlocks and removing them from the mission pool.
-    if world.multiworld.mission_order[world.player].value == 1:
+    if world.options.mission_order.value == 1:
 
         end_range = 23
 
         # Account for the removed totema missions if that option is selected
-        if world.multiworld.final_unlock[world.player].value == 1:
+        if world.options.final_unlock.value == 1:
             end_range = 17
 
         for index in range(0, end_range):
             StoryLocations.append(world.MissionGroups[0])
             del world.MissionGroups[0]
 
-    if world.multiworld.mission_order[world.player].value == 1 or world.multiworld.mission_order[world.player].value == 2:
+    if world.options.mission_order.value == 1 or world.options.mission_order.value == 2:
         world.random.shuffle(world.MissionGroups)
 
     # Randomize dispatch missions if the option is set to true
-    if world.multiworld.randomize_dispatch[world.player].value == 1:
+    if world.options.randomize_dispatch.value == 1:
         world.random.shuffle(world.DispatchMissionGroups)
 
 
     # Insert story missions on every fourth mission to be the requirement mission
-    if world.multiworld.mission_order[world.player].value == 1:
+    if world.options.mission_order.value == 1:
         story_index = 0
         i = 3
-        for gate in range(world.multiworld.gate_num[world.player].value):
+        for gate in range(world.options.gate_num.value):
             while i < len(world.MissionGroups) and story_index < len(StoryLocations):
                 world.MissionGroups.insert(i, StoryLocations[story_index])
                 i = i + 4
@@ -313,41 +313,41 @@ def create_regions(world, player) -> None:
     dispatch_gates.append(dispatch_gate_32)
     dispatch_gates.append(dispatch_gate_33)
 
-    if world.multiworld.final_mission[world.player].value == 0:
+    if world.options.final_mission.value == 0:
         final_location = FFTALocation(player, 'Royal Valley', None)
-    elif world.multiworld.final_mission[world.player].value == 1:
+    elif world.options.final_mission.value == 1:
         final_location = FFTALocation(player, 'Decision Time', None)
 
     final_mission.locations.append(final_location)
     final_location.parent_region = final_mission
     world.multiworld.regions.append(final_mission)
 
-    gate_number = world.multiworld.gate_num[world.player].value
+    gate_number = world.options.gate_num.value
 
     # Might need to change this to 29 for now because of removal of missions
-    if gate_number > 30 and world.multiworld.final_unlock[world.player].value == 1:
+    if gate_number > 30 and world.options.final_unlock.value == 1:
         gate_number = 30
 
-    if world.multiworld.gate_paths[world.player].value == 2:
+    if world.options.gate_paths.value == 2:
         gate_number = gate_number + 1
 
-    elif world.multiworld.gate_paths[world.player].value == 3:
+    elif world.options.gate_paths.value == 3:
         gate_number = gate_number + 2
 
     # Add number of gates based on settings
     for i in range(gate_number + 1):
         valid_gates.append(gates[i])
 
-        if world.multiworld.gate_items[world.player].value == 2:
+        if world.options.gate_items.value == 2:
             valid_dispatch.append(dispatch_gates[i])
 
     last_gate = False
-    if world.multiworld.gate_paths[world.player].value == 1:
+    if world.options.gate_paths.value == 1:
         for x in range(len(valid_gates)):
             if x == len(valid_gates) - 1:
                 last_gate = True
 
-            if world.multiworld.gate_items[world.player].value == 2:
+            if world.options.gate_items.value == 2:
                 if last_gate:
                     create_gates(x, valid_gates[x], world, last_gate, FFTAValidLocations, FFTAValidDispatch,
                                  0)
@@ -360,21 +360,21 @@ def create_regions(world, player) -> None:
             if x > 0:
                 valid_gates[x-1].connect(valid_gates[x], valid_gates[x].name)
 
-                if world.multiworld.gate_items[world.player].value == 2:
+                if world.options.gate_items.value == 2:
                     valid_dispatch[x - 1].connect(valid_dispatch[x], valid_dispatch[x].name)
         # look into adding gate_1.name?
         menu_region.connect(gate_1)
 
-        if world.multiworld.gate_items[world.player].value == 2:
+        if world.options.gate_items.value == 2:
             menu_region.connect(dispatch_gate_1)
 
-    elif world.multiworld.gate_paths[world.player].value == 2:
+    elif world.options.gate_paths.value == 2:
 
         for x in range(len(valid_gates)):
             if x == len(valid_gates) - 2:
                 last_gate = True
 
-            if world.multiworld.gate_items[world.player].value == 2:
+            if world.options.gate_items.value == 2:
                 create_gates(x, valid_gates[x], world, last_gate, FFTAValidLocations, FFTAValidDispatch, valid_dispatch[x])
 
             else:
@@ -397,7 +397,7 @@ def create_regions(world, player) -> None:
         for x in range(1, len(path2)):
             path2[x - 1].connect(path2[x], path2[x].name)
 
-        if world.multiworld.gate_items[world.player].value == 2:
+        if world.options.gate_items.value == 2:
             menu_region.connect(dispatch_gate_1)
 
         path1_complete_location = FFTALocation(player, 'Path 1 Completion', None)
@@ -419,12 +419,12 @@ def create_regions(world, player) -> None:
         path1_complete.connect(final_mission, final_mission.name)
         path2_complete.connect(final_mission, final_mission.name)
 
-    elif world.multiworld.gate_paths[world.player].value == 3:
+    elif world.options.gate_paths.value == 3:
         for x in range(len(valid_gates)):
             if x == len(valid_gates) - 3:
                 last_gate = True
 
-            if world.multiworld.gate_items[world.player].value == 2:
+            if world.options.gate_items.value == 2:
                 create_gates(x, valid_gates[x], world, last_gate, FFTAValidLocations, FFTAValidDispatch, valid_dispatch[x])
 
             else:
@@ -453,7 +453,7 @@ def create_regions(world, player) -> None:
         for x in range(1, len(path3)):
             path3[x - 1].connect(path3[x], path3[x].name)
 
-        if world.multiworld.gate_items[world.player].value == 2:
+        if world.options.gate_items.value == 2:
             menu_region.connect(dispatch_gate_1)
 
         path1_complete_location = FFTALocation(player, 'Path 1 Completion', None)
@@ -484,7 +484,7 @@ def create_regions(world, player) -> None:
         path3_complete.connect(final_mission, final_mission.name)
 
     # Set up regions for totema unlock option
-    if world.multiworld.final_unlock[world.player].value == 1:
+    if world.options.final_unlock.value == 1:
         totema1 = Region("Totema 1", player, world.multiworld)
         totema2 = Region("Totema 2", player, world.multiworld)
         totema3 = Region("Totema 3", player, world.multiworld)
@@ -530,6 +530,6 @@ def create_regions(world, player) -> None:
         totema5.connect(final_mission)
 
     # Set the final mission to connect to the last mission in the path
-    if world.multiworld.gate_paths[world.player].value == 1:
+    if world.options.gate_paths.value == 1:
         # Always connect the last gate to the final mission for the mission gate goal
         valid_gates[gate_number].connect(final_mission)

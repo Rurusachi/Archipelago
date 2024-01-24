@@ -34,8 +34,6 @@ for i in range(64):
     mission_item_memory = mission_item_memory + 0x04
 
 
-
-
 class MissionOffsets:
     type = 0x02
     rank = 0x03

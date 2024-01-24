@@ -3,7 +3,7 @@ Option definitions for Final Fantasy Tactics Advance
 """
 from typing import Dict
 from dataclasses import dataclass
-from Options import Choice, DefaultOnToggle, Option, OptionSet, Range, Toggle, FreeText, DeathLink
+from Options import Choice, DefaultOnToggle, Option, OptionSet, Range, Toggle, FreeText, DeathLink, PerGameCommonOptions
 
 
 class StartingUnits(Choice):
@@ -101,6 +101,7 @@ class DoubleExp(Toggle):
     """
     display_name = "Double EXP"
     default = 0
+
 
 class StartingGil(Range):
     """
@@ -234,25 +235,26 @@ class ForceRecruitment(Toggle):
     default = 0
 
 
-option_definitions: Dict[str, Option] = {
+@dataclass
+class FFTAOptions(PerGameCommonOptions):
     #"death_link": DeathLink,
-    "starting_units": StartingUnits,
-    "starting_unit_equip": StartingUnitEquip,
-    "starting_abilities": StartingAbilitiesMastered,
-    "job_unlock_req": JobUnlockReq,
-    "randomize_enemies": RandomEnemies,
-    "scaling": EnemyScaling,
-    "double_exp": DoubleExp,
-    "starting_gil": StartingGil,
-    "gate_num": GateNumber,
-    "gate_paths": GatePaths,
-    "dispatch": DispatchMissions,
-    #"dispatch_chance": DispatchChance,
-    "randomize_dispatch": DispatchRandom,
-    "gate_items": GateUnlock,
-    "mission_order": MissionOrder,
-    "final_mission": FinalMission,
-    "final_unlock": FinalMissionUnlock,
-    "quick_options": QuickOptions,
-    "force_recruitment": ForceRecruitment
-}
+    starting_units: StartingUnits
+    starting_unit_equip: StartingUnitEquip
+    starting_abilities: StartingAbilitiesMastered
+    job_unlock_req: JobUnlockReq
+    randomize_enemies: RandomEnemies
+    scaling: EnemyScaling
+    double_exp: DoubleExp
+    starting_gil: StartingGil
+    gate_num: GateNumber
+    gate_paths: GatePaths
+    dispatch: DispatchMissions
+    #"dispatch_chance": DispatchChance
+    randomize_dispatch: DispatchRandom
+    gate_items: GateUnlock
+    mission_order: MissionOrder
+    final_mission: FinalMission
+    final_unlock: FinalMissionUnlock
+    quick_options: QuickOptions
+    force_recruitment: ForceRecruitment
+

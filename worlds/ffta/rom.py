@@ -222,7 +222,7 @@ def generate_output(world, player: int, output_directory: str) -> None:
             set_bytes(patched_rom, mission.memory + MissionOffsets.type, 1, 0x02)
 
         # Make free missions all dispatch missions for now
-        elif patched_rom[mission.memory + MissionOffsets.type] >= 0x10:
+        elif patched_rom[mission.memory + MissionOffsets.type] >= 0x10 and patched_rom[mission.memory] >= 0x7D:
             set_bytes(patched_rom, mission.memory + MissionOffsets.type, 1, 0x00)
             set_bytes(patched_rom, mission.memory + MissionOffsets.dispatch_ability, 1, 0x0)
 
@@ -437,6 +437,41 @@ def set_up_gates(patched_rom: bytearray, data: FFTAData, num_gates: int, req_ite
     else:
         set_required_items(patched_rom, data, world.MissionGroups[3][0].mission_id, MissionUnlockItems[0].itemID,
                            req_item2)
+
+    if world.options.gate_paths == 2:
+        if world.options.gate_items.value == 2:
+            set_required_items(patched_rom, data, world.MissionGroups[7][0].mission_id, MissionUnlockItems[2].itemID,
+                               0)
+            set_required_items(patched_rom, data, world.DispatchMissionGroups[dispatch - 1][0].mission_id, req_item2,
+                               0)
+
+        else:
+            set_required_items(patched_rom, data, world.MissionGroups[7][0].mission_id, MissionUnlockItems[2].itemID,
+                               req_item2)
+
+    if world.options.gate_paths == 3:
+        # Setting required item for the start of path 2
+        if world.options.gate_items.value == 2:
+            set_required_items(patched_rom, data, world.MissionGroups[7][0].mission_id, MissionUnlockItems[2].itemID,
+                               0)
+            set_required_items(patched_rom, data, world.DispatchMissionGroups[dispatch - 1][0].mission_id, req_item2,
+                               0)
+
+        else:
+            set_required_items(patched_rom, data, world.MissionGroups[7][0].mission_id, MissionUnlockItems[2].itemID,
+                               req_item2)
+
+        # Setting require item for the start of path 3
+        if world.options.gate_items.value == 2:
+            set_required_items(patched_rom, data, world.MissionGroups[11][0].mission_id, MissionUnlockItems[4].itemID,
+                               0)
+            set_required_items(patched_rom, data, world.DispatchMissionGroups[dispatch - 1][0].mission_id, req_item2,
+                               0)
+
+        else:
+            set_required_items(patched_rom, data, world.MissionGroups[11][0].mission_id, MissionUnlockItems[4].itemID,
+                               req_item2)
+
     mission_index = 4
     mission_unlock = 3
     dispatch_index = dispatch
@@ -456,17 +491,16 @@ def set_up_gates(patched_rom: bytearray, data: FFTAData, num_gates: int, req_ite
         return
 
     if world.options.gate_paths.value == 1:
-
+        # It was range(2, num_gates + 1) before
         for i in range(2, num_gates + 1):
 
-            for j in range(3):
+            print("Mission unlock: " + str(mission_unlock))
 
+            for j in range(4):
+                print("Mission index: " + str(mission_index))
                 set_mission_requirement(patched_rom, data, world.MissionGroups[mission_index][0].mission_id,
                                         world.MissionGroups[mission_unlock][0].mission_id)
                 mission_index = mission_index + 1
-
-            set_mission_requirement(patched_rom, data, world.MissionGroups[mission_index + 5][0].mission_id,
-                                    world.MissionGroups[mission_unlock][0].mission_id)
 
             # Add dispatch missions based on settings
             for k in range(0, dispatch):
@@ -503,12 +537,16 @@ def set_up_gates(patched_rom: bytearray, data: FFTAData, num_gates: int, req_ite
             item_index = item_index + 2
 
     elif world.options.gate_paths.value == 2:
-        for i in range(2, num_gates):
+        for i in range(1, num_gates):
+
+            print("Mission unlock: " + str(mission_unlock))
             for j in range(3):
+                print("Mission index: " + str(mission_index))
                 set_mission_requirement(patched_rom, data, world.MissionGroups[mission_index][0].mission_id,
                                         world.MissionGroups[mission_unlock][0].mission_id)
                 mission_index = mission_index + 1
 
+            print("Mission index: " + str(mission_index + 4))
             set_mission_requirement(patched_rom, data, world.MissionGroups[mission_index + 4][0].mission_id,
                                     world.MissionGroups[mission_unlock][0].mission_id)
 
@@ -547,15 +585,33 @@ def set_up_gates(patched_rom: bytearray, data: FFTAData, num_gates: int, req_ite
             item_index = item_index + 2
 
     elif world.options.gate_paths.value == 3:
-        
-        for i in range(2, num_gates):
-            for j in range(3):
-                set_mission_requirement(patched_rom, data, world.MissionGroups[mission_index][0].mission_id,
-                                        world.MissionGroups[mission_unlock][0].mission_id)
-                mission_index = mission_index + 1
 
-            set_mission_requirement(patched_rom, data, world.MissionGroups[mission_index + 4][0].mission_id,
-                                    world.MissionGroups[mission_unlock][0].mission_id)
+        path1_index = mission_index
+        path2_index = mission_index + 4
+        path3_index = mission_index + 8
+
+        path1_unlock = mission_unlock
+        path2_unlock = mission_unlock + 4
+        path3_unlock = mission_unlock + 8
+
+        path1_item = item_index + 4
+        path2_item = item_index + 6
+        path3_item = item_index + 8
+
+        print("Path1")
+        print(world.path1_length)
+        for i in range(1, world.path1_length):
+            print(i)
+            print("Mission unlock: " + str(path1_unlock))
+            for j in range(3):
+                print("Mission index: " + str(path1_index))
+                set_mission_requirement(patched_rom, data, world.MissionGroups[path1_index][0].mission_id,
+                                        world.MissionGroups[path1_unlock][0].mission_id)
+                path1_index = path1_index + 1
+
+            print("Mission index: " + str(path1_index + 8))
+            set_mission_requirement(patched_rom, data, world.MissionGroups[path1_index + 8][0].mission_id,
+                                    world.MissionGroups[path1_unlock][0].mission_id)
 
             for k in range(0, dispatch):
 
@@ -565,12 +621,62 @@ def set_up_gates(patched_rom: bytearray, data: FFTAData, num_gates: int, req_ite
 
                 else:
                     set_mission_requirement(patched_rom, data, world.DispatchMissionGroups[dispatch_index][0].mission_id,
-                                            world.MissionGroups[mission_unlock][0].mission_id)
+                                            world.MissionGroups[path1_unlock][0].mission_id)
 
                 dispatch_index = dispatch_index + 1
 
-            mission_index = mission_index + 1
-            mission_unlock = mission_unlock + 4
+            path1_index = path1_index + 9
+            path1_unlock = path1_unlock + 12
+            dispatch_unlock = dispatch_unlock + dispatch
+
+            if req_items == 1 or req_items == 2:
+                req_item2 = MissionUnlockItems[path1_item + 1].itemID
+
+            # Add required item to dispatch mission gates if option is selected
+            if world.options.gate_items.value == 2:
+                set_required_items(patched_rom, data, world.DispatchMissionGroups[dispatch_unlock][0].mission_id,
+                                   req_item2,
+                                   0)
+                set_required_items(patched_rom, data, world.MissionGroups[mission_unlock][0].mission_id,
+                                   MissionUnlockItems[path1_item].itemID,
+                                   0)
+
+            else:
+                set_required_items(patched_rom, data, world.MissionGroups[path1_unlock][0].mission_id,
+                                   MissionUnlockItems[path1_item].itemID,
+                                   req_item2)
+
+            path1_item = path1_item + 6
+
+        print("Path 2")
+        print(world.path2_length)
+        for i in range(1, world.path2_length):
+            print(i)
+            print("Mission unlock: " + str(path2_unlock))
+            for j in range(3):
+                print("Mission index: " + str(path2_index))
+                set_mission_requirement(patched_rom, data, world.MissionGroups[path2_index][0].mission_id,
+                                        world.MissionGroups[path2_unlock][0].mission_id)
+                path2_index = path2_index + 1
+
+            print("Mission index: " + str(path2_index + 8))
+            set_mission_requirement(patched_rom, data, world.MissionGroups[path2_index + 8][0].mission_id,
+                                    world.MissionGroups[path2_unlock][0].mission_id)
+
+            for k in range(0, dispatch):
+
+                if world.options.gate_items.value == 2:
+                    set_mission_requirement(patched_rom, data, world.DispatchMissionGroups[dispatch_index][0].mission_id,
+                                            world.DispatchMissionGroups[dispatch_unlock][0].mission_id)
+
+                else:
+                    set_mission_requirement(patched_rom, data, world.DispatchMissionGroups[dispatch_index][0].mission_id,
+                                            world.MissionGroups[path2_unlock][0].mission_id)
+
+                dispatch_index = dispatch_index + 1
+
+            path2_index = path2_index + 9
+            path2_unlock = path2_unlock + 12
             dispatch_unlock = dispatch_unlock + dispatch
 
             if req_items == 1 or req_items == 2:
@@ -582,14 +688,69 @@ def set_up_gates(patched_rom: bytearray, data: FFTAData, num_gates: int, req_ite
                                    req_item2,
                                    0)
                 set_required_items(patched_rom, data, world.MissionGroups[mission_unlock][0].mission_id,
-                                   MissionUnlockItems[item_index].itemID,
+                                   MissionUnlockItems[path2_item].itemID,
                                    0)
 
             else:
-                set_required_items(patched_rom, data, world.MissionGroups[mission_unlock][0].mission_id, MissionUnlockItems[item_index].itemID,
+                set_required_items(patched_rom, data, world.MissionGroups[path2_unlock][0].mission_id,
+                                   MissionUnlockItems[path2_item].itemID,
                                    req_item2)
 
-            item_index = item_index + 2
+            path2_item = path2_item + 6
+
+
+        print("Path 3")
+        print(world.path3_length)
+        for i in range(1, world.path3_length):
+            print(i)
+            print("Mission unlock: " + str(path3_unlock))
+            for j in range(3):
+                print("Mission index: " + str(path3_index))
+                set_mission_requirement(patched_rom, data, world.MissionGroups[path3_index][0].mission_id,
+                                        world.MissionGroups[path3_unlock][0].mission_id)
+                path3_index = path3_index + 1
+
+            print("Mission index: " + str(path3_index + 8))
+            set_mission_requirement(patched_rom, data, world.MissionGroups[path3_index + 8][0].mission_id,
+                                    world.MissionGroups[path3_unlock][0].mission_id)
+
+            for k in range(0, dispatch):
+
+                if world.options.gate_items.value == 2:
+                    set_mission_requirement(patched_rom, data,
+                                            world.DispatchMissionGroups[dispatch_index][0].mission_id,
+                                            world.DispatchMissionGroups[dispatch_unlock][0].mission_id)
+
+                else:
+                    set_mission_requirement(patched_rom, data,
+                                            world.DispatchMissionGroups[dispatch_index][0].mission_id,
+                                            world.MissionGroups[path3_unlock][0].mission_id)
+
+                dispatch_index = dispatch_index + 1
+
+            path3_index = path3_index + 9
+            path3_unlock = path3_unlock + 12
+            dispatch_unlock = dispatch_unlock + dispatch
+
+            if req_items == 1 or req_items == 2:
+                req_item2 = MissionUnlockItems[path3_item + 1].itemID
+
+            # Add required item to dispatch mission gates if option is selected
+            if world.options.gate_items.value == 2:
+                set_required_items(patched_rom, data, world.DispatchMissionGroups[dispatch_unlock][0].mission_id,
+                                   req_item2,
+                                   0)
+                set_required_items(patched_rom, data, world.MissionGroups[mission_unlock][0].mission_id,
+                                   MissionUnlockItems[path3_item].itemID,
+                                   0)
+
+            else:
+                set_required_items(patched_rom, data, world.MissionGroups[path3_unlock][0].mission_id,
+                                   MissionUnlockItems[path3_item].itemID,
+                                   req_item2)
+
+            path3_item = path3_item + 6
+
 
     # Set final mission to unlock after all the gates if all mission gates option is selected
     if final_unlock == 0:
@@ -618,14 +779,14 @@ def set_up_gates(patched_rom: bytearray, data: FFTAData, num_gates: int, req_ite
                 set_bytes(patched_rom, data.missions[23].memory + MissionOffsets.unlockflag2, 1,
                           world.MissionGroups[mission_unlock + 1][0].mission_id)
                 set_bytes(patched_rom, data.missions[23].memory + MissionOffsets.unlockflag2 + 1, 1,
-                          0x03)
+                          0x04)
                 set_bytes(patched_rom, data.missions[23].memory + MissionOffsets.unlockflag2 + 2, 1,
                           0x01)
                 set_bytes(patched_rom, data.missions[23].memory + MissionOffsets.unlockflag3, 1, 0x00)
                 set_bytes(patched_rom, data.missions[23].memory + MissionOffsets.unlockflag3 + 1, 1,
-                          0x00)
+                          0x05)
                 set_bytes(patched_rom, data.missions[23].memory + MissionOffsets.unlockflag3 + 2, 1,
-                          0x00)
+                          0x01)
 
             # Unlock Decision Time as the final mission
             elif final_mission == 1:
@@ -638,10 +799,59 @@ def set_up_gates(patched_rom: bytearray, data: FFTAData, num_gates: int, req_ite
                 set_bytes(patched_rom, data.missions[393].memory + MissionOffsets.unlockflag2, 1,
                           world.MissionGroups[mission_unlock + 1][0].mission_id)
                 set_bytes(patched_rom, data.missions[393].memory + MissionOffsets.unlockflag2 + 1, 1,
-                          0x03)
+                          0x04)
                 set_bytes(patched_rom, data.missions[393].memory + MissionOffsets.unlockflag2 + 2, 1,
                           0x01)
                 set_bytes(patched_rom, data.missions[393].memory + MissionOffsets.unlockflag3, 1, 0x00)
+                set_bytes(patched_rom, data.missions[393].memory + MissionOffsets.unlockflag3 + 1, 1,
+                          0x05)
+                set_bytes(patched_rom, data.missions[393].memory + MissionOffsets.unlockflag3 + 2, 1,
+                          0x01)
+
+                # Set all final missions in paths to unlock the final mission
+        elif world.options.gate_paths.value == 3:
+
+            # Unlock Royal Valley if it is selected to be the final mission
+            if final_mission == 0:
+                print("path 1 unlock:" + str(world.MissionGroups[path1_unlock][0].mission_id))
+                print("path 2 unlock:" + str(world.MissionGroups[path2_unlock][0].mission_id))
+                print("path 3 unlock:" + str(world.MissionGroups[path3_unlock][0].mission_id))
+
+                set_bytes(patched_rom, data.missions[23].memory + MissionOffsets.unlockflag1, 1,
+                          world.MissionGroups[path1_unlock][0].mission_id + 2)
+                set_bytes(patched_rom, data.missions[23].memory + MissionOffsets.unlockflag1 + 0x01, 1,
+                          0x03)
+                set_bytes(patched_rom, data.missions[23].memory + MissionOffsets.unlockflag1 + 0x02, 1,
+                          0x01)
+                set_bytes(patched_rom, data.missions[23].memory + MissionOffsets.unlockflag2, 1,
+                          world.MissionGroups[path2_unlock][0].mission_id + 2)
+                set_bytes(patched_rom, data.missions[23].memory + MissionOffsets.unlockflag2 + 0x01, 1,
+                          0x03)
+                set_bytes(patched_rom, data.missions[23].memory + MissionOffsets.unlockflag2 + 0x02, 1,
+                          0x01)
+                set_bytes(patched_rom, data.missions[23].memory + MissionOffsets.unlockflag3, 1,
+                          world.MissionGroups[path3_unlock][0].mission_id + 2)
+                set_bytes(patched_rom, data.missions[23].memory + MissionOffsets.unlockflag3 + 0x01, 1,
+                          0x03)
+                set_bytes(patched_rom, data.missions[23].memory + MissionOffsets.unlockflag3 + 0x02, 1,
+                          0x01)
+
+            # Unlock Decision Time as the final mission
+            elif final_mission == 1:
+                set_bytes(patched_rom, data.missions[393].memory + MissionOffsets.unlockflag1, 1,
+                          world.MissionGroups[path1_unlock][0].mission_id + 2)
+                set_bytes(patched_rom, data.missions[393].memory + MissionOffsets.unlockflag1 + 0x01, 1,
+                          0x03)
+                set_bytes(patched_rom, data.missions[393].memory + MissionOffsets.unlockflag1 + 0x02, 1,
+                          0x01)
+                set_bytes(patched_rom, data.missions[393].memory + MissionOffsets.unlockflag2, 1,
+                          world.MissionGroups[path2_unlock][0].mission_id)
+                set_bytes(patched_rom, data.missions[393].memory + MissionOffsets.unlockflag2 + 1, 1,
+                          0x03)
+                set_bytes(patched_rom, data.missions[393].memory + MissionOffsets.unlockflag2 + 2, 1,
+                          0x01)
+                set_bytes(patched_rom, data.missions[393].memory + MissionOffsets.unlockflag3, 1,
+                          world.MissionGroups[path3_unlock][0].mission_id)
                 set_bytes(patched_rom, data.missions[393].memory + MissionOffsets.unlockflag3 + 1, 1,
                           0x00)
                 set_bytes(patched_rom, data.missions[393].memory + MissionOffsets.unlockflag3 + 2, 1,

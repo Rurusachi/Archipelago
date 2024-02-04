@@ -661,6 +661,20 @@ JobUnlocks: typing.List[ItemData] = [
     ItemData('Job Unlock: Time Mage (Moogle)', ItemClassification.useful, 0xb00)
 ]
 
+#To do, complete this
+LawCards: typing.List[ItemData] = [
+    ItemData('Skills', ItemClassification.progression, 0xb01),
+    ItemData('Techniques', ItemClassification.progression, 0xb02),
+    ItemData('Color Magic', ItemClassification.progression, 0xb03),
+    ItemData('Chivalry', ItemClassification.progression, 0xb04),
+    ItemData('Prayer', ItemClassification.progression, 0xb05),
+    ItemData('Defend', ItemClassification.progression, 0xb06),
+    ItemData('Elemental', ItemClassification.progression, 0xb07),
+    ItemData('Hunt', ItemClassification.progression, 0xb08),
+    ItemData('Charge', ItemClassification.progression, 0xb09),
+    ItemData('Time Magic', ItemClassification.progression, 0xb0A),
+]
+
 TrapItems: typing.List[ItemData] = [
     ItemData('Roulette Trap', ItemClassification.trap, 0x11111),
 ]

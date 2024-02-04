@@ -71,7 +71,6 @@ class FFTAWorld(World):
     options_dataclass = FFTAOptions
     options: FFTAOptions
 
-    data_version = 0
     required_client_version = (0, 4, 4)
 
     item_name_to_id = create_item_label_to_code_map()
@@ -90,6 +89,9 @@ class FFTAWorld(World):
     MissionGroups = []
     DispatchMissionGroups = []
     location_ids = []
+    path1_length = []
+    path2_length = []
+    path3_length = []
 
     def get_filler_item_name(self) -> str:
         filler = ["Potion", "Hi-Potion", "X-Potion", "Ether", "Elixir", "Antidote",

@@ -954,8 +954,8 @@ FFTALocations: typing.List[FFTALocationData] = [
     FFTALocationData("Kissing Rule Reward 1", 386, 0x5618cc),
     FFTALocationData("Kissing Rule Reward 2", 386, 0x5618ce),
 
-    FFTALocationData("Immunity Pass Reward 1", 387, 0x561912),
-    FFTALocationData("Immunity Pass Reward 2", 387, 0x561914),
+    #FFTALocationData("Immunity Pass Reward 1", 387, 0x561912),
+    #FFTALocationData("Immunity Pass Reward 2", 387, 0x561914),
 
     FFTALocationData("No Full HP Reward 1", 388, 0x561958),
     FFTALocationData("No Full HP Reward 2", 388, 0x56195a),

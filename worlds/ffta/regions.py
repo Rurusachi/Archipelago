@@ -434,6 +434,12 @@ def create_regions(world, player) -> None:
         path1 = valid_gates[1::3]
         path2 = valid_gates[2::3]
         path3 = valid_gates[3::3]
+
+        # Setting the lengths of the paths
+        world.path1_length = len(path1)
+        world.path2_length = len(path2)
+        world.path3_length = len(path3)
+
         print(path1)
         print(path2)
         print(path3)

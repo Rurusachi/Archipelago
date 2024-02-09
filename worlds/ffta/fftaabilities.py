@@ -1,11 +1,12 @@
 from .data import UnitOffsets, JobID
 from typing import List, Tuple
+from .patcher import APTokenTypes
 import random
 
 
-def set_mastered_ability(byte_array, address, index) -> None:
+def set_mastered_ability(byte_array, address, index, patch) -> None:
 
-    byte_array[address] = byte_array[address] | (1 << index)
+    patch.write_token(APTokenTypes.OR_8, address, (1 << index))
 
 
 class JobAbilities:
@@ -98,7 +99,7 @@ class JobAbilities:
     titania = [(0, 4), (0, 5), (0, 6), (0, 7)]
 
 
-def master_abilities(rom: bytearray, data, index: int, ability_list: List[Tuple], percent: float):
+def master_abilities(rom: bytearray, data, index: int, ability_list: List[Tuple], percent: float, patch):
     ability_set: int
     ability: int
     master_amount: int
@@ -109,7 +110,7 @@ def master_abilities(rom: bytearray, data, index: int, ability_list: List[Tuple]
     # Always master learn for blue mage
     elif ability_list == JobAbilities.bluemage:
         set_mastered_ability(rom, data.formations[index].memory + UnitOffsets.abilities + 14,
-                             3)
+                             3, patch)
 
     # Shuffle the abilities
     random.shuffle(ability_list)
@@ -119,7 +120,7 @@ def master_abilities(rom: bytearray, data, index: int, ability_list: List[Tuple]
         ability_set = ability_list[x][0]
         ability = ability_list[x][1]
 
-        set_mastered_ability(rom, data.formations[index].memory + UnitOffsets.abilities + ability_set, ability)
+        set_mastered_ability(rom, data.formations[index].memory + UnitOffsets.abilities + ability_set, ability, patch)
 
 
 def get_job_abilities(job: int):

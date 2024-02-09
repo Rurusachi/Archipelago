@@ -150,8 +150,10 @@ class FFTAWorld(World):
         for item in AllItems:
             if item.progression == ItemClassification.useful:
 
-                if item.itemID >= 0x2ac and self.options.job_unlock_req != JobUnlockReq.option_job_items:
+                #To DO: add back in job unlock items self.options.job_unlock_req != JobUnlockReq.option_job_items
+                if item.itemID >= 0x2ac:
                     continue
+
                 else:
                     useful_items += [item.itemName]
 

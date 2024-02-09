@@ -157,6 +157,7 @@ class APDeltaPatch(APContainer, metaclass=AutoPatchRegister):
 
     def patch(self, target: str):
         """Base + Delta -> Patched"""
+        print("Patch is called")
         if not self.delta:
             self.read()
         result = bsdiff4.patch(self.get_source_data_with_cache(), self.delta)

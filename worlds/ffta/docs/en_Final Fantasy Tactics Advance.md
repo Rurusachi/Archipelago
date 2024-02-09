@@ -47,5 +47,6 @@ Generation times can be a bit chonky, will def need to optimize in the future
 Leonarth - Made the engine hacks (no judges, quick start, animation hacks) and a lot of documentation on FFTA hacking. https://github.com/LeonarthCG/FFTA_Engine_Hacks Used with permission.
 Darthatron - Made various FFTA tools and documentation. Used their tools a lot when debugging. 
 FGKeiji and TojiKitten - Made the FFTA randomizer I referenced quite a bit. https://github.com/TojiKitten/FFTA-randomizer Used with permission. 
-Zunawe - Made the bizhawk client and I used a lot of Emerald code for setting bytes and making the patch file. 
+Zunawe - Made the bizhawk client and I used a lot of Emerald code as a reference for the apworld. 
 Pilicious - Helped with ideas for the randomizer. 
+Silvris - Created the patch process that fixed FFTA's patching issues. 

@@ -66,7 +66,21 @@ class JobUnlockReq(Choice):
     option_req_vanilla = 0
     option_all_unlocked = 1
     option_all_locked = 2
-    option_job_items = 3
+    #FIX THIS
+    #option_job_items = 3
+
+
+class Laws(Choice):
+    """
+    Enable or disable the law and judge system found in the game. JP will rarely be awarded with laws turned off.
+
+    No Laws: Judges and laws are disabled. Judge units like in Decision Time become random units with all abilities mastered.
+    Laws: Laws are vanilla but are enabled. Judge units are vanilla.
+    """
+    display_name = "Enables or disables laws/judges."
+    default = 0
+    option_no_laws = 0
+    option_laws = 1
 
 
 class RandomEnemies(Choice):
@@ -242,6 +256,7 @@ class FFTAOptions(PerGameCommonOptions):
     starting_unit_equip: StartingUnitEquip
     starting_abilities: StartingAbilitiesMastered
     job_unlock_req: JobUnlockReq
+    laws: Laws
     randomize_enemies: RandomEnemies
     scaling: EnemyScaling
     double_exp: DoubleExp

@@ -401,12 +401,10 @@ def generate_output(world, player: int, output_directory: str) -> None:
     if gate_number > 30 and world.options.final_unlock.value == 1:
         gate_number = 30
 
-    """
     set_up_gates(ffta_data, gate_number, world.options.gate_items.value,
                  world.options.final_unlock.value, world.options.final_mission.value,
                  world.options.dispatch.value, world, patch)
     
-    """
 
     # Totema goal
     if world.options.final_unlock.value == 1:
@@ -523,12 +521,6 @@ def generate_output(world, player: int, output_directory: str) -> None:
     # Set the starting gil amount
     starting_gil = world.options.starting_gil.value
     patch.write_token(APTokenTypes.WRITE, 0x986c, struct.pack("i", starting_gil))
-
-    unlock_mission(ffta_data, 387, patch)
-    set_mission_requirement(ffta_data, 3, 387, patch)
-    set_mission_requirement(ffta_data, 4, 387, patch)
-    set_mission_requirement(ffta_data, 5, 387, patch)
-    set_mission_requirement(ffta_data, 6, 387, patch)
 
     # Set slot name in rom
     # TO DO. Fix this to work on procedure patch

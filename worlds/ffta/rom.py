@@ -401,9 +401,12 @@ def generate_output(world, player: int, output_directory: str) -> None:
     if gate_number > 30 and world.options.final_unlock.value == 1:
         gate_number = 30
 
+    """
     set_up_gates(ffta_data, gate_number, world.options.gate_items.value,
                  world.options.final_unlock.value, world.options.final_mission.value,
                  world.options.dispatch.value, world, patch)
+    
+    """
 
     # Totema goal
     if world.options.final_unlock.value == 1:
@@ -520,6 +523,12 @@ def generate_output(world, player: int, output_directory: str) -> None:
     # Set the starting gil amount
     starting_gil = world.options.starting_gil.value
     patch.write_token(APTokenTypes.WRITE, 0x986c, struct.pack("i", starting_gil))
+
+    unlock_mission(ffta_data, 387, patch)
+    set_mission_requirement(ffta_data, 3, 387, patch)
+    set_mission_requirement(ffta_data, 4, 387, patch)
+    set_mission_requirement(ffta_data, 5, 387, patch)
+    set_mission_requirement(ffta_data, 6, 387, patch)
 
     # Set slot name in rom
     # TO DO. Fix this to work on procedure patch
@@ -948,14 +957,31 @@ def set_up_gates(ffta_data: FFTAData, num_gates: int, req_items, final_unlock: i
             if final_mission == 0:
                 patch.write_token(APTokenTypes.WRITE, ffta_data.missions[23].memory + MissionOffsets.unlockflag1,
                                   struct.pack("H", world.MissionGroups[path1_unlock][0].mission_id + 2))
-                patch.write_token(APTokenTypes.WRITE, ffta_data.missions[23].memory + MissionOffsets.unlockflag1 + 0x01,
-                                  bytes([0x03]))
+
+                if world.MissionGroups[path1_unlock][0].mission_id > 253:
+                    patch.write_token(APTokenTypes.WRITE,
+                                      ffta_data.missions[23].memory + MissionOffsets.unlockflag1 + 0x01,
+                                      bytes([0x04]))
+                else:
+                    patch.write_token(APTokenTypes.WRITE,
+                                      ffta_data.missions[23].memory + MissionOffsets.unlockflag1 + 0x01,
+                                      bytes([0x03]))
+
                 patch.write_token(APTokenTypes.WRITE, ffta_data.missions[23].memory + MissionOffsets.unlockflag1 + 0x02,
                                   bytes([0x01]))
+
                 patch.write_token(APTokenTypes.WRITE, ffta_data.missions[23].memory + MissionOffsets.unlockflag2,
                                   struct.pack("H", world.MissionGroups[path2_unlock][0].mission_id + 2))
-                patch.write_token(APTokenTypes.WRITE, ffta_data.missions[23].memory + MissionOffsets.unlockflag2 + 0x01,
-                                  bytes([0x03]))
+
+                if world.MissionGroups[path2_unlock][0].mission_id > 253:
+                    patch.write_token(APTokenTypes.WRITE,
+                                      ffta_data.missions[23].memory + MissionOffsets.unlockflag1 + 0x01,
+                                      bytes([0x04]))
+                else:
+                    patch.write_token(APTokenTypes.WRITE,
+                                      ffta_data.missions[23].memory + MissionOffsets.unlockflag1 + 0x01,
+                                      bytes([0x03]))
+
                 patch.write_token(APTokenTypes.WRITE, ffta_data.missions[23].memory + MissionOffsets.unlockflag2 + 0x02,
                                   bytes([0x01]))
                 patch.write_token(APTokenTypes.WRITE, ffta_data.missions[23].memory + MissionOffsets.unlockflag3,
@@ -969,16 +995,31 @@ def set_up_gates(ffta_data: FFTAData, num_gates: int, req_items, final_unlock: i
             elif final_mission == 1:
                 patch.write_token(APTokenTypes.WRITE, ffta_data.missions[393].memory + MissionOffsets.unlockflag1,
                                   struct.pack("H", world.MissionGroups[path1_unlock][0].mission_id + 2))
-                patch.write_token(APTokenTypes.WRITE,
-                                  ffta_data.missions[393].memory + MissionOffsets.unlockflag1 + 0x01,
-                                  bytes([0x03]))
+
+                if world.MissionGroups[path1_unlock][0].mission_id > 253:
+                    patch.write_token(APTokenTypes.WRITE,
+                                      ffta_data.missions[393].memory + MissionOffsets.unlockflag1 + 0x01,
+                                      bytes([0x04]))
+                else:
+                    patch.write_token(APTokenTypes.WRITE,
+                                      ffta_data.missions[393].memory + MissionOffsets.unlockflag1 + 0x01,
+                                      bytes([0x03]))
+
                 patch.write_token(APTokenTypes.WRITE,
                                   ffta_data.missions[393].memory + MissionOffsets.unlockflag1 + 0x02,
                                   bytes([0x01]))
                 patch.write_token(APTokenTypes.WRITE, ffta_data.missions[393].memory + MissionOffsets.unlockflag2,
                                   struct.pack("H", world.MissionGroups[path2_unlock][0].mission_id))
-                patch.write_token(APTokenTypes.WRITE, ffta_data.missions[393].memory + MissionOffsets.unlockflag2 + 1,
-                                  bytes([0x03]))
+
+                if world.MissionGroups[path2_unlock][0].mission_id > 253:
+                    patch.write_token(APTokenTypes.WRITE,
+                                      ffta_data.missions[393].memory + MissionOffsets.unlockflag1 + 0x01,
+                                      bytes([0x04]))
+                else:
+                    patch.write_token(APTokenTypes.WRITE,
+                                      ffta_data.missions[393].memory + MissionOffsets.unlockflag1 + 0x01,
+                                      bytes([0x03]))
+
                 patch.write_token(APTokenTypes.WRITE, ffta_data.missions[393].memory + MissionOffsets.unlockflag2 + 2,
                                   bytes([0x01]))
                 patch.write_token(APTokenTypes.WRITE, ffta_data.missions[393].memory + MissionOffsets.unlockflag3,
@@ -996,20 +1037,49 @@ def set_up_gates(ffta_data: FFTAData, num_gates: int, req_items, final_unlock: i
 
                 patch.write_token(APTokenTypes.WRITE, ffta_data.missions[23].memory + MissionOffsets.unlockflag1,
                                   struct.pack("H", world.MissionGroups[path1_unlock][0].mission_id + 2))
-                patch.write_token(APTokenTypes.WRITE, ffta_data.missions[23].memory + MissionOffsets.unlockflag1 + 0x01,
-                                  bytes([0x03]))
+
+                if world.MissionGroups[path1_unlock][0].mission_id > 253:
+                    patch.write_token(APTokenTypes.WRITE,
+                                      ffta_data.missions[23].memory + MissionOffsets.unlockflag1 + 0x01,
+                                      bytes([0x04]))
+                else:
+                    patch.write_token(APTokenTypes.WRITE,
+                                      ffta_data.missions[23].memory + MissionOffsets.unlockflag1 + 0x01,
+                                      bytes([0x03]))
+
                 patch.write_token(APTokenTypes.WRITE, ffta_data.missions[23].memory + MissionOffsets.unlockflag1 + 0x02,
                                   bytes([0x01]))
+
+                # Path 2 for Royal Valley
                 patch.write_token(APTokenTypes.WRITE, ffta_data.missions[23].memory + MissionOffsets.unlockflag2,
                                   struct.pack("H", world.MissionGroups[path2_unlock][0].mission_id + 2))
-                patch.write_token(APTokenTypes.WRITE, ffta_data.missions[23].memory + MissionOffsets.unlockflag2 + 0x01,
-                                  bytes([0x03]))
+
+                if world.MissionGroups[path2_unlock][0].mission_id > 253:
+                    patch.write_token(APTokenTypes.WRITE,
+                                      ffta_data.missions[23].memory + MissionOffsets.unlockflag1 + 0x01,
+                                      bytes([0x04]))
+                else:
+                    patch.write_token(APTokenTypes.WRITE,
+                                      ffta_data.missions[23].memory + MissionOffsets.unlockflag1 + 0x01,
+                                      bytes([0x03]))
+
                 patch.write_token(APTokenTypes.WRITE, ffta_data.missions[23].memory + MissionOffsets.unlockflag2 + 0x02,
                                   bytes([0x01]))
+
+
+                # Path 3 royal valley
                 patch.write_token(APTokenTypes.WRITE, ffta_data.missions[23].memory + MissionOffsets.unlockflag3,
                                   struct.pack("H", world.MissionGroups[path3_unlock][0].mission_id + 2))
-                patch.write_token(APTokenTypes.WRITE, ffta_data.missions[23].memory + MissionOffsets.unlockflag3 + 0x01,
-                                  bytes([0x03]))
+
+                if world.MissionGroups[path3_unlock][0].mission_id > 253:
+                    patch.write_token(APTokenTypes.WRITE,
+                                      ffta_data.missions[23].memory + MissionOffsets.unlockflag1 + 0x01,
+                                      bytes([0x04]))
+                else:
+                    patch.write_token(APTokenTypes.WRITE,
+                                      ffta_data.missions[23].memory + MissionOffsets.unlockflag1 + 0x01,
+                                      bytes([0x03]))
+
                 patch.write_token(APTokenTypes.WRITE, ffta_data.missions[23].memory + MissionOffsets.unlockflag3 + 0x02,
                                   bytes([0x01]))
 
@@ -1017,33 +1087,71 @@ def set_up_gates(ffta_data: FFTAData, num_gates: int, req_items, final_unlock: i
             elif final_mission == 1:
                 patch.write_token(APTokenTypes.WRITE, ffta_data.missions[393].memory + MissionOffsets.unlockflag1,
                                   struct.pack("H", world.MissionGroups[path1_unlock][0].mission_id + 2))
-                patch.write_token(APTokenTypes.WRITE,
-                                  ffta_data.missions[393].memory + MissionOffsets.unlockflag1 + 0x01,
-                                  bytes([0x03]))
+
+                if world.MissionGroups[path1_unlock][0].mission_id > 253:
+                    patch.write_token(APTokenTypes.WRITE,
+                                      ffta_data.missions[393].memory + MissionOffsets.unlockflag1 + 0x01,
+                                      bytes([0x04]))
+                else:
+                    patch.write_token(APTokenTypes.WRITE,
+                                      ffta_data.missions[393].memory + MissionOffsets.unlockflag1 + 0x01,
+                                      bytes([0x03]))
+
                 patch.write_token(APTokenTypes.WRITE,
                                   ffta_data.missions[393].memory + MissionOffsets.unlockflag1 + 0x02,
                                   bytes([0x01]))
+
+                # Path 2 unlock requirement
                 patch.write_token(APTokenTypes.WRITE, ffta_data.missions[393].memory + MissionOffsets.unlockflag2,
                                   struct.pack("H", world.MissionGroups[path2_unlock][0].mission_id))
-                patch.write_token(APTokenTypes.WRITE, ffta_data.missions[393].memory + MissionOffsets.unlockflag2 + 1,
-                                  bytes([0x03]))
+
+                if world.MissionGroups[path2_unlock][0].mission_id > 253:
+                    patch.write_token(APTokenTypes.WRITE,
+                                      ffta_data.missions[393].memory + MissionOffsets.unlockflag1 + 0x01,
+                                      bytes([0x04]))
+                else:
+                    patch.write_token(APTokenTypes.WRITE,
+                                      ffta_data.missions[393].memory + MissionOffsets.unlockflag1 + 0x01,
+                                      bytes([0x03]))
+
                 patch.write_token(APTokenTypes.WRITE, ffta_data.missions[393].memory + MissionOffsets.unlockflag2 + 2,
                                   bytes([0x01]))
+
+                # Path 3 unlock requirement
                 patch.write_token(APTokenTypes.WRITE, ffta_data.missions[393].memory + MissionOffsets.unlockflag3,
                                   struct.pack("H", world.MissionGroups[path3_unlock][0].mission_id))
-                patch.write_token(APTokenTypes.WRITE, ffta_data.missions[393].memory + MissionOffsets.unlockflag3 + 1,
-                                  bytes([0x03]))
+
+                if world.MissionGroups[path3_unlock][0].mission_id > 253:
+                    patch.write_token(APTokenTypes.WRITE,
+                                      ffta_data.missions[393].memory + MissionOffsets.unlockflag1 + 0x01,
+                                      bytes([0x04]))
+                else:
+                    patch.write_token(APTokenTypes.WRITE,
+                                      ffta_data.missions[393].memory + MissionOffsets.unlockflag1 + 0x01,
+                                      bytes([0x03]))
+
                 patch.write_token(APTokenTypes.WRITE, ffta_data.missions[393].memory + MissionOffsets.unlockflag3 + 2,
                                   bytes([0x01]))
 
 
 def set_mission_requirement(ffta_data: FFTAData, current_mission_ID: int, previous_mission_ID: int,
                             patch: FFTADeltaPatch) -> None:
-    # Set the mission requirements to the specified mission ID
+
+        # Set the mission requirements to the specified mission ID
     patch.write_token(APTokenTypes.WRITE, ffta_data.missions[current_mission_ID].memory + MissionOffsets.unlockflag1,
                       struct.pack("H", previous_mission_ID + 2))
-    patch.write_token(APTokenTypes.WRITE,
-                      ffta_data.missions[current_mission_ID].memory + MissionOffsets.unlockflag1 + 0x01, bytes([0x03]))
+
+    # Hacky way to account for missions that are two bytes. Try and use bitwise operations to consolidate
+    if previous_mission_ID > 253:
+        patch.write_token(APTokenTypes.WRITE,
+                          ffta_data.missions[current_mission_ID].memory + MissionOffsets.unlockflag1 + 0x01,
+                          bytes([0x04]))
+
+    else:
+        patch.write_token(APTokenTypes.WRITE,
+                          ffta_data.missions[current_mission_ID].memory + MissionOffsets.unlockflag1 + 0x01,
+                          bytes([0x03]))
+
     patch.write_token(APTokenTypes.WRITE,
                       ffta_data.missions[current_mission_ID].memory + MissionOffsets.unlockflag1 + 0x02, bytes([0x01]))
     patch.write_token(APTokenTypes.WRITE, ffta_data.missions[current_mission_ID].memory + MissionOffsets.unlockflag2,

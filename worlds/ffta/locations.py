@@ -953,8 +953,8 @@ FFTALocations: typing.List[FFTALocationData] = [
     FFTALocationData("Kissing Rule Reward 1", 386, 0x5618cc),
     FFTALocationData("Kissing Rule Reward 2", 386, 0x5618ce),
 
-    #FFTALocationData("Immunity Pass Reward 1", 387, 0x561912),
-    #FFTALocationData("Immunity Pass Reward 2", 387, 0x561914),
+    FFTALocationData("Immunity Pass Reward 1", 387, 0x561912),
+    FFTALocationData("Immunity Pass Reward 2", 387, 0x561914),
 
     FFTALocationData("No Full HP Reward 1", 388, 0x561958),
     FFTALocationData("No Full HP Reward 2", 388, 0x56195a),
@@ -1013,9 +1013,9 @@ for index in range(0, len(FFTALocations), 2):
         byte_i = 48
 
     # Immunity pass
-    elif byte_i == 48 and bitflag_index == 4:
-        bitflag_index = 5
-        byte_i = 48
+    #elif byte_i == 48 and bitflag_index == 4:
+    #    bitflag_index = 5
+    #    byte_i = 48
 
     # Add dispatch missions to dispatch mission group
     if 125 <= FFTALocations[index].mission_id <= 312:

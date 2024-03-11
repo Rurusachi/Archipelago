@@ -3,24 +3,45 @@ from .items import MissionUnlockItems
 
 
 def set_rules(world) -> None:
-
     # Set final mission unlock to require all paths based on settings
-    if world.options.gate_paths.value == 2:
-        add_rule(world.multiworld.get_location("Royal Valley", world.player),
-                 lambda state: state.has("Path 1 Complete", world.player))
+    if world.options.final_unlock.value == 0:
+        if world.options.gate_paths.value == 2:
 
-        add_rule(world.multiworld.get_location("Royal Valley", world.player),
-                 lambda state: state.has("Path 2 Complete", world.player))
+            if world.options.final_mission.value == 0:
+                add_rule(world.multiworld.get_location("Royal Valley", world.player),
+                         lambda state: state.has("Path 1 Complete", world.player))
 
-    elif world.options.gate_paths.value == 3:
-        add_rule(world.multiworld.get_location("Royal Valley", world.player),
-                 lambda state: state.has("Path 1 Complete", world.player))
+                add_rule(world.multiworld.get_location("Royal Valley", world.player),
+                         lambda state: state.has("Path 2 Complete", world.player))
 
-        add_rule(world.multiworld.get_location("Royal Valley", world.player),
-                 lambda state: state.has("Path 2 Complete", world.player))
+            elif world.options.final_mission.value == 1:
+                add_rule(world.multiworld.get_location("Decision Time", world.player),
+                         lambda state: state.has("Path 1 Complete", world.player))
 
-        add_rule(world.multiworld.get_location("Royal Valley", world.player),
-                 lambda state: state.has("Path 3 Complete", world.player))
+                add_rule(world.multiworld.get_location("Decision Time", world.player),
+                         lambda state: state.has("Path 2 Complete", world.player))
+
+        elif world.options.gate_paths.value == 3:
+
+            if world.options.final_mission.value == 0:
+                add_rule(world.multiworld.get_location("Royal Valley", world.player),
+                         lambda state: state.has("Path 1 Complete", world.player))
+
+                add_rule(world.multiworld.get_location("Royal Valley", world.player),
+                         lambda state: state.has("Path 2 Complete", world.player))
+
+                add_rule(world.multiworld.get_location("Royal Valley", world.player),
+                         lambda state: state.has("Path 3 Complete", world.player))
+
+            elif world.options.final_mission.value == 1:
+                add_rule(world.multiworld.get_location("Decision Time", world.player),
+                         lambda state: state.has("Path 1 Complete", world.player))
+
+                add_rule(world.multiworld.get_location("Decision Time", world.player),
+                         lambda state: state.has("Path 2 Complete", world.player))
+
+                add_rule(world.multiworld.get_location("Decision Time", world.player),
+                         lambda state: state.has("Path 3 Complete", world.player))
 
     if world.options.final_unlock.value == 1:
         add_rule(world.multiworld.get_entrance("Totema 1", world.player),

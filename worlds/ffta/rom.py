@@ -682,9 +682,12 @@ def set_up_gates(ffta_data: FFTAData, num_gates: int, req_items, final_unlock: i
         path1_unlock = mission_unlock
         path2_unlock = mission_unlock + 4
 
-        path1_item = item_index + 4
-        path2_item = item_index + 6
-
+        path1_item = item_index + 2
+        path2_item = item_index + 4
+        
+        path1_dispatch = dispatch_index
+        path2_dispatch = dispatch_index + dispatch
+        
         # Path 1
         for i in range(1, world.path1_length):
 
@@ -693,24 +696,25 @@ def set_up_gates(ffta_data: FFTAData, num_gates: int, req_items, final_unlock: i
                                         world.MissionGroups[path1_unlock][0].mission_id, patch)
                 path1_index = path1_index + 1
 
-            set_mission_requirement(ffta_data, world.MissionGroups[path1_index + 8][0].mission_id,
+            set_mission_requirement(ffta_data, world.MissionGroups[path1_index + 4][0].mission_id,
                                     world.MissionGroups[path1_unlock][0].mission_id, patch)
 
             for k in range(0, dispatch):
 
                 if world.options.gate_items.value == 2:
-                    set_mission_requirement(ffta_data, world.DispatchMissionGroups[dispatch_index][0].mission_id,
+                    set_mission_requirement(ffta_data, world.DispatchMissionGroups[path1_dispatch][0].mission_id,
                                             world.DispatchMissionGroups[dispatch_unlock][0].mission_id, patch)
 
                 else:
-                    set_mission_requirement(ffta_data, world.DispatchMissionGroups[dispatch_index][0].mission_id,
+                    set_mission_requirement(ffta_data, world.DispatchMissionGroups[path1_dispatch][0].mission_id,
                                             world.MissionGroups[path1_unlock][0].mission_id, patch)
 
-                dispatch_index = dispatch_index + 1
+                path1_dispatch = path1_dispatch + 1
 
-            path1_index = path1_index + 9
-            path1_unlock = path1_unlock + 12
+            path1_index = path1_index + 5
+            path1_unlock = path1_unlock + 8
             dispatch_unlock = dispatch_unlock + dispatch
+            path1_dispatch = path1_dispatch + dispatch + 1
 
             if req_items == 1 or req_items == 2:
                 req_item2 = MissionUnlockItems[path1_item + 1].itemID
@@ -720,7 +724,7 @@ def set_up_gates(ffta_data: FFTAData, num_gates: int, req_items, final_unlock: i
                 set_required_items(ffta_data, world.DispatchMissionGroups[dispatch_unlock][0].mission_id,
                                    req_item2,
                                    0, patch)
-                set_required_items(ffta_data, world.MissionGroups[mission_unlock][0].mission_id,
+                set_required_items(ffta_data, world.MissionGroups[path1_unlock][0].mission_id,
                                    MissionUnlockItems[path1_item].itemID,
                                    0, patch)
 
@@ -729,7 +733,7 @@ def set_up_gates(ffta_data: FFTAData, num_gates: int, req_items, final_unlock: i
                                    MissionUnlockItems[path1_item].itemID,
                                    req_item2, patch)
 
-            path1_item = path1_item + 6
+            path1_item = path1_item + 4
 
         for i in range(1, world.path2_length):
 
@@ -739,24 +743,25 @@ def set_up_gates(ffta_data: FFTAData, num_gates: int, req_items, final_unlock: i
                                         world.MissionGroups[path2_unlock][0].mission_id, patch)
                 path2_index = path2_index + 1
 
-            set_mission_requirement(ffta_data, world.MissionGroups[path2_index + 8][0].mission_id,
+            set_mission_requirement(ffta_data, world.MissionGroups[path2_index + 4][0].mission_id,
                                     world.MissionGroups[path2_unlock][0].mission_id, patch)
 
             for k in range(0, dispatch):
 
                 if world.options.gate_items.value == 2:
-                    set_mission_requirement(ffta_data, world.DispatchMissionGroups[dispatch_index][0].mission_id,
+                    set_mission_requirement(ffta_data, world.DispatchMissionGroups[path2_dispatch][0].mission_id,
                                             world.DispatchMissionGroups[dispatch_unlock][0].mission_id, patch)
 
                 else:
-                    set_mission_requirement(ffta_data, world.DispatchMissionGroups[dispatch_index][0].mission_id,
+                    set_mission_requirement(ffta_data, world.DispatchMissionGroups[path2_dispatch][0].mission_id,
                                             world.MissionGroups[path2_unlock][0].mission_id, patch)
 
-                dispatch_index = dispatch_index + 1
+                path2_dispatch = path2_dispatch + 1
 
-            path2_index = path2_index + 9
-            path2_unlock = path2_unlock + 12
+            path2_index = path2_index + 5
+            path2_unlock = path2_unlock + 8
             dispatch_unlock = dispatch_unlock + dispatch
+            path2_dispatch = path2_dispatch + dispatch + 1
 
             if req_items == 1 or req_items == 2:
                 req_item2 = MissionUnlockItems[path2_item + 1].itemID
@@ -766,7 +771,7 @@ def set_up_gates(ffta_data: FFTAData, num_gates: int, req_items, final_unlock: i
                 set_required_items(ffta_data, world.DispatchMissionGroups[dispatch_unlock][0].mission_id,
                                    req_item2,
                                    0, patch)
-                set_required_items(ffta_data, world.MissionGroups[mission_unlock][0].mission_id,
+                set_required_items(ffta_data, world.MissionGroups[path2_unlock][0].mission_id,
                                    MissionUnlockItems[path2_item].itemID,
                                    0, patch)
 
@@ -775,7 +780,7 @@ def set_up_gates(ffta_data: FFTAData, num_gates: int, req_items, final_unlock: i
                                    MissionUnlockItems[path2_item].itemID,
                                    req_item2, patch)
 
-            path2_item = path2_item + 6
+            path2_item = path2_item + 4
 
     elif world.options.gate_paths.value == 3:
 
@@ -790,6 +795,10 @@ def set_up_gates(ffta_data: FFTAData, num_gates: int, req_items, final_unlock: i
         path1_item = item_index + 4
         path2_item = item_index + 6
         path3_item = item_index + 8
+        
+        path1_dispatch = dispatch_index
+        path2_dispatch = dispatch_index + dispatch
+        path3_dispatch = dispatch_index + 2*dispatch
 
         for i in range(1, world.path1_length):
 
@@ -804,18 +813,19 @@ def set_up_gates(ffta_data: FFTAData, num_gates: int, req_items, final_unlock: i
             for k in range(0, dispatch):
 
                 if world.options.gate_items.value == 2:
-                    set_mission_requirement(ffta_data, world.DispatchMissionGroups[dispatch_index][0].mission_id,
+                    set_mission_requirement(ffta_data, world.DispatchMissionGroups[path1_dispatch][0].mission_id,
                                             world.DispatchMissionGroups[dispatch_unlock][0].mission_id, patch)
 
                 else:
-                    set_mission_requirement(ffta_data, world.DispatchMissionGroups[dispatch_index][0].mission_id,
+                    set_mission_requirement(ffta_data, world.DispatchMissionGroups[path1_dispatch][0].mission_id,
                                             world.MissionGroups[path1_unlock][0].mission_id, patch)
 
-                dispatch_index = dispatch_index + 1
+                path1_dispatch = path1_dispatch + 1
 
             path1_index = path1_index + 9
             path1_unlock = path1_unlock + 12
             dispatch_unlock = dispatch_unlock + dispatch
+            path1_dispatch = path1_dispatch + (2*dispatch) + 1
 
             if req_items == 1 or req_items == 2:
                 req_item2 = MissionUnlockItems[path1_item + 1].itemID
@@ -825,7 +835,7 @@ def set_up_gates(ffta_data: FFTAData, num_gates: int, req_items, final_unlock: i
                 set_required_items(ffta_data, world.DispatchMissionGroups[dispatch_unlock][0].mission_id,
                                    req_item2,
                                    0, patch)
-                set_required_items(ffta_data, world.MissionGroups[mission_unlock][0].mission_id,
+                set_required_items(ffta_data, world.MissionGroups[path1_unlock][0].mission_id,
                                    MissionUnlockItems[path1_item].itemID,
                                    0, patch)
 
@@ -850,18 +860,19 @@ def set_up_gates(ffta_data: FFTAData, num_gates: int, req_items, final_unlock: i
             for k in range(0, dispatch):
 
                 if world.options.gate_items.value == 2:
-                    set_mission_requirement(ffta_data, world.DispatchMissionGroups[dispatch_index][0].mission_id,
+                    set_mission_requirement(ffta_data, world.DispatchMissionGroups[path2_dispatch][0].mission_id,
                                             world.DispatchMissionGroups[dispatch_unlock][0].mission_id, patch)
 
                 else:
-                    set_mission_requirement(ffta_data, world.DispatchMissionGroups[dispatch_index][0].mission_id,
+                    set_mission_requirement(ffta_data, world.DispatchMissionGroups[path2_dispatch][0].mission_id,
                                             world.MissionGroups[path2_unlock][0].mission_id, patch)
 
-                dispatch_index = dispatch_index + 1
+                path2_dispatch = path2_dispatch + 1
 
             path2_index = path2_index + 9
             path2_unlock = path2_unlock + 12
             dispatch_unlock = dispatch_unlock + dispatch
+            path2_dispatch = path2_dispatch + (2*dispatch) + 1
 
             if req_items == 1 or req_items == 2:
                 req_item2 = MissionUnlockItems[item_index + 1].itemID
@@ -871,7 +882,7 @@ def set_up_gates(ffta_data: FFTAData, num_gates: int, req_items, final_unlock: i
                 set_required_items(ffta_data, world.DispatchMissionGroups[dispatch_unlock][0].mission_id,
                                    req_item2,
                                    0, patch)
-                set_required_items(ffta_data, world.MissionGroups[mission_unlock][0].mission_id,
+                set_required_items(ffta_data, world.MissionGroups[path2_unlock][0].mission_id,
                                    MissionUnlockItems[path2_item].itemID,
                                    0, patch)
 
@@ -896,19 +907,20 @@ def set_up_gates(ffta_data: FFTAData, num_gates: int, req_items, final_unlock: i
 
                 if world.options.gate_items.value == 2:
                     set_mission_requirement(ffta_data,
-                                            world.DispatchMissionGroups[dispatch_index][0].mission_id,
+                                            world.DispatchMissionGroups[path3_dispatch][0].mission_id,
                                             world.DispatchMissionGroups[dispatch_unlock][0].mission_id, patch)
 
                 else:
                     set_mission_requirement(ffta_data,
-                                            world.DispatchMissionGroups[dispatch_index][0].mission_id,
+                                            world.DispatchMissionGroups[path3_dispatch][0].mission_id,
                                             world.MissionGroups[path3_unlock][0].mission_id, patch)
 
-                dispatch_index = dispatch_index + 1
+                path3_dispatch = path3_dispatch + 1
 
             path3_index = path3_index + 9
             path3_unlock = path3_unlock + 12
             dispatch_unlock = dispatch_unlock + dispatch
+            path3_dispatch = path3_dispatch + (2*dispatch) + 1
 
             if req_items == 1 or req_items == 2:
                 req_item2 = MissionUnlockItems[path3_item + 1].itemID
@@ -918,7 +930,7 @@ def set_up_gates(ffta_data: FFTAData, num_gates: int, req_items, final_unlock: i
                 set_required_items(ffta_data, world.DispatchMissionGroups[dispatch_unlock][0].mission_id,
                                    req_item2,
                                    0, patch)
-                set_required_items(ffta_data, world.MissionGroups[mission_unlock][0].mission_id,
+                set_required_items(ffta_data, world.MissionGroups[path3_unlock][0].mission_id,
                                    MissionUnlockItems[path3_item].itemID,
                                    0, patch)
 

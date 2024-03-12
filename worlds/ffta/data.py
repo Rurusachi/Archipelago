@@ -7,9 +7,9 @@ class FFTAObject:
     memory = 0
     displayName = ''
 
-    def __init__(world, memory, displayName):
-        world.memory = memory
-        world.displayName = displayName
+    def __init__(self, memory, displayName):
+        self.memory = memory
+        self.displayName = displayName
 
 
 human_jobs = [0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C]
@@ -64,9 +64,9 @@ class MissionOffsets:
 
 class FFTAMission(FFTAObject):
 
-    def __init__(world, memory, name: Optional[str]):
-        world.memory = memory
-        world.name = name
+    def __init__(self, memory, name: Optional[str]):
+        self.memory = memory
+        self.name = name
 
 
 class JobOffsets:
@@ -180,10 +180,12 @@ class JobID:
 def master_abilities(address, index):
     address | (1 << index)
 
+
 class UnitType:
     normal = 0x01
     marche = 0x02
     judge1 = 0x5A
+
 
 class LocationData(NamedTuple):
     name: str
@@ -276,26 +278,26 @@ class MoogleAbilities(MemorySpace):
 
 class FFTAFormations(FFTAObject):
 
-    def __init__(world, memory):
-        world.memory = memory
+    def __init__(self, memory):
+        self.memory = memory
 
 
 class FFTAJobs(FFTAObject):
 
-    def __init__(world, memory):
-        world.memory = memory
+    def __init__(self, memory):
+        self.memory = memory
 
 
 class FFTAAbility(FFTAObject):
 
-    def __init__(world, memory):
-        world.memory = memory
+    def __init__(self, memory):
+        self.memory = memory
 
 
 class FFTARaceAbility(FFTAObject):
 
-    def __init__(world, memory):
-        world.memory = memory
+    def __init__(self, memory):
+        self.memory = memory
 
 
 class FFTAData:
@@ -316,25 +318,24 @@ class FFTAData:
     all_abilities: List[FFTARaceAbility]
     jobs: List[FFTAJobs]
 
+    def __init__(self, buffer: bytearray):
+        self.rom = buffer
+        #self.itemJobNames = self.initializeItemNames()
+        #self.abilityNames = self.initializeAbilityNames()
+        #self.missionNames = self.initializeMissionNames()
+        self.formations = self.initializeFormations()
+        self.missions = self.initializeMissions()
+        self.abilities = self.initializeAbilities()
+        self.human_abilities = self.initializeHumanAbilities()
+        self.bangaa_abilities = self.initializeBangaaAbilities()
+        self.numou_abilities = self.initializeNuMouAbilities()
+        self.viera_abilities = self.initializeVieraAbilities()
+        self.moogle_abilities = self.initializeMoogleAbilities()
+        self.all_abilities = self.human_abilities + self.bangaa_abilities + self.numou_abilities + self.viera_abilities + self.moogle_abilities
+        self.jobs = self.initializeJobs()
+        #self.lawSets = self.initializeLawSets()
 
-    def __init__(world, buffer: bytearray):
-        world.rom = buffer
-        #world.itemJobNames = world.initializeItemNames()
-        #world.abilityNames = world.initializeAbilityNames()
-        #world.missionNames = world.initializeMissionNames()
-        world.formations = world.initializeFormations()
-        world.missions = world.initializeMissions()
-        world.abilities = world.initializeAbilities()
-        world.human_abilities = world.initializeHumanAbilities()
-        world.bangaa_abilities = world.initializeBangaaAbilities()
-        world.numou_abilities = world.initializeNuMouAbilities()
-        world.viera_abilities = world.initializeVieraAbilities()
-        world.moogle_abilities = world.initializeMoogleAbilities()
-        world.all_abilities = world.human_abilities + world.bangaa_abilities + world.numou_abilities + world.viera_abilities + world.moogle_abilities
-        world.jobs = world.initializeJobs()
-        #world.lawSets = world.initializeLawSets()
-
-    def initializeMissions(world):
+    def initializeMissions(self):
         missions = []
         dataType = Missions(0x55af1e, 0x46, 0x196)
         for n in range(dataType.length):
@@ -346,7 +347,7 @@ class FFTAData:
 
         return missions
 
-    def initializeFormations(world):
+    def initializeFormations(self):
         formations = []
         #414 original length
         dataType = Formation(0x52cde0, 0x30, 0xA46)
@@ -359,7 +360,7 @@ class FFTAData:
 
         return formations
 
-    def initializeJobs(world):
+    def initializeJobs(self):
         jobs = []
 
         dataType = Jobs(0x521A14, 0x34, 0x73)
@@ -372,7 +373,7 @@ class FFTAData:
 
         return jobs
 
-    def initializeAbilities(world):
+    def initializeAbilities(self):
         abilities = []
 
         dataType = Abilities(0x55187c, 0x1c, 0x15a)
@@ -385,7 +386,7 @@ class FFTAData:
 
         return abilities
 
-    def initializeHumanAbilities(world):
+    def initializeHumanAbilities(self):
         human_abilities = []
         dataType = HumanAbilities(0x51bb6c, 0x8, 0x8c)
         for n in range(dataType.length):
@@ -397,7 +398,7 @@ class FFTAData:
 
         return human_abilities
 
-    def initializeBangaaAbilities(world):
+    def initializeBangaaAbilities(self):
         bangaa_abilities = []
         dataType = BangaaAbilities(0x51bfdc, 0x8, 0x4c)
         for n in range(dataType.length):
@@ -409,7 +410,7 @@ class FFTAData:
 
         return bangaa_abilities
 
-    def initializeNuMouAbilities(world):
+    def initializeNuMouAbilities(self):
         numou_abilities = []
         dataType = NuMouAbilities(0x51c244, 0x8, 0x5e)
         for n in range(dataType.length):
@@ -421,7 +422,7 @@ class FFTAData:
 
         return numou_abilities
 
-    def initializeVieraAbilities(world):
+    def initializeVieraAbilities(self):
         viera_abilities = []
         dataType = VieraAbilities(0x51c53c, 0x8, 0x54)
         for n in range(dataType.length):
@@ -433,7 +434,7 @@ class FFTAData:
 
         return viera_abilities
 
-    def initializeMoogleAbilities(world):
+    def initializeMoogleAbilities(self):
         moogle_abilities = []
         dataType = MoogleAbilities(0x51c7e4, 0x8, 0x57)
         for n in range(dataType.length):
@@ -445,12 +446,12 @@ class FFTAData:
 
         return moogle_abilities
 
-    #def initializeMissionNames(world):
+    #def initializeMissionNames(self):
         #names = []
        # dataType = MissionNames()
         #for n in range(dataType.length):
            # memory = dataType.offset + dataType.byteSize * n
-           # stringLookUpTable = world.rom.slice(memory, memory + dataType.byteSize)
+           # stringLookUpTable = self.rom.slice(memory, memory + dataType.byteSize)
 
             #address = FFTAUtils.getLittleEndianAddress(stringLookUpTable)
 
@@ -459,10 +460,10 @@ class FFTAData:
 
             #Change into do while somehow
             #endingByte += 0x01
-            #while world.rom[endingByte != 0]:
+            #while self.rom[endingByte != 0]:
             #    endingByte += 0x01
 
-            #names.append(FFTAUtils.decodeFFTAText(world.rom.slice(startingByte, endingByte)))
+            #names.append(FFTAUtils.decodeFFTAText(self.rom.slice(startingByte, endingByte)))
 
        # return names
 

@@ -238,12 +238,20 @@ class QuickOptions(Toggle):
     default = 0
 
 
-class ForceRecruitment(Toggle):
+class ForceRecruitment(Choice):
     """
-    Forces every mission to give a new recruit. 
+    Forces every mission to give a new recruit.
+    Disabled: Recruit chances are vanilla
+    Enabled: Every mission will give a new recruit, special recruit missions such as Mortal Snow will still
+    give their vanilla unit which is Ritz in this example.
+    Enabled Secret: Every mission will give a new recruit, special recruit missions will be random and there is a
+    chance to receive a special unit such as Ritz, Babus and Cid from any mission.
     """
     display_name = "Force recruitment"
     default = 0
+    option_disabled = 0
+    option_enabled = 1
+    option_enabled_secret = 2
 
 
 @dataclass

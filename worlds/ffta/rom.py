@@ -315,6 +315,26 @@ def generate_output(world, player: int, output_directory: str) -> None:
         patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.cardItem2, bytes([0x00, 0x00]))
         # patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.clan_reward, 0x0A)
         # patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.clan_reward + 0x07, 0x0A)
+
+        # Set the recruitment for the mission to be random
+        #if world.options.force_recruitment.value == 1:
+        #    patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.recruit, bytes(world.random.choice(world.recruits)))
+
+        if world.options.force_recruitment.value == 1 and base_rom[mission.memory + MissionOffsets.recruit] <= 0x8a:
+            random_recruit = world.random.choice(world.recruit_units)
+            patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.recruit,
+                              bytes([random_recruit]))
+
+        elif world.options.force_recruitment.value == 2:
+            random_recruit = world.random.choice(world.recruit_secret)
+            
+            #Remove from list if it's a secret unit
+            if random_recruit >= 0x8a:
+                world.recruit_secret.remove(random_recruit)
+            
+            patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.recruit,
+                              bytes([random_recruit]))
+
         patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.required_item1, bytes([0x00]))
         patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.required_item2, bytes([0x00]))
         patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.price, bytes([0x00]))

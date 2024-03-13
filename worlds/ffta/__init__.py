@@ -76,25 +76,26 @@ class FFTAWorld(World):
     item_name_to_id = create_item_label_to_code_map()
     location_name_to_id = create_location_label_to_id_map()
         
-    randomized_jobs = []
-    balanced_jobs = []
-    randomized_judge = []
-    judge_weapon = []
-    judge_equip = []
-    randomized_weapons = []
-    randomized_equip = []
-    randomized_abilities = []
-    basic_weapon = []
-    basic_equip = []
-    MissionGroups = []
-    DispatchMissionGroups = []
-    location_ids = []
-    path1_length = []
-    path2_length = []
-    path3_length = []
-    recruit_units = [0x03, 0x0f, 0x17, 0x20, 0x29, 0x32, 0x40, 0x50, 0x5e, 0x6f]
-    recruit_secret = [0x03, 0x0f, 0x17, 0x20, 0x29, 0x32, 0x40, 0x50, 0x5e, 0x6f,
-                      0x8a, 0x8c, 0x8e, 0x90, 0x92, 0x94, 0x96, 0x98, 0x9a, 0x9c, 0x9e]
+    def __init__(self, multiworld, player):
+        super(FFTAWorld, self).__init__(multiworld, player)
+        self.randomized_jobs = []
+        self.balanced_jobs = []
+        self.randomized_judge = []
+        self.judge_weapon = []
+        self.judge_equip = []
+        self.randomized_weapons = []
+        self.randomized_equip = []
+        self.randomized_abilities = []
+        self.basic_weapon = []
+        self.basic_equip = []
+        self.MissionGroups = []
+        self.DispatchMissionGroups = []
+        self.location_ids = []
+        self.path1_length = []
+        self.path2_length = []
+        self.path3_length = []
+        self.recruit_units = [0x03, 0x0f, 0x17, 0x20, 0x29]
+        self.recruit_secret = [0x03, 0x0f, 0x17, 0x20, 0x29, 0x8a, 0x8c, 0x8e, 0x90, 0x92, 0x94, 0x96, 0x98, 0x9a, 0x9c, 0x9e]
 
     def get_filler_item_name(self) -> str:
         filler = ["Potion", "Hi-Potion", "X-Potion", "Ether", "Elixir", "Antidote",
@@ -253,17 +254,6 @@ class FFTAWorld(World):
         monster = 5
         all = 6
         all_with_monster = 7
-        
-        self.randomized_jobs = []
-        self.balanced_jobs = []
-        self.randomized_judge = []
-        self.judge_weapon = []
-        self.judge_equip = []
-        self.randomized_weapons = []
-        self.randomized_equip = []
-        self.randomized_abilities = []
-        self.basic_weapon = []
-        self.basic_equip = []
 
         if self.options.starting_units == StartingUnits.option_starting_balanced:
             self.balanced_jobs.append(self.random.choice(attacker_jobs))

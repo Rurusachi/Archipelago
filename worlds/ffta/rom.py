@@ -277,7 +277,7 @@ def generate_output(world, player: int, output_directory: str) -> None:
         patch.write_token(APTokenTypes.WRITE, 0x51ba4e, bytes([0xc8, 0x03]))
 
     # Guarantee recruitment option
-    if world.options.force_recruitment.value == 1:
+    if world.options.force_recruitment.value == 1 or world.options.force_recruitment.value == 2:
         patch.write_token(APTokenTypes.WRITE, 0xd2494, bytes([0x00, 0x20]))
 
     # Scale to the highest unit
@@ -320,7 +320,7 @@ def generate_output(world, player: int, output_directory: str) -> None:
         #if world.options.force_recruitment.value == 1:
         #    patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.recruit, bytes(world.random.choice(world.recruits)))
 
-        if world.options.force_recruitment.value == 1 and base_rom[mission.memory + MissionOffsets.recruit] <= 0x8a:
+        if world.options.force_recruitment.value == 1 and base_rom[mission.memory + MissionOffsets.recruit] < 0x8a:
             random_recruit = world.random.choice(world.recruit_units)
             patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.recruit,
                               bytes([random_recruit]))

@@ -21,198 +21,198 @@ bitflags = [0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80]
 FFTALocations: typing.List[FFTALocationData] = [
     # Decide whether to use address or memory offset from data array
 
-    FFTALocationData('Herb Picking Reward 1', 0, 0x55AF40),
-    FFTALocationData('Herb Picking Reward 2', 0, 0x55AF42),
+    FFTALocationData("Herb Picking Reward 1", 0, 0x55AF40),
+    FFTALocationData("Herb Picking Reward 2", 0, 0x55AF42),
 
-    FFTALocationData('Thesis Hunt Reward 1', 1, 0x55AF86),
-    FFTALocationData('Thesis Hunt Reward 2', 1, 0x55AF88),
+    FFTALocationData("Thesis Hunt Reward 1", 1, 0x55AF86),
+    FFTALocationData("Thesis Hunt Reward 2", 1, 0x55AF88),
 
-    FFTALocationData('The Cheetahs Reward 1', 2, 0x55AFCC),
-    FFTALocationData('The Cheetahs Reward 2', 2, 0x55AFCE),
+    FFTALocationData("The Cheetahs Reward 1", 2, 0x55AFCC),
+    FFTALocationData("The Cheetahs Reward 2", 2, 0x55AFCE),
 
-    FFTALocationData('Desert Peril Reward 1', 3, 0x55b012),
-    FFTALocationData('Desert Peril Reward 2', 3, 0x55b014),
+    FFTALocationData("Desert Peril Reward 1", 3, 0x55b012),
+    FFTALocationData("Desert Peril Reward 2", 3, 0x55b014),
 
-    FFTALocationData('Twisted Flow Reward 1', 4, 0x55b058),
-    FFTALocationData('Twisted Flow Reward 2', 4, 0x55b05a),
+    FFTALocationData("Twisted Flow Reward 1", 4, 0x55b058),
+    FFTALocationData("Twisted Flow Reward 2", 4, 0x55b05a),
 
-    FFTALocationData('Antilaws Reward 1', 5, 0x55b09e),
-    FFTALocationData('Antilaws Reward 2', 5, 0x55b0a0),
+    FFTALocationData("Antilaws Reward 1", 5, 0x55b09e),
+    FFTALocationData("Antilaws Reward 2", 5, 0x55b0a0),
 
-    FFTALocationData('Diamond Rain Reward 1', 6, 0x55b0e4),
-    FFTALocationData('Diamond Rain Reward 2', 6, 0x55b0e6),
+    FFTALocationData("Diamond Rain Reward 1", 6, 0x55b0e4),
+    FFTALocationData("Diamond Rain Reward 2", 6, 0x55b0e6),
 
-    FFTALocationData('Hot Awakening Reward 1', 7, 0x55b12a),
-    FFTALocationData('Hot Awakening Reward 2', 7, 0x55b12c),
+    FFTALocationData("Hot Awakening Reward 1", 7, 0x55b12a),
+    FFTALocationData("Hot Awakening Reward 2", 7, 0x55b12c),
 
-    FFTALocationData('Magic Wood Reward 1', 8, 0x55b170),
-    FFTALocationData('Magic Wood Reward 2', 8, 0x55b172),
+    FFTALocationData("Magic Wood Reward 1", 8, 0x55b170),
+    FFTALocationData("Magic Wood Reward 2", 8, 0x55b172),
 
-    FFTALocationData('Emerald Keep Reward 1', 9, 0x55b1b6),
-    FFTALocationData('Emerald Keep Reward 2', 9, 0x55b1b8),
+    FFTALocationData("Emerald Keep Reward 1", 9, 0x55b1b6),
+    FFTALocationData("Emerald Keep Reward 2", 9, 0x55b1b8),
 
-    FFTALocationData('Pale Company Reward 1', 10,  0x55b1fc),
-    FFTALocationData('Pale Company Reward 2', 10,  0x55b1fe),
+    FFTALocationData("Pale Company Reward 1", 10,  0x55b1fc),
+    FFTALocationData("Pale Company Reward 2", 10,  0x55b1fe),
 
-    FFTALocationData('Jagd Hunt Reward 1', 11, 0x55b242),
-    FFTALocationData('Jagd Hunt Reward 2', 11, 0x55b244),
+    FFTALocationData("Jagd Hunt Reward 1", 11, 0x55b242),
+    FFTALocationData("Jagd Hunt Reward 2", 11, 0x55b244),
 
-    FFTALocationData('The Bounty Reward 1', 12, 0x55b288),
-    FFTALocationData('The Bounty Reward 2', 12, 0x55b28a),
+    FFTALocationData("The Bounty Reward 1", 12, 0x55b288),
+    FFTALocationData("The Bounty Reward 2", 12, 0x55b28a),
 
-    FFTALocationData('Golden Clock Reward 1', 13, 0x55b2ce),
-    FFTALocationData('Golden Clock Reward 2', 13, 0x55b2d0),
+    FFTALocationData("Golden Clock Reward 1", 13, 0x55b2ce),
+    FFTALocationData("Golden Clock Reward 2", 13, 0x55b2d0),
 
-    FFTALocationData('Scouring Time Reward 1', 14, 0x55b314),
-    FFTALocationData('Scouring Time Reward 2', 14, 0x55b316),
+    FFTALocationData("Scouring Time Reward 1", 14, 0x55b314),
+    FFTALocationData("Scouring Time Reward 2", 14, 0x55b316),
 
-    FFTALocationData('The Big Find Reward 1', 15, 0x55b35a),
-    FFTALocationData('The Big Find Reward 2', 15, 0x55b35c),
+    FFTALocationData("The Big Find Reward 1", 15, 0x55b35a),
+    FFTALocationData("The Big Find Reward 2", 15, 0x55b35c),
 
-    FFTALocationData('Desert Patrol Reward 1', 16, 0x55b3a0),
-    FFTALocationData('Desert Patrol Reward 2', 16, 0x55b3a2),
+    FFTALocationData("Desert Patrol Reward 1", 16, 0x55b3a0),
+    FFTALocationData("Desert Patrol Reward 2", 16, 0x55b3a2),
 
-    FFTALocationData('Quiet Sands Reward 1', 17, 0x55b3e6),
-    FFTALocationData('Quiet Sands Reward 2', 17, 0x55b3e8),
+    FFTALocationData("Quiet Sands Reward 1", 17, 0x55b3e6),
+    FFTALocationData("Quiet Sands Reward 2", 17, 0x55b3e8),
 
-    FFTALocationData('Materite Now! Reward 1', 18, 0x55b42c),
-    FFTALocationData('Materite Now! Reward 2', 18, 0x55b42e),
+    FFTALocationData("Materite Now! Reward 1", 18, 0x55b42c),
+    FFTALocationData("Materite Now! Reward 2", 18, 0x55b42e),
 
-    FFTALocationData('Present Day Reward 1', 19, 0x55b472),
-    FFTALocationData('Present Day Reward 2', 19, 0x55b474),
+    FFTALocationData("Present Day Reward 1", 19, 0x55b472),
+    FFTALocationData("Present Day Reward 2", 19, 0x55b474),
 
-    FFTALocationData('Hidden Vein Reward 1', 20, 0x55b4b8),
-    FFTALocationData('Hidden Vein Reward 2', 20, 0x55b4ba),
+    FFTALocationData("Hidden Vein Reward 1", 20, 0x55b4b8),
+    FFTALocationData("Hidden Vein Reward 2", 20, 0x55b4ba),
 
-    FFTALocationData('To Ambervale Reward 1', 21, 0x55b4fe),
-    FFTALocationData('To Ambervale Reward 2', 21, 0x55b500),
+    FFTALocationData("To Ambervale Reward 1", 21, 0x55b4fe),
+    FFTALocationData("To Ambervale Reward 2", 21, 0x55b500),
 
-    FFTALocationData('Over The Hill Reward 1', 22, 0x55b544),
-    FFTALocationData('Over The Hill Reward 2', 22, 0x55b546),
+    FFTALocationData("Over The Hill Reward 1", 22, 0x55b544),
+    FFTALocationData("Over The Hill Reward 2", 22, 0x55b546),
 
     # Non story missions
-    FFTALocationData('Wanted! Black Mage Dolce Reward 1', 25, 0x55b616),
-    FFTALocationData('Wanted! Black Mage Dolce Reward 2', 25, 0x55b618),
+    FFTALocationData("Wanted! Black Mage Dolce Reward 1", 25, 0x55b616),
+    FFTALocationData("Wanted! Black Mage Dolce Reward 2", 25, 0x55b618),
 
-    FFTALocationData('Wanted! Gabbana Brothers Reward 1', 26, 0x55b65c),
-    FFTALocationData('Wanted! Gabbana Brothers Reward 2', 26,  0x55b65e),
+    FFTALocationData("Wanted! Gabbana Brothers Reward 1", 26, 0x55b65c),
+    FFTALocationData("Wanted! Gabbana Brothers Reward 2", 26,  0x55b65e),
 
-    FFTALocationData('Wanted! Godeye Reward 1', 27, 0x55b6a2),
-    FFTALocationData('Wanted! Godeye Reward 2', 27,  0x55b6a4),
+    FFTALocationData("Wanted! Godeye Reward 1", 27, 0x55b6a2),
+    FFTALocationData("Wanted! Godeye Reward 2", 27,  0x55b6a4),
 
-    FFTALocationData('Wanted! Swampking Reward 1', 28, 0x55b6e8),
-    FFTALocationData('Wanted! Swampking Reward 2', 28,  0x55b6ea),
+    FFTALocationData("Wanted! Swampking Reward 1", 28, 0x55b6e8),
+    FFTALocationData("Wanted! Swampking Reward 2", 28,  0x55b6ea),
 
-    FFTALocationData('Wanted! Killer Rayne Reward 1', 29, 0x55b72e),
-    FFTALocationData('Wanted! Killer Rayne Reward 2', 29,  0x55b730),
+    FFTALocationData("Wanted! Killer Rayne Reward 1", 29, 0x55b72e),
+    FFTALocationData("Wanted! Killer Rayne Reward 2", 29,  0x55b730),
 
-    FFTALocationData('Wanted! Dark Duke Lodion Reward 1', 30, 0x55b774),
-    FFTALocationData('Wanted! Dark Duke Lodion Reward 2', 30,  0x55b776),
+    FFTALocationData("Wanted! Dark Duke Lodion Reward 1", 30, 0x55b774),
+    FFTALocationData("Wanted! Dark Duke Lodion Reward 2", 30,  0x55b776),
 
-    FFTALocationData('Ruby Red Reward 1', 31, 0x55b7ba),
-    FFTALocationData('Ruby Red Reward 2', 31,  0x55b7bc),
+    FFTALocationData("Ruby Red Reward 1", 31, 0x55b7ba),
+    FFTALocationData("Ruby Red Reward 2", 31,  0x55b7bc),
 
-    FFTALocationData('Tower Ruins Reward 1', 32, 0x55b800),
-    FFTALocationData('Tower Ruins Reward 2', 32, 0x55b802),
+    FFTALocationData("Tower Ruins Reward 1", 32, 0x55b800),
+    FFTALocationData("Tower Ruins Reward 2", 32, 0x55b802),
 
-    FFTALocationData('Battle in Aisen Reward 1', 33, 0x55b846),
-    FFTALocationData('Battle in Aisen Reward 2', 33, 0x55b848),
+    FFTALocationData("Battle in Aisen Reward 1", 33, 0x55b846),
+    FFTALocationData("Battle in Aisen Reward 2", 33, 0x55b848),
 
-    FFTALocationData('Magewyrm Reward 1', 34, 0x55b88c),
-    FFTALocationData('Magewyrm Reward 2', 34, 0x55b88e),
+    FFTALocationData("Magewyrm Reward 1", 34, 0x55b88c),
+    FFTALocationData("Magewyrm Reward 2", 34, 0x55b88e),
 
-    FFTALocationData('Salika Keep Reward 1', 35, 0x55b8d2),
-    FFTALocationData('Salika Keep Reward 2', 35, 0x55b8d4),
+    FFTALocationData("Salika Keep Reward 1", 35, 0x55b8d2),
+    FFTALocationData("Salika Keep Reward 2", 35, 0x55b8d4),
 
-    FFTALocationData('Twin Swords Reward 1', 36, 0x55b918),
-    FFTALocationData('Twin Swords Reward 2', 36, 0x55b91a),
+    FFTALocationData("Twin Swords Reward 1", 36, 0x55b918),
+    FFTALocationData("Twin Swords Reward 2", 36, 0x55b91a),
 
-    FFTALocationData('Village Hunt Reward 1', 37, 0x55b95e),
-    FFTALocationData('Village Hunt Reward 2', 37, 0x55b960),
+    FFTALocationData("Village Hunt Reward 1", 37, 0x55b95e),
+    FFTALocationData("Village Hunt Reward 2", 37, 0x55b960),
 
-    FFTALocationData('Fire! Fire! Reward 1', 38, 0x55b9a4),
-    FFTALocationData('Fire! Fire! Reward 2', 38, 0x55b9a6),
+    FFTALocationData("Fire! Fire! Reward 1", 38, 0x55b9a4),
+    FFTALocationData("Fire! Fire! Reward 2", 38, 0x55b9a6),
 
-    FFTALocationData('The Wanderer Reward 1', 39, 0x55b9ea),
-    FFTALocationData('The Wanderer Reward 2', 39, 0x55b9ec),
+    FFTALocationData("The Wanderer Reward 1", 39, 0x55b9ea),
+    FFTALocationData("The Wanderer Reward 2", 39, 0x55b9ec),
 
-    FFTALocationData('Battle Tourney Reward 1', 40, 0x55ba30),
-    FFTALocationData('Battle Tourney Reward 2', 40, 0x55ba32),
+    FFTALocationData("Battle Tourney Reward 1", 40, 0x55ba30),
+    FFTALocationData("Battle Tourney Reward 2", 40, 0x55ba32),
 
-    FFTALocationData('Mage Tourney Reward 1', 41, 0x55ba76),
-    FFTALocationData('Mage Tourney Reward 2', 41, 0x55ba78),
+    FFTALocationData("Mage Tourney Reward 1", 41, 0x55ba76),
+    FFTALocationData("Mage Tourney Reward 2", 41, 0x55ba78),
 
-    FFTALocationData('Swimming Meet Reward 1', 42, 0x55babc),
-    FFTALocationData('Swimming Meet Reward 2', 42, 0x55babe),
+    FFTALocationData("Swimming Meet Reward 1", 42, 0x55babc),
+    FFTALocationData("Swimming Meet Reward 2", 42, 0x55babe),
 
-    FFTALocationData('Clan League Reward 1', 43, 0x55bb02),
-    FFTALocationData('Clan League Reward 2', 43, 0x55bb04),
+    FFTALocationData("Clan League Reward 1", 43, 0x55bb02),
+    FFTALocationData("Clan League Reward 2", 43, 0x55bb04),
 
-    FFTALocationData('Snow in Lutia Reward 1', 44, 0x55bb48),
-    FFTALocationData('Snow in Lutia Reward 2', 44, 0x55bb4a),
+    FFTALocationData("Snow in Lutia Reward 1", 44, 0x55bb48),
+    FFTALocationData("Snow in Lutia Reward 2", 44, 0x55bb4a),
 
-    FFTALocationData('Frosty Mage Reward 1', 45, 0x55bb8e),
-    FFTALocationData('Frosty Mage Reward 2', 45, 0x55bb90),
+    FFTALocationData("Frosty Mage Reward 1", 45, 0x55bb8e),
+    FFTALocationData("Frosty Mage Reward 2", 45, 0x55bb90),
 
-    FFTALocationData('Prof in Trouble Reward 1', 46, 0x55bbd4),
-    FFTALocationData('Prof in Trouble Reward 2', 46, 0x55bbd6),
+    FFTALocationData("Prof in Trouble Reward 1", 46, 0x55bbd4),
+    FFTALocationData("Prof in Trouble Reward 2", 46, 0x55bbd6),
 
-    FFTALocationData('Hot Recipe Reward 1', 47, 0x55bc1a),
-    FFTALocationData('Hot Recipe Reward 2', 47, 0x55bc1c),
+    FFTALocationData("Hot Recipe Reward 1", 47, 0x55bc1a),
+    FFTALocationData("Hot Recipe Reward 2", 47, 0x55bc1c),
 
-    FFTALocationData('S.O.S. Reward 1', 48, 0x55bc60),
-    FFTALocationData('S.O.S. Reward 2', 48, 0x55bc62),
+    FFTALocationData("S.O.S. Reward 1", 48, 0x55bc60),
+    FFTALocationData("S.O.S. Reward 2", 48, 0x55bc62),
 
-    FFTALocationData('A Lost Ring Reward 1', 49, 0x55bca6),
-    FFTALocationData('A Lost Ring Reward 2', 49, 0x55bca8),
+    FFTALocationData("A Lost Ring Reward 1", 49, 0x55bca6),
+    FFTALocationData("A Lost Ring Reward 2", 49, 0x55bca8),
 
-    FFTALocationData('Staring Eyes Reward 1', 50, 0x55bcec),
-    FFTALocationData('Staring Eyes Reward 2', 50, 0x55bcee),
+    FFTALocationData("Staring Eyes Reward 1", 50, 0x55bcec),
+    FFTALocationData("Staring Eyes Reward 2", 50, 0x55bcee),
 
-    FFTALocationData('Desert Rose Reward 1', 51, 0x55bd32),
-    FFTALocationData('Desert Rose Reward 2', 51, 0x55bd34),
+    FFTALocationData("Desert Rose Reward 1", 51, 0x55bd32),
+    FFTALocationData("Desert Rose Reward 2", 51, 0x55bd34),
 
-    FFTALocationData('Friend Trouble Reward 1', 52, 0x55bd78),
-    FFTALocationData('Friend Trouble Reward 2', 52, 0x55bd7a),
+    FFTALocationData("Friend Trouble Reward 1", 52, 0x55bd78),
+    FFTALocationData("Friend Trouble Reward 2", 52, 0x55bd7a),
 
-    FFTALocationData('Flesh & Bones Reward 1', 53, 0x55bdbe),
-    FFTALocationData('Flesh & Bones Reward 2', 53, 0x55bdc0),
+    FFTALocationData("Flesh & Bones Reward 1", 53, 0x55bdbe),
+    FFTALocationData("Flesh & Bones Reward 2", 53, 0x55bdc0),
 
-    FFTALocationData('For a Song Reward 1', 54, 0x55be04),
-    FFTALocationData('For a Song Reward 2', 54, 0x55be06),
+    FFTALocationData("For a Song Reward 1", 54, 0x55be04),
+    FFTALocationData("For a Song Reward 2", 54, 0x55be06),
 
-    FFTALocationData('White Flowers Reward 1', 55, 0x55be4a),
-    FFTALocationData('White Flowers Reward 2', 55, 0x55be4c),
+    FFTALocationData("White Flowers Reward 1", 55, 0x55be4a),
+    FFTALocationData("White Flowers Reward 2", 55, 0x55be4c),
 
-    FFTALocationData('New Antilaw Reward 1', 56, 0x55be90),
-    FFTALocationData('New Antilaw Reward 2', 56, 0x55be92),
+    FFTALocationData("New Antilaw Reward 1", 56, 0x55be90),
+    FFTALocationData("New Antilaw Reward 2", 56, 0x55be92),
 
-    FFTALocationData('Prison Break Reward 1', 57, 0x55bed6),
-    FFTALocationData('Prison Break Reward 2', 57, 0x55bed8),
+    FFTALocationData("Prison Break Reward 1", 57, 0x55bed6),
+    FFTALocationData("Prison Break Reward 2", 57, 0x55bed8),
 
-    FFTALocationData('Royal Ruins Reward 1', 58, 0x55bf1c),
-    FFTALocationData('Royal Ruins Reward 2', 58, 0x55bf1e),
+    FFTALocationData("Royal Ruins Reward 1", 58, 0x55bf1c),
+    FFTALocationData("Royal Ruins Reward 2", 58, 0x55bf1e),
 
-    FFTALocationData('Sketchy Thief Reward 1', 59, 0x55bf62),
-    FFTALocationData('Sketchy Thief Reward 2', 59, 0x55bf64),
+    FFTALocationData("Sketchy Thief Reward 1", 59, 0x55bf62),
+    FFTALocationData("Sketchy Thief Reward 2", 59, 0x55bf64),
 
-    FFTALocationData('Showdown! Reward 1', 60, 0x55bfa8),
-    FFTALocationData('Showdown! Reward 2', 60, 0x55bfaa),
+    FFTALocationData("Showdown! Reward 1", 60, 0x55bfa8),
+    FFTALocationData("Showdown! Reward 2", 60, 0x55bfaa),
 
-    FFTALocationData('Hit Again Reward 1', 61, 0x55bfee),
-    FFTALocationData('Hit Again Reward 2', 61, 0x55bff0),
+    FFTALocationData("Hit Again Reward 1", 61, 0x55bfee),
+    FFTALocationData("Hit Again Reward 2", 61, 0x55bff0),
 
-    FFTALocationData('Oasis Frogs Reward 1', 62, 0x55c034),
-    FFTALocationData('Oasis Frogs Reward 2', 62, 0x55c036),
+    FFTALocationData("Oasis Frogs Reward 1", 62, 0x55c034),
+    FFTALocationData("Oasis Frogs Reward 2", 62, 0x55c036),
 
-    FFTALocationData('Missing Prof Reward 1', 63, 0x55c07a),
-    FFTALocationData('Missing Prof Reward 2', 63, 0x55c07c),
+    FFTALocationData("Missing Prof Reward 1", 63, 0x55c07a),
+    FFTALocationData("Missing Prof Reward 2", 63, 0x55c07c),
 
-    FFTALocationData('Den of Evil Reward 1', 64, 0x55c0c0),
-    FFTALocationData('Den of Evil Reward 2', 64, 0x55c0c2),
+    FFTALocationData("Den of Evil Reward 1", 64, 0x55c0c0),
+    FFTALocationData("Den of Evil Reward 2", 64, 0x55c0c2),
 
-    FFTALocationData('Exploration Reward 1', 65, 0x55c106),
-    FFTALocationData('Exploration Reward 2', 65, 0x55c108),
+    FFTALocationData("Exploration Reward 1", 65, 0x55c106),
+    FFTALocationData("Exploration Reward 2", 65, 0x55c108),
 
     FFTALocationData("A Dragon's Aid Reward 1", 66, 0x55c14c),
     FFTALocationData("A Dragon's Aid Reward 2", 66, 0x55c14e),
@@ -1019,10 +1019,10 @@ for index in range(0, len(FFTALocations), 2):
 
     # Add dispatch missions to dispatch mission group
     if 125 <= FFTALocations[index].mission_id <= 312:
-        DispatchMissionGroups.append(tuple([FFTALocations[index], FFTALocations[(index + 1)], bitflags[bitflag_index], byte_i]))
+        DispatchMissionGroups.append(tuple([[FFTALocations[index], FFTALocations[(index + 1)]], bitflags[bitflag_index], byte_i]))
 
     else:
-        MissionGroups.append(tuple([FFTALocations[index], FFTALocations[(index + 1)], bitflags[bitflag_index], byte_i]))
+        MissionGroups.append(tuple([[FFTALocations[index], FFTALocations[(index + 1)]], bitflags[bitflag_index], byte_i]))
         
     bitflag_index = bitflag_index + 1
     if bitflag_index > 7:

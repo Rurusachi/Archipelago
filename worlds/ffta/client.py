@@ -150,51 +150,33 @@ class FFTAClient(BizHawkClient):
                     if byte & (1 << i) == bitflags[i]:
 
                         for mission in MissionGroups:
-                            if byte & (1 << i) == mission[2] and byte_i == mission[3]:
-                                location_id = mission[0].rom_address
-                                if location_id in ctx.server_locations:
-                                    local_checked_locations.add(location_id)
-                                    # Send location scouts for local job unlock items
-                                    if self.job_unlock:
-                                        await ctx.send_msgs([{
-                                            "cmd": "LocationScouts",
-                                            "locations": [location_id]
-                                        }])
-
-                                    # Make the mission not repeatable after completing it
-                                    #await bizhawk.write(ctx.bizhawk_ctx, [(location_id + 0x1f, [0xC0], "System Bus")])
-
-                                location_id2 = mission[1].rom_address
-                                if location_id2 in ctx.server_locations:
-                                    local_checked_locations.add(location_id2)
-
-                                    if self.job_unlock:
-                                        await ctx.send_msgs([{
-                                            "cmd": "LocationScouts",
-                                            "locations": [location_id2]
-                                        }])
+                            if byte & (1 << i) == mission[1] and byte_i == mission[2]:
+                                for missionLocation in mission[0]:
+                                    location_id = missionLocation.rom_address
+                                    if location_id in ctx.server_locations:
+                                        local_checked_locations.add(location_id)
+                                        # Send location scouts for local job unlock items
+                                        if self.job_unlock:
+                                            await ctx.send_msgs([{
+                                                "cmd": "LocationScouts",
+                                                "locations": [location_id]
+                                            }])
+                                            
+                                        # Make the mission not repeatable after completing it
+                                        #await bizhawk.write(ctx.bizhawk_ctx, [(location_id + 0x1f, [0xC0], "System Bus")])
 
                         for mission in DispatchMissionGroups:
-                            if byte & (1 << i) == mission[2] and byte_i == mission[3]:
-                                location_id = mission[0].rom_address
-                                if location_id in ctx.server_locations:
-                                    local_checked_locations.add(location_id)
-                                    # Send location scouts for local job unlock items
-                                    if self.job_unlock:
-                                        await ctx.send_msgs([{
-                                            "cmd": "LocationScouts",
-                                            "locations": [location_id]
-                                        }])
-
-                                location_id2 = mission[1].rom_address
-                                if location_id2 in ctx.server_locations:
-                                    local_checked_locations.add(location_id2)
-
-                                    if self.job_unlock:
-                                        await ctx.send_msgs([{
-                                            "cmd": "LocationScouts",
-                                            "locations": [location_id2]
-                                        }])
+                            if byte & (1 << i) == mission[1] and byte_i == mission[2]:
+                                for missionLocation in mission[0]:
+                                    location_id = missionLocation.rom_address
+                                    if location_id in ctx.server_locations:
+                                        local_checked_locations.add(location_id)
+                                        # Send location scouts for local job unlock items
+                                        if self.job_unlock:
+                                            await ctx.send_msgs([{
+                                                "cmd": "LocationScouts",
+                                                "locations": [location_id]
+                                            }])
 
 
 

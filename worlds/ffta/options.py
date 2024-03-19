@@ -253,6 +253,15 @@ class ForceRecruitment(Choice):
     option_enabled = 1
     option_enabled_secret = 2
 
+class MissionRewards(Range):
+    """
+    Sets the number of rewards received from each mission. Must be between 2 and 4.
+    """
+    display_name = "Number of rewards per mission"
+    default = 2
+    range_start = 2
+    range_end = 4
+    
 
 @dataclass
 class FFTAOptions(PerGameCommonOptions):
@@ -277,4 +286,5 @@ class FFTAOptions(PerGameCommonOptions):
     final_unlock: FinalMissionUnlock
     quick_options: QuickOptions
     force_recruitment: ForceRecruitment
+    mission_reward_num: MissionRewards
 

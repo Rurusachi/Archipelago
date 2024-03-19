@@ -114,11 +114,7 @@ class FFTAWorld(World):
         req_gate_num = self.options.gate_num.value
 
         # Add progression items with multiple mission gate paths
-        if self.options.gate_paths.value == 2:
-            req_gate_num = req_gate_num + 1
-
-        elif self.options.gate_paths.value == 3:
-            req_gate_num = req_gate_num + 2
+        req_gate_num = req_gate_num + self.options.gate_paths.value - 1
 
         for i in range(0, req_gate_num):
             required_items.append(MissionUnlockItems[item_index].itemName)
@@ -143,12 +139,20 @@ class FFTAWorld(World):
         if gate_number > 30 and self.options.final_unlock == FinalMissionUnlock.option_totema:
             gate_number = 30
 
-        dispatch_number = self.options.dispatch.value * 2
-        unfilled_locations = gate_number * 8 + gate_number * dispatch_number + 1
+        dispatch_number = self.options.dispatch.value * self.options.mission_reward_num.value
+        unfilled_locations = gate_number * self.options.mission_reward_num.value * 4 + gate_number * dispatch_number + 1
 
         # Add totema mission locations to unfilled location count
         if self.options.final_unlock == FinalMissionUnlock.option_totema:
-            unfilled_locations = unfilled_locations + 10
+            unfilled_locations = unfilled_locations + self.options.mission_reward_num.value * 5
+
+        # Add extra locations for multiple gate paths
+        unfilled_locations = unfilled_locations + self.options.mission_reward_num.value * (self.options.gate_paths.value - 1)
+
+        # If Dispatch Gates is enabled 1 extra set of Dispatch missions is added
+        # Paths also add 1 gate per extra path
+        #if self.options.gate_items == GateUnlock.option_dispatch_gate:
+        #    unfilled_locations = unfilled_locations + dispatch_number * (self.options.gate_paths.value - 1)
 
         useful_items = []
         for item in AllItems:
@@ -165,13 +169,6 @@ class FFTAWorld(World):
         self.random.shuffle(useful_items)
 
         items_remaining = unfilled_locations - len(required_items)
-
-        # Add extra locations for multiple gate paths
-        if self.options.gate_paths.value == 2:
-            items_remaining = items_remaining + 2
-
-        elif self.options.gate_paths.value == 3:
-            items_remaining = items_remaining + 4
 
         for i in range(items_remaining - 1):
             if i > len(useful_items) - 1:
@@ -196,30 +193,12 @@ class FFTAWorld(World):
 
         self.multiworld.completion_condition[self.player] =\
             lambda state: state.has("Victory", self.player)
-
-        if self.options.gate_paths.value == 2:
-            path1_complete = FFTAItem('Path 1 Complete', ItemClassification.progression, None, self.player)
-            path2_complete = FFTAItem('Path 2 Complete', ItemClassification.progression, None, self.player)
-
-            self.multiworld.get_location("Path 1 Completion", self.player) \
-                .place_locked_item(path1_complete)
-
-            self.multiworld.get_location("Path 2 Completion", self.player) \
-                .place_locked_item(path2_complete)
-
-        elif self.options.gate_paths.value == 3:
-            path1_complete = FFTAItem('Path 1 Complete', ItemClassification.progression, None, self.player)
-            path2_complete = FFTAItem('Path 2 Complete', ItemClassification.progression, None, self.player)
-            path3_complete = FFTAItem('Path 3 Complete', ItemClassification.progression, None, self.player)
-
-            self.multiworld.get_location("Path 1 Completion", self.player) \
-                .place_locked_item(path1_complete)
-
-            self.multiworld.get_location("Path 2 Completion", self.player) \
-                .place_locked_item(path2_complete)
-
-            self.multiworld.get_location("Path 3 Completion", self.player) \
-                .place_locked_item(path3_complete)
+        
+        if self.options.gate_paths.value > 1:
+            for i in range(1, self.options.gate_paths.value + 1):
+                path_complete = FFTAItem(f"Path {i} Complete", ItemClassification.progression, None, self.player)
+                self.multiworld.get_location(f"Path {i} Completion", self.player) \
+                    .place_locked_item(path_complete)
 
 
 

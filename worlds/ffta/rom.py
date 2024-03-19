@@ -186,6 +186,10 @@ def generate_output(world, player: int, output_directory: str) -> None:
 
     patch.write_file("base_patch.bsdiff4", pkgutil.get_data(__name__, "ffta_data/base_patch.bsdiff4"))
 
+    if world.options.mission_reward_num.value > 2:
+        patch.procedure.insert(1, ("apply_bsdiff4", ["rewards_patch.bsdiff4"]))
+        patch.write_file("rewards_patch.bsdiff4", pkgutil.get_data(__name__, "ffta_data/rewards_patch.bsdiff4"))
+
     base_rom = bytes(get_base_rom_as_bytes())
 
     ffta_data = FFTAData(bytearray(base_rom))
@@ -351,7 +355,13 @@ def generate_output(world, player: int, output_directory: str) -> None:
         patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.mission_display, bytes([0xC0]))
 
         # Hide ??? cards
-        patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.mission_display + 1, bytes([0x00]))
+        #patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.mission_display + 1, bytes([0x00]))
+        # Show extra items if enabled
+        reward_display = 0x00 if world.options.mission_reward_num.value == 2 \
+                    else 0x01 if world.options.mission_reward_num.value == 3 \
+                    else 0x03
+        
+        patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.mission_display + 1, bytes([reward_display]))
 
         # patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.type, 2, 0x00)
         if base_rom[mission.memory + MissionOffsets.type] == 0x0D:

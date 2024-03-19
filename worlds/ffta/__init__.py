@@ -139,20 +139,20 @@ class FFTAWorld(World):
         if gate_number > 30 and self.options.final_unlock == FinalMissionUnlock.option_totema:
             gate_number = 30
 
-        dispatch_number = self.options.dispatch.value * 2
-        unfilled_locations = gate_number * 8 + gate_number * dispatch_number + 1
+        dispatch_number = self.options.dispatch.value * self.options.mission_reward_num.value
+        unfilled_locations = gate_number * self.options.mission_reward_num.value * 4 + gate_number * dispatch_number + 1
 
         # Add totema mission locations to unfilled location count
         if self.options.final_unlock == FinalMissionUnlock.option_totema:
-            unfilled_locations = unfilled_locations + 10
+            unfilled_locations = unfilled_locations + self.options.mission_reward_num.value * 5
 
         # Add extra locations for multiple gate paths
-        unfilled_locations = unfilled_locations + 2 * (self.options.gate_paths.value - 1)
+        unfilled_locations = unfilled_locations + self.options.mission_reward_num.value * (self.options.gate_paths.value - 1)
 
         # If Dispatch Gates is enabled 1 extra set of Dispatch missions is added
         # Paths also add 1 gate per extra path
-        if self.options.gate_items == GateUnlock.option_dispatch_gate:
-            unfilled_locations = unfilled_locations + dispatch_number * (self.options.gate_paths.value)
+        #if self.options.gate_items == GateUnlock.option_dispatch_gate:
+        #    unfilled_locations = unfilled_locations + dispatch_number * (self.options.gate_paths.value - 1)
 
         useful_items = []
         for item in AllItems:

@@ -10,36 +10,52 @@ from .locations import FFTALocations, FFTALocation, MissionGroups, FFTALocationD
 #valid_gates = []
 
 
-def create_gates(num_gate: int, gate: Region, world, last_gate: bool, FFTAValidLocations, FFTAValidDispatch, dispatch_gate: Region):
+def create_gates(num_gate: int, gate: Region, world, last_gate: bool, FFTAValidLocations, FFTAValidDispatch, dispatch_gate: Region, last_dispatch_gate: bool):
 
     if last_gate:
         world.multiworld.regions.append(gate)
-        location_index = (num_gate - 1) * 8 + 6
-        for i in range(2):
+        location_index = (num_gate - 1) * world.options.mission_reward_num.value * 4 + world.options.mission_reward_num.value * 3
+        for i in range(world.options.mission_reward_num.value):
             gate.locations.append(FFTAValidLocations[location_index + i])
             FFTAValidLocations[location_index + i].parent_region = gate
+        
         if world.options.gate_items.value == 2:
-            num_dispatch = world.options.dispatch.value * 2
-            dispatch_index = num_dispatch * num_gate
-            for j in range(num_dispatch):
-                index = dispatch_index + j
-                dispatch_gate.locations.append(FFTAValidDispatch[index])
-                FFTAValidDispatch[index].parent_region = dispatch_gate
+            if last_dispatch_gate:
+                dispatch_index = (num_gate - 1) * world.options.mission_reward_num.value * world.options.dispatch.value + world.options.mission_reward_num.value * (world.options.dispatch.value - 1)
+                for j in range(world.options.mission_reward_num.value):
+                    index = dispatch_index + j
+                    dispatch_gate.locations.append(FFTAValidDispatch[index])
+                    FFTAValidDispatch[index].parent_region = dispatch_gate
+            #else:
+            #    num_dispatch = world.options.mission_reward_num.value * world.options.dispatch.value
+            #    dispatch_index = (num_gate - 1) * num_dispatch + world.options.mission_reward_num.value * (world.options.dispatch.value - 1)
+            #    for j in range(num_dispatch):
+            #        index = dispatch_index + j
+            #        dispatch_gate.locations.append(FFTAValidDispatch[index])
+            #        FFTAValidDispatch[index].parent_region = dispatch_gate
         return
     
     num_missions: int
     num_dispatch: int
 
     if num_gate == 0:
-        num_missions = 6
+        num_missions = world.options.mission_reward_num.value * 3
         location_index = 0
 
     else:
-        num_missions = 8
-        location_index = (num_gate - 1) * 8 + 6
+        num_missions = world.options.mission_reward_num.value * 4
+        location_index = (num_gate - 1) * num_missions + world.options.mission_reward_num.value * 3
 
-    num_dispatch = world.options.dispatch.value * 2
-    dispatch_index = num_dispatch * num_gate
+    if world.options.gate_items.value == 2:
+        if num_gate == 0:
+            num_dispatch = world.options.mission_reward_num.value * (world.options.dispatch.value - 1)
+            dispatch_index = 0
+        else:
+            num_dispatch = world.options.mission_reward_num.value * world.options.dispatch.value
+            dispatch_index = (num_gate - 1) * num_dispatch + world.options.mission_reward_num.value * (world.options.dispatch.value - 1)
+    else:
+        num_dispatch = world.options.mission_reward_num.value * world.options.dispatch.value
+        dispatch_index = num_gate * num_dispatch
     
     world.multiworld.regions.append(gate)
 
@@ -75,11 +91,20 @@ def create_regions(world, player) -> None:
     valid_dispatch = []
     TotemaLocations = []
     StoryLocations = []
-    world.MissionGroups = []
-    world.MissionGroups = MissionGroups.copy()
 
+    # Setting number of locations per mission
+    world.MissionGroups = []
+    ActualMissionGroups = MissionGroups.copy()
+    for i, missionGroup in enumerate(ActualMissionGroups):
+        ActualMissionGroups[i] = (missionGroup[0][0:world.options.mission_reward_num.value], missionGroup[1], missionGroup[2])
+    world.MissionGroups = ActualMissionGroups
+
+    # Setting number of locations per dispatch mission
     world.DispatchMissionGroups = []
-    world.DispatchMissionGroups = DispatchMissionGroups.copy()
+    ActualDispatchMissionGroups = DispatchMissionGroups.copy()
+    for i, missionGroup in enumerate(ActualDispatchMissionGroups):
+        ActualDispatchMissionGroups[i] = (missionGroup[0][0:world.options.mission_reward_num.value], missionGroup[1], missionGroup[2])
+    world.DispatchMissionGroups = ActualDispatchMissionGroups
 
     menu_region = Region("Menu", player, world.multiworld)
     world.multiworld.regions.append(menu_region)
@@ -323,14 +348,15 @@ def create_regions(world, player) -> None:
     # Might need to change this to 29 for now because of removal of missions
     if gate_number > 30 and world.options.final_unlock.value == 1:
         gate_number = 30
-
+    
+    dispatch_gate_number = gate_number
     gate_number = gate_number + world.options.gate_paths.value - 1
 
     # Add number of gates based on settings
     for i in range(gate_number + 1):
         valid_gates.append(gates[i])
 
-        if world.options.gate_items.value == 2:
+        if world.options.gate_items.value == 2 and i < dispatch_gate_number + 1:
             valid_dispatch.append(dispatch_gates[i])
 
     # look into adding gate_1.name?
@@ -340,20 +366,18 @@ def create_regions(world, player) -> None:
         gate_1.connect(dispatch_gate_1)
 
     last_gate = False
+    last_dispatch_gate = False
     if world.options.gate_paths.value == 1:
         for x in range(len(valid_gates)):
             if x == len(valid_gates) - 1:
                 last_gate = True
+                last_dispatch_gate = True
 
             if world.options.gate_items.value == 2:
-                if last_gate:
-                    create_gates(x, valid_gates[x], world, last_gate, FFTAValidLocations, FFTAValidDispatch,
-                                 0)
-                else:
-                    create_gates(x, valid_gates[x], world, last_gate, FFTAValidLocations, FFTAValidDispatch, valid_dispatch[x])
+                create_gates(x, valid_gates[x], world, last_gate, FFTAValidLocations, FFTAValidDispatch, valid_dispatch[x], last_dispatch_gate)
 
             else:
-                create_gates(x, valid_gates[x], world, last_gate, FFTAValidLocations, FFTAValidDispatch, 0)
+                create_gates(x, valid_gates[x], world, last_gate, FFTAValidLocations, FFTAValidDispatch, 0, last_dispatch_gate)
 
             if x > 0:
                 valid_gates[x-1].connect(valid_gates[x], valid_gates[x].name)
@@ -365,23 +389,26 @@ def create_regions(world, player) -> None:
         for x in range(len(valid_gates)):
             if x == len(valid_gates) - world.options.gate_paths.value:
                 last_gate = True
+                last_dispatch_gate = True
+            if world.options.gate_items.value == 2 and x >= len(valid_dispatch):
+                last_dispatch_gate = False
                     
-            if world.options.gate_items.value == 2:
-                create_gates(x, valid_gates[x], world, last_gate, FFTAValidLocations, FFTAValidDispatch, valid_dispatch[x])
+            if world.options.gate_items.value == 2 and x < len(valid_dispatch):
+                create_gates(x, valid_gates[x], world, last_gate, FFTAValidLocations, FFTAValidDispatch, valid_dispatch[x], last_dispatch_gate)
 
             else:
-                create_gates(x, valid_gates[x], world, last_gate, FFTAValidLocations, FFTAValidDispatch, 0)
+                create_gates(x, valid_gates[x], world, last_gate, FFTAValidLocations, FFTAValidDispatch, 0, last_dispatch_gate)
 
-            if world.options.gate_items.value == 2 and x > 0:
+            if world.options.gate_items.value == 2 and x > 0 and x < len(valid_dispatch):
                 valid_dispatch[x - 1].connect(valid_dispatch[x], valid_dispatch[x].name)
 
 
         
-        path_lengths = []
+        path_lengths = [0, 0, 0]
         for i in range(0, world.options.gate_paths.value):
             # Splitting gates into paths
             path = valid_gates[i+1::world.options.gate_paths.value]
-            path_lengths.append(len(path))
+            path_lengths[i] = len(path)
 
             gate_1.connect(path[0], path[0].name)
             for x in range(1, len(path)):

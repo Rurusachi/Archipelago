@@ -37,6 +37,7 @@ class FFTADeltaPatch(APDeltaPatch):
 
     procedure = [
         ("apply_bsdiff4", ["base_patch.bsdiff4"]),
+        ("apply_bsdiff4", ["rewards_6_patch.bsdiff4"]),
         ("apply_tokens", ["token_data.bin"]),
     ]
 
@@ -185,10 +186,7 @@ def generate_output(world, player: int, output_directory: str) -> None:
     patch = FFTADeltaPatch()
 
     patch.write_file("base_patch.bsdiff4", pkgutil.get_data(__name__, "ffta_data/base_patch.bsdiff4"))
-
-    if world.options.mission_reward_num.value > 2:
-        patch.procedure.insert(1, ("apply_bsdiff4", ["rewards_patch.bsdiff4"]))
-        patch.write_file("rewards_patch.bsdiff4", pkgutil.get_data(__name__, "ffta_data/rewards_patch.bsdiff4"))
+    patch.write_file("rewards_6_patch.bsdiff4", pkgutil.get_data(__name__, "ffta_data/rewards_6_patch.bsdiff4"))
 
     base_rom = bytes(get_base_rom_as_bytes())
 
@@ -804,14 +802,17 @@ def set_items(multiworld, player, patch: FFTADeltaPatch) -> None:
         if location.item.code is not None:
             if location.item.player == player:
                 if location.item.code - offset >= 0x2ac:
-                    patch.write_token(APTokenTypes.WRITE, location.address, struct.pack("H", 0x1bc))
-
+                    item_id = 0x1bc
                 else:
-                    patch.write_token(APTokenTypes.WRITE, location.address,
-                                      struct.pack("H", location.item.code - offset))
+                    item_id = (location.item.code - offset)
             else:
-                patch.write_token(APTokenTypes.WRITE, location.address, struct.pack("H", 0x185))
-
+                item_id = 0x185
+            
+            item_id = item_id << location.offset
+            byte1 = item_id & 0x00ff
+            byte2 = ((item_id & 0xff00) >> 8)
+            patch.write_token(APTokenTypes.OR_8, location.address, byte1)
+            patch.write_token(APTokenTypes.OR_8, location.address+1, byte2)
 
 def set_required_items(ffta_data: FFTAData, index: int, itemid1, itemid2, patch: FFTADeltaPatch):
     patch.write_token(APTokenTypes.WRITE, ffta_data.missions[index].memory + MissionOffsets.required_item1,

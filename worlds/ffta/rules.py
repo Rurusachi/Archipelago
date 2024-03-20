@@ -83,4 +83,3 @@ def set_rules(world) -> None:
         elif world.options.gate_items.value == 2 and i < num_gates - (world.options.gate_paths.value - 1):
             add_rule(world.multiworld.get_entrance(f"Dispatch Gate {i+2}", world.player),
                     rule_generator(item2))
-    print(world)

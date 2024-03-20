@@ -13,10 +13,10 @@ All blue mages have learn no matter the settings.
 
 ## What is randomized?:
 Starting unit job, race, amount of mastered abilities, enemies, mission order. 
-From other players you can receive weapons, equipment, mission items, and job unlocks all depending on settings. 
+From other players you can receive weapons, equipment, and mission items all depending on settings. 
 
 ## What are the locations?
-Currently, it is just encounter mission rewards. Two rewards for every mission. There can be up to 31 mission gates which is 124 missions. 
+Currently, it is just encounter mission rewards. Two rewards for every mission. There can be up to 28 mission gates which is 124 missions. 
 
 ## What is the goal?
 There are mission gates with four missions each. One of the missions requires a mission item which will
@@ -30,23 +30,19 @@ Max level raised to 99
 Various cutscenes skipped
 Mission item rewards hidden with ? bags
 Tutorial and beginning sequence skipped
-Judges and laws disabled currently
 All missions cost 0 and reward the same amount of gil and AP 
 All map tokens are unlocked by default
 
 ## Known issues:
-Generating on compiled builds currently doesn't work. 
 Pausing in a battle on a Jagd area causes the game to freeze. Same with certain missions like Decision Time.
 Receiving an item will currently always look like two items even if it is just one. The second will be blank though. Should still receive
-the item though.  
-There are way more items than locations so not all useful items can be in the game yet. It might also take a bit of time to get them.
-This will change when things like dispatch missions, potentially clan level up rewards etc. are added. 
-Generation times can be a bit chonky, will def need to optimize in the future
+the item though.
 
 ## Credits:
 Leonarth - Made the engine hacks (no judges, quick start, animation hacks) and a lot of documentation on FFTA hacking. https://github.com/LeonarthCG/FFTA_Engine_Hacks Used with permission.
 Darthatron - Made various FFTA tools and documentation. Used their tools a lot when debugging. 
 FGKeiji and TojiKitten - Made the FFTA randomizer I referenced quite a bit. https://github.com/TojiKitten/FFTA-randomizer Used with permission. 
+Rurusachi - Assistance with apworld and Rom programming
 Zunawe - Made the bizhawk client and I used a lot of Emerald code as a reference for the apworld. 
 Pilicious - Helped with ideas for the randomizer. 
 Silvris - Created the patch process that fixed FFTA's patching issues. 

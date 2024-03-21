@@ -255,12 +255,12 @@ class ForceRecruitment(Choice):
 
 class MissionRewards(Range):
     """
-    Sets the number of rewards received from each mission. Must be between 2 and 4.
+    Sets the number of rewards received from each mission. Must be between 2 and 6.
     """
     display_name = "Number of rewards per mission"
     default = 2
     range_start = 2
-    range_end = 4
+    range_end = 6
     
 
 @dataclass

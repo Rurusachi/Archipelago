@@ -102,7 +102,7 @@ class FFTAClient(BizHawkClient):
         try:
             offset = 41234532
             flag_list = [(0x2001FD0, 50, "System Bus"), (0x2001FD1, 1, "System Bus"),
-                         (0x2000e20, 2, "System Bus"), (0x200FA18, 2, "System Bus"),
+                         (0x2001930, 2, "System Bus"), (0x200FA18, 2, "System Bus"),
                          (0x2002B08, 0xFC, "System Bus"), (0x2002192, 1, "System Bus"),
                          (0x2000098, 1, "System Bus")]
             read_result = await bizhawk.read(ctx.bizhawk_ctx, flag_list)
@@ -218,7 +218,8 @@ class FFTAClient(BizHawkClient):
                     "status": ClientStatus.CLIENT_GOAL
                 }])
 
-            guard_list = [(0x200f85c, [0x00], "System Bus"), (0x2019EB9, [0x01], "System Bus")]
+            guard_list = [(0x200f85c, [0x00], "System Bus"), (0x2019EB9, [0x01], "System Bus"),
+                          (0x2019976, [0x01], "System Bus"), (0x201997F, [0x00], "System Bus")]
 
             # Check local locations for job unlock items then unlock that job, find a better way to do this later
 
@@ -250,7 +251,7 @@ class FFTAClient(BizHawkClient):
                                                      (0x200fd2b, [0x00], "System Bus"),
                                                      (0x201f46c, job_unlock_item.to_bytes(2, "little"), "System Bus"),
                                                      (0x201f46e, [0x00], "System Bus"),
-                                                     (0x2000e20, (received_items + 1).to_bytes(2, "little"),
+                                                     (0x2001930, (received_items + 1).to_bytes(2, "little"),
                                                       "System Bus"),
                                                      (0x200f85c, [0x06], "System Bus")], guard_list)
 
@@ -269,7 +270,7 @@ class FFTAClient(BizHawkClient):
                               "System Bus"),
                              (0x201f46e, job_unlock_item.to_bytes(2, "little"),
                               "System Bus"),
-                             (0x2000e20, (received_items + 2).to_bytes(2, "little"),
+                             (0x2001930, (received_items + 2).to_bytes(2, "little"),
                               "System Bus"),
                              (0x200f85c, [0x06], "System Bus")], guard_list)
 
@@ -281,7 +282,7 @@ class FFTAClient(BizHawkClient):
                               "System Bus"),
                              (0x201f46e, (item_after.item - 41234532).to_bytes(2, "little"),
                               "System Bus"),
-                             (0x2000e20, (received_items + 2).to_bytes(2, "little"),
+                             (0x2001930, (received_items + 2).to_bytes(2, "little"),
                               "System Bus"),
                              (0x200f85c, [0x06], "System Bus")], guard_list)
 
@@ -290,7 +291,7 @@ class FFTAClient(BizHawkClient):
                                                    [(0x2002c10, [0x00], "System Bus"), (0x200fd2b, [0x00], "System Bus"),
                                                     (0x201f46c, (next_item.item - 41234532).to_bytes(2, "little"), "System Bus"),
                                                     (0x201f46e, (0x0000).to_bytes(2, "little"), "System Bus"),
-                                                    (0x2000e20, (received_items + 1).to_bytes(2, "little"), "System Bus"),
+                                                    (0x2001930, (received_items + 1).to_bytes(2, "little"), "System Bus"),
                                                     (0x200f85c, [0x06], "System Bus")], guard_list)
 
         except bizhawk.RequestFailedError:

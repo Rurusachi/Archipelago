@@ -251,6 +251,10 @@ class FFTAWorld(World):
             if self.options.starting_units == StartingUnits.option_starting_balanced:
                 self.randomized_jobs.append(self.balanced_jobs[0])
 
+            #Prevent Marche from being rolled into a monster
+            elif self.options.starting_units == StartingUnits.option_random_monster:
+                self.randomized_jobs.append(get_random_job(self.random, all))
+
             else:
                 self.randomized_jobs.append(get_random_job(self.random, random_choice))
 
@@ -265,6 +269,10 @@ class FFTAWorld(World):
 
             if self.options.starting_units == StartingUnits.option_starting_balanced:
                 self.randomized_jobs.append(self.balanced_jobs[1])
+
+            # Prevent Montblanc from being rolled into a monster
+            elif self.options.starting_units == StartingUnits.option_random_monster:
+                self.randomized_jobs.append(get_random_job(self.random, all))
 
             else:
                 self.randomized_jobs.append(get_random_job(self.random, random_choice))

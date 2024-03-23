@@ -675,7 +675,7 @@ def set_up_gates(ffta_data: FFTAData, num_gates: int, req_items, final_unlock: i
                                             world.MissionGroups[path_unlock][0][0].mission_id, patch)
                     path_index = path_index + 1
 
-                set_mission_requirement(ffta_data, world.MissionGroups[path_index + 4 * world.options.gate_paths.value][0][0].mission_id,
+                set_mission_requirement(ffta_data, world.MissionGroups[path_index + 4 * world.options.gate_paths.value - 4][0][0].mission_id,
                                         world.MissionGroups[path_unlock][0][0].mission_id, patch)
                 
 

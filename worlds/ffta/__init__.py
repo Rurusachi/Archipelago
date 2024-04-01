@@ -194,16 +194,11 @@ class FFTAWorld(World):
             if req_gate_num % self.options.gate_paths.value >= 2:
                 gates_per_path[1] += 1
 
-            # Add additional items to the pool for each path based on options
-            #items_per_path = [x + self.options.progressive_item_num.value for x in items_per_path]
-            #print(items_per_path)
-
             for path in range(0, self.options.gate_paths.value):
                 items_per_gate = 2 if self.options.gate_items == GateUnlock.option_two else 1
                 progressives_required = [f"Progressive Path {path+1}"] * (gates_per_path[path] * items_per_gate +
                                                                           self.options.progressive_item_num.value)
                 required_items.extend(progressives_required)
-                print(len(progressives_required))
 
             if self.options.gate_items == GateUnlock.option_dispatch_gate:
                 req_dispatch_gate_num = req_gate_num - (self.options.gate_paths.value - 1)

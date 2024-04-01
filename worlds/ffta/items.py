@@ -599,6 +599,13 @@ TotemaUnlockItems: typing.List[ItemData] = [
     ItemData('Old Statue', ItemClassification.progression, 0x1c9)
 ]
 
+ProgressiveGateItems: typing.List[ItemData] = [
+    ItemData('Progressive Path 1', ItemClassification.progression, 0x300),
+    ItemData('Progressive Path 2', ItemClassification.progression, 0x301),
+    ItemData('Progressive Path 3', ItemClassification.progression, 0x302),
+    ItemData('Progressive Dispatch', ItemClassification.progression, 0x303),
+]
+
 # Ability items? maybe do job unlock items first
 AbilityItems: typing.List[ItemData] = [
     #ItemData('Ability: Sheep Count', ItemClassification.useful, 0x1b8),
@@ -661,7 +668,7 @@ JobUnlocks: typing.List[ItemData] = [
     ItemData('Job Unlock: Time Mage (Moogle)', ItemClassification.useful, 0xb00)
 ]
 
-#To do, complete this
+# TODO: complete this
 LawCards: typing.List[ItemData] = [
     ItemData('Skills', ItemClassification.progression, 0xb01),
     ItemData('Techniques', ItemClassification.progression, 0xb02),
@@ -679,12 +686,13 @@ TrapItems: typing.List[ItemData] = [
     ItemData('Roulette Trap', ItemClassification.trap, 0x11111),
 ]
 
-AllItems: typing.List[ItemData] = WeaponSwords + WeaponBlades + WeaponSabers + WeaponKnightswords + WeaponGreatswords + \
-                                  WeaponBroadswords + WeaponKnives + WeaponRapiers + WeaponKatanas + WeaponStaves + \
-                                  WeaponRods + WeaponMaces + WeaponBows + WeaponGreatBows + WeaponSpears + WeaponInstruments + \
-                                  WeaponKnuckles + WeaponSouls + WeaponGuns + EquipShields + EquipHelmets + EquipGloves + \
-                                  EquipHats + EquipArmor + EquipRings + EquipClothing + MissionUnlockItems + JobUnlocks + TotemaUnlockItems\
-                                  + Consumables
+AllItems: typing.List[ItemData] = WeaponSwords + WeaponBlades + WeaponSabers + WeaponKnightswords + \
+                                  WeaponGreatswords + WeaponBroadswords + WeaponKnives + WeaponRapiers + \
+                                  WeaponKatanas + WeaponStaves + WeaponRods + WeaponMaces + WeaponBows + \
+                                  WeaponGreatBows + WeaponSpears + WeaponInstruments + WeaponKnuckles + WeaponSouls + \
+                                  WeaponGuns + EquipShields + EquipHelmets + EquipGloves + EquipHats + EquipArmor + \
+                                  EquipRings + EquipClothing + MissionUnlockItems + JobUnlocks + TotemaUnlockItems + \
+                                  Consumables + ProgressiveGateItems
 
 SoldierWeapons: typing.List[ItemData] = WeaponSwords + WeaponGreatswords
 PaladinWeapons: typing.List[ItemData] = WeaponGreatswords + WeaponKnightswords

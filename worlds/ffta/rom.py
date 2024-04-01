@@ -37,17 +37,18 @@ class FFTADeltaPatch(APDeltaPatch):
 
     procedure = [
         ("apply_bsdiff4", ["base_patch.bsdiff4"]),
-        ("apply_bsdiff4", ["rewards_6_patch.bsdiff4"]),
+        ("apply_bsdiff4", ["progressive_random_patch.bsdiff4"]),
         ("apply_tokens", ["token_data.bin"]),
     ]
 
-    tokens: List[
-        Tuple[int, int,
-        Union[
-            bytes,  # WRITE
-            Tuple[int, int],  # COPY, RLE
-            int  # AND_8, OR_8, XOR_8
-        ]]] = []
+    tokens: List[Tuple[int, int,
+                       Union[
+                           bytes,  # WRITE
+                           Tuple[int, int],  # COPY, RLE
+                           int  # AND_8, OR_8, XOR_8
+                           ]
+                       ]
+                 ] = []
 
     def __init__(self, *args: typing.Any, **kwargs: typing.Any):
         super().__init__(*args, **kwargs)
@@ -186,7 +187,8 @@ def generate_output(world, player: int, output_directory: str) -> None:
     patch = FFTADeltaPatch()
 
     patch.write_file("base_patch.bsdiff4", pkgutil.get_data(__name__, "ffta_data/base_patch.bsdiff4"))
-    patch.write_file("rewards_6_patch.bsdiff4", pkgutil.get_data(__name__, "ffta_data/rewards_6_patch.bsdiff4"))
+    patch.write_file("progressive_random_patch.bsdiff4",
+                     pkgutil.get_data(__name__, "ffta_data/progressive_random_patch.bsdiff4"))
 
     base_rom = bytes(get_base_rom_as_bytes())
 
@@ -329,11 +331,11 @@ def generate_output(world, player: int, output_directory: str) -> None:
 
         elif world.options.force_recruitment.value == 2:
             random_recruit = world.random.choice(world.recruit_secret)
-            
+
             #Remove from list if it's a secret unit
             if random_recruit >= 0x8a:
                 world.recruit_secret.remove(random_recruit)
-            
+
             patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.recruit,
                               bytes([random_recruit]))
 
@@ -356,10 +358,12 @@ def generate_output(world, player: int, output_directory: str) -> None:
         #patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.mission_display + 1, bytes([0x00]))
         # Show extra items if enabled
         reward_display = 0x00 if world.options.mission_reward_num.value == 2 \
-                    else 0x01 if world.options.mission_reward_num.value == 3 \
-                    else 0x03
-        
-        patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.mission_display + 1, bytes([reward_display]))
+            else 0x01 if world.options.mission_reward_num.value == 3 \
+            else 0x03
+
+        patch.write_token(APTokenTypes.WRITE,
+                          mission.memory + MissionOffsets.mission_display + 1,
+                          bytes([reward_display]))
 
         # patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.type, 2, 0x00)
         if base_rom[mission.memory + MissionOffsets.type] == 0x0D:
@@ -432,7 +436,6 @@ def generate_output(world, player: int, output_directory: str) -> None:
     set_up_gates(ffta_data, gate_number, world.options.gate_items.value,
                  world.options.final_unlock.value, world.options.final_mission.value,
                  world.options.dispatch.value, world, patch)
-    
 
     # Totema goal
     if world.options.final_unlock.value == 1:
@@ -530,7 +533,7 @@ def generate_output(world, player: int, output_directory: str) -> None:
         master_abilities(bytearray(base_rom), ffta_data, 0xa30, get_job_abilities(world.randomized_judge[2]), 10, patch)
         master_abilities(bytearray(base_rom), ffta_data, 0xa31, get_job_abilities(world.randomized_judge[3]), 10, patch)
         master_abilities(bytearray(base_rom), ffta_data, 0xa32, get_job_abilities(world.randomized_judge[4]), 10, patch)
-        
+
     """
 
     # Remove Llednar's weapon on present day to make it more survivable
@@ -545,6 +548,8 @@ def generate_output(world, player: int, output_directory: str) -> None:
         patch.write_token(APTokenTypes.WRITE, 0xb390dc + i, bytes([world.location_ids[i]]))
 
     set_items(world.multiworld, player, patch)
+
+    write_progressive_lists(world, patch)
 
     # Set the starting gil amount
     starting_gil = world.options.starting_gil.value
@@ -578,20 +583,23 @@ def set_up_gates(ffta_data: FFTAData, num_gates: int, req_items, final_unlock: i
 
     for path in range(0, world.options.gate_paths.value):
         unlock_mission(ffta_data, world.MissionGroups[3 + path * 4][0][0].mission_id, patch)
-        
+
         # Add second required mission item if options are selected
         if req_items == 1 or req_items == 2:
             req_item2 = MissionUnlockItems[1 + path * 2].itemID
 
         if world.options.gate_items.value == 2:
-            set_required_items(ffta_data, world.MissionGroups[3 + path * 4][0][0].mission_id, MissionUnlockItems[path * 2].itemID,
+            set_required_items(ffta_data,
+                               world.MissionGroups[3 + path * 4][0][0].mission_id, MissionUnlockItems[path * 2].itemID,
                                0, patch)
             if path == 0:
-                set_required_items(ffta_data, world.DispatchMissionGroups[dispatch - 1][0][0].mission_id, req_item2,
+                set_required_items(ffta_data,
+                                   world.DispatchMissionGroups[dispatch - 1][0][0].mission_id, req_item2,
                                    0, patch)
 
         else:
-            set_required_items(ffta_data, world.MissionGroups[3 + path * 4][0][0].mission_id, MissionUnlockItems[path * 2].itemID,
+            set_required_items(ffta_data,
+                               world.MissionGroups[3 + path * 4][0][0].mission_id, MissionUnlockItems[path * 2].itemID,
                                req_item2, patch)
 
     mission_index = 4
@@ -618,7 +626,7 @@ def set_up_gates(ffta_data: FFTAData, num_gates: int, req_items, final_unlock: i
             for j in range(4):
                 set_mission_requirement(ffta_data, world.MissionGroups[mission_index][0][0].mission_id,
                                         world.MissionGroups[mission_unlock][0][0].mission_id, patch)
-                mission_index = mission_index + 1
+                mission_index += 1
 
             # Add dispatch missions based on settings
             for k in range(0, dispatch):
@@ -631,10 +639,10 @@ def set_up_gates(ffta_data: FFTAData, num_gates: int, req_items, final_unlock: i
                     set_mission_requirement(ffta_data, world.DispatchMissionGroups[dispatch_index][0][0].mission_id,
                                             world.MissionGroups[mission_unlock][0][0].mission_id, patch)
 
-                dispatch_index = dispatch_index + 1
+                dispatch_index += 1
 
-            mission_unlock = mission_unlock + 4
-            dispatch_unlock = dispatch_unlock + dispatch
+            mission_unlock += 4
+            dispatch_unlock += dispatch
 
             if req_items == 1 or req_items == 2:
                 req_item2 = MissionUnlockItems[item_index + 1].itemID
@@ -653,7 +661,7 @@ def set_up_gates(ffta_data: FFTAData, num_gates: int, req_items, final_unlock: i
                                    MissionUnlockItems[item_index].itemID,
                                    req_item2, patch)
 
-            item_index = item_index + 2
+            item_index += 2
     elif world.options.gate_paths.value > 1:
         path_lengths = [
             world.path1_length,
@@ -667,55 +675,56 @@ def set_up_gates(ffta_data: FFTAData, num_gates: int, req_items, final_unlock: i
             path_unlock = mission_unlock + path * 4
             path_item = item_index + (world.options.gate_paths.value - 1) * 2 + path * 2
             path_dispatch = dispatch_index + path * dispatch
-            
+
             for i in range(1, path_lengths[path]):
 
                 for j in range(3):
                     set_mission_requirement(ffta_data, world.MissionGroups[path_index][0][0].mission_id,
                                             world.MissionGroups[path_unlock][0][0].mission_id, patch)
-                    path_index = path_index + 1
+                    path_index += 1
 
-                set_mission_requirement(ffta_data, world.MissionGroups[path_index + 4 * world.options.gate_paths.value - 4][0][0].mission_id,
+                next_gate = path_index + 4 * (world.options.gate_paths.value - 1)
+                set_mission_requirement(ffta_data,
+                                        world.MissionGroups[next_gate][0][0].mission_id,
                                         world.MissionGroups[path_unlock][0][0].mission_id, patch)
-                
 
                 # Only if Dispatch Gates are not enabled
                 if world.options.gate_items.value != 2:
                     for k in range(0, dispatch):
                         set_mission_requirement(ffta_data, world.DispatchMissionGroups[path_dispatch][0][0].mission_id,
                                                 world.MissionGroups[path_unlock][0][0].mission_id, patch)
-                        path_dispatch = path_dispatch + 1
-                    path_dispatch = path_dispatch + (world.options.gate_paths.value - 1) * dispatch + 1
-                
-                path_index = path_index + (world.options.gate_paths.value - 1) * 4 + 1
-                path_unlock = path_unlock + (world.options.gate_paths.value * 4)
+                        path_dispatch += 1
+                    path_dispatch += (world.options.gate_paths.value - 1) * dispatch + 1
+
+                path_index += (world.options.gate_paths.value - 1) * 4 + 1
+                path_unlock += (world.options.gate_paths.value * 4)
 
                 # Set second required item if option is selected and Dispatch Gates are not enabled
                 if world.options.gate_items.value == 1:
                     req_item2 = MissionUnlockItems[path_item + 1].itemID
-                    
+
                 # Set required items
                 set_required_items(ffta_data, world.MissionGroups[path_unlock][0][0].mission_id,
                                    MissionUnlockItems[path_item].itemID,
                                    req_item2, patch)
 
-                path_item = path_item + world.options.gate_paths.value * 2
-            
+                path_item += world.options.gate_paths.value * 2
+
             final_path_unlocks.append(path_unlock)
-        
+
         # Set dispatch gates if enabled
         if world.options.gate_items.value == 2:
             for i in range(1, sum(path_lengths) + 1):
                 for k in range(0, dispatch):
                     set_mission_requirement(ffta_data, world.DispatchMissionGroups[dispatch_index][0][0].mission_id,
                                             world.DispatchMissionGroups[dispatch_unlock][0][0].mission_id, patch)
-                    dispatch_index = dispatch_index + 1
-                dispatch_unlock = dispatch_unlock + dispatch
+                    dispatch_index += 1
+                dispatch_unlock += dispatch
                 req_item2 = MissionUnlockItems[item_index + 1].itemID
                 set_required_items(ffta_data, world.DispatchMissionGroups[dispatch_unlock][0][0].mission_id,
-                                req_item2,
-                                0, patch)
-                item_index = item_index + 2
+                                   req_item2,
+                                   0, patch)
+                item_index += 2
 
     # Set final mission to unlock after all the gates if all mission gates option is selected
     if final_unlock == 0:
@@ -725,45 +734,51 @@ def set_up_gates(ffta_data: FFTAData, num_gates: int, req_items, final_unlock: i
 
         if world.options.gate_paths.value == 1:
 
-            set_mission_requirement(ffta_data, final_mission_id, world.MissionGroups[mission_unlock][0][0].mission_id, patch)
+            set_mission_requirement(ffta_data, final_mission_id,
+                                    world.MissionGroups[mission_unlock][0][0].mission_id, patch)
 
         # Set all final missions in paths to unlock the final mission
         elif world.options.gate_paths.value > 1:
             unlockFlags = [
-                MissionOffsets.unlockflag1, 
-                MissionOffsets.unlockflag2, 
+                MissionOffsets.unlockflag1,
+                MissionOffsets.unlockflag2,
                 MissionOffsets.unlockflag3,
                 ]
-            
+
             for path in range(0, 3):
                 if path < world.options.gate_paths.value:
-                    patch.write_token(APTokenTypes.WRITE, ffta_data.missions[final_mission_id].memory + unlockFlags[path],
-                                    struct.pack("H", world.MissionGroups[final_path_unlocks[path]][0][0].mission_id + 2))
+                    patch.write_token(APTokenTypes.WRITE,
+                                      ffta_data.missions[final_mission_id].memory + unlockFlags[path],
+                                      struct.pack("H", world.MissionGroups[final_path_unlocks[path]][0][0].mission_id + 2))
 
                     if world.MissionGroups[final_path_unlocks[path]][0][0].mission_id > 253:
                         patch.write_token(APTokenTypes.WRITE,
-                                        ffta_data.missions[final_mission_id].memory + unlockFlags[path] + 0x01,
-                                        bytes([0x04]))
+                                          ffta_data.missions[final_mission_id].memory + unlockFlags[path] + 0x01,
+                                          bytes([0x04]))
                     else:
                         patch.write_token(APTokenTypes.WRITE,
-                                        ffta_data.missions[final_mission_id].memory + unlockFlags[path] + 0x01,
-                                        bytes([0x03]))
+                                          ffta_data.missions[final_mission_id].memory + unlockFlags[path] + 0x01,
+                                          bytes([0x03]))
 
-                    patch.write_token(APTokenTypes.WRITE, ffta_data.missions[final_mission_id].memory + unlockFlags[path] + 0x02,
-                                        bytes([0x01]))
+                    patch.write_token(APTokenTypes.WRITE,
+                                      ffta_data.missions[final_mission_id].memory + unlockFlags[path] + 0x02,
+                                      bytes([0x01]))
                 else:
-                    patch.write_token(APTokenTypes.WRITE, ffta_data.missions[final_mission_id].memory + unlockFlags[path],
-                                    bytes([0x00]))
-                    patch.write_token(APTokenTypes.WRITE, ffta_data.missions[final_mission_id].memory + unlockFlags[path] + 0x01,
-                                    bytes([0x00]))
-                    patch.write_token(APTokenTypes.WRITE, ffta_data.missions[final_mission_id].memory + unlockFlags[path] + 0x02,
-                                    bytes([0x00]))
+                    patch.write_token(APTokenTypes.WRITE,
+                                      ffta_data.missions[final_mission_id].memory + unlockFlags[path],
+                                      bytes([0x00]))
+                    patch.write_token(APTokenTypes.WRITE,
+                                      ffta_data.missions[final_mission_id].memory + unlockFlags[path] + 0x01,
+                                      bytes([0x00]))
+                    patch.write_token(APTokenTypes.WRITE,
+                                      ffta_data.missions[final_mission_id].memory + unlockFlags[path] + 0x02,
+                                      bytes([0x00]))
 
 
 def set_mission_requirement(ffta_data: FFTAData, current_mission_ID: int, previous_mission_ID: int,
                             patch: FFTADeltaPatch) -> None:
 
-        # Set the mission requirements to the specified mission ID
+    # Set the mission requirements to the specified mission ID
     patch.write_token(APTokenTypes.WRITE, ffta_data.missions[current_mission_ID].memory + MissionOffsets.unlockflag1,
                       struct.pack("H", previous_mission_ID + 2))
 
@@ -800,19 +815,54 @@ def set_items(multiworld, player, patch: FFTADeltaPatch) -> None:
     for location in multiworld.get_filled_locations(player):
 
         if location.item.code is not None:
+            item_id = location.item.code - offset
             if location.item.player == player:
-                if location.item.code - offset >= 0x2ac:
+                if item_id >= 0x2ac and not (item_id >= 0x300 and item_id < 0x304):
                     item_id = 0x1bc
-                else:
-                    item_id = (location.item.code - offset)
             else:
                 item_id = 0x185
-            
+
             item_id = item_id << location.offset
             byte1 = item_id & 0x00ff
             byte2 = ((item_id & 0xff00) >> 8)
             patch.write_token(APTokenTypes.OR_8, location.address, byte1)
             patch.write_token(APTokenTypes.OR_8, location.address+1, byte2)
+
+
+def write_progressive_lists(world, patch: FFTADeltaPatch):
+    # Making sure unused paths still exist, so if an unused path item is received it won't break anything.
+
+    excess_item_id = world.options.progressive_excess.value
+    path_pointers = []
+    path_lengths = []
+    current_address = 0x00b30630
+    for path in range(0, len(world.path_items)):
+        path_pointers.append(current_address + 0x08000000)
+        path_lengths.append(0)
+        for item in world.path_items[path]:
+            patch.write_token(APTokenTypes.WRITE, current_address, struct.pack("H", item.itemID))
+            current_address += 2
+            path_lengths[path] += 1
+        # Add a last item. This item is received each time an excess path item is received.
+        patch.write_token(APTokenTypes.WRITE, current_address, struct.pack("H", excess_item_id))
+        current_address += 8
+
+    pointerLocation = 0x00b30608
+    for path in path_pointers:
+        patch.write_token(APTokenTypes.WRITE, pointerLocation, struct.pack("L", path))
+        pointerLocation += 4
+
+    for path in path_lengths:
+        patch.write_token(APTokenTypes.WRITE, pointerLocation, struct.pack("B", path))
+        pointerLocation += 1
+
+    # Initial state must be non-zero, unlikely to be generated but possible
+    initial_state = 0
+    while (initial_state == 0):
+        initial_state = world.random.getrandbits(32)
+    print(initial_state)
+    patch.write_token(APTokenTypes.WRITE, 0x00b30604, struct.pack("L", initial_state))
+
 
 def set_required_items(ffta_data: FFTAData, index: int, itemid1, itemid2, patch: FFTADeltaPatch):
     patch.write_token(APTokenTypes.WRITE, ffta_data.missions[index].memory + MissionOffsets.required_item1,

@@ -11,15 +11,16 @@ from Utils import visualize_regions
 
 from .client import FFTAClient
 
-from BaseClasses import ItemClassification, MultiWorld, Tutorial
+from BaseClasses import ItemClassification, MultiWorld, Tutorial, Item
 from worlds.AutoWorld import WebWorld, World
 from .data import get_random_job, JobID, attacker_jobs, magic_jobs, support_jobs
 from .regions import create_regions
 from .rules import set_rules
 
-from .options import (FFTAOptions, StartingUnits, StartingUnitEquip, StartingAbilitiesMastered, JobUnlockReq, RandomEnemies,
-                      EnemyScaling, DoubleExp, StartingGil, GateNumber, GatePaths, DispatchMissions, DispatchRandom, GateUnlock,
-                      MissionOrder, FinalMission, FinalMissionUnlock, QuickOptions, ForceRecruitment)
+from .options import (FFTAOptions, StartingUnits, StartingUnitEquip, StartingAbilitiesMastered, JobUnlockReq,
+                      RandomEnemies, EnemyScaling, DoubleExp, StartingGil, GateNumber, GatePaths, DispatchMissions,
+                      DispatchRandom, GateUnlock, MissionOrder, FinalMission, FinalMissionUnlock, QuickOptions,
+                      ForceRecruitment, ProgressiveGateItems)
 from .items import (create_item_label_to_code_map, AllItems, item_table, FFTAItem, WeaponBlades,
                     WeaponSabers, WeaponKatanas, WeaponBows, WeaponGreatBows, WeaponRods, WeaponStaves, WeaponKnuckles,
                     WeaponMaces, WeaponInstruments, WeaponSouls, WeaponRapiers, WeaponGuns, WeaponKnives, ItemData,
@@ -75,7 +76,7 @@ class FFTAWorld(World):
 
     item_name_to_id = create_item_label_to_code_map()
     location_name_to_id = create_location_label_to_id_map()
-        
+
     def __init__(self, multiworld, player):
         super(FFTAWorld, self).__init__(multiworld, player)
         self.randomized_jobs = []
@@ -94,13 +95,15 @@ class FFTAWorld(World):
         self.path1_length = []
         self.path2_length = []
         self.path3_length = []
+        self.path_items = []
         self.recruit_units = [0x03, 0x0f, 0x17, 0x20, 0x29]
-        self.recruit_secret = [0x03, 0x0f, 0x17, 0x20, 0x29, 0x8a, 0x8c, 0x8e, 0x90, 0x92, 0x94, 0x96, 0x98, 0x9a, 0x9c, 0x9e]
+        self.recruit_secret = [0x03, 0x0f, 0x17, 0x20, 0x29, 0x8a, 0x8c, 0x8e,
+                               0x90, 0x92, 0x94, 0x96, 0x98, 0x9a, 0x9c, 0x9e]
 
     def get_filler_item_name(self) -> str:
         filler = ["Potion", "Hi-Potion", "X-Potion", "Ether", "Elixir", "Antidote",
-        "Eye Drops", "Echo Screen", "Maiden's Kiss", "Soft", "Holy Water", "Bandage",
-        "Cureall", "Phoenix Down"]
+                  "Eye Drops", "Echo Screen", "Maiden's Kiss", "Soft", "Holy Water", "Bandage",
+                  "Cureall", "Phoenix Down"]
         return self.random.choice(filler)
 
     def create_regions(self) -> None:
@@ -108,27 +111,7 @@ class FFTAWorld(World):
 
     def create_items(self):
 
-        required_items = []
-
-        item_index = 0
-        req_gate_num = self.options.gate_num.value
-
-        # Add progression items with multiple mission gate paths
-        req_gate_num = req_gate_num + self.options.gate_paths.value - 1
-
-        for i in range(0, req_gate_num):
-            required_items.append(MissionUnlockItems[item_index].itemName)
-
-            # Add second item for the gate unlock
-            if self.options.gate_items == GateUnlock.option_two or self.options.gate_items == GateUnlock.option_dispatch_gate:
-                required_items.append(MissionUnlockItems[item_index + 1].itemName)
-
-            item_index = item_index + 2
-
-        # Add totema unlock items to pool if option is selected
-        if self.options.final_unlock == FinalMissionUnlock.option_totema:
-            for i in range(0, len(TotemaUnlockItems)):
-                required_items.append(TotemaUnlockItems[i].itemName)
+        required_items = self.get_required_items()
 
         # Adding required items to the pool first
         for itemName in required_items:
@@ -144,21 +127,16 @@ class FFTAWorld(World):
 
         # Add totema mission locations to unfilled location count
         if self.options.final_unlock == FinalMissionUnlock.option_totema:
-            unfilled_locations = unfilled_locations + self.options.mission_reward_num.value * 5
+            unfilled_locations += self.options.mission_reward_num.value * 5
 
         # Add extra locations for multiple gate paths
-        unfilled_locations = unfilled_locations + self.options.mission_reward_num.value * (self.options.gate_paths.value - 1)
-
-        # If Dispatch Gates is enabled 1 extra set of Dispatch missions is added
-        # Paths also add 1 gate per extra path
-        #if self.options.gate_items == GateUnlock.option_dispatch_gate:
-        #    unfilled_locations = unfilled_locations + dispatch_number * (self.options.gate_paths.value - 1)
+        unfilled_locations += self.options.mission_reward_num.value * (self.options.gate_paths.value - 1)
 
         useful_items = []
         for item in AllItems:
             if item.progression == ItemClassification.useful:
 
-                #To DO: add back in job unlock items self.options.job_unlock_req != JobUnlockReq.option_job_items
+                # TODO: add back in job unlock items self.options.job_unlock_req != JobUnlockReq.option_job_items
                 if item.itemID >= 0x2ac:
                     continue
 
@@ -193,14 +171,62 @@ class FFTAWorld(World):
 
         self.multiworld.completion_condition[self.player] =\
             lambda state: state.has("Victory", self.player)
-        
+
         if self.options.gate_paths.value > 1:
             for i in range(1, self.options.gate_paths.value + 1):
                 path_complete = FFTAItem(f"Path {i} Complete", ItemClassification.progression, None, self.player)
                 self.multiworld.get_location(f"Path {i} Completion", self.player) \
                     .place_locked_item(path_complete)
 
+    def get_required_items(self):
+        required_items = []
 
+        item_index = 0
+        req_gate_num = self.options.gate_num.value
+
+        # Add progression items with multiple mission gate paths
+        req_gate_num += self.options.gate_paths.value - 1
+
+        if self.options.progressive_gates.value == ProgressiveGateItems.option_true:
+            gates_per_path = [req_gate_num // self.options.gate_paths.value] * self.options.gate_paths.value
+            if req_gate_num % self.options.gate_paths.value >= 1:
+                gates_per_path[0] += 1
+            if req_gate_num % self.options.gate_paths.value >= 2:
+                gates_per_path[1] += 1
+
+            # Add additional items to the pool for each path based on options
+            #items_per_path = [x + self.options.progressive_item_num.value for x in items_per_path]
+            #print(items_per_path)
+
+            for path in range(0, self.options.gate_paths.value):
+                items_per_gate = 2 if self.options.gate_items == GateUnlock.option_two else 1
+                progressives_required = [f"Progressive Path {path+1}"] * (gates_per_path[path] * items_per_gate +
+                                                                          self.options.progressive_item_num.value)
+                required_items.extend(progressives_required)
+                print(len(progressives_required))
+
+            if self.options.gate_items == GateUnlock.option_dispatch_gate:
+                req_dispatch_gate_num = req_gate_num - (self.options.gate_paths.value - 1)
+                progressives_required = ["Progressive Dispatch"] * (req_dispatch_gate_num +
+                                                                    self.options.progressive_item_num.value)
+                required_items.extend(progressives_required)
+
+            self.set_progressive_lists(req_gate_num, gates_per_path)
+        else:
+            for i in range(0, req_gate_num):
+                required_items.append(MissionUnlockItems[item_index].itemName)
+
+                # Add second item for the gate unlock
+                if self.options.gate_items == GateUnlock.option_two or self.options.gate_items == GateUnlock.option_dispatch_gate:
+                    required_items.append(MissionUnlockItems[item_index + 1].itemName)
+
+                item_index += 2
+
+        # Add totema unlock items to pool if option is selected
+        if self.options.final_unlock == FinalMissionUnlock.option_totema:
+            for i in range(0, len(TotemaUnlockItems)):
+                required_items.append(TotemaUnlockItems[i].itemName)
+        return required_items
 
     @classmethod
     def stage_assert_generate(cls, multiworld: MultiWorld):
@@ -216,14 +242,39 @@ class FFTAWorld(World):
 
         return slot_data
 
-    def create_item(self, name: str) -> "Item":
+    def create_item(self, name: str) -> Item:
         item = item_table[name]
         # Maybe remove this later
         offset = 41234532
         return FFTAItem(item.itemName, item.progression, item.itemID + offset, self.player)
 
+    def set_progressive_lists(self, req_gate_num, gates_per_path):
+        # path_items must have 4 arrays, unused paths are simply empty. 4th element is for Dispatch path
+        self.path_items = [[], [], [], []]
+        for path in range(0, self.options.gate_paths.value):
+            item_index = path*2
+            path_items = []
+            for i in range(0, gates_per_path[path]):
+                path_items.append(MissionUnlockItems[item_index])
+                if self.options.gate_items == GateUnlock.option_two:
+                    path_items.append(MissionUnlockItems[item_index+1])
+                item_index += self.options.gate_paths.value*2
+            self.path_items[path] = path_items
+            #self.path_items.append(path_items)
+
+        if self.options.gate_items == GateUnlock.option_dispatch_gate:
+            req_dispatch_gate_num = req_gate_num - (self.options.gate_paths.value - 1)
+            item_index = 1
+            path_items = []
+            for i in range(0, req_dispatch_gate_num):
+                if item_index >= len(MissionUnlockItems):
+                    break
+                path_items.append(MissionUnlockItems[item_index])
+                item_index += 2
+            self.path_items[3] = path_items
+            #self.path_items.append(path_items)
+
     def generate_output(self, output_directory: str) -> None:
-    
         # Import this from data instead
         human = 0
         bangaa = 1
@@ -713,8 +764,8 @@ class FFTAWorld(World):
         # self.random.shuffle(self.random_data.all_abilities)
 
         self.location_ids = [0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x09, 0x0a, 0x0b, 0x0c,
-                0x0d, 0x0e, 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18,
-                0x19, 0x1a, 0x1b, 0x1c, 0x1d]
+                             0x0d, 0x0e, 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18,
+                             0x19, 0x1a, 0x1b, 0x1c, 0x1d]
 
         # Randomize location nodes on map
         self.random.shuffle(self.location_ids)
@@ -722,13 +773,7 @@ class FFTAWorld(World):
         # Add Ambervale to the end
         self.location_ids.append(0x08)
 
-        #Visualize regions
+        # Visualize regions
         #visualize_regions(self.multiworld.get_region("Menu", self.player), "ffta.puml", show_entrance_names=True)
 
         generate_output(self, self.player, output_directory)
-
-
-
-
-
-

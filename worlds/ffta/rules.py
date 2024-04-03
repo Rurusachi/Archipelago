@@ -1,10 +1,16 @@
-from worlds.generic.Rules import add_rule, set_rule, forbid_item
+from worlds.generic.Rules import add_rule, set_rule, forbid_item, CollectionRule
 from .items import MissionUnlockItems
 
 
+def rule_generator(world, item: str) -> CollectionRule:
+    return lambda state: state.has(item, world.player)
+
+
+def rule_generator_progressive(world, item: str, num: int) -> CollectionRule:
+    return lambda state: state.has(item, world.player, num)
+
+
 def set_rules(world) -> None:
-    # Lambda that returns a lambda rule
-    rule_generator = lambda item: (lambda state: state.has(item, world.player))
 
     # Set final mission unlock to require all paths based on settings
     if world.options.final_unlock.value == 0:
@@ -13,7 +19,7 @@ def set_rules(world) -> None:
         if world.options.gate_paths.value > 1:
             for path in range(0, world.options.gate_paths.value):
                 add_rule(world.multiworld.get_location(final_mission, world.player),
-                         rule_generator(f"Path {path+1} Complete"))
+                         rule_generator(world, f"Path {path+1} Complete"))
 
     if world.options.final_unlock.value == 1:
         add_rule(world.multiworld.get_entrance("Totema 1", world.player),
@@ -32,54 +38,74 @@ def set_rules(world) -> None:
                  lambda state: state.has("Old Statue", world.player))
 
     num_gates = world.options.gate_num.value
-    num_gates = num_gates + (world.options.gate_paths.value - 1)
+    num_gates += world.options.gate_paths.value - 1
 
-    gate_items = [
-        ("Magic Trophy", "Fight Trophy"),
-        ("Magic Medal", "Ancient Medal"),
-        ("Choco Bread", "Choco Gratin"),
-        ("Black Thread", "White Thread"),
-        ("Thunderstone", "Stormstone"),
-        ("Ahriman Eye", "Ahriman Wing"),
-        ("Magic Cloth", "Magic Cotton"),
-        ("Adaman Alloy", "Mysidia Alloy"),
-        ("Elda's Cup", "Gold Vessel"),
-        ("Kiddy Bread", "Grownup Bread"),
-        ("Danbukwood", "Moonwood"),
-        ("Dragon Bone", "Animal Bone"),
-        ("Magic Fruit", "Power Fruit"),
-        ("Malboro Wine", "Gedegg Soup"),
-        ("Encyclopedia", "Dictionary"),
-        ("Rat Tail", "Rabbit Tail"),
-        ("Stasis Rope", "Mythril Pick"),
-        ("Clock Gear", "Gun Gear"),
-        ("Blood Shawl", "Blood Apple"),
-        ("Eldagusto", "Cyril Ice"),
-        ("Crystal", "Trichord"),
-        ("Tranquil Box", "Flower Vase"),
-        ("Cat's Tears", "Dame's Blush"),
-        ("Justice Badge", "Friend Badge"),
-        ("Love Potion", "Tonberry Lamp"),
-        ("Runba's Tale", "The Hero Gaol"),
-        ("Mind Ceffyl", "Body Ceffyl"),
-        ("Ancient Bills", "Ancient Coins"),
-        ("Blue Rose", "White Flowers"),
-        ("Gysahl Greens", "Chocobo Egg"),
-        ("Delta Fang", "Esteroth"),
-        ("Moon Bloom", "Telaq Flowers"),
-    ]
+    # gate_items_static = [
+    #     ("Magic Trophy", "Fight Trophy"),       # Gate 2
+    #     ("Magic Medal", "Ancient Medal"),       # Gate 3
+    #     ("Choco Bread", "Choco Gratin"),        # Gate 4
+    #     ("Black Thread", "White Thread"),       # Gate 5
+    #     ("Thunderstone", "Stormstone"),         # Gate 6
+    #     ("Ahriman Eye", "Ahriman Wing"),        # Gate 7
+    #     ("Magic Cloth", "Magic Cotton"),        # Gate 8
+    #     ("Adaman Alloy", "Mysidia Alloy"),      # Gate 9
+    #     ("Elda's Cup", "Gold Vessel"),          # Gate 10
+    #     ("Kiddy Bread", "Grownup Bread"),       # Gate 11
+    #     ("Danbukwood", "Moonwood"),             # Gate 12
+    #     ("Dragon Bone", "Animal Bone"),         # Gate 13
+    #     ("Magic Fruit", "Power Fruit"),         # Gate 14
+    #     ("Malboro Wine", "Gedegg Soup"),        # Gate 15
+    #     ("Encyclopedia", "Dictionary"),         # Gate 16
+    #     ("Rat Tail", "Rabbit Tail"),            # Gate 17
+    #     ("Stasis Rope", "Mythril Pick"),        # Gate 18
+    #     ("Clock Gear", "Gun Gear"),             # Gate 19
+    #     ("Blood Shawl", "Blood Apple"),         # Gate 20
+    #     ("Eldagusto", "Cyril Ice"),             # Gate 21
+    #     ("Crystal", "Trichord"),                # Gate 22
+    #     ("Tranquil Box", "Flower Vase"),        # Gate 23
+    #     ("Cat's Tears", "Dame's Blush"),        # Gate 24
+    #     ("Justice Badge", "Friend Badge"),      # Gate 25
+    #     ("Love Potion", "Tonberry Lamp"),       # Gate 26
+    #     ("Runba's Tale", "The Hero Gaol"),      # Gate 27
+    #     ("Mind Ceffyl", "Body Ceffyl"),         # Gate 28
+    #     ("Ancient Bills", "Ancient Coins"),     # Gate 29
+    #     ("Blue Rose", "White Flowers"),         # Gate 30
+    #     ("Gysahl Greens", "Chocobo Egg"),       # Gate 31
+    #     ("Delta Fang", "Esteroth"),             # Gate 32
+    #     ("Moon Bloom", "Telaq Flowers"),        # Gate 33
+    # ]
+    gate_items = [(MissionUnlockItems[i].itemName,
+                   MissionUnlockItems[i+1].itemName) for i in range(0, len(MissionUnlockItems), 2)]
 
-    for i in range(0, num_gates):
-        item1 = gate_items[i][0]
-        item2 = gate_items[i][1]
-        
-        add_rule(world.multiworld.get_entrance(f"Gate {i+2}", world.player),
-            rule_generator(item1))
+    if world.options.progressive_gates.value == 1:
+        sphere = 0
+        for i in range(0, num_gates):
+            path = i % world.options.gate_paths.value
+            if path == 0:
+                sphere += 1
+            if world.options.gate_items.value == 1:
+                add_rule(world.multiworld.get_entrance(f"Gate {i+2}", world.player),
+                         rule_generator_progressive(world, f"Progressive Path {path+1}", sphere * 2))
+            else:
+                add_rule(world.multiworld.get_entrance(f"Gate {i+2}", world.player),
+                         rule_generator_progressive(world, f"Progressive Path {path+1}", sphere))
 
-        if world.options.gate_items.value == 1:
+            if world.options.gate_items.value == 2 and i < num_gates - (world.options.gate_paths.value - 1):
+                add_rule(world.multiworld.get_entrance(f"Dispatch Gate {i+2}", world.player),
+                         rule_generator_progressive(world, "Progressive Dispatch", (i+1)))
+
+    else:
+        for i in range(0, num_gates):
+            item1 = gate_items[i][0]
+            item2 = gate_items[i][1]
+
             add_rule(world.multiworld.get_entrance(f"Gate {i+2}", world.player),
-                rule_generator(item2))
+                     rule_generator(world, item1))
 
-        elif world.options.gate_items.value == 2 and i < num_gates - (world.options.gate_paths.value - 1):
-            add_rule(world.multiworld.get_entrance(f"Dispatch Gate {i+2}", world.player),
-                    rule_generator(item2))
+            if world.options.gate_items.value == 1:
+                add_rule(world.multiworld.get_entrance(f"Gate {i+2}", world.player),
+                         rule_generator(world, item2))
+
+            elif world.options.gate_items.value == 2 and i < num_gates - (world.options.gate_paths.value - 1):
+                add_rule(world.multiworld.get_entrance(f"Dispatch Gate {i+2}", world.player),
+                         rule_generator(world, item2))

@@ -31,7 +31,7 @@ mission_item_memory = 0x2002B08
 mission_items = []
 for i in range(64):
     mission_items.append(mission_item_memory)
-    mission_item_memory = mission_item_memory + 0x04
+    mission_item_memory += 0x04
 
 
 class MissionOffsets:
@@ -58,7 +58,7 @@ class MissionOffsets:
     price = 0x3e
     timeout_days = 0x40
     mission_display = 0x41
-    dispatch_ability = 0x43 # Set to 0 for all to be jumpy time
+    dispatch_ability = 0x43  # Set to 0 for all to be jumpy time
     mission_location = 0x45
 
 
@@ -95,8 +95,9 @@ class UnitOffsets:
     ability_reaction = 0x28
     ability_support = 0x29
 
+
 class UnitBattleOffsets:
-    #0x00 is name string
+    # 0x00 is name string
     character_id = 0x004
     first_item = 0x02A
     status_3 = 0x0EA
@@ -146,7 +147,7 @@ class JobID:
     blackmagemog = 0x2A
     timemagemog = 0x2B
 
-    #Monsters
+    # Monsters
     goblin = 0x2C
     red_cap = 0x2D
     jelly = 0x2E
@@ -212,6 +213,7 @@ class MissionNames(MemorySpace):
     byteSize = 0x4
     length = 0x196
 
+
 class Jobs(MemorySpace):
     offset = 0x521A14
     byteSize = 0x34
@@ -222,14 +224,14 @@ class Formation(MemorySpace):
     offset = 0x52cde0
     byteSize = 0x30
     length = 0xA46
-    #414 original length
+    # 414 original length
 
 
 class UnitInBattle(MemorySpace):
     offset = 0x2000080
     byteSize = 0x108
     length = 6
-    #Maybe see if it applies to enemy units as well?
+    # Maybe see if it applies to enemy units as well?
 
 
 class Missions(MemorySpace):
@@ -331,7 +333,8 @@ class FFTAData:
         self.numou_abilities = self.initializeNuMouAbilities()
         self.viera_abilities = self.initializeVieraAbilities()
         self.moogle_abilities = self.initializeMoogleAbilities()
-        self.all_abilities = self.human_abilities + self.bangaa_abilities + self.numou_abilities + self.viera_abilities + self.moogle_abilities
+        self.all_abilities = self.human_abilities + self.bangaa_abilities + self.numou_abilities + \
+            self.viera_abilities + self.moogle_abilities
         self.jobs = self.initializeJobs()
         #self.lawSets = self.initializeLawSets()
 
@@ -349,7 +352,7 @@ class FFTAData:
 
     def initializeFormations(self):
         formations = []
-        #414 original length
+        # 414 original length
         dataType = Formation(0x52cde0, 0x30, 0xA46)
         for n in range(dataType.length):
             memory = dataType.offset + dataType.byteSize * n
@@ -448,10 +451,10 @@ class FFTAData:
 
     #def initializeMissionNames(self):
         #names = []
-       # dataType = MissionNames()
+        #dataType = MissionNames()
         #for n in range(dataType.length):
-           # memory = dataType.offset + dataType.byteSize * n
-           # stringLookUpTable = self.rom.slice(memory, memory + dataType.byteSize)
+            #memory = dataType.offset + dataType.byteSize * n
+            #stringLookUpTable = self.rom.slice(memory, memory + dataType.byteSize)
 
             #address = FFTAUtils.getLittleEndianAddress(stringLookUpTable)
 
@@ -465,7 +468,7 @@ class FFTAData:
 
             #names.append(FFTAUtils.decodeFFTAText(self.rom.slice(startingByte, endingByte)))
 
-       # return names
+        #return names
 
 
 def get_random_job(random: Random, random_pool: int):
@@ -511,7 +514,3 @@ def get_random_job(random: Random, random_pool: int):
     elif random_pool == all_with_monster:
         random_job = random.choice(all_jobs_with_monster)
         return random_job
-
-
-
-

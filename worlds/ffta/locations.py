@@ -11,8 +11,8 @@ class FFTALocation(Location):
     def __init__(self, player: int, name: str = '', address: Optional[int] = None, parent: Optional[Region] = None):
         super().__init__(player, name, address, parent)
         self.offset = 2 if name.endswith("Reward 2") or name.endswith("Reward 5") else \
-                4 if name.endswith("Reward 3") or name.endswith("Reward 6") else \
-                0
+            4 if name.endswith("Reward 3") or name.endswith("Reward 6") else \
+            0
 
 
 class FFTALocationData(typing.NamedTuple):
@@ -1766,7 +1766,7 @@ FFTALocations: typing.List[FFTALocationData] = [
     FFTALocationData("The Nubswood Reward 4", 257, 0x55F58A),
     FFTALocationData("The Nubswood Reward 5", 257, 0x55F58B),
     FFTALocationData("The Nubswood Reward 6", 257, 0x55F58C),
-    
+
     FFTALocationData("Roda Volcano Reward 1", 258, 0x55f5cc),
     FFTALocationData("Roda Volcano Reward 2", 258, 0x55F5CD),
     FFTALocationData("Roda Volcano Reward 3", 258, 0x55F5CE),
@@ -2261,7 +2261,7 @@ for index in range(0, len(FFTALocations), 6):
 
     elif byte_i == 15 and bitflag_index == 1:
         bitflag_index = 7
-        
+
     elif byte_i == 39 and bitflag_index == 3:
         byte_i = 47
         bitflag_index = 0
@@ -2286,19 +2286,30 @@ for index in range(0, len(FFTALocations), 6):
 
     # Add dispatch missions to dispatch mission group
     if 125 <= FFTALocations[index].mission_id <= 312:
-        DispatchMissionGroups.append(tuple([[FFTALocations[index], FFTALocations[(index + 1)], FFTALocations[(index + 2)], FFTALocations[(index + 3)], FFTALocations[(index + 4)], FFTALocations[(index + 5)]], bitflags[bitflag_index], byte_i]))
+        DispatchMissionGroups.append(tuple([[FFTALocations[index],
+                                             FFTALocations[(index + 1)],
+                                             FFTALocations[(index + 2)],
+                                             FFTALocations[(index + 3)],
+                                             FFTALocations[(index + 4)],
+                                             FFTALocations[(index + 5)]], bitflags[bitflag_index], byte_i]))
 
     else:
-        MissionGroups.append(tuple([[FFTALocations[index], FFTALocations[(index + 1)], FFTALocations[(index + 2)], FFTALocations[(index + 3)], FFTALocations[(index + 4)], FFTALocations[(index + 5)]], bitflags[bitflag_index], byte_i]))
-        
-    bitflag_index = bitflag_index + 1
+        MissionGroups.append(tuple([[FFTALocations[index],
+                                     FFTALocations[(index + 1)],
+                                     FFTALocations[(index + 2)],
+                                     FFTALocations[(index + 3)],
+                                     FFTALocations[(index + 4)],
+                                     FFTALocations[(index + 5)]], bitflags[bitflag_index], byte_i]))
+
+    bitflag_index += 1
     if bitflag_index > 7:
         bitflag_index = 0
-        byte_i = byte_i + 1
+        byte_i += 1
 
 #for index, mission_group in enumerate(MissionGroups):
 #    print("Mission group index: " + str(index) + " mission group [0] consists of: " + mission_group[0].name)
 #    print("Mission group index: " + str(index) + " mission group [1] consists of: " + mission_group[1].name)
+
 
 def create_location_label_to_id_map() -> Dict[str, int]:
     """
@@ -2312,6 +2323,3 @@ def create_location_label_to_id_map() -> Dict[str, int]:
 
 
 location_flags: Dict
-
-
-

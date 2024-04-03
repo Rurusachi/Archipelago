@@ -3,7 +3,7 @@ Option definitions for Final Fantasy Tactics Advance
 """
 from typing import Dict
 from dataclasses import dataclass
-from Options import Choice, DefaultOnToggle, Option, OptionSet, Range, Toggle, FreeText, DeathLink, PerGameCommonOptions
+from Options import Choice, DefaultOnToggle, Option, OptionSet, Range, Toggle, FreeText, DeathLink, PerGameCommonOptions, NamedRange
 
 
 class StartingUnits(Choice):
@@ -189,7 +189,7 @@ class MissionOrder(Choice):
     Sets the option for the order of missions
 
     Linear: Missions are in order, with the first 26 being story.
-    Story as gate unlocks: The story missions in linear order will be the gate unlock mission for the first 23 gates. Every other mission is random. 
+    Story as gate unlocks: The story missions in linear order will be the gate unlock mission for the first 23 gates. Every other mission is random.
     Randomized: Missions are completely randomized
 
     """
@@ -232,7 +232,7 @@ class FinalMissionUnlock(Choice):
 class QuickOptions(Toggle):
     """
     Enables quick options by default which turn off attack names, exp popups, and turns on
-    fast text and fast cursor. All of these can be tweaked in the game options. 
+    fast text and fast cursor. All of these can be tweaked in the game options.
     """
     display_name = "Turn on quick options by default"
     default = 0
@@ -253,6 +253,7 @@ class ForceRecruitment(Choice):
     option_enabled = 1
     option_enabled_secret = 2
 
+
 class MissionRewards(Range):
     """
     Sets the number of rewards received from each mission. Must be between 2 and 6.
@@ -261,7 +262,47 @@ class MissionRewards(Range):
     default = 2
     range_start = 2
     range_end = 6
-    
+
+
+class ProgressiveGateItems(Toggle):
+    """
+    Always receive gate items in order.
+    If multiple gate paths are enabled each path will have a separate progressive item.
+    Enabled: Gate items are always receievd in order for each path.
+    """
+    display_name = "Always receive gate items in order"
+    default = 0
+
+
+class ProgressiveItemNumber(Range):
+    """
+    Sets how many additional progressive items are added to the pool.
+    If multiple gate paths are enabled this amount is added for each path.
+    0: There is exactly the amount of progressive items in the pool that is needed to reach the goal.
+    1 to 10: This amount of extra progressive items is added to the pool.
+    """
+    display_name = "Choose what excess progressive items turn into"
+    default = 0
+    range_start = 0
+    range_end = 10
+
+
+class ProgressiveExcessItems(NamedRange):
+    """
+    Sets what progressive items past the ones needed to reach the goal are replaced with.
+    Nothing (or 0): Excess progressive items don't give anything.
+    Random Equipment: Excess progressive items give a random non-consumable item.
+    Number between 1 and 375: Excess progressive items give the item with the corresponding id.
+    """
+    display_name = "Choose what excess progressive items turn into"
+    default = 0
+    range_start = 0
+    range_end = 0x177
+    special_range_names = {
+        "nothing": 0,
+        "random_equipment": 0x300
+        }
+
 
 @dataclass
 class FFTAOptions(PerGameCommonOptions):
@@ -287,4 +328,6 @@ class FFTAOptions(PerGameCommonOptions):
     quick_options: QuickOptions
     force_recruitment: ForceRecruitment
     mission_reward_num: MissionRewards
-
+    progressive_gates: ProgressiveGateItems
+    progressive_item_num: ProgressiveItemNumber
+    progressive_excess: ProgressiveExcessItems

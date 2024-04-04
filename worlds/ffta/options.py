@@ -71,13 +71,15 @@ class Laws(Choice):
     """
     Enable or disable the law and judge system found in the game. JP will rarely be awarded with laws turned off.
 
-    No Laws: Judges and laws are disabled. Judge units like in Decision Time become random units with all abilities mastered.
-    Laws: Laws are vanilla but are enabled. Judge units are vanilla.
+    No Laws: Judges and laws are disabled.
+    Laws: Laws are vanilla but are enabled.
+    Random laws: Laws are enabled and are randomized among law sets.
     """
     display_name = "Enables or disables laws/judges."
     default = 1
     option_disable_laws = 0
     option_enable_laws = 1
+    option_random_laws = 2
 
 
 class RandomEnemies(Choice):
@@ -126,10 +128,10 @@ class StartingGil(Range):
 
 class GateNumber(Range):
     """
-    Sets the number of mission gates. Each gate contains four missions each. Expect an hour added for every gate.
+    Sets the number of mission gates. Each gate contains four missions each. Expect an hour or more added for every gate.
     Royal Valley or Decision Time will always be the last mission depending on options.
 
-    (8 locations added for each gate)
+    Amount of locations per gate depends on number of item rewards and dispatch missions added
     """
     display_name = "Number of mission gates"
     default = 6
@@ -268,7 +270,7 @@ class ProgressiveGateItems(Toggle):
     """
     Always receive gate items in order.
     If multiple gate paths are enabled each path will have a separate progressive item.
-    Enabled: Gate items are always receievd in order for each path.
+    Enabled: Gate items are always received in order for each path.
     """
     display_name = "Always receive gate items in order"
     default = 0

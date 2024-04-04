@@ -164,6 +164,22 @@ def generate_output(world, player: int, output_directory: str) -> None:
         patch.write_token(APTokenTypes.WRITE, 0xCED86, bytes([0x00]))
         patch.write_token(APTokenTypes.WRITE, 0xCED87, bytes([0x20]))
 
+    # Randomize the laws found in the different law sets
+    if world.options.laws == Laws.option_random_laws:
+        law_memory = 0x528e1c
+        law_offset = 0
+        laws = []
+        for i in range(140):
+            laws.append(base_rom[law_memory + law_offset])
+            law_offset = law_offset + 2
+
+        law_offset = 0
+
+        world.random.shuffle(laws)
+        for i in range(140):
+            patch.write_token(APTokenTypes.WRITE, law_memory + law_offset, bytes([laws[i]]))
+            law_offset = law_offset + 2
+
     # Set quick options to on
     if world.options.quick_options.value == 1:
         patch.write_token(APTokenTypes.WRITE, 0x51ba4e, bytes([0xc8, 0x03]))

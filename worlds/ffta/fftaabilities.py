@@ -1,6 +1,6 @@
 from .data import UnitOffsets, JobID
 from typing import List, Tuple
-from .patcher import APTokenTypes
+from worlds.Files import APTokenTypes
 import random
 
 

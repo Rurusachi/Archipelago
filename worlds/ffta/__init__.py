@@ -28,7 +28,7 @@ from .items import (create_item_label_to_code_map, AllItems, item_table, FFTAIte
                     SoldierWeapons, PaladinWeapons, WarriorWeapons, DefenderWeapons, TemplarWeapons, AssassinWeapons,
                     DragoonWeapons)
 from .locations import (create_location_label_to_id_map)
-from .rom import FFTADeltaPatch, generate_output
+from .rom import FFTAProcedurePatch, generate_output
 
 
 class FFTAWebWorld(WebWorld):
@@ -53,7 +53,7 @@ class FFTASettings(settings.Group):
         """File name of your Final Fantasy Tactics Advance ROM"""
         description = "Final Fantasy Tactics Advance ROM File"
         copy_to = "Final Fantasy Tactics Advance (USA).gba"
-        md5s = [FFTADeltaPatch.hash]
+        md5s = [FFTAProcedurePatch.hash]
 
     rom_file: FFTARomFile = FFTARomFile(FFTARomFile.copy_to)
 

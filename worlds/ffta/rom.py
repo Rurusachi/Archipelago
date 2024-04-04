@@ -3,17 +3,10 @@ import pkgutil
 import random
 import struct
 import typing
-from typing import Tuple, Dict, Union, BinaryIO, List, Any
-import zipfile
-import json
 
-import bsdiff4
-
-import Utils
 from settings import get_settings
 
-from .patcher import (APTokenTypes, APTokenMixin, APProcedurePatch, APPatchExtension, AutoPatchExtensionRegister)
-from worlds.Files import APDeltaPatch
+from worlds.Files import APProcedurePatch, APTokenMixin, APTokenTypes
 from .options import Laws
 
 from .data import (FFTAData, UnitOffsets, MissionOffsets, JobOffsets, JobID)
@@ -28,12 +21,11 @@ def get_base_rom_as_bytes() -> bytes:
     return base_rom_bytes
 
 
-class FFTADeltaPatch(APDeltaPatch):
+class FFTAProcedurePatch(APProcedurePatch, APTokenMixin):
     game = "Final Fantasy Tactics Advance"
     hash = "cd99cdde3d45554c1b36fbeb8863b7bd"
     patch_file_ending = ".apffta"
     result_file_ending = ".gba"
-    files: Dict[str, bytes] = {}
 
     procedure = [
         ("apply_bsdiff4", ["base_patch.bsdiff4"]),
@@ -41,116 +33,12 @@ class FFTADeltaPatch(APDeltaPatch):
         ("apply_tokens", ["token_data.bin"]),
     ]
 
-    tokens: List[Tuple[int, int,
-                       Union[
-                           bytes,  # WRITE
-                           Tuple[int, int],  # COPY, RLE
-                           int  # AND_8, OR_8, XOR_8
-                           ]
-                       ]
-                 ] = []
-
-    def __init__(self, *args: typing.Any, **kwargs: typing.Any):
-        super().__init__(*args, **kwargs)
-        self.name = ""
-        self.tokens = []
-        self.files = {}
-
     @classmethod
     def get_source_data(cls) -> bytes:
         return get_base_rom_as_bytes()
 
-    @classmethod
-    def get_source_data_with_cache(cls) -> bytes:
-        if not hasattr(cls, "source_data"):
-            cls.source_data = cls.get_source_data()
-        return cls.source_data
 
-    def get_token_binary(self) -> bytes:
-        """
-        Returns the token binary created from stored tokens.
-        :return: A bytes object representing the token data.
-        """
-        data = bytearray()
-        data.extend(struct.pack("I", len(self.tokens)))
-        for token_type, offset, args in self.tokens:
-            data.append(token_type)
-            data.extend(struct.pack("I", offset))
-            if token_type in [APTokenTypes.AND_8, APTokenTypes.OR_8, APTokenTypes.XOR_8]:
-                data.extend(struct.pack("I", 1))
-                data.append(args)
-            elif token_type in [APTokenTypes.COPY, APTokenTypes.RLE]:
-                data.extend(struct.pack("I", 8))
-                data.extend(struct.pack("I", args[0]))
-                data.extend(struct.pack("I", args[1]))
-            else:
-                data.extend(struct.pack("I", len(args)))
-                data.extend(args)
-        return data
-
-    def write_token(self, token_type: APTokenTypes, offset: int, data: Union[bytes, Tuple[int, int], int]):
-        """
-        Stores a token to be used by patching.
-        """
-        self.tokens.append((token_type, offset, data))
-
-    def get_file(self, file: str) -> bytes:
-        """ Retrieves a file from the patch container."""
-        if file not in self.files:
-            self.read()
-        return self.files[file]
-
-    def write_file(self, file_name: str, file: bytes) -> None:
-        """ Writes a file to the patch container, to be retrieved upon patching. """
-        self.files[file_name] = file
-
-    def write_contents(self, opened_zipfile: zipfile.ZipFile) -> None:
-        super(APDeltaPatch, self).write_contents(opened_zipfile)
-        for file in self.files:
-            opened_zipfile.writestr(file, self.files[file],
-                                    compress_type=zipfile.ZIP_STORED if file.endswith(".bsdiff4") else None)
-
-    def read_contents(self, opened_zipfile: zipfile.ZipFile) -> None:
-        super(APDeltaPatch, self).read_contents(opened_zipfile)
-        with opened_zipfile.open("archipelago.json", "r") as f:
-            manifest = json.load(f)
-        # if manifest["version"] < 6:
-        # support patching files made before moving to procedures
-        # self.procedure = [("apply_bsdiff4", ["delta.bsdiff4"])]
-        # else:
-        self.procedure = manifest[
-            "procedure"]  # need to remove those lines in order for it to patch properly, otherwise it always assumes this is a delta patch
-        for file in opened_zipfile.namelist():
-            if file not in ["archipelago.json"]:
-                self.files[file] = opened_zipfile.read(file)
-
-    def get_manifest(self) -> Dict[str, Any]:
-        manifest = super(APDeltaPatch, self).get_manifest()
-        manifest["base_checksum"] = self.hash
-        manifest["result_file_ending"] = self.result_file_ending
-        manifest["patch_file_ending"] = self.patch_file_ending
-        manifest["procedure"] = self.procedure
-        return manifest
-
-    def patch(self, target):
-        self.read()
-        base_data = self.get_source_data_with_cache()
-        patch_extender = AutoPatchExtensionRegister.get_handler(self.game)
-        for step, args in self.procedure:
-            if isinstance(patch_extender, list):
-                extension = next((item for item in [getattr(extender, step, None) for extender in patch_extender]
-                                  if item is not None), None)
-            else:
-                extension = getattr(patch_extender, step, None)
-            if extension is not None:
-                base_data = extension(self, base_data, *args)
-            else:
-                raise NotImplementedError(f"Unknown procedure {step} for {self.game}.")
-        with open(target, 'wb') as f:
-            f.write(base_data)
-
-
-def unlock_mission(ffta_data, index: int, patch: FFTADeltaPatch):
+def unlock_mission(ffta_data, index: int, patch: FFTAProcedurePatch):
     patch.write_token(APTokenTypes.WRITE, ffta_data.missions[index].memory + MissionOffsets.unlockflag1,
                       bytes([0x00, 0x00, 0x00]))
     patch.write_token(APTokenTypes.WRITE, ffta_data.missions[index].memory + MissionOffsets.unlockflag2,
@@ -159,7 +47,7 @@ def unlock_mission(ffta_data, index: int, patch: FFTADeltaPatch):
                       bytes([0x00, 0x00, 0x00]))
 
 
-def randomize_unit(ffta_data, index: int, world, patch: FFTADeltaPatch):
+def randomize_unit(ffta_data, index: int, world, patch: FFTAProcedurePatch):
     # These were all 2 before, changing to 1 to see
     patch.write_token(APTokenTypes.WRITE, ffta_data.formations[index].memory + UnitOffsets.job,
                       struct.pack("<H", world.randomized_jobs[index]))
@@ -171,7 +59,7 @@ def randomize_unit(ffta_data, index: int, world, patch: FFTADeltaPatch):
                       bytes([0x00, 0x00]))
 
 
-def randomize_judge(ffta_data, index: int, random_index: int, world, patch: FFTADeltaPatch):
+def randomize_judge(ffta_data, index: int, random_index: int, world, patch: FFTAProcedurePatch):
     # Randomizing the judge encounters
     # Remove later
     patch.write_token(APTokenTypes.WRITE, ffta_data.formations[index].memory + UnitOffsets.job,
@@ -184,7 +72,7 @@ def randomize_judge(ffta_data, index: int, random_index: int, world, patch: FFTA
 
 
 def generate_output(world, player: int, output_directory: str) -> None:
-    patch = FFTADeltaPatch()
+    patch = FFTAProcedurePatch()
 
     patch.write_file("base_patch.bsdiff4", pkgutil.get_data(__name__, "ffta_data/base_patch.bsdiff4"))
     patch.write_file("progressive_random_patch.bsdiff4",
@@ -570,7 +458,7 @@ def generate_output(world, player: int, output_directory: str) -> None:
 
 
 def set_up_gates(ffta_data: FFTAData, num_gates: int, req_items, final_unlock: int, final_mission: int, dispatch: int,
-                 world, patch: FFTADeltaPatch) -> None:
+                 world, patch: FFTAProcedurePatch) -> None:
 
     unlock_mission(ffta_data, world.MissionGroups[0][0][0].mission_id, patch)
     unlock_mission(ffta_data, world.MissionGroups[1][0][0].mission_id, patch)
@@ -776,7 +664,7 @@ def set_up_gates(ffta_data: FFTAData, num_gates: int, req_items, final_unlock: i
 
 
 def set_mission_requirement(ffta_data: FFTAData, current_mission_ID: int, previous_mission_ID: int,
-                            patch: FFTADeltaPatch) -> None:
+                            patch: FFTAProcedurePatch) -> None:
 
     # Set the mission requirements to the specified mission ID
     patch.write_token(APTokenTypes.WRITE, ffta_data.missions[current_mission_ID].memory + MissionOffsets.unlockflag1,
@@ -809,7 +697,7 @@ def set_mission_requirement(ffta_data: FFTAData, current_mission_ID: int, previo
                       ffta_data.missions[current_mission_ID].memory + MissionOffsets.unlockflag3 + 2, bytes([0x00]))
 
 
-def set_items(multiworld, player, patch: FFTADeltaPatch) -> None:
+def set_items(multiworld, player, patch: FFTAProcedurePatch) -> None:
     offset = 41234532
 
     for location in multiworld.get_filled_locations(player):
@@ -829,7 +717,7 @@ def set_items(multiworld, player, patch: FFTADeltaPatch) -> None:
             patch.write_token(APTokenTypes.OR_8, location.address+1, byte2)
 
 
-def write_progressive_lists(world, patch: FFTADeltaPatch):
+def write_progressive_lists(world, patch: FFTAProcedurePatch):
     # Making sure unused paths still exist, so if an unused path item is received it won't break anything.
 
     excess_item_id = world.options.progressive_excess.value
@@ -860,11 +748,10 @@ def write_progressive_lists(world, patch: FFTADeltaPatch):
     initial_state = 0
     while (initial_state == 0):
         initial_state = world.random.getrandbits(32)
-    print(initial_state)
     patch.write_token(APTokenTypes.WRITE, 0x00b30604, struct.pack("L", initial_state))
 
 
-def set_required_items(ffta_data: FFTAData, index: int, itemid1, itemid2, patch: FFTADeltaPatch):
+def set_required_items(ffta_data: FFTAData, index: int, itemid1, itemid2, patch: FFTAProcedurePatch):
     patch.write_token(APTokenTypes.WRITE, ffta_data.missions[index].memory + MissionOffsets.required_item1,
                       bytes([itemid1 - 0x177]))
 

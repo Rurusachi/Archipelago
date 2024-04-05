@@ -169,6 +169,7 @@ def generate_output(world, player: int, output_directory: str) -> None:
         law_memory = 0x528e1c
         law_offset = 0
         laws = []
+        len(laws)
         for i in range(140):
             laws.append(base_rom[law_memory + law_offset])
             law_offset = law_offset + 2
@@ -334,15 +335,15 @@ def generate_output(world, player: int, output_directory: str) -> None:
     #    patch.write_token(APTokenTypes.WRITE, abilities.memory + AbilityOffsets.mp_cost, 1, 0x00)
 
     gate_number = world.options.gate_num.value
-    if gate_number > 30 and world.options.final_unlock.value == 1:
+    if gate_number > 30 and world.options.goal.value == 1:
         gate_number = 30
 
     set_up_gates(ffta_data, gate_number, world.options.gate_items.value,
-                 world.options.final_unlock.value, world.options.final_mission.value,
+                 world.options.goal.value, world.options.final_mission.value,
                  world.options.dispatch.value, world, patch)
 
     # Totema goal
-    if world.options.final_unlock.value == 1:
+    if world.options.goal.value == 1:
         unlock_mission(ffta_data, 4, patch)
 
         # Totema goal required items

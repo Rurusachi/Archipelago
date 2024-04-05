@@ -6,6 +6,20 @@ from dataclasses import dataclass
 from Options import Choice, DefaultOnToggle, Option, OptionSet, Range, Toggle, FreeText, DeathLink, PerGameCommonOptions, NamedRange
 
 
+class Goal(Choice):
+    """
+    Sets the unlock condition for the final mission
+
+    All mission gates: The final mission is unlocked after going through every mission gate.
+    Totema Gauntlet: A series of the five Totema battles must be cleared to unlock the final mission. These are
+    unlocked alongside the mission gates
+    """
+    display_name = "Goal"
+    default = 0
+    option_mission_gates = 0
+    option_totema = 1
+
+
 class StartingUnits(Choice):
     """
     Sets the option for your starting units
@@ -215,22 +229,6 @@ class FinalMission(Choice):
     option_decision_time = 1
 
 
-class FinalMissionUnlock(Choice):
-    """
-    Sets the unlock condition for the final mission
-
-    All mission gates: The final mission is unlocked after going through every mission gate.
-    Totemas: A series of the five Totema battles must be cleared to unlock the final mission. The first is unlocked by default and clearing it unlocks the next
-    and so on until the final mission is unlocked. Allows for the possibility of not having to go through every mission gate to beat the game. Items required to beat the game
-    in totema mode include the four elemental sigils and the old statue and however many gate items are needed to acquire them.
-    (Totemas option adds five progression items needed to unlock the totema missions to the pool and 10 item locations, also max gate number with Totema Goal is 31, if set higher, it will be set to 31)
-    """
-    display_name = "Final Mission Unlock Requirements"
-    default = 0
-    option_mission_gates = 0
-    option_totema = 1
-
-
 class QuickOptions(Toggle):
     """
     Enables quick options by default which turn off attack names, exp popups, and turns on
@@ -309,6 +307,7 @@ class ProgressiveExcessItems(NamedRange):
 @dataclass
 class FFTAOptions(PerGameCommonOptions):
     #"death_link": DeathLink,
+    goal: Goal
     starting_units: StartingUnits
     starting_unit_equip: StartingUnitEquip
     starting_abilities: StartingAbilitiesMastered
@@ -326,7 +325,6 @@ class FFTAOptions(PerGameCommonOptions):
     gate_items: GateUnlock
     mission_order: MissionOrder
     final_mission: FinalMission
-    final_unlock: FinalMissionUnlock
     quick_options: QuickOptions
     force_recruitment: ForceRecruitment
     mission_reward_num: MissionRewards

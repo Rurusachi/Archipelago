@@ -118,7 +118,7 @@ def create_regions(world, player) -> None:
     #   FFTAValidLocations.append(location)
 
     # Adding totema missions to list and deleting them from mission groups
-    if world.options.final_unlock.value == 1:
+    if world.options.goal.value == 1:
         for location in world.MissionGroups[4][0]:
             TotemaLocations.append(FFTALocation(player, location.name, location.rom_address))
 
@@ -150,7 +150,7 @@ def create_regions(world, player) -> None:
         end_range = 23
 
         # Account for the removed totema missions if that option is selected
-        if world.options.final_unlock.value == 1:
+        if world.options.goal.value == 1:
             end_range = 17
 
         for index in range(0, end_range):
@@ -348,7 +348,7 @@ def create_regions(world, player) -> None:
     gate_number = world.options.gate_num.value
 
     # Might need to change this to 29 for now because of removal of missions
-    if gate_number > 30 and world.options.final_unlock.value == 1:
+    if gate_number > 30 and world.options.goal.value == 1:
         gate_number = 30
 
     dispatch_gate_number = gate_number
@@ -431,7 +431,7 @@ def create_regions(world, player) -> None:
         world.path3_length = path_lengths[2]
 
     # Set up regions for totema unlock option
-    if world.options.final_unlock.value == 1:
+    if world.options.goal.value == 1:
         totema1 = Region("Totema 1", player, world.multiworld)
         totema2 = Region("Totema 2", player, world.multiworld)
         totema3 = Region("Totema 3", player, world.multiworld)

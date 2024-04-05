@@ -19,7 +19,7 @@ from .rules import set_rules
 
 from .options import (FFTAOptions, StartingUnits, StartingUnitEquip, StartingAbilitiesMastered, JobUnlockReq,
                       RandomEnemies, EnemyScaling, DoubleExp, StartingGil, GateNumber, GatePaths, DispatchMissions,
-                      DispatchRandom, GateUnlock, MissionOrder, FinalMission, FinalMissionUnlock, QuickOptions,
+                      DispatchRandom, GateUnlock, MissionOrder, FinalMission, Goal, QuickOptions,
                       ForceRecruitment, ProgressiveGateItems)
 from .items import (create_item_label_to_code_map, AllItems, item_table, FFTAItem, WeaponBlades,
                     WeaponSabers, WeaponKatanas, WeaponBows, WeaponGreatBows, WeaponRods, WeaponStaves, WeaponKnuckles,
@@ -119,14 +119,14 @@ class FFTAWorld(World):
 
         # Count number of mission reward locations, account for totema goal
         gate_number = self.options.gate_num.value
-        if gate_number > 30 and self.options.final_unlock == FinalMissionUnlock.option_totema:
+        if gate_number > 30 and self.options.goal == Goal.option_totema:
             gate_number = 30
 
         dispatch_number = self.options.dispatch.value * self.options.mission_reward_num.value
         unfilled_locations = gate_number * self.options.mission_reward_num.value * 4 + gate_number * dispatch_number + 1
 
         # Add totema mission locations to unfilled location count
-        if self.options.final_unlock == FinalMissionUnlock.option_totema:
+        if self.options.goal == Goal.option_totema:
             unfilled_locations += self.options.mission_reward_num.value * 5
 
         # Add extra locations for multiple gate paths
@@ -218,7 +218,7 @@ class FFTAWorld(World):
                 item_index += 2
 
         # Add totema unlock items to pool if option is selected
-        if self.options.final_unlock == FinalMissionUnlock.option_totema:
+        if self.options.goal == Goal.option_totema:
             for i in range(0, len(TotemaUnlockItems)):
                 required_items.append(TotemaUnlockItems[i].itemName)
         return required_items

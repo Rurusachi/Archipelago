@@ -38,12 +38,15 @@ class FFTAClient(BizHawkClient):
     job_unlock: bool = False
     goal_flag: int
     goal_id: int = 0
+    progressive_items: bool
 
     def __init__(self) -> None:
         super().__init__()
         self.local_checked_locations = set()
         self.local_set_events = {}
         self.path_items = []
+        self.progressive_items = False
+
 
     async def validate_rom(self, ctx: BizHawkClientContext) -> bool:
 
@@ -93,6 +96,9 @@ class FFTAClient(BizHawkClient):
             elif ctx.slot_data["final_mission"] == FinalMission.option_decision_time:
                 self.goal_id = 0x93
 
+            if ctx.slot_data["progressive_gates"] == 1:
+                self.progressive_items = True
+
             """
             if "job_unlock_req" in ctx.slot_data:
                 if ctx.slot_data["job_unlock_req"] == JobUnlockReq.option_job_items:
@@ -104,28 +110,29 @@ class FFTAClient(BizHawkClient):
             #    self.job_unlock = True
 
         try:
-            if len(self.path_items) == 0:
-                path_data = await bizhawk.read(ctx.bizhawk_ctx,
-                                               [(0x00b30608, 4, "ROM"),
-                                                (0x00b30608 + 4, 4, "ROM"),
-                                                (0x00b30608 + 8, 4, "ROM"),
-                                                (0x00b30608 + 12, 4, "ROM"),
-                                                (0x00b30608 + 16, 1, "ROM"),
-                                                (0x00b30608 + 17, 1, "ROM"),
-                                                (0x00b30608 + 18, 1, "ROM"),
-                                                (0x00b30608 + 19, 1, "ROM"),]
-                                               )
-                path_pointers = [int.from_bytes(x, "little") - 0x08000000 for x in path_data[0:4]]
-                path_lengths = [int.from_bytes(x, "little")+1 for x in path_data[4:8]]
+            if self.progressive_items:
+                if len(self.path_items) == 0:
+                    path_data = await bizhawk.read(ctx.bizhawk_ctx,
+                                                   [(0x00b30608, 4, "ROM"),
+                                                    (0x00b30608 + 4, 4, "ROM"),
+                                                    (0x00b30608 + 8, 4, "ROM"),
+                                                    (0x00b30608 + 12, 4, "ROM"),
+                                                    (0x00b30608 + 16, 1, "ROM"),
+                                                    (0x00b30608 + 17, 1, "ROM"),
+                                                    (0x00b30608 + 18, 1, "ROM"),
+                                                    (0x00b30608 + 19, 1, "ROM"),]
+                                                   )
+                    path_pointers = [int.from_bytes(x, "little") - 0x08000000 for x in path_data[0:4]]
+                    path_lengths = [int.from_bytes(x, "little")+1 for x in path_data[4:8]]
 
-                path_items = await bizhawk.read(ctx.bizhawk_ctx,
-                                                [(path_pointers[0], path_lengths[0]*2, "ROM"),
-                                                 (path_pointers[1], path_lengths[1]*2, "ROM"),
-                                                 (path_pointers[2], path_lengths[2]*2, "ROM"),
-                                                 (path_pointers[3], path_lengths[3]*2, "ROM"),]
-                                                )
-                for path in range(0, 4):
-                    self.path_items.append(list(struct.unpack("H"*path_lengths[path], path_items[path])))
+                    path_items = await bizhawk.read(ctx.bizhawk_ctx,
+                                                    [(path_pointers[0], path_lengths[0]*2, "ROM"),
+                                                     (path_pointers[1], path_lengths[1]*2, "ROM"),
+                                                     (path_pointers[2], path_lengths[2]*2, "ROM"),
+                                                     (path_pointers[3], path_lengths[3]*2, "ROM"),]
+                                                    )
+                    for path in range(0, 4):
+                        self.path_items.append(list(struct.unpack("H"*path_lengths[path], path_items[path])))
         
             offset = 41234532
             flag_list = [(0x2001FD0, 50, "System Bus"), (0x2001FD1, 1, "System Bus"),

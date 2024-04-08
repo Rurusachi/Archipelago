@@ -736,34 +736,34 @@ FFTALocations: typing.List[FFTALocationData] = [
     FFTALocationData("Wyrms Awaken Reward 5", 103, 0x55CB6F),
     FFTALocationData("Wyrms Awaken Reward 6", 103, 0x55CB70),
 
-    # League missions currently not working
-    #FFTALocationData("Yellow Powerz Reward 1", 104, 0x55cbb0),
-    #FFTALocationData("Yellow Powerz Reward 2", 104, 0x55CBB1),
-    #FFTALocationData("Yellow Powerz Reward 3", 104, 0x55CBB2),
-    #FFTALocationData("Yellow Powerz Reward 4", 104, 0x55CBB4),
-    #FFTALocationData("Yellow Powerz Reward 5", 104, 0x55CBB5),
-    #FFTALocationData("Yellow Powerz Reward 6", 104, 0x55CBB6),
 
-    #FFTALocationData("Blue Geniuses Reward 1", 105, 0x55cbf6),
-    #FFTALocationData("Blue Geniuses Reward 2", 105, 0x55CBF7),
-    #FFTALocationData("Blue Geniuses Reward 3", 105, 0x55CBF8),
-    #FFTALocationData("Blue Geniuses Reward 4", 105, 0x55CBFA),
-    #FFTALocationData("Blue Geniuses Reward 5", 105, 0x55CBFB),
-    #FFTALocationData("Blue Geniuses Reward 6", 105, 0x55CBFC),
+    FFTALocationData("Yellow Powerz Reward 1", 104, 0x55cbb0),
+    FFTALocationData("Yellow Powerz Reward 2", 104, 0x55CBB1),
+    FFTALocationData("Yellow Powerz Reward 3", 104, 0x55CBB2),
+    FFTALocationData("Yellow Powerz Reward 4", 104, 0x55CBB4),
+    FFTALocationData("Yellow Powerz Reward 5", 104, 0x55CBB5),
+    FFTALocationData("Yellow Powerz Reward 6", 104, 0x55CBB6),
 
-    #FFTALocationData("Brown Rabbits Reward 1", 106, 0x55cc3c),
-    #FFTALocationData("Brown Rabbits Reward 2", 106, 0x55CC3D),
-    #FFTALocationData("Brown Rabbits Reward 3", 106, 0x55CC3E),
-    #FFTALocationData("Brown Rabbits Reward 4", 106, 0x55CC40),
-    #FFTALocationData("Brown Rabbits Reward 5", 106, 0x55CC41),
-    #FFTALocationData("Brown Rabbits Reward 6", 106, 0x55CC42),
+    FFTALocationData("Blue Geniuses Reward 1", 105, 0x55cbf6),
+    FFTALocationData("Blue Geniuses Reward 2", 105, 0x55CBF7),
+    FFTALocationData("Blue Geniuses Reward 3", 105, 0x55CBF8),
+    FFTALocationData("Blue Geniuses Reward 4", 105, 0x55CBFA),
+    FFTALocationData("Blue Geniuses Reward 5", 105, 0x55CBFB),
+    FFTALocationData("Blue Geniuses Reward 6", 105, 0x55CBFC),
 
-    #FFTALocationData("White Kupos Reward 1", 107, 0x55cc82),
-    #FFTALocationData("White Kupos Reward 2", 107, 0x55CC83),
-    #FFTALocationData("White Kupos Reward 3", 107, 0x55CC84),
-    #FFTALocationData("White Kupos Reward 4", 107, 0x55CC86),
-    #FFTALocationData("White Kupos Reward 5", 107, 0x55CC87),
-    #FFTALocationData("White Kupos Reward 6", 107, 0x55CC88),
+    FFTALocationData("Brown Rabbits Reward 1", 106, 0x55cc3c),
+    FFTALocationData("Brown Rabbits Reward 2", 106, 0x55CC3D),
+    FFTALocationData("Brown Rabbits Reward 3", 106, 0x55CC3E),
+    FFTALocationData("Brown Rabbits Reward 4", 106, 0x55CC40),
+    FFTALocationData("Brown Rabbits Reward 5", 106, 0x55CC41),
+    FFTALocationData("Brown Rabbits Reward 6", 106, 0x55CC42),
+
+    FFTALocationData("White Kupos Reward 1", 107, 0x55cc82),
+    FFTALocationData("White Kupos Reward 2", 107, 0x55CC83),
+    FFTALocationData("White Kupos Reward 3", 107, 0x55CC84),
+    FFTALocationData("White Kupos Reward 4", 107, 0x55CC86),
+    FFTALocationData("White Kupos Reward 5", 107, 0x55CC87),
+    FFTALocationData("White Kupos Reward 6", 107, 0x55CC88),
 
     FFTALocationData("Mythril Rush Reward 1", 108, 0x55ccc8),
     FFTALocationData("Mythril Rush Reward 2", 108, 0x55CCC9),
@@ -1739,26 +1739,26 @@ FFTALocations: typing.List[FFTALocationData] = [
     FFTALocationData("Lutia Pass Reward 5", 253, 0x55F473),
     FFTALocationData("Lutia Pass Reward 6", 253, 0x55F474),
 
-    FFTALocationData("Eluut Sands Reward 1", 254, 0x55f4b4),
-    FFTALocationData("Eluut Sands Reward 2", 254, 0x55F4B5),
-    FFTALocationData("Eluut Sands Reward 3", 254, 0x55F4B6),
-    FFTALocationData("Eluut Sands Reward 4", 254, 0x55F4B8),
-    FFTALocationData("Eluut Sands Reward 5", 254, 0x55F4B9),
-    FFTALocationData("Eluut Sands Reward 6", 254, 0x55F4BA),
+    FFTALocationData("The Nubswood Reward 1", 254, 0x55f4b4),
+    FFTALocationData("The Nubswood Reward 2", 254, 0x55F4B5),
+    FFTALocationData("The Nubswood Reward 3", 254, 0x55F4B6),
+    FFTALocationData("The Nubswood Reward 4", 254, 0x55F4B8),
+    FFTALocationData("The Nubswood Reward 5", 254, 0x55F4B9),
+    FFTALocationData("The Nubswood Reward 6", 254, 0x55F4BA),
 
-    FFTALocationData("Ulei River Reward 1", 255, 0x55f4fa),
-    FFTALocationData("Ulei River Reward 2", 255, 0x55F4FB),
-    FFTALocationData("Ulei River Reward 3", 255, 0x55F4FC),
-    FFTALocationData("Ulei River Reward 4", 255, 0x55F4FE),
-    FFTALocationData("Ulei River Reward 5", 255, 0x55F4FF),
-    FFTALocationData("Ulei River Reward 6", 255, 0x55F500),
+    FFTALocationData("Eluut Sands Reward 1", 255, 0x55f4fa),
+    FFTALocationData("Eluut Sands Reward 2", 255, 0x55F4FB),
+    FFTALocationData("Eluut Sands Reward 3", 255, 0x55F4FC),
+    FFTALocationData("Eluut Sands Reward 4", 255, 0x55F4FE),
+    FFTALocationData("Eluut Sands Reward 5", 255, 0x55F4FF),
+    FFTALocationData("Eluut Sands Reward 6", 255, 0x55F500),
 
-    FFTALocationData("Aisenfield Reward 1", 256, 0x55f540),
-    FFTALocationData("Aisenfield Reward 2", 256, 0x55F541),
-    FFTALocationData("Aisenfield Reward 3", 256, 0x55F542),
-    FFTALocationData("Aisenfield Reward 4", 256, 0x55F544),
-    FFTALocationData("Aisenfield Reward 5", 256, 0x55F545),
-    FFTALocationData("Aisenfield Reward 6", 256, 0x55F546),
+    FFTALocationData("Ulei River Reward 1", 256, 0x55f540),
+    FFTALocationData("Ulei River Reward 2", 256, 0x55F541),
+    FFTALocationData("Ulei River Reward 3", 256, 0x55F542),
+    FFTALocationData("Ulei River Reward 4", 256, 0x55F544),
+    FFTALocationData("Ulei River Reward 5", 256, 0x55F545),
+    FFTALocationData("Ulei River Reward 6", 256, 0x55F546),
 
     FFTALocationData("The Nubswood Reward 1", 257, 0x55f586),
     FFTALocationData("The Nubswood Reward 2", 257, 0x55F587),
@@ -2253,8 +2253,8 @@ for index in range(0, len(FFTALocations), 6):
         bitflag_index = 6
 
     # Skipping the league mission bitflags for now
-    elif byte_i == 13 and bitflag_index == 2:
-        bitflag_index = 6
+    #elif byte_i == 13 and bitflag_index == 2:
+    #    bitflag_index = 6
 
     elif byte_i == 14 and bitflag_index == 2:
         bitflag_index = 3

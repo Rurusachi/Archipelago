@@ -232,7 +232,8 @@ class FFTAWorld(World):
 
         slot_data = self.options.as_dict(
             "final_mission",
-            "job_unlock_req"
+            "job_unlock_req",
+            "progressive_gates"
         )
 
         return slot_data
@@ -297,7 +298,7 @@ class FFTAWorld(World):
             if self.options.starting_units == StartingUnits.option_starting_balanced:
                 self.randomized_jobs.append(self.balanced_jobs[0])
 
-            #Prevent Marche from being rolled into a monster
+            # Prevent Marche from being rolled into a monster
             elif self.options.starting_units == StartingUnits.option_random_monster:
                 self.randomized_jobs.append(get_random_job(self.random, all))
 

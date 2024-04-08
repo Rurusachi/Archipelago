@@ -13,7 +13,7 @@ def rule_generator_progressive(world, item: str, num: int) -> CollectionRule:
 def set_rules(world) -> None:
 
     # Set final mission unlock to require all paths based on settings
-    if world.options.final_unlock.value == 0:
+    if world.options.goal.value == 0:
         final_mission_names = ["Royal Valley", "Decision Time"]
         final_mission = final_mission_names[world.options.final_mission.value]
         if world.options.gate_paths.value > 1:
@@ -21,7 +21,7 @@ def set_rules(world) -> None:
                 add_rule(world.multiworld.get_location(final_mission, world.player),
                          rule_generator(world, f"Path {path+1} Complete"))
 
-    if world.options.final_unlock.value == 1:
+    if world.options.goal.value == 1:
         add_rule(world.multiworld.get_entrance("Totema 1", world.player),
                  lambda state: state.has("Water Sigil", world.player))
 

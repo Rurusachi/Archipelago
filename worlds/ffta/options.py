@@ -149,7 +149,7 @@ class GateNumber(Range):
     """
     display_name = "Number of mission gates"
     default = 6
-    range_start = 4
+    range_start = 1
     range_end = 28
 
 

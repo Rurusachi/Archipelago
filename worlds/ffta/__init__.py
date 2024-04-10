@@ -113,10 +113,6 @@ class FFTAWorld(World):
 
         required_items = self.get_required_items()
 
-        # Adding required items to the pool first
-        for itemName in required_items:
-            self.multiworld.itempool.append(self.create_item(itemName))
-
         # Count number of mission reward locations, account for totema goal
         gate_number = self.options.gate_num.value
         if gate_number > 30 and self.options.goal == Goal.option_totema:
@@ -132,6 +128,29 @@ class FFTAWorld(World):
         # Add extra locations for multiple gate paths
         unfilled_locations += self.options.mission_reward_num.value * (self.options.gate_paths.value - 1)
 
+        items_remaining = unfilled_locations - len(required_items)
+
+        path_index = 0
+        paths = ["Progressive Path 1", "Progressive Path 2", "Progressive Path 3"]
+        if self.options.gate_items.value == 2:
+            paths.append("Progressive Dispatch")
+
+        # Prevent putting more items than locations into the pool with excess progressive items
+        while items_remaining <= 0:
+            index = required_items.index(paths[path_index])
+            del required_items[index]
+            if self.options.gate_items.value == 2 and path_index == 3:
+                path_index = 0
+            elif path_index == 2:
+                path_index = 0
+            else:
+                path_index += 1
+            items_remaining = unfilled_locations - len(required_items)
+
+        # Adding required items to the pool first
+        for itemName in required_items:
+            self.multiworld.itempool.append(self.create_item(itemName))
+
         useful_items = []
         for item in AllItems:
             if item.progression == ItemClassification.useful:
@@ -145,8 +164,6 @@ class FFTAWorld(World):
 
         # Shuffle the useful items to be added to the pool based on the locations remaining
         self.random.shuffle(useful_items)
-
-        items_remaining = unfilled_locations - len(required_items)
 
         for i in range(items_remaining - 1):
             if i > len(useful_items) - 1:

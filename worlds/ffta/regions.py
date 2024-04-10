@@ -423,7 +423,8 @@ def create_regions(world, player) -> None:
             path[-1].connect(path_completes[i], path_completes[i].name)
 
             # Connect the path finish events to the final mission
-            path_completes[i].connect(final_mission, final_mission.name)
+            if world.options.goal.value == 0:
+                path_completes[i].connect(final_mission, final_mission.name)
 
         # Setting the lengths of the paths
         world.path1_length = path_lengths[0]
@@ -444,30 +445,15 @@ def create_regions(world, player) -> None:
         world.multiworld.regions.append(totema4)
         world.multiworld.regions.append(totema5)
 
-        totema1.locations.append(TotemaLocations[0])
-        totema1.locations.append(TotemaLocations[1])
-        TotemaLocations[0].parent_region = totema1
-        TotemaLocations[1].parent_region = totema1
+        totema_regions = [totema1, totema2, totema3, totema4, totema5]
 
-        totema2.locations.append(TotemaLocations[2])
-        totema2.locations.append(TotemaLocations[3])
-        TotemaLocations[2].parent_region = totema2
-        TotemaLocations[3].parent_region = totema2
-
-        totema3.locations.append(TotemaLocations[4])
-        totema3.locations.append(TotemaLocations[5])
-        TotemaLocations[4].parent_region = totema3
-        TotemaLocations[5].parent_region = totema3
-
-        totema4.locations.append(TotemaLocations[6])
-        totema4.locations.append(TotemaLocations[7])
-        TotemaLocations[6].parent_region = totema4
-        TotemaLocations[7].parent_region = totema4
-
-        totema5.locations.append(TotemaLocations[8])
-        totema5.locations.append(TotemaLocations[9])
-        TotemaLocations[8].parent_region = totema5
-        TotemaLocations[9].parent_region = totema5
+        start = 0
+        for i in range(0, 5):
+            for j in range(start,
+                           (world.options.mission_reward_num.value + world.options.mission_reward_num.value * i)):
+                totema_regions[i].locations.append(TotemaLocations[j])
+                TotemaLocations[j].parent_region = totema_regions[i]
+                start += 1
 
         menu_region.connect(totema1, "Totema 1")
         totema1.connect(totema2, "Totema 2")
@@ -477,6 +463,6 @@ def create_regions(world, player) -> None:
         totema5.connect(final_mission)
 
     # Set the final mission to connect to the last mission in the path
-    if world.options.gate_paths.value == 1:
+    if world.options.gate_paths.value == 1 and world.options.goal.value == 0:
         # Always connect the last gate to the final mission for the mission gate goal
         valid_gates[gate_number].connect(final_mission)

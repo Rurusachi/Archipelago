@@ -64,7 +64,7 @@ class FFTAWorld(World):
     """
     game = "Final Fantasy Tactics Advance"
     web = FFTAWebWorld()
-    topology_present = True
+    topology_present = False
 
     settings_key = "ffta_options"
     settings: ClassVar[FFTASettings]

@@ -1760,12 +1760,12 @@ FFTALocations: typing.List[FFTALocationData] = [
     FFTALocationData("Ulei River Reward 5", 256, 0x55F545),
     FFTALocationData("Ulei River Reward 6", 256, 0x55F546),
 
-    FFTALocationData("The Nubswood Reward 1", 257, 0x55f586),
-    FFTALocationData("The Nubswood Reward 2", 257, 0x55F587),
-    FFTALocationData("The Nubswood Reward 3", 257, 0x55F588),
-    FFTALocationData("The Nubswood Reward 4", 257, 0x55F58A),
-    FFTALocationData("The Nubswood Reward 5", 257, 0x55F58B),
-    FFTALocationData("The Nubswood Reward 6", 257, 0x55F58C),
+    FFTALocationData("Aisenfield Reward 1", 257, 0x55f586),
+    FFTALocationData("Aisenfield Reward 2", 257, 0x55F587),
+    FFTALocationData("Aisenfield Reward 3", 257, 0x55F588),
+    FFTALocationData("Aisenfield Reward 4", 257, 0x55F58A),
+    FFTALocationData("Aisenfield Reward 5", 257, 0x55F58B),
+    FFTALocationData("Aisenfield Reward 6", 257, 0x55F58C),
 
     FFTALocationData("Roda Volcano Reward 1", 258, 0x55f5cc),
     FFTALocationData("Roda Volcano Reward 2", 258, 0x55F5CD),

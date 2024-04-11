@@ -90,7 +90,8 @@ def set_rules(world) -> None:
                 add_rule(world.multiworld.get_entrance(f"Gate {i+2}", world.player),
                          rule_generator_progressive(world, f"Progressive Path {path+1}", sphere))
 
-            if world.options.gate_items.value == 2 and i < num_gates - (world.options.gate_paths.value - 1):
+            if world.options.gate_items.value == 2 and i < num_gates - (world.options.gate_paths.value - 1) \
+                    and world.options.dispatch.value > 0:
                 add_rule(world.multiworld.get_entrance(f"Dispatch Gate {i+2}", world.player),
                          rule_generator_progressive(world, "Progressive Dispatch", (i+1)))
 
@@ -106,6 +107,7 @@ def set_rules(world) -> None:
                 add_rule(world.multiworld.get_entrance(f"Gate {i+2}", world.player),
                          rule_generator(world, item2))
 
-            elif world.options.gate_items.value == 2 and i < num_gates - (world.options.gate_paths.value - 1):
+            elif world.options.gate_items.value == 2 and i < num_gates - (world.options.gate_paths.value - 1)\
+                    and world.options.dispatch.value > 0:
                 add_rule(world.multiworld.get_entrance(f"Dispatch Gate {i+2}", world.player),
                          rule_generator(world, item2))

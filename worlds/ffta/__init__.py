@@ -132,7 +132,7 @@ class FFTAWorld(World):
 
         path_index = 0
         paths = ["Progressive Path 1", "Progressive Path 2", "Progressive Path 3"]
-        if self.options.gate_items.value == 2:
+        if self.options.gate_items.value == 2 and self.options.dispatch.value > 0:
             paths.append("Progressive Dispatch")
 
         # Prevent putting more items than locations into the pool with excess progressive items
@@ -217,7 +217,7 @@ class FFTAWorld(World):
                                                                           self.options.progressive_item_num.value)
                 required_items.extend(progressives_required)
 
-            if self.options.gate_items == GateUnlock.option_dispatch_gate:
+            if self.options.gate_items == GateUnlock.option_dispatch_gate and self.options.dispatch.value > 0:
                 req_dispatch_gate_num = req_gate_num - (self.options.gate_paths.value - 1)
                 progressives_required = ["Progressive Dispatch"] * (req_dispatch_gate_num +
                                                                     self.options.progressive_item_num.value)
@@ -229,7 +229,8 @@ class FFTAWorld(World):
                 required_items.append(MissionUnlockItems[item_index].itemName)
 
                 # Add second item for the gate unlock
-                if self.options.gate_items == GateUnlock.option_two or self.options.gate_items == GateUnlock.option_dispatch_gate:
+                if self.options.gate_items == GateUnlock.option_two or \
+                        (self.options.gate_items == GateUnlock.option_dispatch_gate and self.options.dispatch.value > 0):
                     required_items.append(MissionUnlockItems[item_index + 1].itemName)
 
                 item_index += 2
@@ -275,7 +276,7 @@ class FFTAWorld(World):
             self.path_items[path] = path_items
             #self.path_items.append(path_items)
 
-        if self.options.gate_items == GateUnlock.option_dispatch_gate:
+        if self.options.gate_items == GateUnlock.option_dispatch_gate and self.options.dispatch.value > 0:
             req_dispatch_gate_num = req_gate_num - (self.options.gate_paths.value - 1)
             item_index = 1
             path_items = []

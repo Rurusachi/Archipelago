@@ -189,7 +189,7 @@ class GateUnlock(Choice):
     One Mission item: Mission gates are unlocked by one mission item. Gate unlocks both encounter and dispatch missions.
     Two Mission items: Mission gates are unlocked by two mission items. Gate unlocks both encounter and dispatch missions.
     Dispatch mission gate: Dispatch missions are separated into their own gate sequence which each require an item.
-    Dispatch missions must be more than 0 for this setting or it will default to one mission item.
+    Dispatch missions must be more than 0 for this setting or it will be ignored
 
     (Adds 1 or 2 progression items to the pool for each gate depending on the setting)
     """
@@ -271,7 +271,7 @@ class ProgressiveGateItems(Toggle):
     Enabled: Gate items are always received in order for each path.
     """
     display_name = "Always receive gate items in order"
-    default = 0
+    default = 1
 
 
 class ProgressiveItemNumber(Range):
@@ -282,7 +282,7 @@ class ProgressiveItemNumber(Range):
     1 to 10: This amount of extra progressive items is added to the pool.
     """
     display_name = "Choose what excess progressive items turn into"
-    default = 0
+    default = 3
     range_start = 0
     range_end = 10
 

@@ -464,7 +464,6 @@ def generate_output(world, player: int, output_directory: str) -> None:
     # TO DO. Fix this to work on procedure patch
     # patch.write_token(APTokenTypes.WRITE, 0xAAABD0, world.multiworld.player_name[player].encode("utf-8"))
 
-    unlock_mission(ffta_data, 254, patch)
     patch.write_file("token_data.bin", patch.get_token_binary())
 
     # Write Output

@@ -63,11 +63,11 @@ def randomize_judge(ffta_data, index: int, random_index: int, world, patch: FFTA
     # Randomizing the judge encounters
     # Remove later
     patch.write_token(APTokenTypes.WRITE, ffta_data.formations[index].memory + UnitOffsets.job,
-                      struct.pack("H", world.randomized_judge[random_index]))
+                      struct.pack("<H", world.randomized_judge[random_index]))
     patch.write_token(APTokenTypes.WRITE, ffta_data.formations[index].memory + UnitOffsets.unit_item1,
-                      struct.pack("H", world.judge_weapon[random_index]))
+                      struct.pack("<H", world.judge_weapon[random_index]))
     patch.write_token(APTokenTypes.WRITE, ffta_data.formations[index].memory + UnitOffsets.unit_item2,
-                      struct.pack("H", world.judge_equip[random_index]))
+                      struct.pack("<H", world.judge_equip[random_index]))
     patch.write_token(APTokenTypes.WRITE, ffta_data.formations[index].memory + UnitOffsets.unit_item3, bytes([0x00]))
 
 
@@ -383,9 +383,9 @@ def generate_output(world, player: int, output_directory: str) -> None:
             # Set the basic weapons and equipment if the option is selected
             if world.options.starting_unit_equip.value == 0:
                 patch.write_token(APTokenTypes.WRITE, ffta_data.formations[index].memory + UnitOffsets.unit_item1,
-                                  struct.pack("H", world.basic_weapon[index]))
+                                  struct.pack("<H", world.basic_weapon[index]))
                 patch.write_token(APTokenTypes.WRITE, ffta_data.formations[index].memory + UnitOffsets.unit_item2,
-                                  struct.pack("H", world.basic_equip[index]))
+                                  struct.pack("<H", world.basic_equip[index]))
                 patch.write_token(APTokenTypes.WRITE, ffta_data.formations[index].memory + UnitOffsets.unit_item3,
                                   bytes([0x00, 0x00]))
 
@@ -458,7 +458,7 @@ def generate_output(world, player: int, output_directory: str) -> None:
 
     # Set the starting gil amount
     starting_gil = world.options.starting_gil.value
-    patch.write_token(APTokenTypes.WRITE, 0x986c, struct.pack("i", starting_gil))
+    patch.write_token(APTokenTypes.WRITE, 0x986c, struct.pack("<i", starting_gil))
 
     # Set slot name in rom
     # TO DO. Fix this to work on procedure patch
@@ -654,7 +654,7 @@ def set_up_gates(ffta_data: FFTAData, num_gates: int, req_items, final_unlock: i
                 if path < world.options.gate_paths.value:
                     patch.write_token(APTokenTypes.WRITE,
                                       ffta_data.missions[final_mission_id].memory + unlockFlags[path],
-                                      struct.pack("H", world.MissionGroups[final_path_unlocks[path]][0][0].mission_id + 2))
+                                      struct.pack("<H", world.MissionGroups[final_path_unlocks[path]][0][0].mission_id + 2))
 
                     if world.MissionGroups[final_path_unlocks[path]][0][0].mission_id > 253:
                         patch.write_token(APTokenTypes.WRITE,
@@ -685,7 +685,7 @@ def set_mission_requirement(ffta_data: FFTAData, current_mission_ID: int, previo
 
     # Set the mission requirements to the specified mission ID
     patch.write_token(APTokenTypes.WRITE, ffta_data.missions[current_mission_ID].memory + MissionOffsets.unlockflag1,
-                      struct.pack("H", previous_mission_ID + 2))
+                      struct.pack("<H", previous_mission_ID + 2))
 
     # Hacky way to account for missions that are two bytes. Try and use bitwise operations to consolidate
     if previous_mission_ID > 253:
@@ -745,27 +745,27 @@ def write_progressive_lists(world, patch: FFTAProcedurePatch):
         path_pointers.append(current_address + 0x08000000)
         path_lengths.append(0)
         for item in world.path_items[path]:
-            patch.write_token(APTokenTypes.WRITE, current_address, struct.pack("H", item.itemID))
+            patch.write_token(APTokenTypes.WRITE, current_address, struct.pack("<H", item.itemID))
             current_address += 2
             path_lengths[path] += 1
         # Add a last item. This item is received each time an excess path item is received.
-        patch.write_token(APTokenTypes.WRITE, current_address, struct.pack("H", excess_item_id))
+        patch.write_token(APTokenTypes.WRITE, current_address, struct.pack("<H", excess_item_id))
         current_address += 8
 
     pointerLocation = 0x00b30608
     for path in path_pointers:
-        patch.write_token(APTokenTypes.WRITE, pointerLocation, struct.pack("L", path))
+        patch.write_token(APTokenTypes.WRITE, pointerLocation, struct.pack("<L", path))
         pointerLocation += 4
 
     for path in path_lengths:
-        patch.write_token(APTokenTypes.WRITE, pointerLocation, struct.pack("B", path))
+        patch.write_token(APTokenTypes.WRITE, pointerLocation, struct.pack("<B", path))
         pointerLocation += 1
 
     # Initial state must be non-zero, unlikely to be generated but possible
     initial_state = 0
     while (initial_state == 0):
         initial_state = world.random.getrandbits(32)
-    patch.write_token(APTokenTypes.WRITE, 0x00b30604, struct.pack("L", initial_state))
+    patch.write_token(APTokenTypes.WRITE, 0x00b30604, struct.pack("<L", initial_state))
 
 
 def set_required_items(ffta_data: FFTAData, index: int, itemid1, itemid2, patch: FFTAProcedurePatch):

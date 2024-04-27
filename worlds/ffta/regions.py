@@ -425,7 +425,7 @@ def create_regions(world, player) -> None:
 
             # Connect the path finish events to the final mission
             if world.options.goal.value == 0:
-                path_completes[i].connect(final_mission, final_mission.name)
+                path_completes[i].connect(final_mission)
 
         # Setting the lengths of the paths
         world.path1_length = path_lengths[0]

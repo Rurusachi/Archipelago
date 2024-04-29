@@ -132,7 +132,7 @@ class FFTAClient(BizHawkClient):
                                                      (path_pointers[3], path_lengths[3]*2, "ROM"),]
                                                     )
                     for path in range(0, 4):
-                        self.path_items.append(list(struct.unpack("H"*path_lengths[path], path_items[path])))
+                        self.path_items.append(list(struct.unpack("<" + "H"*path_lengths[path], path_items[path])))
         
             offset = 41234532
             flag_list = [(0x2001FD0, 50, "System Bus"), (0x2001FD1, 1, "System Bus"),

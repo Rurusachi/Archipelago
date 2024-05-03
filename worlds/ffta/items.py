@@ -599,11 +599,12 @@ TotemaUnlockItems: typing.List[ItemData] = [
     ItemData('Old Statue', ItemClassification.progression, 0x1c9)
 ]
 
-ProgressiveGateItems: typing.List[ItemData] = [
+ProgressiveItems: typing.List[ItemData] = [
     ItemData('Progressive Path 1', ItemClassification.progression, 0x300),
     ItemData('Progressive Path 2', ItemClassification.progression, 0x301),
     ItemData('Progressive Path 3', ItemClassification.progression, 0x302),
     ItemData('Progressive Dispatch', ItemClassification.progression, 0x303),
+    ItemData('Progressive Shop', ItemClassification.progression, 0x3FF),
 ]
 
 # Ability items? maybe do job unlock items first
@@ -692,7 +693,7 @@ AllItems: typing.List[ItemData] = WeaponSwords + WeaponBlades + WeaponSabers + W
                                   WeaponGreatBows + WeaponSpears + WeaponInstruments + WeaponKnuckles + WeaponSouls + \
                                   WeaponGuns + EquipShields + EquipHelmets + EquipGloves + EquipHats + EquipArmor + \
                                   EquipRings + EquipClothing + MissionUnlockItems + JobUnlocks + TotemaUnlockItems + \
-                                  Consumables + ProgressiveGateItems
+                                  Consumables + ProgressiveItems
 
 SoldierWeapons: typing.List[ItemData] = WeaponSwords + WeaponGreatswords
 PaladinWeapons: typing.List[ItemData] = WeaponGreatswords + WeaponKnightswords

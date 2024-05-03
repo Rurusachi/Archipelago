@@ -39,6 +39,8 @@ class FFTAClient(BizHawkClient):
     goal_flag: int
     goal_id: int = 0
     progressive_items: bool
+    progressive_shop: bool
+    progressive_shop_tiers: int
 
     def __init__(self) -> None:
         super().__init__()
@@ -46,6 +48,8 @@ class FFTAClient(BizHawkClient):
         self.local_set_events = {}
         self.path_items = []
         self.progressive_items = False
+        self.progressive_shop = False
+        self.progressive_shop_tiers = 0
 
 
     async def validate_rom(self, ctx: BizHawkClientContext) -> bool:
@@ -98,6 +102,10 @@ class FFTAClient(BizHawkClient):
 
             if ctx.slot_data["progressive_gates"] == 1:
                 self.progressive_items = True
+            
+            if ctx.slot_data["progressive_shop"] == 1:
+                self.progressive_shop = True
+                self.progressive_shop_tiers = len(ctx.slot_data["progressive_shop_tiers"])
 
             """
             if "job_unlock_req" in ctx.slot_data:
@@ -136,7 +144,7 @@ class FFTAClient(BizHawkClient):
         
             offset = 41234532
             flag_list = [(0x2001FD0, 50, "System Bus"), (0x2001FD1, 1, "System Bus"),
-                         (0x2001930, 2, "System Bus"), (0x200FA18, 2, "System Bus"),
+                         (0x2002AF0, 2, "System Bus"), (0x200FA18, 2, "System Bus"),
                          (0x2002B08, 0xFC, "System Bus"), (0x2002192, 1, "System Bus"),
                          (0x2000098, 1, "System Bus")]
             read_result = await bizhawk.read(ctx.bizhawk_ctx, flag_list)
@@ -144,9 +152,9 @@ class FFTAClient(BizHawkClient):
             received_items = int.from_bytes(read_result[2], "little")
             mission_items = read_result[4]
 
-            # Remove the archipelago and job unlock mission items
+            # Remove the archipelago, job unlock, and shop upgrade mission items
             for byte_i, item in enumerate(mission_items):
-                if item == 0x0E or item == 0x45:
+                if item == 0x0E or item == 0x45 or item == 0x46:
                     await bizhawk.write(ctx.bizhawk_ctx, [(0x2002B08 + byte_i, bytes([0x00]), "System Bus")])
 
             self.goal_flag = read_result[5]
@@ -275,14 +283,18 @@ class FFTAClient(BizHawkClient):
                     next_item_id = next_item.item - offset
 
                     path_memory_data = await bizhawk.read(ctx.bizhawk_ctx,
-                                                          [(0x02001932, 1, "System Bus"),
-                                                           (0x02001933, 1, "System Bus"),
-                                                           (0x02001934, 1, "System Bus"),
-                                                           (0x02001935, 1, "System Bus"),
-                                                           (0x02001938, 4, "System Bus"),
+                                                          [(0x02002AF2, 1, "System Bus"),
+                                                           (0x02002AF3, 1, "System Bus"),
+                                                           (0x02002AF4, 1, "System Bus"),
+                                                           (0x02002AF5, 1, "System Bus"),
+                                                           (0x02002AF8, 4, "System Bus"),
+                                                           (0x02002AF7, 1, "System Bus"),
+                                                           (0x02001F6C, 1, "System Bus"),
                                                            ])
                     path_counters = [int.from_bytes(x, "little") for x in path_memory_data[0:4]]
                     rand_state = int.from_bytes(path_memory_data[4], "little")
+                    shop_level = int.from_bytes(path_memory_data[5], "little")
+                    battle_num = int.from_bytes(path_memory_data[6], "little")
                     initialize_seed = False
                     if rand_state == 0x00:
                         initial_seed = await bizhawk.read(ctx.bizhawk_ctx,
@@ -298,10 +310,18 @@ class FFTAClient(BizHawkClient):
                             next_item_id = (rand_state % 0x169) + 1
                         if path_counters[path] < len(self.path_items[path]) - 1:
                             path_counters[path] += 1
+                    elif next_item_id == 0x3FF:
+                        if shop_level < self.progressive_shop_tiers:
+                            if shop_level < 2:
+                                battle_num += 10
+                            shop_level += 1
+                        next_item_id = 0x1bd
                     
-                    progressive_writes = [(0x02001932, path_counters, "System Bus")]
-                    progressive_writes += [(0x02001938, (rand_state).to_bytes(4, "little"), "System Bus")]
-                    progressive_writes += [(0x02001936, [0x01], "System Bus")] if initialize_seed else []
+                    progressive_writes = [(0x02002AF2, path_counters, "System Bus")]
+                    progressive_writes += [(0x02002AF8, (rand_state).to_bytes(4, "little"), "System Bus")]
+                    progressive_writes += [(0x02002AF6, [0x01], "System Bus")] if initialize_seed else []
+                    progressive_writes += [(0x02002AF7, (shop_level).to_bytes(1, "little"), "System Bus")]
+                    progressive_writes += [(0x02001F6C, (battle_num).to_bytes(1, "little"), "System Bus")]
 
                     # Checking if next item is a job unlock item
                     if next_item_id >= 0x2ac:
@@ -311,7 +331,7 @@ class FFTAClient(BizHawkClient):
                                                      (0x200fd2b, [0x00], "System Bus"),
                                                      (0x201f46c, job_unlock_item.to_bytes(2, "little"), "System Bus"),
                                                      (0x201f46e, [0x00], "System Bus"),
-                                                     (0x2001930, (received_items + 1).to_bytes(2, "little"),
+                                                     (0x2002af0, (received_items + 1).to_bytes(2, "little"),
                                                       "System Bus"),
                                                      (0x200f85c, [0x06], "System Bus")], guard_list)
 
@@ -330,10 +350,18 @@ class FFTAClient(BizHawkClient):
                                 item_after_id = (rand_state % 0x169) + 1
                             if path_counters[path] < len(self.path_items[path]) - 1:
                                 path_counters[path] += 1
-
-                        progressive_writes = [(0x02001932, path_counters, "System Bus")] 
-                        progressive_writes += [(0x02001938, (rand_state).to_bytes(4, "little"), "System Bus")]
-                        progressive_writes += [(0x02001936, [0x01], "System Bus")] if initialize_seed else []
+                        elif item_after_id == 0x3FF:
+                            if shop_level < self.progressive_shop_tiers:
+                                if shop_level < 2:
+                                    battle_num += 10
+                                shop_level += 1
+                            item_after_id = 0x1bd
+                        
+                        progressive_writes = [(0x02002AF2, path_counters, "System Bus")] 
+                        progressive_writes += [(0x02002AF8, (rand_state).to_bytes(4, "little"), "System Bus")]
+                        progressive_writes += [(0x02002AF6, [0x01], "System Bus")] if initialize_seed else []
+                        progressive_writes += [(0x02002AF7, (shop_level).to_bytes(1, "little"), "System Bus")]
+                        progressive_writes += [(0x02001F6C, (battle_num).to_bytes(1, "little"), "System Bus")]
                         
                         if item_after_id >= 0x2ac:
                             await bizhawk.guarded_write(ctx.bizhawk_ctx,
@@ -344,7 +372,7 @@ class FFTAClient(BizHawkClient):
                                                           "System Bus"),
                                                          (0x201f46e, job_unlock_item.to_bytes(2, "little"),
                                                           "System Bus"),
-                                                         (0x2001930, (received_items + 2).to_bytes(2, "little"),
+                                                         (0x2002AF0, (received_items + 2).to_bytes(2, "little"),
                                                           "System Bus"),
                                                          (0x200f85c, [0x06], "System Bus"),
                                                          ] + progressive_writes, guard_list)
@@ -357,7 +385,7 @@ class FFTAClient(BizHawkClient):
                                                           "System Bus"),
                                                          (0x201f46e, (item_after_id).to_bytes(2, "little"),
                                                           "System Bus"),
-                                                         (0x2001930, (received_items + 2).to_bytes(2, "little"),
+                                                         (0x2002AF0, (received_items + 2).to_bytes(2, "little"),
                                                           "System Bus"),
                                                          (0x200f85c, [0x06], "System Bus"),
                                                          ] + progressive_writes, guard_list)
@@ -367,7 +395,7 @@ class FFTAClient(BizHawkClient):
                                                     [(0x2002c10, [0x00], "System Bus"), (0x200fd2b, [0x00], "System Bus"),
                                                      (0x201f46c, (next_item_id).to_bytes(2, "little"), "System Bus"),
                                                      (0x201f46e, (0x0000).to_bytes(2, "little"), "System Bus"),
-                                                     (0x2001930, (received_items + 1).to_bytes(2, "little"), "System Bus"),
+                                                     (0x2002AF0, (received_items + 1).to_bytes(2, "little"), "System Bus"),
                                                      (0x200f85c, [0x06], "System Bus"),
                                                      ] + progressive_writes, guard_list)
 

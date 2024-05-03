@@ -1,9 +1,49 @@
 """
 Option definitions for Final Fantasy Tactics Advance
 """
-from typing import Dict
+from typing import Dict, Iterable
 from dataclasses import dataclass
 from Options import Choice, DefaultOnToggle, Option, OptionSet, Range, Toggle, FreeText, DeathLink, PerGameCommonOptions, NamedRange
+from copy import deepcopy
+
+
+class OptionListSet(OptionSet):
+    # A list of sets
+
+    special_names: Dict[str, Iterable[Iterable[str]]] = {}
+    default = [frozenset()]
+    supports_weighting = False
+
+    def __init__(self, value: Iterable[Iterable[str]]):
+        self.value = list([set(deepcopy(x)) for x in value])
+        super(OptionSet, self).__init__()
+
+    def get_option_name(self, value):
+        return str(value)
+
+    @classmethod
+    def from_text(cls, text: str) -> Range:
+        text = text.lower()
+        if text in cls.special_names:
+            return cls(cls.special_names[text])
+        return super(OptionListSet, cls).from_text(text)
+
+    @classmethod
+    def verify_keys(cls, data: Iterable[Iterable[str]]) -> None:
+        for x in data:
+            super(OptionListSet, cls).verify_keys(x)
+
+    def verify(self, world, player_name, plando_options) -> None:
+        outerArray = self.value
+        for innerSet in outerArray:
+            self.value = innerSet
+            super(OptionListSet, self).verify(world, player_name, plando_options)
+        self.value = outerArray
+
+
+class ItemListSet(OptionListSet):
+    verify_item_name = True
+    convert_name_groups = True
 
 
 class Goal(Choice):
@@ -281,7 +321,7 @@ class ProgressiveItemNumber(Range):
     0: There is exactly the amount of progressive items in the pool that is needed to reach the goal.
     1 to 10: This amount of extra progressive items is added to the pool.
     """
-    display_name = "Choose what excess progressive items turn into"
+    display_name = "Number of additional progressive items"
     default = 3
     range_start = 0
     range_end = 10
@@ -302,6 +342,89 @@ class ProgressiveExcessItems(NamedRange):
         "nothing": 0,
         "random_equipment": 0x300
         }
+
+
+class ProgressiveShopUpgrades(Toggle):
+    """
+    Adds shop upgrades to the item pool
+    """
+    display_name = "Adds shop upgrades to the item pool"
+    default = 0
+
+
+class ProgressiveShopTiers(ItemListSet):
+    """
+    Sets how many shop upgrades there are and what items they unlock.
+    Items that are not normally sold in the shop have a default price of 1 gil.
+    The first two shop upgrades always unlock the same shop items as winning 10 and 20 battles, and also the items specified in the first two upgrades here.
+    Winning 10 and 20 battles will not unlock the additional items specified here, but will still unlock the items it normally does.
+    three_tiers: 3 shop upgrades. The first two are the same as winning 10 and 20 battles. The items normally unlocked by freeing a number of turfs are all in tier 3.
+    four_tiers: 4 shop upgrades. The first two are the same as winning 10 and 20 battles. The items normally unlocked by freeing a number of turfs are split between tier 3 and 4.
+    vanilla: 13 shop upgrades. The first two are the same as winning 10 and 20 battles. The rest have 1 item each, unlocked in the same order as freeing turfs.
+    default: Same as four_tiers.
+    """
+    display_name = "Sets how many shop upgrades there are and what items they unlock"
+    three_tiers = [
+        [],
+        [],
+        [
+            "Cureall",
+            "Star Armlet",
+            "Bracers",
+            "Hunt Bow",
+            "Estreledge",
+            "Temple Cloth",
+            "Masamune",
+            "Princess Rod",
+            "Tiptaptwo",
+            "Seventh Heaven",
+            "Elixir"
+            ]
+    ]
+    four_tiers = [
+        [],
+        [],
+        [
+            "Cureall",
+            "Star Armlet",
+            "Bracers",
+            "Hunt Bow",
+            "Estreledge"
+            ],
+        [
+            "Temple Cloth",
+            "Masamune",
+            "Princess Rod",
+            "Tiptaptwo",
+            "Seventh Heaven",
+            "Elixir"
+            ]
+    ]
+    vanilla = [
+        [],
+        [],
+        ["Cureall"],
+        ["Star Armlet"],
+        ["Bracers"],
+        ["Hunt Bow"],
+        ["Estreledge"],
+        ["Temple Cloth"],
+        ["Masamune"],
+        ["Princess Rod"],
+        ["Tiptaptwo"],
+        ["Seventh Heaven"],
+        ["Elixir"]
+    ]
+    default = four_tiers
+    special_names = {
+        "default": default,
+        "threetiers": three_tiers,
+        "fourtiers": four_tiers,
+        "vanilla": vanilla
+    }
+
+
+
 
 
 @dataclass
@@ -331,3 +454,5 @@ class FFTAOptions(PerGameCommonOptions):
     progressive_gates: ProgressiveGateItems
     progressive_item_num: ProgressiveItemNumber
     progressive_excess: ProgressiveExcessItems
+    progressive_shop: ProgressiveShopUpgrades
+    progressive_shop_tiers: ProgressiveShopTiers

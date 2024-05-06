@@ -29,7 +29,7 @@ class FFTAProcedurePatch(APProcedurePatch, APTokenMixin):
 
     procedure = [
         ("apply_bsdiff4", ["base_patch.bsdiff4"]),
-        ("apply_bsdiff4", ["progressive_random_patch.bsdiff4"]),
+        ("apply_bsdiff4", ["progressive_shop_patch.bsdiff4"]),
         ("apply_tokens", ["token_data.bin"]),
     ]
 
@@ -75,8 +75,8 @@ def generate_output(world, player: int, output_directory: str) -> None:
     patch = FFTAProcedurePatch()
 
     patch.write_file("base_patch.bsdiff4", pkgutil.get_data(__name__, "ffta_data/base_patch.bsdiff4"))
-    patch.write_file("progressive_random_patch.bsdiff4",
-                     pkgutil.get_data(__name__, "ffta_data/progressive_random_patch.bsdiff4"))
+    patch.write_file("progressive_shop_patch.bsdiff4",
+                     pkgutil.get_data(__name__, "ffta_data/progressive_shop_patch.bsdiff4"))
 
     base_rom = bytes(get_base_rom_as_bytes())
 
@@ -455,6 +455,7 @@ def generate_output(world, player: int, output_directory: str) -> None:
     set_items(world.multiworld, player, patch)
 
     write_progressive_lists(world, patch)
+    write_proggresive_shop(world, patch)
 
     # Set the starting gil amount
     starting_gil = world.options.starting_gil.value
@@ -722,7 +723,7 @@ def set_items(multiworld, player, patch: FFTAProcedurePatch) -> None:
         if location.item.code is not None:
             item_id = location.item.code - offset
             if location.item.player == player:
-                if item_id >= 0x2ac and not (item_id >= 0x300 and item_id < 0x304):
+                if item_id >= 0x2ac and not (item_id >= 0x300 and item_id < 0x304) and item_id != 0x3FF:
                     item_id = 0x1bc
             else:
                 item_id = 0x185
@@ -732,6 +733,19 @@ def set_items(multiworld, player, patch: FFTAProcedurePatch) -> None:
             byte2 = ((item_id & 0xff00) >> 8)
             patch.write_token(APTokenTypes.OR_8, location.address, byte1)
             patch.write_token(APTokenTypes.OR_8, location.address+1, byte2)
+
+
+def write_proggresive_shop(world, patch: FFTAProcedurePatch):
+    shop_tier_num = len(world.shop_tiers)
+    patch.write_token(APTokenTypes.WRITE, 0x00b30900, struct.pack("<B", shop_tier_num))
+
+    current_address = 0x00b30904
+    for tier in world.shop_tiers:
+        for item in tier:
+            patch.write_token(APTokenTypes.WRITE, current_address, struct.pack("<H", item.itemID))
+            current_address += 2
+        patch.write_token(APTokenTypes.WRITE, current_address, struct.pack("<H", 0x0000))
+        current_address += 4
 
 
 def write_progressive_lists(world, patch: FFTAProcedurePatch):

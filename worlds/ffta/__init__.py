@@ -96,6 +96,7 @@ class FFTAWorld(World):
         self.path2_length = []
         self.path3_length = []
         self.path_items = []
+        self.shop_tiers = []
         self.recruit_units = [0x03, 0x0f, 0x17, 0x20, 0x29]
         self.recruit_secret = [0x03, 0x0f, 0x17, 0x20, 0x29, 0x8a, 0x8c, 0x8e,
                                0x90, 0x92, 0x94, 0x96, 0x98, 0x9a, 0x9c, 0x9e]
@@ -239,6 +240,20 @@ class FFTAWorld(World):
         if self.options.goal == Goal.option_totema:
             for i in range(0, len(TotemaUnlockItems)):
                 required_items.append(TotemaUnlockItems[i].itemName)
+        
+        if self.options.progressive_shop.value == 1:
+            for tier in self.options.progressive_shop_tiers.value:
+                tier_items = []
+                for item_name in tier:
+                    try:
+                        item = item_table[item_name]
+                    except KeyError:
+                        raise KeyError(f"'{item_name}' not found")
+                    tier_items.append(item)
+                
+                self.shop_tiers.append(tier_items)
+                required_items.append("Progressive Shop")
+
         return required_items
 
     @classmethod
@@ -251,7 +266,9 @@ class FFTAWorld(World):
         slot_data = self.options.as_dict(
             "final_mission",
             "job_unlock_req",
-            "progressive_gates"
+            "progressive_gates",
+            "progressive_shop",
+            "progressive_shop_tiers"
         )
 
         return slot_data

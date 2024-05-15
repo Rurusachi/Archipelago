@@ -739,6 +739,9 @@ def set_items(multiworld, player, patch: FFTAProcedurePatch) -> None:
 
 
 def write_proggresive_shop(ffta_data: FFTAData, world, patch: FFTAProcedurePatch):
+    if world.options.progressive_shop.value == 0:
+        patch.write_token(APTokenTypes.WRITE, 0x00b30900, struct.pack("<B", 0))
+        return
     shop_tier_num = len(world.shop_tiers)-1
     patch.write_token(APTokenTypes.WRITE, 0x00b30900, struct.pack("<B", shop_tier_num))
 

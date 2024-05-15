@@ -1,7 +1,7 @@
 """
 Option definitions for Final Fantasy Tactics Advance
 """
-from typing import Dict, Iterable, Any, Tuple
+from typing import Dict, Iterable, Any, Tuple, Union
 from dataclasses import dataclass
 from Options import Choice, DefaultOnToggle, Option, OptionSet, Range, Toggle, FreeText, DeathLink, PerGameCommonOptions, NamedRange, OptionList
 from copy import deepcopy
@@ -86,7 +86,7 @@ class OptionShopItems(OptionListList):
     convert_name_groups = True
 
     @classmethod
-    def verify_keys(cls, data: Iterable[Iterable[str | Tuple[str, int]]]) -> None:
+    def verify_keys(cls, data: Iterable[Iterable[Union[str, Tuple[str, int]]]]) -> None:
         for inner in data:
             inner_names = []
             for x in inner:
@@ -102,7 +102,7 @@ class OptionShopItems(OptionListList):
         return cls.from_text(str(data))
 
     @classmethod
-    def from_iterable(cls, data: Iterable) -> Iterable[Iterable[str | Tuple[str, int]]]:
+    def from_iterable(cls, data: Iterable) -> Iterable[Iterable[Union[str, Tuple[str, int]]]]:
         new_data = []
         for outer in data:
             new_inner = []

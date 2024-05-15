@@ -745,6 +745,11 @@ def write_proggresive_shop(ffta_data: FFTAData, world, patch: FFTAProcedurePatch
     shop_tier_num = len(world.shop_tiers)-1
     patch.write_token(APTokenTypes.WRITE, 0x00b30900, struct.pack("<B", shop_tier_num))
 
+    bitmask = 0xFF ^ 0x70  # mask out bits 5-7
+    # Remove all items from shop first
+    for item in ffta_data.items:
+        patch.write_token(APTokenTypes.AND_8, item.memory + ItemOffsets.item_flags, bitmask)
+
     current_address = 0x00b30904
     bitmask = 0xFF ^ 0x70  # mask out bits 5-7
     tiers = [0x70, 0x60, 0x40]
@@ -755,8 +760,6 @@ def write_proggresive_shop(ffta_data: FFTAData, world, patch: FFTAProcedurePatch
                 patch.write_token(APTokenTypes.WRITE, ffta_data.items[item.itemID-1].memory + ItemOffsets.buy_price, struct.pack("<H", price))
                 patch.write_token(APTokenTypes.WRITE, ffta_data.items[item.itemID-1].memory + ItemOffsets.sell_price, struct.pack("<H", sell_price))
 
-            # Set bitflags to 0 first
-            patch.write_token(APTokenTypes.AND_8, ffta_data.items[item.itemID-1].memory + ItemOffsets.item_flags, bitmask)
             if i < 3:
                 patch.write_token(APTokenTypes.OR_8, ffta_data.items[item.itemID-1].memory + ItemOffsets.item_flags, tiers[i])
             else:

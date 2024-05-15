@@ -18,7 +18,7 @@ from .regions import create_regions
 from .rules import set_rules
 
 from .options import (FFTAOptions, StartingUnits, StartingUnitEquip, StartingAbilitiesMastered, JobUnlockReq,
-                      RandomEnemies, EnemyScaling, DoubleExp, StartingGil, GateNumber, GatePaths, DispatchMissions,
+                      RandomEnemies, EnemyScaling, StartingGil, GateNumber, GatePaths, DispatchMissions,
                       DispatchRandom, GateUnlock, MissionOrder, FinalMission, Goal, QuickOptions,
                       ForceRecruitment, ProgressiveGateItems)
 from .items import (create_item_label_to_code_map, AllItems, item_table, FFTAItem, WeaponBlades,
@@ -240,21 +240,69 @@ class FFTAWorld(World):
         if self.options.goal == Goal.option_totema:
             for i in range(0, len(TotemaUnlockItems)):
                 required_items.append(TotemaUnlockItems[i].itemName)
-        
+
         if self.options.progressive_shop.value == 1:
-            for tier in self.options.progressive_shop_tiers.value:
+            itemSet = set()
+            # Go through lists in reverse so later values override earlier values
+            for tier in reversed(self.options.progressive_shop_tiers.value):
                 tier_items = []
-                for item_name in tier:
+                for shop_item in reversed(tier):
                     try:
-                        item = item_table[item_name]
+                        item = item_table[shop_item[0]]
                     except KeyError:
-                        raise KeyError(f"'{item_name}' not found")
-                    tier_items.append(item)
-                
+                        raise KeyError(f"'{shop_item[0]}' not found")
+                    if shop_item[0] in itemSet:
+                        print(f"{shop_item[0]} already added")
+                        continue
+                    else:
+                        itemSet.add(shop_item[0])
+                    item_price = shop_item[1]
+                    if isinstance(item_price, str):
+
+                        if item_price.startswith("random-range-"):
+                            min_price, max_price = self.custom_range(item_price, 0x0001, 0xFFFF)
+
+                            price_split = item_price.split("-")
+                            if price_split[2] in ["low", "mid", "high"]:
+                                item_price = f"random-{price_split[2]}"
+                            else:
+                                item_price = "random"
+                        else:
+                            min_price, max_price = (0x0001, 0xFFFF)
+
+                        if item_price == "default":
+                            item_price = -1
+                        elif item_price == "random":
+                            item_price = self.random.randint(min_price, max_price)
+                        elif item_price == "random-low":
+                            item_price = self.random.triangular(min_price, max_price, min_price)
+                        elif item_price == "random-high":
+                            item_price = self.random.triangular(min_price, max_price, max_price)
+                        elif item_price == "random-middle":
+                            item_price = self.random.triangular(min_price, max_price)
+                        item_price = int(round(item_price))
+
+                    tier_items.append((item, item_price))
+
+                tier_items.reverse()
                 self.shop_tiers.append(tier_items)
                 required_items.append("Progressive Shop")
+            self.shop_tiers.reverse()
 
         return required_items
+
+    def custom_range(self, text, range_start, range_end):
+        textsplit = text.split("-")
+        try:
+            random_range = [int(textsplit[len(textsplit) - 2]), int(textsplit[len(textsplit) - 1])]
+        except ValueError:
+            raise ValueError(f"Invalid random range {text}")
+        random_range.sort()
+        if random_range[0] < range_start or random_range[1] > range_end:
+            raise Exception(
+                f"{random_range[0]}-{random_range[1]} is outside allowed range "
+                f"{range_start}-{range_end}")
+        return random_range[0], random_range[1]
 
     @classmethod
     def stage_assert_generate(cls, multiworld: MultiWorld):

@@ -1,17 +1,19 @@
 """
 Option definitions for Final Fantasy Tactics Advance
 """
-from typing import Dict, Iterable
+from typing import Dict, Iterable, Any, Union
 from dataclasses import dataclass
-from Options import Choice, DefaultOnToggle, Option, OptionSet, Range, Toggle, FreeText, DeathLink, PerGameCommonOptions, NamedRange
+from Options import Choice, DefaultOnToggle, Option, OptionSet, Range, Toggle, FreeText, DeathLink, PerGameCommonOptions, NamedRange, OptionList
 from copy import deepcopy
+from .items import itemGroups, ShopItem
+from Utils import is_iterable_except_str, get_fuzzy_results
 
 
 class OptionListSet(OptionSet):
     # A list of sets
 
     special_names: Dict[str, Iterable[Iterable[str]]] = {}
-    default = [frozenset()]
+    default = ()
     supports_weighting = False
 
     def __init__(self, value: Iterable[Iterable[str]]):
@@ -22,11 +24,12 @@ class OptionListSet(OptionSet):
         return str(value)
 
     @classmethod
-    def from_text(cls, text: str) -> Range:
+    def from_text(cls, text: str):
         text = text.lower()
         if text in cls.special_names:
             return cls(cls.special_names[text])
-        return super(OptionListSet, cls).from_text(text)
+        else:
+            raise ValueError(f"Invalid value {text}")
 
     @classmethod
     def verify_keys(cls, data: Iterable[Iterable[str]]) -> None:
@@ -41,9 +44,157 @@ class OptionListSet(OptionSet):
         self.value = outerArray
 
 
-class ItemListSet(OptionListSet):
+class OptionListList(OptionList):
+    # Supports duplicate entries and ordering.
+    # If only unique entries are needed and input order of elements does not matter, OptionListSet should be used instead.
+    # Not a docstring so it doesn't get grabbed by the options system.
+
+    special_names: Dict[str, Iterable[Any]] = {}
+    default = ()
+    supports_weighting = False
+
+    def __init__(self, value: Iterable[Any]):
+        self.value = list([list(deepcopy(x)) for x in value])
+        super(OptionList, self).__init__()
+
+    def get_option_name(self, value):
+        return str(value)
+
+    @classmethod
+    def from_text(cls, text: str):
+        text = text.lower()
+        if text in cls.special_names:
+            return cls(cls.special_names[text])
+        else:
+            raise ValueError(f"Invalid value {text}")
+
+    @classmethod
+    def verify_keys(cls, data: Iterable[Iterable[str]]) -> None:
+        for x in data:
+            super(OptionListList, cls).verify_keys(x)
+
+    def verify(self, world, player_name, plando_options) -> None:
+        outerArray = self.value
+        for innerSet in outerArray:
+            self.value = innerSet
+            super(OptionListList, self).verify(world, player_name, plando_options)
+        self.value = outerArray
+
+
+class OptionShopItems(OptionListList):
     verify_item_name = True
     convert_name_groups = True
+
+    @classmethod
+    def verify_keys(cls, data: Iterable[Iterable[Union[str, ShopItem]]]) -> None:
+        for inner in data:
+            inner_names = []
+            for x in inner:
+                inner_names.append(x[0] if isinstance(x, Iterable) else x)
+            super(OptionListList, cls).verify_keys(inner_names)
+
+    @classmethod
+    def from_any(cls, data: Any):
+        if is_iterable_except_str(data):
+            data = cls.from_iterable(data)
+            cls.verify_keys(data)
+            return cls(data)
+        return cls.from_text(str(data))
+
+    @classmethod
+    def from_iterable(cls, data: Iterable) -> Iterable[Iterable[Union[str, ShopItem]]]:
+        new_data = []
+        for outer in data:
+            new_inner = []
+            for inner in outer:
+                if is_iterable_except_str(inner):
+                    if len(inner) == 2:
+                        new_inner.append((inner[0], inner[1]))
+                    else:
+                        new_inner.append((inner[0], "default"))
+                elif isinstance(inner, str):
+                    new_inner.append(inner)
+                else:
+                    raise TypeError(inner)
+            new_data.append(new_inner)
+        return new_data
+
+    def verify(self, world, player_name, plando_options) -> None:
+        for i, inner in enumerate(self.value):
+            if self.convert_name_groups and self.verify_item_name:
+                new_value = []  # empty container of whatever value is
+                for item in inner:
+                    if isinstance(item, str):
+                        new_value += [(item, "default")]
+                    else:
+                        new_value += [item]
+                self.value[i] = new_value
+        for inner in self.value:
+            if self.verify_item_name:
+                for index, item in enumerate(inner):
+                    item_name = item[0]
+                    self.verify_item_value(item)
+
+                    if item_name in ["random"]:
+                        continue
+                    elif item_name.startswith("random-"):
+                        parsed_item = self.parse_random_item_name(item)
+                        inner[index] = parsed_item
+                        continue
+
+                    if item_name not in world.item_names and item_name not in itemGroups:
+                        picks = get_fuzzy_results(item_name, world.item_names, limit=1)
+                        if picks[0][1] == 100:
+                            print(f"Replacing '{item_name}' with '{picks[0][0]}' ({picks[0][1]}% sure)")
+                            inner[index] = (picks[0][0],) + item[1:]
+                        else:
+                            raise Exception(f"Item {item_name} from option {self} "
+                                            f"is not a valid item name from {world.game}. "
+                                            f"Did you mean '{picks[0][0]}' ({picks[0][1]}% sure)")
+
+    def verify_item_value(self, item):
+        item_name = item[0]
+        item_value = item[1]
+        if not isinstance(item_value, int):
+            if isinstance(item_value, str) \
+                    and item_value not in ["default", "random", "random-low", "random-high", "random-middle"]:
+                if item_value.startswith("random-range-"):
+                    textsplit = item_value.split("-")
+                    try:
+                        [int(textsplit[len(textsplit) - 2]), int(textsplit[len(textsplit) - 1])]
+                    except ValueError:
+                        raise ValueError(f"Invalid random range {item_value} for Item {item_name} in option {self}")
+                else:
+                    raise ValueError(f"'{item_value}' is not a valid value for Item {item_name} in option {self}")
+            elif not isinstance(item_value, str):
+                raise TypeError(f"'{item_value}' is not a valid type for Item {item_name} in option {self}")
+        elif item_value < 1 or item_value > 0xFFFF:
+            raise ValueError(f"Value {item_value} must be in range 1-65535 for Item {item_name} in option {self}")
+
+    def parse_random_item_name(self, item):
+        item_name = item[0]
+        textsplit = item_name.split("-")
+        random_groups = []
+        random_range = []
+        for arg in textsplit[1:]:
+            if arg in itemGroups:
+                random_groups.append(arg)
+            if arg not in itemGroups:
+                picks = get_fuzzy_results(arg, itemGroups, limit=1)
+                if picks[0][1] == 100:
+                    print(f"Replacing '{arg}' with '{picks[0][0]}' ({picks[0][1]}% sure)")
+                    random_groups.append(picks[0][0])
+                else:
+                    try:
+                        asInt = int(arg)
+                    except ValueError:
+                        raise ValueError(f"Invalid item group '{arg}' for {item_name} in option {self}, "
+                                         f"did you mean '{picks[0][0]}' ({picks[0][1]}% sure)")
+                    random_range.append(asInt)
+        if len(random_range) > 2:
+            raise ValueError(f"Invalid random range {random_range} for Item {item_name} in option {self}")
+        parsed_name = f"random-{'-'.join(str(x) for x in (random_groups + random_range))}"
+        return (parsed_name,) + item[1:]
 
 
 class Goal(Choice):
@@ -162,12 +313,17 @@ class EnemyScaling(Choice):
     option_highest_level = 1
 
 
-class DoubleExp(Toggle):
+class ExpMultiplier(Choice):
     """
-    Turns on double exp
+    Multiplies all exp gained.
     """
     display_name = "Double EXP"
     default = 0
+    option_one = 0
+    option_two = 1
+    option_four = 2
+    option_eight = 3
+    option_sixteen = 4
 
 
 class StartingGil(Range):
@@ -352,75 +508,208 @@ class ProgressiveShopUpgrades(Toggle):
     default = 0
 
 
-class ProgressiveShopTiers(ItemListSet):
+class ProgressiveShopTiers(OptionShopItems):
     """
     Sets how many shop upgrades there are and what items they unlock.
     Items that are not normally sold in the shop have a default price of 1 gil.
-    The first two shop upgrades always unlock the same shop items as winning 10 and 20 battles, and also the items specified in the first two upgrades here.
-    Winning 10 and 20 battles will not unlock the additional items specified here, but will still unlock the items it normally does.
-    three_tiers: 3 shop upgrades. The first two are the same as winning 10 and 20 battles. The items normally unlocked by freeing a number of turfs are all in tier 3.
-    four_tiers: 4 shop upgrades. The first two are the same as winning 10 and 20 battles. The items normally unlocked by freeing a number of turfs are split between tier 3 and 4.
-    vanilla: 13 shop upgrades. The first two are the same as winning 10 and 20 battles. The rest have 1 item each, unlocked in the same order as freeing turfs.
-    default: Same as four_tiers.
+    Winning 10 and 20 battles will unlock the items in the first two upgrades,
+    but will not count towards the next upgrades.
+
+    named options:
+    four_tiers: 3 shop upgrades. Starting items and first two upgrades are vanilla.
+        The items normally unlocked by freeing some number of turfs are all in tier 3.
+    four_tiers_random: four_tiers but with random prices
+    five_tiers: 4 shop upgrades. Starting items and first two upgrades are vanilla.
+        The items normally unlocked by freeing some number of turfs are split between tier 3 and 4.
+    five_tiers_random: five_tiers but with random prices
+    vanilla: 13 shop upgrades. Starting items and first two upgrades are vanilla.
+        The rest have 1 item each, unlocked in the same order as freeing turfs.
+    vanilla_random: vanilla but with random prices
+    default: Same as five_tiers.
+
+    Custom option syntax:
+    [[<Tier>], [<Tier>], [<Tier>], ...]
+
+    <Tier> syntax:
+    [<Item>, <Item>, <Item>, ...]
+
+    <Item> syntax:
+    [<Name>, <Price>] or <Name>
+
+    <Price> may be a number between 1-65535, "default", "random", "random-high",
+    "random-middle", "random-low", "random-range-low-<min>-<max>", "random-range-middle-<min>-<max>",
+    "random-range-high-<min>-<max>", or "random-range-<min>-<max>".
+
+    <Name> may be the name of any equipment or consumable item, an <ItemGroup>, or a <Random> value.
+    If only <Name> is specified, <Price> will be "default".
+
+    <Random> may be: "random-<Groups>", "random-<Groups>-<number>", or "random-<Groups>-<min>-<max>".
+
+    <Groups> syntax:
+    <ItemGroup>-<ItemGroup>-<ItemGroup> ...
+
+    <ItemGroup> may be: "vanillashoptier0", "vanillashoptier1", "vanillashoptier2", "all", "weapons", "otherequipment",
+    "swords", "blades", "sabers", "knightswords", "greatswords", "broadswords", "knives", "rapiers", "katanas",
+    "staves", "rods", "maces", "bows", "greatbows", "spears", "instruments", "knuckles", "souls", "guns", "shields",
+    "helmets", "gloves", "hats", "armor", "rings", "clothing", "robes", "shoes", "consumables"
+
+    If the same item appears more than once, only the first processed entry takes effect.
+    Entries are processed in 3 steps. Each step starts from the lowest tier:
+        1. Directly named items.
+        2. Items that are added as part of a group
+        3. Random items. (Will never pick an item already added in previous steps)
+
+    Example:
+    [
+        [
+            ["vanillashoptier0", "random-range-low-100-10000"],
+            ["Elixir", "random-high"],
+            ["Potion", "default"],
+        ],
+        [
+            ["vanillashoptier1", "default"],
+            ["random-otherequipment-20", "random-range-200-20000"],
+            ["random-weapons-10-20", "random-range-500-50000"],
+        ],
+        [
+            "vanillashoptier2",
+            ["random-katanas-knightswords-staves-6-12", "random-range-5000-50000"],
+        ]
+    ]
+    Before upgrades the shop will have:
+        Vanilla items at random prices between 100 and 10000, biased towards 100.
+        Elixirs at a random price between 1 and 65535, biased towards high numbers.
+        Potions at default price (higher priority than the potion in vanillashoptier0).
+    The first upgrade will add:
+        Vanilla items unlocked at 10 battles.
+        20 non-weapon equipment at random prices between 200 and 20000.
+        A random amount between 10 and 20 of random weapons at random prices between 500 and 50000.
+    The second upgrade will add:
+        Vanilla items unlocked at 20 battles.
+        A random amount between 6 and 12 of random katanas, knightswords,
+        and staffs at random prices between 500 and 50000.
+
     """
     display_name = "Sets how many shop upgrades there are and what items they unlock"
-    three_tiers = [
-        [],
-        [],
+    four_tiers = [
+        [["vanillashoptier0", "default"]],
+        [["vanillashoptier1", "default"]],
+        [["vanillashoptier2", "default"]],
         [
-            "Cureall",
-            "Star Armlet",
-            "Bracers",
-            "Hunt Bow",
-            "Estreledge",
-            "Temple Cloth",
-            "Masamune",
-            "Princess Rod",
-            "Tiptaptwo",
-            "Seventh Heaven",
-            "Elixir"
+            ["Cureall", "default"],
+            ["Star Armlet", "default"],
+            ["Bracers", "default"],
+            ["Hunt Bow", "default"],
+            ["Estreledge", "default"],
+            ["Temple Cloth", "default"],
+            ["Masamune", "default"],
+            ["Princess Rod", "default"],
+            ["Tiptaptwo", "default"],
+            ["Seventh Heaven", "default"],
+            ["Elixir", "default"]
             ]
     ]
-    four_tiers = [
-        [],
-        [],
+    four_tiers_random = [
+        [["vanillashoptier0", "random"]],
+        [["vanillashoptier1", "random"]],
+        [["vanillashoptier2", "random"]],
         [
-            "Cureall",
-            "Star Armlet",
-            "Bracers",
-            "Hunt Bow",
-            "Estreledge"
+            ["Cureall", "random"],
+            ["Star Armlet", "random"],
+            ["Bracers", "random"],
+            ["Hunt Bow", "random"],
+            ["Estreledge", "random"],
+            ["Temple Cloth", "random"],
+            ["Masamune", "random"],
+            ["Princess Rod", "random"],
+            ["Tiptaptwo", "random"],
+            ["Seventh Heaven", "random"],
+            ["Elixir", "random"]
+            ]
+    ]
+
+    five_tiers = [
+        [["vanillashoptier0", "default"]],
+        [["vanillashoptier1", "default"]],
+        [["vanillashoptier2", "default"]],
+        [
+            ["Cureall", "default"],
+            ["Star Armlet", "default"],
+            ["Bracers", "default"],
+            ["Hunt Bow", "default"],
+            ["Estreledge", "default"]
             ],
         [
-            "Temple Cloth",
-            "Masamune",
-            "Princess Rod",
-            "Tiptaptwo",
-            "Seventh Heaven",
-            "Elixir"
+            ["Temple Cloth", "default"],
+            ["Masamune", "default"],
+            ["Princess Rod", "default"],
+            ["Tiptaptwo", "default"],
+            ["Seventh Heaven", "default"],
+            ["Elixir", "default"]
             ]
     ]
-    vanilla = [
-        [],
-        [],
-        ["Cureall"],
-        ["Star Armlet"],
-        ["Bracers"],
-        ["Hunt Bow"],
-        ["Estreledge"],
-        ["Temple Cloth"],
-        ["Masamune"],
-        ["Princess Rod"],
-        ["Tiptaptwo"],
-        ["Seventh Heaven"],
-        ["Elixir"]
+    five_tiers_random = [
+        [["vanillashoptier0", "random"]],
+        [["vanillashoptier1", "random"]],
+        [["vanillashoptier2", "random"]],
+        [
+            ["Cureall", "random"],
+            ["Star Armlet", "random"],
+            ["Bracers", "random"],
+            ["Hunt Bow", "random"],
+            ["Estreledge", "random"]
+            ],
+        [
+            ["Temple Cloth", "random"],
+            ["Masamune", "random"],
+            ["Princess Rod", "random"],
+            ["Tiptaptwo", "random"],
+            ["Seventh Heaven", "random"],
+            ["Elixir", "random"]
+            ]
     ]
-    default = four_tiers
+
+    vanilla = [
+        [["vanillashoptier0", "default"]],
+        [["vanillashoptier1", "default"]],
+        [["vanillashoptier2", "default"]],
+        [["Cureall", "default"]],
+        [["Star Armlet", "default"]],
+        [["Bracers", "default"]],
+        [["Hunt Bow", "default"]],
+        [["Estreledge", "default"]],
+        [["Temple Cloth", "default"]],
+        [["Masamune", "default"]],
+        [["Princess Rod", "default"]],
+        [["Tiptaptwo", "default"]],
+        [["Seventh Heaven", "default"]],
+        [["Elixir", "default"]]
+    ]
+    vanilla_random = [
+        [["vanillashoptier0", "random"]],
+        [["vanillashoptier1", "random"]],
+        [["vanillashoptier2", "random"]],
+        [["Cureall", "random"]],
+        [["Star Armlet", "random"]],
+        [["Bracers", "random"]],
+        [["Hunt Bow", "random"]],
+        [["Estreledge", "random"]],
+        [["Temple Cloth", "random"]],
+        [["Masamune", "random"]],
+        [["Princess Rod", "random"]],
+        [["Tiptaptwo", "random"]],
+        [["Seventh Heaven", "random"]],
+        [["Elixir", "random"]]
+    ]
+    default = five_tiers
     special_names = {
         "default": default,
-        "threetiers": three_tiers,
-        "fourtiers": four_tiers,
-        "vanilla": vanilla
+        "four_tiers": four_tiers,
+        "four_tiers_random": four_tiers_random,
+        "five_tiers": five_tiers,
+        "five_tiers_random": five_tiers_random,
+        "vanilla": vanilla,
+        "vanilla_random": vanilla_random
     }
 
 
@@ -438,7 +727,7 @@ class FFTAOptions(PerGameCommonOptions):
     laws: Laws
     randomize_enemies: RandomEnemies
     scaling: EnemyScaling
-    double_exp: DoubleExp
+    exp_multiplier: ExpMultiplier
     starting_gil: StartingGil
     gate_num: GateNumber
     gate_paths: GatePaths

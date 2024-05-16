@@ -69,6 +69,13 @@ class FFTAMission(FFTAObject):
         self.name = name
 
 
+class FFTAItem(FFTAObject):
+
+    def __init__(self, memory, name: Optional[str]):
+        self.memory = memory
+        self.name = name
+
+
 class JobOffsets:
     sprite_index = 0x07
     equip_items = 0x2D
@@ -101,6 +108,12 @@ class UnitBattleOffsets:
     character_id = 0x004
     first_item = 0x02A
     status_3 = 0x0EA
+
+
+class ItemOffsets:
+    buy_price = 0x04
+    sell_price = 0x06
+    item_flags = 0x0c  # bits 5 - 7 determine shop availability
 
 
 class JobID:
@@ -319,6 +332,7 @@ class FFTAData:
     moogle_abilities: List[FFTARaceAbility]
     all_abilities: List[FFTARaceAbility]
     jobs: List[FFTAJobs]
+    items: List[FFTAItem]
 
     def __init__(self, buffer: bytearray):
         self.rom = buffer
@@ -337,6 +351,7 @@ class FFTAData:
             self.viera_abilities + self.moogle_abilities
         self.jobs = self.initializeJobs()
         #self.lawSets = self.initializeLawSets()
+        self.items = self.initializeItems()
 
     def initializeMissions(self):
         missions = []
@@ -349,6 +364,18 @@ class FFTAData:
             missions.append(new_item)
 
         return missions
+
+    def initializeItems(self):
+        items = []
+        dataType = Items(0x51d1a0, 0x20, 375)
+        for n in range(dataType.length):
+            memory = dataType.offset + dataType.byteSize * n
+
+            new_item = FFTAItem(memory, "Name")
+
+            items.append(new_item)
+
+        return items
 
     def initializeFormations(self):
         formations = []

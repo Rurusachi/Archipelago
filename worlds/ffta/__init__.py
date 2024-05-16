@@ -3,7 +3,7 @@ Archipelago World definition for Final Fantasy Tactics Advance
 """
 
 import os
-from typing import ClassVar, Dict, Any
+from typing import ClassVar, Dict, Any, Union, Tuple
 import settings
 import sys
 import logging
@@ -18,7 +18,7 @@ from .regions import create_regions
 from .rules import set_rules
 
 from .options import (FFTAOptions, StartingUnits, StartingUnitEquip, StartingAbilitiesMastered, JobUnlockReq,
-                      RandomEnemies, EnemyScaling, DoubleExp, StartingGil, GateNumber, GatePaths, DispatchMissions,
+                      RandomEnemies, EnemyScaling, StartingGil, GateNumber, GatePaths, DispatchMissions,
                       DispatchRandom, GateUnlock, MissionOrder, FinalMission, Goal, QuickOptions,
                       ForceRecruitment, ProgressiveGateItems)
 from .items import (create_item_label_to_code_map, AllItems, item_table, FFTAItem, WeaponBlades,
@@ -26,7 +26,7 @@ from .items import (create_item_label_to_code_map, AllItems, item_table, FFTAIte
                     WeaponMaces, WeaponInstruments, WeaponSouls, WeaponRapiers, WeaponGuns, WeaponKnives, ItemData,
                     EquipArmor, EquipRobes, EquipClothing, MissionUnlockItems, TotemaUnlockItems,
                     SoldierWeapons, PaladinWeapons, WarriorWeapons, DefenderWeapons, TemplarWeapons, AssassinWeapons,
-                    DragoonWeapons)
+                    DragoonWeapons, itemGroups)
 from .locations import (create_location_label_to_id_map)
 from .rom import FFTAProcedurePatch, generate_output
 
@@ -240,21 +240,130 @@ class FFTAWorld(World):
         if self.options.goal == Goal.option_totema:
             for i in range(0, len(TotemaUnlockItems)):
                 required_items.append(TotemaUnlockItems[i].itemName)
-        
+
         if self.options.progressive_shop.value == 1:
-            for tier in self.options.progressive_shop_tiers.value:
-                tier_items = []
-                for item_name in tier:
-                    try:
-                        item = item_table[item_name]
-                    except KeyError:
-                        raise KeyError(f"'{item_name}' not found")
-                    tier_items.append(item)
-                
-                self.shop_tiers.append(tier_items)
-                required_items.append("Progressive Shop")
+            self.get_progressive_shop_items(required_items)
 
         return required_items
+
+    def get_progressive_shop_items(self, required_items):
+        itemSet = set()
+        # Go through lists in reverse so later values take priority
+        item_groups = []
+        random_items = []
+        for tier in self.options.progressive_shop_tiers.value:
+            item_groups_tier = []
+            random_items_tier = []
+            tier_items = []
+            for shop_item in tier:
+                if shop_item[0] in itemGroups:
+                    item_groups_tier.append(shop_item)
+                    continue
+                elif shop_item[0] == "random" or shop_item[0].startswith("random-"):
+                    random_items_tier.append(shop_item)
+                    continue
+                new_item = self.prepare_shop_item(shop_item, itemSet)
+                if new_item is not None:
+                    tier_items.append(new_item)
+
+            self.shop_tiers.append(tier_items)
+            item_groups.append(item_groups_tier)
+            random_items.append(random_items_tier)
+            required_items.append("Progressive Shop")
+
+        for index, tier in enumerate(item_groups):
+            for group_name, group_price in tier:
+                group_items = itemGroups.get(group_name)
+                for item_name in group_items:
+                    shop_item = (item_name, group_price)
+                    new_item = self.prepare_shop_item(shop_item, itemSet)
+                    if new_item is not None:
+                        self.shop_tiers[index].append(new_item)
+
+        for index, tier in enumerate(random_items):
+            for item_name, item_price in tier:
+                textsplit = item_name.split("-")
+                random_group = set()
+                random_range = []
+                for arg in textsplit[1:]:
+                    if arg in itemGroups:
+                        random_group |= set(itemGroups.get(arg))
+                    else:
+                        try:
+                            asInt = int(arg)
+                        except ValueError:
+                            raise ValueError(f"Invalid item group {arg}")
+                        random_range.append(asInt)
+                if len(random_range) > 2:
+                    raise ValueError(f"Invalid random range {range}")
+                elif len(random_range) == 2:
+                    random_range.sort()
+                    if random_range[0] < 1 or random_range[1] > len(random_group):
+                        raise Exception(
+                            f"{random_range[0]}-{random_range[1]} is outside allowed range "
+                            f"{1}-{len(random_group)} in {item_name}")
+                    choice_num = self.random.randint(random_range[0], random_range[1])
+                else:
+                    choice_num = random_range[0]
+
+                random_group -= itemSet
+                chosen_items = self.random.sample(list(random_group), choice_num)
+                for chosen_item in chosen_items:
+                    shop_item = (chosen_item, item_price)
+                    new_item = self.prepare_shop_item(shop_item, itemSet)
+                    if new_item is not None:
+                        self.shop_tiers[index].append(new_item)
+
+    def prepare_shop_item(self, shop_item, itemSet) -> Union[Tuple[ItemData, int], None]:
+        try:
+            item = item_table[shop_item[0]]
+        except KeyError:
+            raise KeyError(f"'{shop_item[0]}' not found")
+        if shop_item[0] in itemSet:
+            print(f"{shop_item[0]} already added")
+            return None
+        else:
+            itemSet.add(shop_item[0])
+        item_price = shop_item[1]
+        if isinstance(item_price, str):
+
+            if item_price.startswith("random-range-"):
+                min_price, max_price = self.parse_range(item_price, 0x0001, 0xFFFF)
+
+                price_split = item_price.split("-")
+                if price_split[2] in ["low", "mid", "high"]:
+                    item_price = f"random-{price_split[2]}"
+                else:
+                    item_price = "random"
+            else:
+                min_price, max_price = (0x0001, 0xFFFF)
+
+            if item_price == "default":
+                item_price = -1
+            elif item_price == "random":
+                item_price = self.random.randint(min_price, max_price)
+            elif item_price == "random-low":
+                item_price = self.random.triangular(min_price, max_price, min_price)
+            elif item_price == "random-high":
+                item_price = self.random.triangular(min_price, max_price, max_price)
+            elif item_price == "random-middle":
+                item_price = self.random.triangular(min_price, max_price)
+            item_price = int(round(item_price))
+
+        return (item, item_price)
+
+    def parse_range(self, text, range_start, range_end):
+        textsplit = text.split("-")
+        try:
+            random_range = [int(textsplit[len(textsplit) - 2]), int(textsplit[len(textsplit) - 1])]
+        except ValueError:
+            raise ValueError(f"Invalid random range {text}")
+        random_range.sort()
+        if random_range[0] < range_start or random_range[1] > range_end:
+            raise Exception(
+                f"{random_range[0]}-{random_range[1]} is outside allowed range "
+                f"{range_start}-{range_end}")
+        return random_range[0], random_range[1]
 
     @classmethod
     def stage_assert_generate(cls, multiworld: MultiWorld):

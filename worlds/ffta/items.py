@@ -44,7 +44,7 @@ WeaponBlades: typing.List[ItemData] = [
     ItemData("Atmos Blade", ItemClassification.useful, 0x11),
     ItemData("Flametongue", ItemClassification.useful, 0x12),
     ItemData("Air Blade", ItemClassification.useful, 0x13),
-    ItemData("Ice Brand", ItemClassification.useful, 0x14),
+    ItemData("Icebrand", ItemClassification.useful, 0x14),
     ItemData("Kwigon Blade", ItemClassification.useful, 0x15),
     ItemData("Ogun Blade", ItemClassification.useful,  0x16),
     ItemData("Pearl Blade", ItemClassification.useful, 0x17),
@@ -72,7 +72,7 @@ WeaponSabers: typing.List[ItemData] = [
 WeaponKnightswords: typing.List[ItemData] = [
     ItemData("Defender", ItemClassification.useful, 0x28),
     ItemData("Apocalypse", ItemClassification.useful, 0x29),
-    ItemData("Lion Heart", ItemClassification.useful, 0x2A),
+    ItemData("Lionheart", ItemClassification.useful, 0x2A),
     ItemData("Ragnarok", ItemClassification.useful, 0x2B),
     ItemData("Lohengrin", ItemClassification.useful, 0x2C),
     ItemData("Save The Queen", ItemClassification.useful, 0x2D),
@@ -118,7 +118,7 @@ WeaponKnives: typing.List[ItemData] = [
     ItemData("Kris Knife", ItemClassification.useful, 0x4B),
     ItemData("Khukuri", ItemClassification.useful, 0x4C),
     ItemData("Kard", ItemClassification.useful, 0x4D),
-    ItemData("Scaramasax", ItemClassification.useful, 0x4E),
+    ItemData("Scramasax", ItemClassification.useful, 0x4E),
     ItemData("Rondell Dagger", ItemClassification.useful, 0x4F),
     ItemData("Jambiya", ItemClassification.useful, 0x50),
     ItemData("Zorlin Shape", ItemClassification.useful, 0x51),
@@ -351,15 +351,15 @@ EquipShields: typing.List[ItemData] = [
 ]
 
 EquipHelmets: typing.List[ItemData] = [
-    ItemData("Bronze Helmet", ItemClassification.useful, 0x109),
-    ItemData("Iron Helmet", ItemClassification.useful, 0x10A),
-    ItemData("Opal Helmet", ItemClassification.useful, 0x10B),
-    ItemData("Cross Helmet", ItemClassification.useful, 0x10C),
-    ItemData("Diamond Helmet", ItemClassification.useful, 0x10D),
-    ItemData("Genji Halmet", ItemClassification.useful, 0x10E),
-    ItemData("Parade Helmet", ItemClassification.useful, 0x10F),
-    ItemData("Hanya Helmet", ItemClassification.useful, 0x110),
-    ItemData("Bangaa Helmet", ItemClassification.useful, 0x111)
+    ItemData("Bronze Helm", ItemClassification.useful, 0x109),
+    ItemData("Iron Helm", ItemClassification.useful, 0x10A),
+    ItemData("Opal Helm", ItemClassification.useful, 0x10B),
+    ItemData("Cross Helm", ItemClassification.useful, 0x10C),
+    ItemData("Diamond Helm", ItemClassification.useful, 0x10D),
+    ItemData("Genji Helm", ItemClassification.useful, 0x10E),
+    ItemData("Parade Helm", ItemClassification.useful, 0x10F),
+    ItemData("Hanya Helm", ItemClassification.useful, 0x110),
+    ItemData("Bangaa Helm", ItemClassification.useful, 0x111)
 ]
 
 EquipFemale: typing.List[ItemData] = [
@@ -375,7 +375,7 @@ EquipHats: typing.List[ItemData] = [
     ItemData("Feather Cap", ItemClassification.useful, 0x115),
     ItemData("Circlet", ItemClassification.useful, 0x116),
     ItemData("Green Beret", ItemClassification.useful, 0x117),
-    ItemData("Head Band", ItemClassification.useful, 0x118),
+    ItemData("Headband", ItemClassification.useful, 0x118),
     ItemData("Wizard Hat", ItemClassification.useful, 0x119),
     ItemData("Gold Hairpin", ItemClassification.useful, 0x11A),
     ItemData("Thief Hat", ItemClassification.useful, 0x11B),
@@ -692,7 +692,7 @@ AllItems: typing.List[ItemData] = WeaponSwords + WeaponBlades + WeaponSabers + W
                                   WeaponKatanas + WeaponStaves + WeaponRods + WeaponMaces + WeaponBows + \
                                   WeaponGreatBows + WeaponSpears + WeaponInstruments + WeaponKnuckles + WeaponSouls + \
                                   WeaponGuns + EquipShields + EquipHelmets + EquipGloves + EquipHats + EquipArmor + \
-                                  EquipRings + EquipClothing + MissionUnlockItems + JobUnlocks + TotemaUnlockItems + \
+                                  EquipRings + EquipClothing + EquipRobes + EquipShoes + MissionUnlockItems + JobUnlocks + TotemaUnlockItems + \
                                   Consumables + ProgressiveItems
 
 SoldierWeapons: typing.List[ItemData] = WeaponSwords + WeaponGreatswords
@@ -704,6 +704,17 @@ DragoonWeapons: typing.List[ItemData] = WeaponSpears + WeaponSwords
 TemplarWeapons: typing.List[ItemData] = WeaponKnightswords + WeaponSpears
 
 AssassinWeapons: typing.List[ItemData] = WeaponKatanas + WeaponGreatBows
+
+AllWeapons = WeaponSwords + WeaponBlades + WeaponSabers + WeaponKnightswords + \
+                WeaponGreatswords + WeaponBroadswords + WeaponKnives + WeaponRapiers + \
+                WeaponKatanas + WeaponStaves + WeaponRods + WeaponMaces + WeaponBows + \
+                WeaponGreatBows + WeaponSpears + WeaponInstruments + WeaponKnuckles + \
+                WeaponSouls + WeaponGuns
+
+AllOtherEquipment = EquipShields + EquipHelmets + EquipGloves + EquipHats + EquipArmor + \
+                EquipRings + EquipClothing + EquipRobes + EquipShoes
+
+AllBuyableItems = AllWeapons + AllOtherEquipment + Consumables
 
 item_table: typing.Dict[str, ItemData] = {item.itemName: item for item in AllItems}
 items_by_id: typing.Dict[int, ItemData] = {item.itemID: item for item in AllItems}
@@ -719,3 +730,192 @@ def create_item_label_to_code_map() -> Dict[str, int]:
         label_to_code_map[item.itemName] = item.itemID + offset
 
     return label_to_code_map
+
+
+ShopItem = typing.Tuple[str, typing.Union[str, int]]
+
+VanillaShopTier0: typing.List[str] = [
+    "Bronze Helm",
+    "Feather Cap",
+    "Green Beret",
+    "Cuirass",
+    "Bronze Armor",
+    "Leather Garb",
+    "Chain Plate",
+    "Hempen Robe",
+    "Shortsword",
+    "Silver Sword",
+    "Sweep Blade",
+    "Barong",
+    "Falchion",
+    "Jack Knife",
+    "Scramasax",
+    "Jambiya",
+    "Stinger",
+    "Fleuret",
+    "Scarlette",
+    "White Staff",
+    "Guard Staff",
+    "Judge Staff",
+    "Rod",
+    "Longbow",
+    "Char Bow",
+    "Thorn Bow",
+    "Demon Bell",
+    "Glass Bell",
+    "War Trumpet",
+    "Hard Knuckles",
+    "Rising Sun",
+    "Aiot Gun",
+    "Bronze Shield",
+    "Battle Boots",
+    "Gauntlets",
+    "Potion",
+    "Hi-Potion",
+    "X-Potion",
+    "Antidote",
+    "Eye Drops",
+    "Echo Screen",
+    "Maiden's Kiss",
+    "Soft",
+    "Holy Water",
+    "Bandage",
+    "Phoenix Down",
+]
+
+VanillaShopTier1: typing.List[str] = [
+    "Iron Helm",
+    "Iron Armor",
+    "Adaman Vest",
+    "Survival Vest",
+    "Silken Robe",
+    "Buster Sword",
+    "Shadow Blade",
+    "Sun Blade",
+    "Atmos Blade",
+    "Blue Saber",
+    "Shamshir",
+    "Apocalypse",
+    "Lionheart",
+    "Ragnarok",
+    "Ancient Sword",
+    "Samson Sword",
+    "Estoc",
+    "Flamberge",
+    "Ninja Knife",
+    "Murasame",
+    "Ashura",
+    "Osafune",
+    "Kotetsu",
+    "Pure Staff",
+    "Bless Staff",
+    "Firewheel Rod",
+    "Thunder Rod",
+    "Sleet Rod",
+    "Terre Rod",
+    "Battle Mace",
+    "Energy Mace",
+    "Druid Mace",
+    "Sage Crosier",
+    "Silver Bow",
+    "Windslash Bow",
+    "Ranger Bow",
+    "Cranequin",
+    "Javelin",
+    "Lava Spear",
+    "Ice Lance",
+    "Partisan",
+    "Conch Shell",
+    "Earth Bell",
+    "Black Quena",
+    "Satyr Flute",
+    "Sick Knuckles",
+    "Dream Claws",
+    "Kaiser Knuckles",
+    "Silver Cannon",
+    "Round Shield",
+]
+
+VanillaShopTier2: typing.List[str] = [
+    "Opal Helm",
+    "Circlet",
+    "Headband",
+    "Platemail",
+    "Gold Armor",
+    "Brigandine",
+    "Judo Uniform",
+    "Power Sash",
+    "Magus Robe",
+    "Mistle Robe",
+    "Burglar Sword",
+    "Flametongue",
+    "Air Blade",
+    "Icebrand",
+    "Kwigon Blade",
+    "Ogun Blade",
+    "Paraiba Blade",
+    "Aqua Saber",
+    "Defender",
+    "Lohengrin",
+    "Predator",
+    "Striborg",
+    "Kris Knife",
+    "Khukuri",
+    "Kard",
+    "Rondell Dagger",
+    "Mage Masher",
+    "Kikuichimonji",
+    "Heaven's Cloud",
+    "Cure Staff",
+    "Garnet Staff",
+    "Force Rod",
+    "Nail Bow",
+    "Twin Bow",
+    "Gae Bolg",
+    "Dragon Whisker",
+    "Riot Gun",
+    "Chaos Rifle",
+    "Opal Shield",
+    "Spiked Boots",
+    "Dash Boots",
+    "Fortune Ring",
+    "Scarab",
+]
+
+itemGroups: typing.Dict[str, typing.List[str]] = {
+    "vanillashoptier0": VanillaShopTier0,
+    "vanillashoptier1": VanillaShopTier1,
+    "vanillashoptier2": VanillaShopTier2,
+    "all": [x.itemName for x in AllBuyableItems],
+    "weapons": [x.itemName for x in AllWeapons],
+    "otherequipment": [x.itemName for x in AllOtherEquipment],
+    "swords": [x.itemName for x in WeaponSwords],
+    "blades": [x.itemName for x in WeaponBlades],
+    "sabers": [x.itemName for x in WeaponSabers],
+    "knightswords": [x.itemName for x in WeaponKnightswords],
+    "greatswords": [x.itemName for x in WeaponGreatswords],
+    "broadswords": [x.itemName for x in WeaponBroadswords],
+    "knives": [x.itemName for x in WeaponKnives],
+    "rapiers": [x.itemName for x in WeaponRapiers],
+    "katanas": [x.itemName for x in WeaponKatanas],
+    "staves": [x.itemName for x in WeaponStaves],
+    "rods": [x.itemName for x in WeaponRods],
+    "maces": [x.itemName for x in WeaponMaces],
+    "bows": [x.itemName for x in WeaponBows],
+    "greatbows": [x.itemName for x in WeaponGreatBows],
+    "spears": [x.itemName for x in WeaponSpears],
+    "instruments": [x.itemName for x in WeaponInstruments],
+    "knuckles": [x.itemName for x in WeaponKnuckles],
+    "souls": [x.itemName for x in WeaponSouls],
+    "guns": [x.itemName for x in WeaponGuns],
+    "shields": [x.itemName for x in EquipShields],
+    "helmets": [x.itemName for x in EquipHelmets],
+    "gloves": [x.itemName for x in EquipGloves],
+    "hats": [x.itemName for x in EquipHats],
+    "armor": [x.itemName for x in EquipArmor],
+    "rings": [x.itemName for x in EquipRings],
+    "clothing": [x.itemName for x in EquipClothing],
+    "robes": [x.itemName for x in EquipRobes],
+    "shoes": [x.itemName for x in EquipShoes],
+    "consumables": [x.itemName for x in Consumables],
+}

@@ -105,7 +105,7 @@ class FFTAClient(BizHawkClient):
             
             if ctx.slot_data["progressive_shop"] == 1:
                 self.progressive_shop = True
-                self.progressive_shop_tiers = len(ctx.slot_data["progressive_shop_tiers"])
+                self.progressive_shop_tiers = len(ctx.slot_data["progressive_shop_tiers"])-1
 
             """
             if "job_unlock_req" in ctx.slot_data:

@@ -2253,8 +2253,8 @@ for index in range(0, len(FFTALocations), 6):
         bitflag_index = 6
 
     # Skipping the league mission bitflags for now
-    #elif byte_i == 13 and bitflag_index == 2:
-    #    bitflag_index = 6
+    elif byte_i == 13 and bitflag_index == 2:
+        bitflag_index = 6
 
     elif byte_i == 14 and bitflag_index == 2:
         bitflag_index = 3

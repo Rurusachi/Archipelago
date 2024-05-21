@@ -9,7 +9,7 @@ from settings import get_settings
 from worlds.Files import APProcedurePatch, APTokenMixin, APTokenTypes
 from .options import Laws
 
-from .data import (FFTAData, UnitOffsets, MissionOffsets, JobOffsets, JobID, ItemOffsets)
+from .data import (FFTAData, UnitOffsets, MissionOffsets, JobOffsets, JobID, ItemOffsets, laws)
 from .items import (MissionUnlockItems)
 from .fftaabilities import master_abilities, get_job_abilities
 
@@ -78,9 +78,7 @@ def generate_output(world, player: int, output_directory: str) -> None:
     patch.write_file("progressive_shop_patch.bsdiff4",
                      pkgutil.get_data(__name__, "ffta_data/progressive_shop_patch.bsdiff4"))
 
-    base_rom = bytes(get_base_rom_as_bytes())
-
-    ffta_data = FFTAData(bytearray(base_rom))
+    ffta_data = FFTAData()
 
     # Fix Present day
     patch.write_token(APTokenTypes.WRITE, 0x563b79, bytes([0x4b]))
@@ -168,17 +166,11 @@ def generate_output(world, player: int, output_directory: str) -> None:
     if world.options.laws == Laws.option_random_laws:
         law_memory = 0x528e1c
         law_offset = 0
-        laws = []
-        len(laws)
-        for i in range(140):
-            laws.append(base_rom[law_memory + law_offset])
-            law_offset = law_offset + 2
 
-        law_offset = 0
-
-        world.random.shuffle(laws)
+        shuffled_laws = laws.copy()
+        world.random.shuffle(shuffled_laws)
         for i in range(140):
-            patch.write_token(APTokenTypes.WRITE, law_memory + law_offset, bytes([laws[i]]))
+            patch.write_token(APTokenTypes.WRITE, law_memory + law_offset, bytes([shuffled_laws[i]]))
             law_offset = law_offset + 2
 
     # Set quick options to on
@@ -232,7 +224,7 @@ def generate_output(world, player: int, output_directory: str) -> None:
         #if world.options.force_recruitment.value == 1:
         #    patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.recruit, bytes(world.random.choice(world.recruits)))
 
-        if world.options.force_recruitment.value == 1 and base_rom[mission.memory + MissionOffsets.recruit] < 0x8a:
+        if world.options.force_recruitment.value == 1 and mission.recruit < 0x8a:
             random_recruit = world.random.choice(world.recruit_units)
             patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.recruit,
                               bytes([random_recruit]))
@@ -274,20 +266,20 @@ def generate_output(world, player: int, output_directory: str) -> None:
                           bytes([reward_display]))
 
         # patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.type, 2, 0x00)
-        if base_rom[mission.memory + MissionOffsets.type] == 0x0D:
+        if mission.mission_type == 0x0D:
             patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.type, bytes([0x0A]))
 
         # Dispatch missions
-        elif base_rom[mission.memory + MissionOffsets.type] == 0x00:
+        elif mission.mission_type == 0x00:
             patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.type, bytes([0x00]))
             patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.dispatch_ability, bytes([0x00]))
         #    patch.write_token(APTokenTypes.WRITE, mission.memory + 0x10, 1, 0x03)
 
-        elif base_rom[mission.memory + MissionOffsets.type] == 0x02:
+        elif mission.mission_type == 0x02:
             patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.type, bytes([0x02]))
 
-        # Make free missions all dispatch missions for now. 0x10 is the win condition. Maybe randomize for dispatch missions later?
-        elif base_rom[mission.memory + MissionOffsets.type] >= 0x10 and base_rom[mission.memory + 0x10] != 0x00:
+        # Make free missions all dispatch missions for now. mission.other is the win condition. Maybe randomize for dispatch missions later?
+        elif mission.mission_type >= 0x10 and mission.other != 0x00:
             patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.type, bytes([0x00]))
             patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.dispatch_ability, bytes([0x00]))
 
@@ -377,10 +369,10 @@ def generate_output(world, player: int, output_directory: str) -> None:
 
             # Master all abilities if the unit is a monster type
             if world.randomized_jobs[index] >= 0x2C:
-                master_abilities(bytearray(base_rom), ffta_data, index, get_job_abilities(world.randomized_jobs[index]),
+                master_abilities(ffta_data, index, get_job_abilities(world.randomized_jobs[index]),
                                  10, patch)
             else:
-                master_abilities(bytearray(base_rom), ffta_data, index, get_job_abilities(world.randomized_jobs[index]),
+                master_abilities(ffta_data, index, get_job_abilities(world.randomized_jobs[index]),
                                  world.options.starting_abilities.value, patch)
 
             # Set the basic weapons and equipment if the option is selected
@@ -394,17 +386,17 @@ def generate_output(world, player: int, output_directory: str) -> None:
 
     # Master abilities if units aren't randomized
     if world.options.starting_units.value == 0:
-        master_abilities(bytearray(base_rom), ffta_data, 0, get_job_abilities(JobID.soldier),
+        master_abilities(ffta_data, 0, get_job_abilities(JobID.soldier),
                          world.options.starting_abilities.value, patch)
-        master_abilities(bytearray(base_rom), ffta_data, 1, get_job_abilities(JobID.blackmagemog),
+        master_abilities(ffta_data, 1, get_job_abilities(JobID.blackmagemog),
                          world.options.starting_abilities.value, patch)
-        master_abilities(bytearray(base_rom), ffta_data, 2, get_job_abilities(JobID.soldier),
+        master_abilities(ffta_data, 2, get_job_abilities(JobID.soldier),
                          world.options.starting_abilities.value, patch)
-        master_abilities(bytearray(base_rom), ffta_data, 3, get_job_abilities(JobID.whitemonk),
+        master_abilities(ffta_data, 3, get_job_abilities(JobID.whitemonk),
                          world.options.starting_abilities.value, patch)
-        master_abilities(bytearray(base_rom), ffta_data, 4, get_job_abilities(JobID.whitemagemou),
+        master_abilities(ffta_data, 4, get_job_abilities(JobID.whitemagemou),
                          world.options.starting_abilities.value, patch)
-        master_abilities(bytearray(base_rom), ffta_data, 5, get_job_abilities(JobID.archervra),
+        master_abilities(ffta_data, 5, get_job_abilities(JobID.archervra),
                          world.options.starting_abilities.value, patch)
 
     # Randomize enemies
@@ -414,9 +406,9 @@ def generate_output(world, player: int, output_directory: str) -> None:
         patch.write_token(APTokenTypes.WRITE, ffta_data.formations[index].memory + UnitOffsets.level, bytes([0x00]))
 
         if world.options.randomize_enemies.value == 1:
-            if base_rom[ffta_data.formations[index].memory] == 0x01:
+            if ffta_data.formations[index].formation_type == 0x01:
                 randomize_unit(ffta_data, index, world, patch)
-                master_abilities(bytearray(base_rom), ffta_data, index, get_job_abilities(world.randomized_jobs[index]),
+                master_abilities(ffta_data, index, get_job_abilities(world.randomized_jobs[index]),
                                  random.randint(1, 10), patch)
 
                 # Disable reaction and support abilities for now
@@ -436,11 +428,11 @@ def generate_output(world, player: int, output_directory: str) -> None:
         randomize_judge(ffta_data, 0xa32, 4, world, patch)
 
         # Have the judges master all the abilities
-        master_abilities(bytearray(base_rom), ffta_data, 0xa10, get_job_abilities(world.randomized_judge[0]), 10, patch)
-        master_abilities(bytearray(base_rom), ffta_data, 0xa21, get_job_abilities(world.randomized_judge[1]), 10, patch)
-        master_abilities(bytearray(base_rom), ffta_data, 0xa30, get_job_abilities(world.randomized_judge[2]), 10, patch)
-        master_abilities(bytearray(base_rom), ffta_data, 0xa31, get_job_abilities(world.randomized_judge[3]), 10, patch)
-        master_abilities(bytearray(base_rom), ffta_data, 0xa32, get_job_abilities(world.randomized_judge[4]), 10, patch)
+        master_abilities(ffta_data, 0xa10, get_job_abilities(world.randomized_judge[0]), 10, patch)
+        master_abilities(ffta_data, 0xa21, get_job_abilities(world.randomized_judge[1]), 10, patch)
+        master_abilities(ffta_data, 0xa30, get_job_abilities(world.randomized_judge[2]), 10, patch)
+        master_abilities(ffta_data, 0xa31, get_job_abilities(world.randomized_judge[3]), 10, patch)
+        master_abilities(ffta_data, 0xa32, get_job_abilities(world.randomized_judge[4]), 10, patch)
 
     """
 

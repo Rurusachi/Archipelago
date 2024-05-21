@@ -278,7 +278,7 @@ def generate_output(world, player: int, output_directory: str) -> None:
         elif mission.mission_type == 0x02:
             patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.type, bytes([0x02]))
 
-        # Make free missions all dispatch missions for now. 0x10 is the win condition. Maybe randomize for dispatch missions later?
+        # Make free missions all dispatch missions for now. mission.other is the win condition. Maybe randomize for dispatch missions later?
         elif mission.mission_type >= 0x10 and mission.other != 0x00:
             patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.type, bytes([0x00]))
             patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.dispatch_ability, bytes([0x00]))

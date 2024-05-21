@@ -93,7 +93,7 @@ mission_data = [(0, 11, 0), (0, 11, 0), (0, 11, 0), (0, 11, 0), (0, 11, 0), (0, 
                 (0, 10, 0), (0, 12, 0), (0, 12, 0), (0, 12, 0), (156, 12, 0), (0, 12, 0), (0, 12, 0), (0, 12, 0),
                 (0, 12, 0), (0, 12, 0), (0, 12, 0), (0, 0, 0), (0, 0, 0)]
 
-# Does not include first 6 formations (i.e. formation_types[0] = ffta_data.formations[6].other)
+# Does not include first 6 formations (i.e. formation_types[0] = ffta_data.formations[6].formation_type)
 formation_types = [20, 21, 22, 23, 24, 25, 26, 56, 15, 16, 17, 76, 23, 1, 1, 8, 1, 1, 1, 1,
                    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 12, 1, 1, 1, 1, 1, 32,
                    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 10, 1, 1, 1, 1, 1, 30, 57, 58, 59,

@@ -72,7 +72,7 @@ def randomize_judge(ffta_data, index: int, random_index: int, world, patch: FFTA
 
 
 def generate_output(world, player: int, output_directory: str) -> None:
-    patch = FFTAProcedurePatch()
+    patch = FFTAProcedurePatch(player=player, player_name=world.multiworld.player_name[player])
 
     patch.write_file("base_patch.bsdiff4", pkgutil.get_data(__name__, "ffta_data/base_patch.bsdiff4"))
     patch.write_file("progressive_shop_patch.bsdiff4",

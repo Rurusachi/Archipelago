@@ -365,11 +365,6 @@ class FFTAWorld(World):
                 f"{range_start}-{range_end}")
         return random_range[0], random_range[1]
 
-    @classmethod
-    def stage_assert_generate(cls, multiworld: MultiWorld):
-        if not os.path.exists(cls.settings.rom_file):
-            raise FileNotFoundError(cls.settings.rom_file)
-
     def fill_slot_data(self) -> Dict[str, Any]:
 
         slot_data = self.options.as_dict(

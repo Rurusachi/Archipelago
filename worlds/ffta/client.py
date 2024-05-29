@@ -148,20 +148,22 @@ class FFTAClient(BizHawkClient):
 
             # Remove the archipelago, job unlock, and shop upgrade mission items. Also check for job unlock items
             for byte_i, item in enumerate(mission_items):
-                if item == 0x0E or item == 0x45 or item == 0x46:
+                if item == 0x0E or item == 0x46:
                     await bizhawk.write(ctx.bizhawk_ctx, [(0x2002B08 + byte_i, bytes([0x00]), "System Bus")])
 
                 # Handle job unlock items
 
-                print(JobUnlockDict)
                 if item in JobUnlockDict:
                     await bizhawk.write(ctx.bizhawk_ctx, [(0x2002B08 + byte_i, bytes([0x00]), "System Bus")])
 
                     job_unlocks = JobUnlockDict[item]
 
-                    print(job_unlocks)
-                    for i in range(len(job_unlocks)):
-                        await bizhawk.write(ctx.bizhawk_ctx, [(job_unlocks[i], bytes([0x00]), "System Bus")])
+                    if type(job_unlocks) is list:
+                        for i in range(len(job_unlocks)):
+                            await bizhawk.write(ctx.bizhawk_ctx, [(job_unlocks[i], bytes([0x00]), "ROM")])
+
+                    else:
+                        await bizhawk.write(ctx.bizhawk_ctx, [(job_unlocks, bytes([0x00]), "ROM")])
 
             self.goal_flag = read_result[5]
 

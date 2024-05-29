@@ -4,6 +4,7 @@ import random
 import struct
 import typing
 
+
 from settings import get_settings
 
 from worlds.Files import APProcedurePatch, APTokenMixin, APTokenTypes
@@ -12,6 +13,7 @@ from .options import Laws
 from .data import (FFTAData, UnitOffsets, MissionOffsets, JobOffsets, JobID, ItemOffsets, laws)
 from .items import (MissionUnlockItems)
 from .fftaabilities import master_abilities, get_job_abilities
+from .fftautils import textDict
 
 
 def get_base_rom_as_bytes() -> bytes:
@@ -30,6 +32,7 @@ class FFTAProcedurePatch(APProcedurePatch, APTokenMixin):
     procedure = [
         ("apply_bsdiff4", ["base_patch.bsdiff4"]),
         ("apply_bsdiff4", ["progressive_shop_patch.bsdiff4"]),
+        ("apply_bsdiff4", ["job_unlock_items.bsdiff4"]),
         ("apply_tokens", ["token_data.bin"]),
     ]
 
@@ -71,12 +74,14 @@ def randomize_judge(ffta_data, index: int, random_index: int, world, patch: FFTA
     patch.write_token(APTokenTypes.WRITE, ffta_data.formations[index].memory + UnitOffsets.unit_item3, bytes([0x00]))
 
 
-def generate_output(world, player: int, output_directory: str) -> None:
+def generate_output(world, player: int, output_directory: str, player_names) -> None:
     patch = FFTAProcedurePatch(player=player, player_name=world.multiworld.player_name[player])
 
     patch.write_file("base_patch.bsdiff4", pkgutil.get_data(__name__, "ffta_data/base_patch.bsdiff4"))
     patch.write_file("progressive_shop_patch.bsdiff4",
                      pkgutil.get_data(__name__, "ffta_data/progressive_shop_patch.bsdiff4"))
+    patch.write_file("job_unlock_items.bsdiff4",
+                     pkgutil.get_data(__name__, "ffta_data/job_unlock_items.bsdiff4"))
 
     ffta_data = FFTAData()
 
@@ -220,10 +225,6 @@ def generate_output(world, player: int, output_directory: str) -> None:
         # patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.clan_reward, 0x0A)
         # patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.clan_reward + 0x07, 0x0A)
 
-        # Set the recruitment for the mission to be random
-        #if world.options.force_recruitment.value == 1:
-        #    patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.recruit, bytes(world.random.choice(world.recruits)))
-
         if world.options.force_recruitment.value == 1 and mission.recruit < 0x8a:
             random_recruit = world.random.choice(world.recruit_units)
             patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.recruit,
@@ -320,10 +321,6 @@ def generate_output(world, player: int, output_directory: str) -> None:
         patch.write_token(APTokenTypes.WRITE,
                           ffta_data.jobs[world.randomized_jobs[5]].memory + JobOffsets.job_requirement,
                           bytes([0x00]))
-
-    # TO DO: Randomize abilities
-    # for ability in ffta_data.human_abilities:
-    #    patch.write_token(APTokenTypes.WRITE, ability.memory, 8, base_rom[ffta_data.viera_abilities[5].memory])
 
     # All abilities cost 0
     # for abilities in ffta_data.abilities:
@@ -439,10 +436,6 @@ def generate_output(world, player: int, output_directory: str) -> None:
     # Remove Llednar's weapon on present day to make it more survivable
     patch.write_token(APTokenTypes.WRITE, 0x52eaf8, bytes([0x00]))
 
-    # Set option for job items in the ROM
-    # if world.options.job_unlock_req.value == 3:
-    #    patch.write_token(APTokenTypes.WRITE, 0xAAAAD0, 1, 0x01)
-
     # Randomize locations on map
     for i in range(0, len(world.location_ids)):
         patch.write_token(APTokenTypes.WRITE, 0xb390dc + i, bytes([world.location_ids[i]]))
@@ -459,6 +452,38 @@ def generate_output(world, player: int, output_directory: str) -> None:
     # Set slot name in rom
     # TO DO. Fix this to work on procedure patch
     # patch.write_token(APTokenTypes.WRITE, 0xAAABD0, world.multiworld.player_name[player].encode("utf-8"))
+
+    # Set unit names from players in the multiworld
+
+    pointer_address = 0x5680DC
+    name_address = 0xD00000
+
+    # Check if player names exceed the number of unit name pointers
+    if len(player_names) > 725:
+        player_names = player_names[:725]
+
+    for name in player_names:
+
+        if len(name) > 14:
+            name = name[:14]
+
+        name_hex = []
+        for char in name:
+            print(char)
+            if char in textDict:
+                name_hex.append(textDict[char])
+            elif char == ' ':
+                name_hex.append(0xF0)
+            else:
+                name_hex.append(0xEB)
+
+        patch.write_token(APTokenTypes.WRITE, pointer_address, struct.pack("<i", (name_address + 0x8000000)))
+        patch.write_token(APTokenTypes.WRITE, name_address, bytes([0x01]))
+        patch.write_token(APTokenTypes.WRITE, name_address + 0x01, bytes(name_hex))
+        patch.write_token(APTokenTypes.WRITE, name_address + len(name_hex) + 0x01, bytes([0x00]))
+        # Update name and pointer addresses
+        name_address += len(name_hex) + 0x02
+        pointer_address += 0x04
 
     patch.write_file("token_data.bin", patch.get_token_binary())
 
@@ -716,12 +741,10 @@ def set_items(multiworld, player, patch: FFTAProcedurePatch) -> None:
     for location in multiworld.get_filled_locations(player):
 
         if location.item.code is not None:
-            item_id = location.item.code - offset
-            if location.item.player == player:
-                if item_id >= 0x2ac and not (item_id >= 0x300 and item_id < 0x304) and item_id != 0x3FF:
-                    item_id = 0x1bc
-            else:
+            if location.item.player != player:
                 item_id = 0x185
+            else:
+                item_id = location.item.code - offset
 
             item_id = item_id << location.offset
             byte1 = item_id & 0x00ff

@@ -615,19 +615,62 @@ AbilityItems: typing.List[ItemData] = [
     #ItemData('Ability: Tail Wag', ItemClassification.useful, 0x1bb)
 ]
 
+JobUnlockDict = {
+    0x1cc: 0x8521AAC,  # Soldier
+    0x1dc: 0x8521AE0,  # Paladin
+    0x184: 0x8521B14,  # Fighter
+    0x1f4: [0x8521B48, 0x8522230],  # Thief
+    0x17c: 0x8521B7C  # Ninja
+
+}
 JobUnlocks: typing.List[ItemData] = [
-    # Human Jobs
-    ItemData('Job Unlock: Soldier', ItemClassification.useful, 0x2ac),
-    ItemData('Job Unlock: Paladin', ItemClassification.useful, 0x2e0),
-    ItemData('Job Unlock: Fighter', ItemClassification.useful, 0x314),
-    ItemData('Job Unlock: Thief (Human)', ItemClassification.useful, 0x348),
-    ItemData('Job Unlock: Ninja', ItemClassification.useful, 0x37c),
-    ItemData('Job Unlock: White Mage (Human)', ItemClassification.useful, 0x3b0),
-    ItemData('Job Unlock: Black Mage (Human)', ItemClassification.useful, 0x3e4),
-    ItemData('Job Unlock: Illusionist (Human)', ItemClassification.useful, 0x418),
-    ItemData('Job Unlock: Blue Mage', ItemClassification.useful, 0x44c),
-    ItemData('Job Unlock: Archer (Human)', ItemClassification.useful, 0x480),
-    ItemData('Job Unlock: Hunter', ItemClassification.useful, 0x4b4),
+
+    ItemData('Job Unlock: Soldier', ItemClassification.useful, 0x1cc),  # Rusty sword
+    ItemData('Job Unlock: Paladin', ItemClassification.useful, 0x1dc),  # Snake shield
+    ItemData('Job Unlock: Fighter', ItemClassification.useful, 0x184),  # Badge
+    ItemData('Job Unlock: Thief', ItemClassification.useful, 0x1f4),  # Stolen Gil
+    ItemData('Job Unlock: Ninja', ItemClassification.useful, 0x17c),  # Ogma's Seal
+    ItemData('Job Unlock: White Mage', ItemClassification.useful, 0x1a1),  # Fairy wing
+    ItemData('Job Unlock: Black Mage', ItemClassification.useful, 0x1b3),  # Magic Vellum
+    ItemData('Job Unlock: Illusionist', ItemClassification.useful, 0x1e2),  # Stilpool scroll
+    ItemData('Job Unlock: Blue Mage', ItemClassification.useful, 0x1bc),  # Monster guide
+    ItemData('Job Unlock: Archer', ItemClassification.useful, 0x1d6),  # Feather badge
+    ItemData('Job Unlock: Hunter', ItemClassification.useful, 0x1a3),  # Panther hide
+    ItemData('Job Unlock: Warrior', ItemClassification.useful, 0x1cd),  # Broken sword
+    ItemData('Job Unlock: Dragoon', ItemClassification.useful, 0x1cf),  # Rusty spear
+    ItemData('Job Unlock: Defender', ItemClassification.useful, 0x183),  # Master brave
+    ItemData('Job Unlock: Gladiator', ItemClassification.useful, 0x190),  # Silvril
+    ItemData('Job Unlock: White Monk', ItemClassification.useful, 0x191),  # Materite
+    ItemData('Job Unlock: Bishop', ItemClassification.useful, 0x1b8),  # Edaroya tome
+    ItemData('Job Unlock: Templar', ItemClassification.useful, 0x194),  # Spiritstone
+    ItemData('Job Unlock: Time Mage', ItemClassification.useful, 0x1c5),  # Clock post
+    ItemData('Job Unlock: Alchemist', ItemClassification.useful, 0x1a9),  # Life water
+    ItemData('Job Unlock: Beastmaster', ItemClassification.useful, 0x1a2),  # Bombshell
+    ItemData('Job Unlock: Morpher', ItemClassification.useful, 0x19c),  # Chocobo skin
+    ItemData('Job Unlock: Sage', ItemClassification.useful, 0x1b2),  # Ancient text
+    ItemData('Job Unlock: Fencer', ItemClassification.useful, 0x1ce),  # Bent sword
+    ItemData('Job Unlock: Elementalist', ItemClassification.useful, 0x1ea),  # Sprinkler
+    ItemData('Job Unlock: Red Mage', ItemClassification.useful, 0x18e),  # Topaz armring
+    ItemData('Job Unlock: Summoner', ItemClassification.useful, 0x182),  # Friend pin
+    ItemData('Job Unlock: Assassin', ItemClassification.useful, 0x1d7),  # Insignia
+    ItemData('Job Unlock: Sniper', ItemClassification.useful, 0x1d8),  # Ally Finder
+    ItemData('Job Unlock: Animist', ItemClassification.useful, 0x1bf),  # Stuffed bear
+    ItemData('Job Unlock: Mog Knight', ItemClassification.useful, 0x1b4),  # Justice badge
+    ItemData('Job Unlock: Gunner', ItemClassification.useful, 0x1c6),  # Fountain pen
+    ItemData('Job Unlock: Juggler', ItemClassification.useful, 0x1c7),  # Ear plugs
+    ItemData('Job Unlock: Gadgeteer', ItemClassification.useful, 0x1db),  # Loaded dice
+
+    #ItemData('Job Unlock: Soldier', ItemClassification.useful, 0x2ac),
+    #ItemData('Job Unlock: Paladin', ItemClassification.useful, 0x2e0),
+    #ItemData('Job Unlock: Fighter', ItemClassification.useful, 0x314),
+    #ItemData('Job Unlock: Thief (Human)', ItemClassification.useful, 0x348),
+    #ItemData('Job Unlock: Ninja', ItemClassification.useful, 0x37c),
+    #ItemData('Job Unlock: White Mage (Human)', ItemClassification.useful, 0x3b0),
+    #ItemData('Job Unlock: Black Mage (Human)', ItemClassification.useful, 0x3e4),
+    #ItemData('Job Unlock: Illusionist (Human)', ItemClassification.useful, 0x418),
+    #ItemData('Job Unlock: Blue Mage', ItemClassification.useful, 0x44c),
+    #ItemData('Job Unlock: Archer (Human)', ItemClassification.useful, 0x480),
+    #ItemData('Job Unlock: Hunter', ItemClassification.useful, 0x4b4),
 
     # Bangaa Jobs
     ItemData('Job Unlock: Warrior', ItemClassification.useful, 0x4e8),

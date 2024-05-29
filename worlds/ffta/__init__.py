@@ -911,4 +911,6 @@ class FFTAWorld(World):
         # Visualize regions
         #visualize_regions(self.multiworld.get_region("Menu", self.player), "ffta.puml", show_entrance_names=True)
 
-        generate_output(self, self.player, output_directory)
+        player_names = list(self.multiworld.player_name.values())
+        player_names.remove(self.multiworld.player_name[self.player])
+        generate_output(self, self.player, output_directory, player_names)

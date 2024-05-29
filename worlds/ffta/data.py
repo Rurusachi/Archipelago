@@ -437,7 +437,6 @@ class Formation(MemorySpace):
     offset = 0x52cde0
     byteSize = 0x30
     length = 0xA46
-    # 414 original length
 
 
 class UnitInBattle(MemorySpace):

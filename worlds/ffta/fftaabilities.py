@@ -1,4 +1,5 @@
-from .data import UnitOffsets, JobID
+from .data import UnitOffsets, JobID, human_abilities, bangaa_abilities, nu_mou_abilities, viera_abilities, \
+    moogle_abilities
 from typing import List, Tuple
 from worlds.Files import APTokenTypes
 import random
@@ -99,7 +100,7 @@ class JobAbilities:
     titania = [(0, 4), (0, 5), (0, 6), (0, 7)]
 
 
-def master_abilities(data, index: int, ability_list: List[Tuple], percent: float, patch):
+def master_abilities(data, index: int, ability_list: List[Tuple], percent: float, patch, world):
     ability_set: int
     ability: int
     master_amount: int
@@ -115,12 +116,40 @@ def master_abilities(data, index: int, ability_list: List[Tuple], percent: float
     # Shuffle the abilities
     random.shuffle(ability_list)
 
+    reaction_abilities = []
+    support_abilities = []
+
     master_amount = int((percent / 10) * len(ability_list))
     for x in range(master_amount):
         ability_set = ability_list[x][0]
         ability = ability_list[x][1]
 
+        ability_data = world.human_ability_dict[ability_list[x]]
+
+        if ability_data[4] == 0x02:
+            support_abilities.append(x)
+
+        elif ability_data[4] == 0x03:
+            reaction_abilities.append(x)
+
         set_mastered_ability(data.formations[index].memory + UnitOffsets.abilities + ability_set, ability, patch)
+
+    # Add random support and reaction abilities to unit if they have learned the ability
+    if len(support_abilities) > 0:
+        patch.write_token(APTokenTypes.WRITE, data.formations[index].memory + UnitOffsets.ability_support,
+                          bytes([random.choice(support_abilities)]))
+
+    else:
+        patch.write_token(APTokenTypes.WRITE, data.formations[index].memory + UnitOffsets.ability_support,
+                          bytes([0x00]))
+
+    if len(reaction_abilities) > 0:
+        patch.write_token(APTokenTypes.WRITE, data.formations[index].memory + UnitOffsets.ability_reaction,
+                          bytes([random.choice(reaction_abilities)]))
+
+    else:
+        patch.write_token(APTokenTypes.WRITE, data.formations[index].memory + UnitOffsets.ability_reaction,
+                          bytes([0x00]))
 
 
 def get_job_abilities(job: int):
@@ -337,3 +366,24 @@ def get_job_abilities(job: int):
 
     else:
         return 0
+
+
+human_abilities_bitflags = JobAbilities.soldier + JobAbilities.paladin + JobAbilities.fighter \
+                               + JobAbilities.thiefhum + JobAbilities.ninja + JobAbilities.whitemagehum + \
+                               JobAbilities.blackmagehum + JobAbilities.illusionisthum + JobAbilities.bluemage \
+                               + JobAbilities.archerhum + JobAbilities.hunter
+
+
+bangaa_abilities_bitflags = JobAbilities.warrior + JobAbilities.dragoon + JobAbilities.defender + JobAbilities.gladiator \
+                            + JobAbilities.white_monk + JobAbilities.bishop + JobAbilities.templar
+
+nu_mou_abilities_bitflags = JobAbilities.whitemagemou + JobAbilities.blackmagemou + JobAbilities.timemagemou + \
+                            JobAbilities.illusionistmou + JobAbilities.alchemist + JobAbilities.beastmaster + \
+                            JobAbilities.morpher + JobAbilities.sage
+
+viera_abilities_bitflags = JobAbilities.fencer + JobAbilities.elementalist + JobAbilities.redmage + JobAbilities.whitemageviera + \
+                           JobAbilities.summoner + JobAbilities.archerviera + JobAbilities.assassin + JobAbilities.sniper
+
+moogle_abilities_bitflags = JobAbilities.animist + JobAbilities.mogknight + JobAbilities.gunner + JobAbilities.thiefmog + \
+                            JobAbilities.juggler + JobAbilities.gadgeteer + JobAbilities.blackmagemog + \
+                            JobAbilities.timemagemog

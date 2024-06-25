@@ -688,57 +688,6 @@ JobUnlocks: typing.List[ItemData] = [
     ItemData('Job Unlock: Gunner', ItemClassification.useful, 0x1c6),  # Fountain pen
     ItemData('Job Unlock: Juggler', ItemClassification.useful, 0x1c7),  # Ear plugs
     ItemData('Job Unlock: Gadgeteer', ItemClassification.useful, 0x1db),  # Loaded dice
-
-    #ItemData('Job Unlock: Soldier', ItemClassification.useful, 0x2ac),
-    #ItemData('Job Unlock: Paladin', ItemClassification.useful, 0x2e0),
-    #ItemData('Job Unlock: Fighter', ItemClassification.useful, 0x314),
-    #ItemData('Job Unlock: Thief (Human)', ItemClassification.useful, 0x348),
-    #ItemData('Job Unlock: Ninja', ItemClassification.useful, 0x37c),
-    #ItemData('Job Unlock: White Mage (Human)', ItemClassification.useful, 0x3b0),
-    #ItemData('Job Unlock: Black Mage (Human)', ItemClassification.useful, 0x3e4),
-    #ItemData('Job Unlock: Illusionist (Human)', ItemClassification.useful, 0x418),
-    #ItemData('Job Unlock: Blue Mage', ItemClassification.useful, 0x44c),
-    #ItemData('Job Unlock: Archer (Human)', ItemClassification.useful, 0x480),
-    #ItemData('Job Unlock: Hunter', ItemClassification.useful, 0x4b4),
-
-    # Bangaa Jobs
-    ItemData('Job Unlock: Warrior', ItemClassification.useful, 0x4e8),
-    ItemData('Job Unlock: Dragoon', ItemClassification.useful, 0x51c),
-    ItemData('Job Unlock: Defender', ItemClassification.useful, 0x550),
-    ItemData('Job Unlock: Gladiator', ItemClassification.useful, 0x584),
-    ItemData('Job Unlock: White Monk', ItemClassification.useful, 0x5b8),
-    ItemData('Job Unlock: Bishop', ItemClassification.useful, 0x5ec),
-    ItemData('Job Unlock: Templar', ItemClassification.useful, 0x620),
-
-    # Nu Mou Jobs
-    ItemData('Job Unlock: White Mage (Nu Mou)', ItemClassification.useful, 0x654),
-    ItemData('Job Unlock: Black Mage (Nu Mou)', ItemClassification.useful, 0x688),
-    ItemData('Job Unlock: Time Mage (Nu Mou)', ItemClassification.useful, 0x6bc),
-    ItemData('Job Unlock: Illusionist (Nu Mou)', ItemClassification.useful, 0x6f0),
-    ItemData('Job Unlock: Alchemist', ItemClassification.useful, 0x724),
-    ItemData('Job Unlock: Beastmaster', ItemClassification.useful, 0x758),
-    ItemData('Job Unlock: Morpher', ItemClassification.useful, 0x78c),
-    ItemData('Job Unlock: Sage', ItemClassification.useful, 0x7c0),
-
-    # Viera jobs
-    ItemData('Job Unlock: Fencer', ItemClassification.useful, 0x7f4),
-    ItemData('Job Unlock: Elementalist', ItemClassification.useful, 0x828),
-    ItemData('Job Unlock: Red Mage', ItemClassification.useful, 0x85c),
-    ItemData('Job Unlock: White Mage (Viera)', ItemClassification.useful, 0x890),
-    ItemData('Job Unlock: Summoner', ItemClassification.useful, 0x8c4),
-    ItemData('Job Unlock: Archer (Viera)', ItemClassification.useful, 0x8f8),
-    ItemData('Job Unlock: Assassin', ItemClassification.useful, 0x92c),
-    ItemData('Job Unlock: Sniper', ItemClassification.useful, 0x960),
-
-    # Moogle jobs
-    ItemData('Job Unlock: Animist', ItemClassification.useful, 0x994),
-    ItemData('Job Unlock: Mog Knight', ItemClassification.useful, 0x9c8),
-    ItemData('Job Unlock: Gunner', ItemClassification.useful, 0x9fc),
-    ItemData('Job Unlock: Thief (Moogle)', ItemClassification.useful, 0xa30),
-    ItemData('Job Unlock: Juggler', ItemClassification.useful, 0xa64),
-    ItemData('Job Unlock: Gadgeteer', ItemClassification.useful, 0xa98),
-    ItemData('Job Unlock: Black Mage (Moogle)', ItemClassification.useful, 0xacc),
-    ItemData('Job Unlock: Time Mage (Moogle)', ItemClassification.useful, 0xb00)
 ]
 
 # TODO: complete this

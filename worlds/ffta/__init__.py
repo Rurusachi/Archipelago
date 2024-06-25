@@ -13,9 +13,12 @@ from .client import FFTAClient
 
 from BaseClasses import ItemClassification, MultiWorld, Tutorial, Item
 from worlds.AutoWorld import WebWorld, World
-from .data import get_random_job, JobID, attacker_jobs, magic_jobs, support_jobs
+from .data import (get_random_job, JobID, attacker_jobs, magic_jobs, support_jobs, human_abilities, bangaa_abilities,
+                   nu_mou_abilities, viera_abilities, moogle_abilities)
 from .regions import create_regions
 from .rules import set_rules
+from .fftaabilities import (human_abilities_bitflags, bangaa_abilities_bitflags, nu_mou_abilities_bitflags,
+                            viera_abilities_bitflags, moogle_abilities_bitflags)
 
 from .options import (FFTAOptions, StartingUnits, StartingUnitEquip, StartingAbilitiesMastered, JobUnlockReq,
                       RandomEnemies, EnemyScaling, StartingGil, GateNumber, GatePaths, DispatchMissions,
@@ -86,7 +89,6 @@ class FFTAWorld(World):
         self.judge_equip = []
         self.randomized_weapons = []
         self.randomized_equip = []
-        self.randomized_abilities = []
         self.basic_weapon = []
         self.basic_equip = []
         self.MissionGroups = []
@@ -97,6 +99,17 @@ class FFTAWorld(World):
         self.path3_length = []
         self.path_items = []
         self.shop_tiers = []
+        self.human_ability_dict = {}
+        self.bangaa_ability_dict = {}
+        self.nu_mou_ability_dict = {}
+        self.viera_ability_dict = {}
+        self.moogle_ability_dict = {}
+        self.new_human_abilities = []
+        self.new_bangaa_abilities = []
+        self.new_nu_mou_abilities = []
+        self.new_viera_abilities = []
+        self.new_moogle_abilities = []
+        self.all_abilities = []
         self.recruit_units = [0x03, 0x0f, 0x17, 0x20, 0x29]
         self.recruit_secret = [0x03, 0x0f, 0x17, 0x20, 0x29, 0x8a, 0x8c, 0x8e,
                                0x90, 0x92, 0x94, 0x96, 0x98, 0x9a, 0x9c, 0x9e]
@@ -911,6 +924,48 @@ class FFTAWorld(World):
         # Visualize regions
         #visualize_regions(self.multiworld.get_region("Menu", self.player), "ffta.puml", show_entrance_names=True)
 
+        # Get player names from the multiworld
         player_names = list(self.multiworld.player_name.values())
         player_names.remove(self.multiworld.player_name[self.player])
+
+        # Randomize abilities
+        self.all_abilities = human_abilities + bangaa_abilities + nu_mou_abilities + viera_abilities + moogle_abilities
+        self.random.shuffle(self.all_abilities)
+
+        last_index = 0
+        for i in range(0, len(human_abilities)):
+            self.new_human_abilities.append(self.all_abilities[last_index])
+            last_index += 1
+
+        for i in range(0, len(bangaa_abilities)):
+            self.new_bangaa_abilities.append(self.all_abilities[last_index])
+            last_index += 1
+
+        for i in range(0, len(nu_mou_abilities)):
+            self.new_nu_mou_abilities.append(self.all_abilities[last_index])
+            last_index += 1
+
+        for i in range(0, len(viera_abilities)):
+            self.new_viera_abilities.append(self.all_abilities[last_index])
+            last_index += 1
+
+        for i in range(0, len(moogle_abilities)):
+            self.new_moogle_abilities.append(self.all_abilities[last_index])
+            last_index += 1
+
+        self.human_ability_dict = {human_abilities_bitflags[i]: self.new_human_abilities[i] for i in
+                                   range(len(human_abilities_bitflags))}
+
+        self.bangaa_ability_dict = {bangaa_abilities_bitflags[i]: self.new_bangaa_abilities[i] for i in
+                                    range(len(bangaa_abilities_bitflags))}
+
+        self.nu_mou_ability_dict = {nu_mou_abilities_bitflags[i]: self.new_nu_mou_abilities[i] for i in
+                                    range(len(nu_mou_abilities_bitflags))}
+
+        self.viera_ability_dict = {viera_abilities_bitflags[i]: self.new_viera_abilities[i] for i in
+                                    range(len(viera_abilities_bitflags))}
+
+        self.moogle_ability_dict = {moogle_abilities_bitflags[i]: self.new_moogle_abilities[i] for i in
+                                   range(len(moogle_abilities_bitflags))}
+
         generate_output(self, self.player, output_directory, player_names)

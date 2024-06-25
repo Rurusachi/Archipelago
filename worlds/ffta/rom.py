@@ -4,13 +4,14 @@ import random
 import struct
 import typing
 
-
 from settings import get_settings
 
 from worlds.Files import APProcedurePatch, APTokenMixin, APTokenTypes
 from .options import Laws
 
-from .data import (FFTAData, UnitOffsets, MissionOffsets, JobOffsets, JobID, ItemOffsets, laws)
+from .data import (FFTAData, UnitOffsets, MissionOffsets, JobOffsets, JobID, ItemOffsets, laws, music_id,
+                   music_addresses, human_abilities, nu_mou_abilities, bangaa_abilities, viera_abilities,
+                   moogle_abilities)
 from .items import (MissionUnlockItems)
 from .fftaabilities import master_abilities, get_job_abilities
 from .fftautils import textDict
@@ -233,7 +234,7 @@ def generate_output(world, player: int, output_directory: str, player_names) -> 
         elif world.options.force_recruitment.value == 2:
             random_recruit = world.random.choice(world.recruit_secret)
 
-            #Remove from list if it's a secret unit
+            # Remove from list if it's a secret unit
             if random_recruit >= 0x8a:
                 world.recruit_secret.remove(random_recruit)
 
@@ -256,7 +257,7 @@ def generate_output(world, player: int, output_directory: str, player_names) -> 
         patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.mission_display, bytes([0xC0]))
 
         # Hide ??? cards
-        #patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.mission_display + 1, bytes([0x00]))
+        # patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.mission_display + 1, bytes([0x00]))
         # Show extra items if enabled
         reward_display = 0x00 if world.options.mission_reward_num.value == 2 \
             else 0x01 if world.options.mission_reward_num.value == 3 \
@@ -367,10 +368,10 @@ def generate_output(world, player: int, output_directory: str, player_names) -> 
             # Master all abilities if the unit is a monster type
             if world.randomized_jobs[index] >= 0x2C:
                 master_abilities(ffta_data, index, get_job_abilities(world.randomized_jobs[index]),
-                                 10, patch)
+                                 10, patch, world)
             else:
                 master_abilities(ffta_data, index, get_job_abilities(world.randomized_jobs[index]),
-                                 world.options.starting_abilities.value, patch)
+                                 world.options.starting_abilities.value, patch, world)
 
             # Set the basic weapons and equipment if the option is selected
             if world.options.starting_unit_equip.value == 0:
@@ -384,17 +385,17 @@ def generate_output(world, player: int, output_directory: str, player_names) -> 
     # Master abilities if units aren't randomized
     if world.options.starting_units.value == 0:
         master_abilities(ffta_data, 0, get_job_abilities(JobID.soldier),
-                         world.options.starting_abilities.value, patch)
+                         world.options.starting_abilities.value, patch, world)
         master_abilities(ffta_data, 1, get_job_abilities(JobID.blackmagemog),
-                         world.options.starting_abilities.value, patch)
+                         world.options.starting_abilities.value, patch, world)
         master_abilities(ffta_data, 2, get_job_abilities(JobID.soldier),
-                         world.options.starting_abilities.value, patch)
+                         world.options.starting_abilities.value, patch, world)
         master_abilities(ffta_data, 3, get_job_abilities(JobID.whitemonk),
-                         world.options.starting_abilities.value, patch)
+                         world.options.starting_abilities.value, patch, world)
         master_abilities(ffta_data, 4, get_job_abilities(JobID.whitemagemou),
-                         world.options.starting_abilities.value, patch)
+                         world.options.starting_abilities.value, patch, world)
         master_abilities(ffta_data, 5, get_job_abilities(JobID.archervra),
-                         world.options.starting_abilities.value, patch)
+                         world.options.starting_abilities.value, patch, world)
 
     # Randomize enemies
 
@@ -406,13 +407,13 @@ def generate_output(world, player: int, output_directory: str, player_names) -> 
             if ffta_data.formations[index].formation_type == 0x01:
                 randomize_unit(ffta_data, index, world, patch)
                 master_abilities(ffta_data, index, get_job_abilities(world.randomized_jobs[index]),
-                                 random.randint(1, 10), patch)
+                                 random.randint(1, 10), patch, world)
 
                 # Disable reaction and support abilities for now
-                patch.write_token(APTokenTypes.WRITE, ffta_data.formations[index].memory + UnitOffsets.ability_reaction,
-                                  bytes([0x00]))
-                patch.write_token(APTokenTypes.WRITE, ffta_data.formations[index].memory + UnitOffsets.ability_support,
-                                  bytes([0x00]))
+                #patch.write_token(APTokenTypes.WRITE, ffta_data.formations[index].memory + UnitOffsets.ability_reaction,
+                #                  bytes([0x00]))
+                #patch.write_token(APTokenTypes.WRITE, ffta_data.formations[index].memory + UnitOffsets.ability_support,
+                #                  bytes([0x00]))
 
     # Randomize judge units when laws are disabled
 
@@ -425,11 +426,11 @@ def generate_output(world, player: int, output_directory: str, player_names) -> 
         randomize_judge(ffta_data, 0xa32, 4, world, patch)
 
         # Have the judges master all the abilities
-        master_abilities(ffta_data, 0xa10, get_job_abilities(world.randomized_judge[0]), 10, patch)
-        master_abilities(ffta_data, 0xa21, get_job_abilities(world.randomized_judge[1]), 10, patch)
-        master_abilities(ffta_data, 0xa30, get_job_abilities(world.randomized_judge[2]), 10, patch)
-        master_abilities(ffta_data, 0xa31, get_job_abilities(world.randomized_judge[3]), 10, patch)
-        master_abilities(ffta_data, 0xa32, get_job_abilities(world.randomized_judge[4]), 10, patch)
+        master_abilities(ffta_data, 0xa10, get_job_abilities(world.randomized_judge[0]), 10, patch, world)
+        master_abilities(ffta_data, 0xa21, get_job_abilities(world.randomized_judge[1]), 10, patch, world)
+        master_abilities(ffta_data, 0xa30, get_job_abilities(world.randomized_judge[2]), 10, patch, world)
+        master_abilities(ffta_data, 0xa31, get_job_abilities(world.randomized_judge[3]), 10, patch, world)
+        master_abilities(ffta_data, 0xa32, get_job_abilities(world.randomized_judge[4]), 10, patch, world)
 
     """
 
@@ -469,7 +470,6 @@ def generate_output(world, player: int, output_directory: str, player_names) -> 
 
         name_hex = []
         for char in name:
-            print(char)
             if char in textDict:
                 name_hex.append(textDict[char])
             elif char == ' ':
@@ -485,6 +485,66 @@ def generate_output(world, player: int, output_directory: str, player_names) -> 
         name_address += len(name_hex) + 0x02
         pointer_address += 0x04
 
+    # Randomize abilities
+    #all_abilities = human_abilities + bangaa_abilities + nu_mou_abilities + viera_abilities + moogle_abilities
+    #world.random.shuffle(all_abilities)
+    last_index = 0
+    for i in range(0, len(human_abilities)):
+        patch.write_token(APTokenTypes.WRITE, 0x51bb6c + (8 * i), bytes(world.all_abilities[i]))
+        last_index += 1
+
+    for i in range(0, len(bangaa_abilities)):
+        patch.write_token(APTokenTypes.WRITE, 0x51bfdc + (8 * i), bytes(world.all_abilities[last_index]))
+        last_index += 1
+
+    for i in range(0, len(nu_mou_abilities)):
+        patch.write_token(APTokenTypes.WRITE, 0x51c244 + (8 * i), bytes(world.all_abilities[last_index]))
+        last_index += 1
+
+    for i in range(0, len(viera_abilities)):
+        patch.write_token(APTokenTypes.WRITE, 0x51c53c + (8 * i), bytes(world.all_abilities[last_index]))
+        last_index += 1
+
+    for i in range(0, len(moogle_abilities)):
+        patch.write_token(APTokenTypes.WRITE, 0x51c7e4 + (8 * i), bytes(world.all_abilities[last_index]))
+        last_index += 1
+
+
+    """
+    # Randomize jobs
+    race_jobs = []
+    for i in range(0, 42):
+        race_jobs.append(0x521a80 + (0x34 * i))
+
+    world.random.shuffle(race_jobs)
+
+    last_index = 0
+    for i in range(11):
+        patch.write_token(APTokenTypes.WRITE, race_jobs[last_index], bytes([0x01]))
+        last_index += 1
+
+    for i in range(7):
+        patch.write_token(APTokenTypes.WRITE, race_jobs[last_index], bytes([0x02]))
+        last_index += 1
+
+    for i in range(8):
+        patch.write_token(APTokenTypes.WRITE, race_jobs[last_index], bytes([0x03]))
+        last_index += 1
+
+    for i in range(8):
+        patch.write_token(APTokenTypes.WRITE, race_jobs[last_index], bytes([0x04]))
+        last_index += 1
+
+    for i in range(8):
+        patch.write_token(APTokenTypes.WRITE, race_jobs[last_index], bytes([0x05]))
+        last_index += 1
+        
+    """
+
+    # Randomize music
+    # for address in music_addresses:
+    #    patch.write_token(APTokenTypes.WRITE, address, bytes([world.random.choice(music_id)]))
+
     patch.write_file("token_data.bin", patch.get_token_binary())
 
     # Write Output
@@ -497,7 +557,6 @@ def generate_output(world, player: int, output_directory: str, player_names) -> 
 
 def set_up_gates(ffta_data: FFTAData, num_gates: int, req_items, final_unlock: int, final_mission: int, dispatch: int,
                  world, patch: FFTAProcedurePatch) -> None:
-
     unlock_mission(ffta_data, world.MissionGroups[0][0][0].mission_id, patch)
     unlock_mission(ffta_data, world.MissionGroups[1][0][0].mission_id, patch)
     unlock_mission(ffta_data, world.MissionGroups[2][0][0].mission_id, patch)
@@ -669,13 +728,14 @@ def set_up_gates(ffta_data: FFTAData, num_gates: int, req_items, final_unlock: i
                 MissionOffsets.unlockflag1,
                 MissionOffsets.unlockflag2,
                 MissionOffsets.unlockflag3,
-                ]
+            ]
 
             for path in range(0, 3):
                 if path < world.options.gate_paths.value:
                     patch.write_token(APTokenTypes.WRITE,
                                       ffta_data.missions[final_mission_id].memory + unlockFlags[path],
-                                      struct.pack("<H", world.MissionGroups[final_path_unlocks[path]][0][0].mission_id + 2))
+                                      struct.pack("<H",
+                                                  world.MissionGroups[final_path_unlocks[path]][0][0].mission_id + 2))
 
                     if world.MissionGroups[final_path_unlocks[path]][0][0].mission_id > 253:
                         patch.write_token(APTokenTypes.WRITE,
@@ -703,7 +763,6 @@ def set_up_gates(ffta_data: FFTAData, num_gates: int, req_items, final_unlock: i
 
 def set_mission_requirement(ffta_data: FFTAData, current_mission_ID: int, previous_mission_ID: int,
                             patch: FFTAProcedurePatch) -> None:
-
     # Set the mission requirements to the specified mission ID
     patch.write_token(APTokenTypes.WRITE, ffta_data.missions[current_mission_ID].memory + MissionOffsets.unlockflag1,
                       struct.pack("<H", previous_mission_ID + 2))
@@ -750,14 +809,14 @@ def set_items(multiworld, player, patch: FFTAProcedurePatch) -> None:
             byte1 = item_id & 0x00ff
             byte2 = ((item_id & 0xff00) >> 8)
             patch.write_token(APTokenTypes.OR_8, location.address, byte1)
-            patch.write_token(APTokenTypes.OR_8, location.address+1, byte2)
+            patch.write_token(APTokenTypes.OR_8, location.address + 1, byte2)
 
 
 def write_proggresive_shop(ffta_data: FFTAData, world, patch: FFTAProcedurePatch):
     if world.options.progressive_shop.value == 0:
         patch.write_token(APTokenTypes.WRITE, 0x00b30900, struct.pack("<B", 0))
         return
-    shop_tier_num = len(world.shop_tiers)-1
+    shop_tier_num = len(world.shop_tiers) - 1
     patch.write_token(APTokenTypes.WRITE, 0x00b30900, struct.pack("<B", shop_tier_num))
 
     bitmask = 0xFF ^ 0x70  # mask out bits 5-7
@@ -772,11 +831,14 @@ def write_proggresive_shop(ffta_data: FFTAData, world, patch: FFTAProcedurePatch
         for item, price in tier:
             if price >= 0:
                 sell_price = max(1, price // 2)  # Might not be necessary. 0 seems to be 1 anyway
-                patch.write_token(APTokenTypes.WRITE, ffta_data.items[item.itemID-1].memory + ItemOffsets.buy_price, struct.pack("<H", price))
-                patch.write_token(APTokenTypes.WRITE, ffta_data.items[item.itemID-1].memory + ItemOffsets.sell_price, struct.pack("<H", sell_price))
+                patch.write_token(APTokenTypes.WRITE, ffta_data.items[item.itemID - 1].memory + ItemOffsets.buy_price,
+                                  struct.pack("<H", price))
+                patch.write_token(APTokenTypes.WRITE, ffta_data.items[item.itemID - 1].memory + ItemOffsets.sell_price,
+                                  struct.pack("<H", sell_price))
 
             if i < 3:
-                patch.write_token(APTokenTypes.OR_8, ffta_data.items[item.itemID-1].memory + ItemOffsets.item_flags, tiers[i])
+                patch.write_token(APTokenTypes.OR_8, ffta_data.items[item.itemID - 1].memory + ItemOffsets.item_flags,
+                                  tiers[i])
             else:
                 patch.write_token(APTokenTypes.WRITE, current_address, struct.pack("<H", item.itemID))
                 current_address += 2

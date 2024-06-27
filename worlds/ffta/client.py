@@ -65,7 +65,7 @@ class FFTAClient(BizHawkClient):
         ctx.game = self.game
         print('context is registered for FFTA')
         print(ctx.game)
-        ctx.items_handling = 0b001
+        ctx.items_handling = 0b101
         ctx.want_slot_data = True
         return True
 

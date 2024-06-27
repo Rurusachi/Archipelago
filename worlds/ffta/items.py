@@ -563,7 +563,7 @@ MissionUnlockItems: typing.List[ItemData] = [
     ItemData("Cat's Tears", ItemClassification.progression, 0x187),
     ItemData("Dame's Blush", ItemClassification.progression, 0x188),
 
-    ItemData('Justice Badge', ItemClassification.progression, 0x1b4),
+    ItemData('Homework', ItemClassification.progression, 0x1b9),
     ItemData('Friend Badge', ItemClassification.progression, 0x1b5),
 
     ItemData('Love Potion', ItemClassification.progression, 0x1e0),
@@ -684,7 +684,7 @@ JobUnlocks: typing.List[ItemData] = [
     ItemData('Job Unlock: Assassin', ItemClassification.useful, 0x1d7),  # Insignia
     ItemData('Job Unlock: Sniper', ItemClassification.useful, 0x1d8),  # Ally Finder
     ItemData('Job Unlock: Animist', ItemClassification.useful, 0x1bf),  # Stuffed bear
-    #ItemData('Job Unlock: Mog Knight', ItemClassification.useful, 0x1b4),  # Justice badge, change this it's a duplicate
+    ItemData('Job Unlock: Mog Knight', ItemClassification.useful, 0x1b4),  # Justice badge
     ItemData('Job Unlock: Gunner', ItemClassification.useful, 0x1c6),  # Fountain pen
     ItemData('Job Unlock: Juggler', ItemClassification.useful, 0x1c7),  # Ear plugs
     ItemData('Job Unlock: Gadgeteer', ItemClassification.useful, 0x1db),  # Loaded dice

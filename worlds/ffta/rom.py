@@ -814,37 +814,27 @@ def set_items(multiworld, player, patch: FFTAProcedurePatch) -> None:
 
 def write_proggresive_shop(ffta_data: FFTAData, world, patch: FFTAProcedurePatch):
     if world.options.progressive_shop.value == 0:
-        patch.write_token(APTokenTypes.WRITE, 0x00b30900, struct.pack("<B", 0))
+        patch.write_token(APTokenTypes.WRITE, 0x00b30950, struct.pack("<B", 0))
+        patch.write_token(APTokenTypes.WRITE, 0x00b30951, struct.pack("<B", 1))
         return
     shop_tier_num = len(world.shop_tiers) - 1
-    patch.write_token(APTokenTypes.WRITE, 0x00b30900, struct.pack("<B", shop_tier_num))
+    patch.write_token(APTokenTypes.WRITE, 0x00b30950, struct.pack("<B", shop_tier_num))
+    patch.write_token(APTokenTypes.WRITE, 0x00b30951,
+                      struct.pack("<B", world.options.progressive_shop_battle_unlock.value))
 
-    bitmask = 0xFF ^ 0x70  # mask out bits 5-7
-    # Remove all items from shop first
-    for item in ffta_data.items:
-        patch.write_token(APTokenTypes.AND_8, item.memory + ItemOffsets.item_flags, bitmask)
-
-    current_address = 0x00b30904
-    bitmask = 0xFF ^ 0x70  # mask out bits 5-7
-    tiers = [0x70, 0x60, 0x40]
-    for i, tier in enumerate(world.shop_tiers):
-        for item, price in tier:
+    item_tiers = [0] * len(ffta_data.items)
+    for tier, tier_data in enumerate(world.shop_tiers):
+        for item, price in tier_data:
             if price >= 0:
                 sell_price = max(1, price // 2)  # Might not be necessary. 0 seems to be 1 anyway
                 patch.write_token(APTokenTypes.WRITE, ffta_data.items[item.itemID - 1].memory + ItemOffsets.buy_price,
                                   struct.pack("<H", price))
                 patch.write_token(APTokenTypes.WRITE, ffta_data.items[item.itemID - 1].memory + ItemOffsets.sell_price,
                                   struct.pack("<H", sell_price))
+            item_tiers[item.itemID-1] = tier+1
 
-            if i < 3:
-                patch.write_token(APTokenTypes.OR_8, ffta_data.items[item.itemID - 1].memory + ItemOffsets.item_flags,
-                                  tiers[i])
-            else:
-                patch.write_token(APTokenTypes.WRITE, current_address, struct.pack("<H", item.itemID))
-                current_address += 2
-        if i >= 3:
-            patch.write_token(APTokenTypes.WRITE, current_address, struct.pack("<H", 0x0000))
-            current_address += 4
+    tier_list_address = 0x00b30954
+    patch.write_token(APTokenTypes.WRITE, tier_list_address, struct.pack(f"<{len(item_tiers)}B", *item_tiers))
 
 
 def write_progressive_lists(world, patch: FFTAProcedurePatch):

@@ -504,16 +504,23 @@ class ProgressiveShopUpgrades(Toggle):
     """
     Adds shop upgrades to the item pool
     """
-    display_name = "Adds shop upgrades to the item pool"
+    display_name = "Add shop upgrades to the item pool"
     default = 0
+
+class ProgressiveShopBattleUnlock(Toggle):
+    """
+    Enables unlocking the first 2 shop upgrades by fighting 10 and 20 battles total.
+    This progress does not count towards further upgrades.
+    """
+    display_name = "Unlock up to 2 shop upgrades by fighting battles"
+    default = 1
+
 
 
 class ProgressiveShopTiers(OptionShopItems):
     """
     Sets how many shop upgrades there are and what items they unlock.
-    Items that are not normally sold in the shop have a default price of 1 gil.
-    Winning 10 and 20 battles will unlock the items in the first two upgrades,
-    but will not count towards the next upgrades.
+    If an item's price is changed its sell value is set to half its price (like most items in vanilla).
 
     named options:
     four_tiers: 3 shop upgrades. Starting items and first two upgrades are vanilla.
@@ -744,4 +751,5 @@ class FFTAOptions(PerGameCommonOptions):
     progressive_item_num: ProgressiveItemNumber
     progressive_excess: ProgressiveExcessItems
     progressive_shop: ProgressiveShopUpgrades
+    progressive_shop_battle_unlock: ProgressiveShopBattleUnlock
     progressive_shop_tiers: ProgressiveShopTiers

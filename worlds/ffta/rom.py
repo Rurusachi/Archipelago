@@ -81,8 +81,6 @@ def generate_output(world, player: int, output_directory: str, player_names) -> 
     patch.write_file("base_patch.bsdiff4", pkgutil.get_data(__name__, "ffta_data/base_patch.bsdiff4"))
     patch.write_file("progressive_shop_patch.bsdiff4",
                      pkgutil.get_data(__name__, "ffta_data/progressive_shop_patch.bsdiff4"))
-    patch.write_file("job_unlock_items.bsdiff4",
-                     pkgutil.get_data(__name__, "ffta_data/job_unlock_items.bsdiff4"))
 
     ffta_data = FFTAData()
 

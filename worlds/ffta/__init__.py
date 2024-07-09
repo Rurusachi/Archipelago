@@ -23,13 +23,13 @@ from .fftaabilities import (human_abilities_bitflags, bangaa_abilities_bitflags,
 from .options import (FFTAOptions, StartingUnits, StartingUnitEquip, StartingAbilitiesMastered, JobUnlockReq,
                       RandomEnemies, EnemyScaling, StartingGil, GateNumber, GatePaths, DispatchMissions,
                       DispatchRandom, GateUnlock, MissionOrder, FinalMission, Goal, QuickOptions,
-                      ForceRecruitment, ProgressiveGateItems)
+                      ForceRecruitment, ProgressiveGateItems, AbilityRandom)
 from .items import (create_item_label_to_code_map, AllItems, item_table, FFTAItem, WeaponBlades,
                     WeaponSabers, WeaponKatanas, WeaponBows, WeaponGreatBows, WeaponRods, WeaponStaves, WeaponKnuckles,
                     WeaponMaces, WeaponInstruments, WeaponSouls, WeaponRapiers, WeaponGuns, WeaponKnives, ItemData,
                     EquipArmor, EquipRobes, EquipClothing, MissionUnlockItems, TotemaUnlockItems,
                     SoldierWeapons, PaladinWeapons, WarriorWeapons, DefenderWeapons, TemplarWeapons, AssassinWeapons,
-                    DragoonWeapons, itemGroups)
+                    DragoonWeapons, itemGroups, JobUnlocks)
 from .locations import (create_location_label_to_id_map)
 from .rom import FFTAProcedurePatch, generate_output
 
@@ -169,9 +169,9 @@ class FFTAWorld(World):
         for item in AllItems:
             if item.progression == ItemClassification.useful:
 
-                # TODO: add back in job unlock items self.options.job_unlock_req != JobUnlockReq.option_job_items
-                if item.itemID >= 0x2ac:
-                    continue
+                if self.options.job_unlock_req != JobUnlockReq.option_job_items:
+                    if item in JobUnlocks:
+                        continue
 
                 else:
                     useful_items += [item.itemName]
@@ -929,21 +929,31 @@ class FFTAWorld(World):
         player_names.remove(self.multiworld.player_name[self.player])
 
         # Randomize abilities
+        if self.options.randomize_abilities == AbilityRandom.option_race:
+            self.random.shuffle(human_abilities)
+            self.random.shuffle(bangaa_abilities)
+            self.random.shuffle(nu_mou_abilities)
+            self.random.shuffle(viera_abilities)
+            self.random.shuffle(moogle_abilities)
+
         self.all_abilities = human_abilities + bangaa_abilities + nu_mou_abilities + viera_abilities + moogle_abilities
 
         length_abilities = len(self.all_abilities)
 
-        self.all_abilities += monster_abilities
+        if self.options.randomize_abilities == AbilityRandom.option_all:
+            self.all_abilities += monster_abilities
 
-        # Remove duplicate abilities
-        print(length_abilities)
-        self.all_abilities = set(map(tuple, self.all_abilities))
-        self.all_abilities = list(map(list, self.all_abilities))
-        self.random.shuffle(self.all_abilities)
-        print(len(self.all_abilities))
+            # Remove duplicate abilities
+            self.all_abilities = set(map(tuple, self.all_abilities))
+            self.all_abilities = list(map(list, self.all_abilities))
+            self.random.shuffle(self.all_abilities)
 
-        while (len(self.all_abilities) < length_abilities):
-            self.all_abilities.append(self.random.choice(self.all_abilities))
+            # Add random duplicate abilities to fill out ability list
+            while len(self.all_abilities) < length_abilities:
+                self.all_abilities.append(self.random.choice(self.all_abilities))
+
+        elif self.options.randomize_abilities == AbilityRandom.option_random:
+            self.random.shuffle(self.all_abilities)
 
         last_index = 0
         for i in range(0, len(human_abilities)):

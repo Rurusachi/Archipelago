@@ -255,6 +255,25 @@ class StartingAbilitiesMastered(Range):
     range_end = 10
 
 
+class AbilityRandom(Choice):
+    """
+    Randomize the abilities each job has
+
+    Vanilla: Jobs have their original abilities
+    Random within race: Abilities are randomized between jobs in the same race.
+    Random: Abilities are randomized throughout all jobs. Jobs may contain duplicate abilities.
+    Random with monster and special unit abilities: Abilities are randomized throughout all jobs and most duplicates
+    are replaced with abilities from monsters, special units, and Totema.
+
+    """
+    display_name = "Ability Randomization"
+    default = 0
+    option_vanilla = 0
+    option_race = 1
+    option_random = 2
+    option_random_with_special = 3
+
+
 class JobUnlockReq(Choice):
     """
     Sets the unlock requirements for every unit's job
@@ -268,8 +287,7 @@ class JobUnlockReq(Choice):
     option_req_vanilla = 0
     option_all_unlocked = 1
     option_all_locked = 2
-    #FIX THIS
-    #option_job_items = 3
+    option_job_items = 3
 
 
 class Laws(Choice):
@@ -730,6 +748,7 @@ class FFTAOptions(PerGameCommonOptions):
     starting_units: StartingUnits
     starting_unit_equip: StartingUnitEquip
     starting_abilities: StartingAbilitiesMastered
+    randomize_abilities: AbilityRandom
     job_unlock_req: JobUnlockReq
     laws: Laws
     randomize_enemies: RandomEnemies

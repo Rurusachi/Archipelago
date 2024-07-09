@@ -14,7 +14,7 @@ from .client import FFTAClient
 from BaseClasses import ItemClassification, MultiWorld, Tutorial, Item
 from worlds.AutoWorld import WebWorld, World
 from .data import (get_random_job, JobID, attacker_jobs, magic_jobs, support_jobs, human_abilities, bangaa_abilities,
-                   nu_mou_abilities, viera_abilities, moogle_abilities)
+                   nu_mou_abilities, viera_abilities, moogle_abilities, monster_abilities)
 from .regions import create_regions
 from .rules import set_rules
 from .fftaabilities import (human_abilities_bitflags, bangaa_abilities_bitflags, nu_mou_abilities_bitflags,
@@ -930,7 +930,20 @@ class FFTAWorld(World):
 
         # Randomize abilities
         self.all_abilities = human_abilities + bangaa_abilities + nu_mou_abilities + viera_abilities + moogle_abilities
+
+        length_abilities = len(self.all_abilities)
+
+        self.all_abilities += monster_abilities
+
+        # Remove duplicate abilities
+        print(length_abilities)
+        self.all_abilities = set(map(tuple, self.all_abilities))
+        self.all_abilities = list(map(list, self.all_abilities))
         self.random.shuffle(self.all_abilities)
+        print(len(self.all_abilities))
+
+        while (len(self.all_abilities) < length_abilities):
+            self.all_abilities.append(self.random.choice(self.all_abilities))
 
         last_index = 0
         for i in range(0, len(human_abilities)):

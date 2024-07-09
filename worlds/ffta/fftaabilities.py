@@ -118,19 +118,44 @@ def master_abilities(data, index: int, ability_list: List[Tuple], percent: float
 
     reaction_abilities = []
     support_abilities = []
+    ability_dict = {}
+    abilities = []
+
+    if 0x02 <= world.randomized_jobs[index] <= 0x0C:
+        ability_dict = world.human_ability_dict
+        abilities = world.new_human_abilities
+
+    elif 0x0D <= world.randomized_jobs[index] <= 0x13:
+        ability_dict = world.bangaa_ability_dict
+        abilities = world.new_bangaa_abilities
+
+    elif 0x14 <= world.randomized_jobs[index] <= 0x1B:
+        ability_dict = world.nu_mou_ability_dict
+        abilities = world.new_nu_mou_abilities
+
+    elif 0x1C <= world.randomized_jobs[index] <= 0x23:
+        ability_dict = world.viera_ability_dict
+        abilities = world.new_viera_abilities
+
+    elif 0x24 <= world.randomized_jobs[index] <= 0x2B:
+        ability_dict = world.moogle_ability_dict
+        abilities = world.new_moogle_abilities
 
     master_amount = int((percent / 10) * len(ability_list))
     for x in range(master_amount):
         ability_set = ability_list[x][0]
         ability = ability_list[x][1]
 
-        ability_data = world.human_ability_dict[ability_list[x]]
+        # Check if ability dictionary is not empty
+        if ability_dict:
 
-        if ability_data[4] == 0x02:
-            support_abilities.append(x)
+            ability_data = ability_dict[ability_list[x]]
 
-        elif ability_data[4] == 0x03:
-            reaction_abilities.append(x)
+            if ability_data[6] == 0x03:
+                support_abilities.append(abilities.index(ability_data) + 1)
+
+            elif ability_data[6] == 0x02:
+                reaction_abilities.append(abilities.index(ability_data) + 1)
 
         set_mastered_ability(data.formations[index].memory + UnitOffsets.abilities + ability_set, ability, patch)
 

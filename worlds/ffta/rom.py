@@ -7,13 +7,13 @@ import typing
 from settings import get_settings
 
 from worlds.Files import APProcedurePatch, APTokenMixin, APTokenTypes
-from .options import Laws
+from .options import Laws, StatGrowth
 
 from .data import (FFTAData, UnitOffsets, MissionOffsets, JobOffsets, JobID, ItemOffsets, laws, music_id,
                    music_addresses, human_abilities, nu_mou_abilities, bangaa_abilities, viera_abilities,
-                   moogle_abilities)
+                   moogle_abilities, get_random_job)
 from .items import (MissionUnlockItems)
-from .fftaabilities import master_abilities, get_job_abilities
+from .fftaabilities import master_abilities, get_job_abilities, set_mastered_ability
 from .fftautils import textDict
 
 
@@ -33,7 +33,6 @@ class FFTAProcedurePatch(APProcedurePatch, APTokenMixin):
     procedure = [
         ("apply_bsdiff4", ["base_patch.bsdiff4"]),
         ("apply_bsdiff4", ["progressive_shop_patch.bsdiff4"]),
-        ("apply_bsdiff4", ["job_unlock_items.bsdiff4"]),
         ("apply_tokens", ["token_data.bin"]),
     ]
 
@@ -357,6 +356,23 @@ def generate_output(world, player: int, output_directory: str, player_names) -> 
         elif world.options.final_mission.value == 1:
             set_mission_requirement(ffta_data, 393, 17, patch)
 
+    if world.options.starting_special:
+
+        for index in range(2, 6):
+            # Have a chance to randomize to special unit
+
+            special_unit = world.random.choice(world.special_units)
+            world.special_units.remove(special_unit)
+            special_chance = world.options.starting_special_chance.value / 10
+            normal_unit_chance = 1 - special_chance
+            unit_selected = random.choices(population=[special_unit, 0x01], weights=[special_chance, normal_unit_chance])
+
+            patch.write_token(APTokenTypes.WRITE, ffta_data.formations[index].memory,
+                              bytes([unit_selected[0]]))
+
+            if unit_selected == special_unit:
+                world.special_units.remove(special_unit)
+
     # Randomize starting units and set mastered abilities
     if world.options.starting_units.value != 0:
         for index in range(6):
@@ -483,28 +499,36 @@ def generate_output(world, player: int, output_directory: str, player_names) -> 
         name_address += len(name_hex) + 0x02
         pointer_address += 0x04
 
-    # Randomize abilities
-    #all_abilities = human_abilities + bangaa_abilities + nu_mou_abilities + viera_abilities + moogle_abilities
-    #world.random.shuffle(all_abilities)
     last_index = 0
     for i in range(0, len(human_abilities)):
         patch.write_token(APTokenTypes.WRITE, 0x51bb6c + (8 * i), bytes(world.all_abilities[i]))
+
+        # Set AP to 0
+        patch.write_token(APTokenTypes.WRITE, 0x51bb6c + (8 * i) + 0x07, bytes([0x10]))
         last_index += 1
 
     for i in range(0, len(bangaa_abilities)):
         patch.write_token(APTokenTypes.WRITE, 0x51bfdc + (8 * i), bytes(world.all_abilities[last_index]))
+        # Set AP to 0
+        patch.write_token(APTokenTypes.WRITE, 0x51bfdc + (8 * i) + 0x07, bytes([0x00]))
         last_index += 1
 
     for i in range(0, len(nu_mou_abilities)):
         patch.write_token(APTokenTypes.WRITE, 0x51c244 + (8 * i), bytes(world.all_abilities[last_index]))
+        # Set AP to 0
+        patch.write_token(APTokenTypes.WRITE, 0x51c244 + (8 * i) + 0x07, bytes([0x00]))
         last_index += 1
 
     for i in range(0, len(viera_abilities)):
         patch.write_token(APTokenTypes.WRITE, 0x51c53c + (8 * i), bytes(world.all_abilities[last_index]))
+        # Set AP to 0
+        patch.write_token(APTokenTypes.WRITE, 0x51c53c + (8 * i) + 0x07, bytes([0x00]))
         last_index += 1
 
     for i in range(0, len(moogle_abilities)):
         patch.write_token(APTokenTypes.WRITE, 0x51c7e4 + (8 * i), bytes(world.all_abilities[last_index]))
+        # Set AP to 0
+        patch.write_token(APTokenTypes.WRITE, 0x51c7e4 + (8 * i) + 0x07, bytes([0x00]))
         last_index += 1
 
 
@@ -538,10 +562,62 @@ def generate_output(world, player: int, output_directory: str, player_names) -> 
         last_index += 1
         
     """
+    # Average stat growth
+    job_memory = 0x521a7c
+
+    if world.options.stat_growth == StatGrowth.option_average:
+        for i in range(0x2B):
+            patch.write_token(APTokenTypes.WRITE, job_memory + 0x20, bytes([0x3C]))
+            patch.write_token(APTokenTypes.WRITE, job_memory + 0x21, bytes([0x3C]))
+            patch.write_token(APTokenTypes.WRITE, job_memory + 0x22, bytes([0x0B]))
+            patch.write_token(APTokenTypes.WRITE, job_memory + 0x23, bytes([0x3C]))
+            patch.write_token(APTokenTypes.WRITE, job_memory + 0x24, bytes([0x3C]))
+            patch.write_token(APTokenTypes.WRITE, job_memory + 0x25, bytes([0x3C]))
+            patch.write_token(APTokenTypes.WRITE, job_memory + 0x26, bytes([0x3C]))
+
+            job_memory += 0x34
+
+    # Recruitment units
+    recruitment_memory = 0x529788
+    for i in range(0, 47):
+        # Class in recruitment list
+        job = get_random_job(world.random, 6)
+        patch.write_token(APTokenTypes.WRITE, recruitment_memory + 2 + (i * 12), bytes([0x90]))
+        patch.write_token(APTokenTypes.WRITE, recruitment_memory + 3 + (i * 12), bytes([0x10]))
+
+        patch.write_token(APTokenTypes.WRITE, recruitment_memory + 4 + (i * 12), bytes([0x28]))
+        #patch.write_token(APTokenTypes.WRITE, recruitment_memory + 5 + (i * 12), bytes([0x01]))
+        patch.write_token(APTokenTypes.WRITE, recruitment_memory + 6 + (i * 12), bytes([0x24]))
+        patch.write_token(APTokenTypes.WRITE, recruitment_memory + 8 + (i * 12), bytes([0x64]))
+        #patch.write_token(APTokenTypes.WRITE, recruitment_memory + 6 + (i * 12), bytes([0x08]))
+        #patch.write_token(APTokenTypes.WRITE, recruitment_memory + 7 + (i * 12), bytes([0x08]))
+        #patch.write_token(APTokenTypes.WRITE, recruitment_memory + 7 + (i * 12), bytes([0x01]))
+
+        """
+        job_abilities = get_job_abilities(job)
+        percent = random.randint(1, 10)
+        master_amount = int((percent / 10) * len(job_abilities))
+        for x in range(master_amount):
+            ability_set = job_abilities[x][0]
+            ability = job_abilities[x][1]
+            set_mastered_ability(recruitment_memory + 4 + (i * 12), ability, patch)
+        """
 
     # Randomize music
     # for address in music_addresses:
     #    patch.write_token(APTokenTypes.WRITE, address, bytes([world.random.choice(music_id)]))
+
+    
+    # Make all abilities cost 0 AP is option is selected
+    ability_memory = 0x55187C
+    ap_offset = 0x03
+    weapon_required = 0x05
+
+    for i in range(0x15A):
+        patch.write_token(APTokenTypes.WRITE, ability_memory + ap_offset, bytes([0x0A]))
+        patch.write_token(APTokenTypes.WRITE, ability_memory + weapon_required, bytes([0x00]))
+        ability_memory += 0x1C
+
 
     patch.write_file("token_data.bin", patch.get_token_binary())
 

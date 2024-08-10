@@ -232,6 +232,32 @@ class StartingUnits(Choice):
     option_random_monster = 4
 
 
+class StartingSpecialUnit(Choice):
+    """
+    Option for starting units to have a chance to be a special unit like Ritz or Cid.
+
+    None: No starting units will be special units.
+    Special: Chance for any unit besides Marche and Montblanc to be a special unit. Will potentially have any job
+    based on starting unit settings.
+    """
+    display_name = "Starting special units"
+    default = 0
+    option_none = 0
+    option_special = 1
+    #option_special_retain = 2
+
+
+class StartingSpecialChance(Range):
+    """
+    Percent chance of a starting unit being a special unit. 1 = 10% and 10 = 100% of abilities mastered
+    This option doesn't apply if none is selected for starting special units.
+    """
+    display_name = "Percent chance of starting special units"
+    default = 1
+    range_start = 1
+    range_end = 10
+
+
 class StartingUnitEquip(Choice):
     """
     Sets the equipment option for your starting units
@@ -260,7 +286,7 @@ class AbilityRandom(Choice):
     Randomize the abilities each job has
 
     Vanilla: Jobs have their original abilities
-    Random within race: Abilities are randomized between jobs in the same race.
+    Random within race: Abilities are randomized between jobs in the same race. No duplicate abilities within jobs
     Random: Abilities are randomized throughout all jobs. Jobs may contain duplicate abilities.
     Random with monster and special unit abilities: Abilities are randomized throughout all jobs and most duplicates
     are replaced with abilities from monsters, special units, and Totema.
@@ -272,6 +298,20 @@ class AbilityRandom(Choice):
     option_race = 1
     option_random = 2
     option_random_with_special = 3
+
+
+class StatGrowth(Choice):
+    """
+    Stat growth options for all the jobs
+
+    Vanilla: Stat growth will be the same as vanilla
+    Average: Stat growth will be average across all stats in every job
+
+    """
+    display_name = "Ability Randomization"
+    default = 0
+    option_vanilla = 0
+    option_average = 1
 
 
 class JobUnlockReq(Choice):
@@ -747,8 +787,11 @@ class FFTAOptions(PerGameCommonOptions):
     goal: Goal
     starting_units: StartingUnits
     starting_unit_equip: StartingUnitEquip
+    starting_special: StartingSpecialUnit
+    starting_special_chance: StartingSpecialChance
     starting_abilities: StartingAbilitiesMastered
     randomize_abilities: AbilityRandom
+    stat_growth: StatGrowth
     job_unlock_req: JobUnlockReq
     laws: Laws
     randomize_enemies: RandomEnemies

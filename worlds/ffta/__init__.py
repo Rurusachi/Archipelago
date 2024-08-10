@@ -113,6 +113,7 @@ class FFTAWorld(World):
         self.recruit_units = [0x03, 0x0f, 0x17, 0x20, 0x29]
         self.recruit_secret = [0x03, 0x0f, 0x17, 0x20, 0x29, 0x8a, 0x8c, 0x8e,
                                0x90, 0x92, 0x94, 0x96, 0x98, 0x9a, 0x9c, 0x9e]
+        self.special_units = [0x04, 0x09, 0x0a, 0x0c, 0x0d, 0x5a, 0x5e]
 
     def get_filler_item_name(self) -> str:
         filler = ["Potion", "Hi-Potion", "X-Potion", "Ether", "Elixir", "Antidote",
@@ -173,8 +174,7 @@ class FFTAWorld(World):
                     if item in JobUnlocks:
                         continue
 
-                else:
-                    useful_items += [item.itemName]
+                useful_items += [item.itemName]
 
         # Shuffle the useful items to be added to the pool based on the locations remaining
         self.random.shuffle(useful_items)
@@ -940,7 +940,7 @@ class FFTAWorld(World):
 
         length_abilities = len(self.all_abilities)
 
-        if self.options.randomize_abilities == AbilityRandom.option_all:
+        if self.options.randomize_abilities == AbilityRandom.option_random_with_special:
             self.all_abilities += monster_abilities
 
             # Remove duplicate abilities

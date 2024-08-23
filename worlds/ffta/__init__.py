@@ -126,7 +126,6 @@ class FFTAWorld(World):
 
     def extend_hint_information(self, hint_data: Dict[int, Dict[int, str]]) -> None:
         hint_data.update({self.player: {}})
-        print(hint_data)
         for location in self.multiworld.get_locations(self.player):
             if location.address is not None:
                 hint_data[self.player][location.address] = location.parent_region.hint_text
@@ -461,6 +460,10 @@ class FFTAWorld(World):
             elif self.options.starting_units == StartingUnits.option_random_monster:
                 self.randomized_jobs.append(get_random_job(self.random, all))
 
+            # Account for vanilla soldier job
+            elif self.options.starting_units == StartingUnits.option_starting_vanilla:
+                self.randomized_jobs.append(JobID.soldier)
+
             else:
                 self.randomized_jobs.append(get_random_job(self.random, random_choice))
 
@@ -480,6 +483,10 @@ class FFTAWorld(World):
             elif self.options.starting_units == StartingUnits.option_random_monster:
                 self.randomized_jobs.append(get_random_job(self.random, all))
 
+            # Account for vanilla job
+            elif self.options.starting_units == StartingUnits.option_starting_vanilla:
+                self.randomized_jobs.append(JobID.blackmagemog)
+
             else:
                 self.randomized_jobs.append(get_random_job(self.random, random_choice))
 
@@ -496,6 +503,9 @@ class FFTAWorld(World):
             if self.options.starting_units == StartingUnits.option_starting_balanced:
                 self.randomized_jobs.append(self.balanced_jobs[2])
 
+            elif self.options.starting_units == StartingUnits.option_starting_vanilla:
+                self.randomized_jobs.append(JobID.soldier)
+
             else:
                 self.randomized_jobs.append(get_random_job(self.random, random_choice))
 
@@ -510,6 +520,9 @@ class FFTAWorld(World):
 
             if self.options.starting_units == StartingUnits.option_starting_balanced:
                 self.randomized_jobs.append(self.balanced_jobs[3])
+
+            elif self.options.starting_units == StartingUnits.option_starting_vanilla:
+                self.randomized_jobs.append(JobID.whitemonk)
 
             else:
                 self.randomized_jobs.append(get_random_job(self.random, random_choice))
@@ -526,6 +539,9 @@ class FFTAWorld(World):
             if self.options.starting_units == StartingUnits.option_starting_balanced:
                 self.randomized_jobs.append(self.balanced_jobs[4])
 
+            elif self.options.starting_units == StartingUnits.option_starting_vanilla:
+                self.randomized_jobs.append(JobID.whitemagemou)
+
             else:
                 self.randomized_jobs.append(get_random_job(self.random, random_choice))
 
@@ -540,6 +556,9 @@ class FFTAWorld(World):
 
             if self.options.starting_units == StartingUnits.option_starting_balanced:
                 self.randomized_jobs.append(self.balanced_jobs[5])
+
+            elif self.options.starting_units == StartingUnits.option_starting_vanilla:
+                self.randomized_jobs.append(JobID.archervra)
 
             else:
                 self.randomized_jobs.append(get_random_job(self.random, random_choice))
@@ -929,7 +948,7 @@ class FFTAWorld(World):
         self.location_ids.append(0x08)
 
         # Visualize regions
-        visualize_regions(self.multiworld.get_region("Menu", self.player), "ffta.puml", show_entrance_names=True)
+        #visualize_regions(self.multiworld.get_region("Menu", self.player), "ffta.puml", show_entrance_names=True)
 
         # Get player names from the multiworld
         player_names = list(self.multiworld.player_name.values())

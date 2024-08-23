@@ -401,7 +401,7 @@ class GateNumber(Range):
     display_name = "Number of mission gates"
     default = 6
     range_start = 1
-    range_end = 28
+    range_end = 27
 
 
 class GatePaths(Range):
@@ -562,6 +562,7 @@ class ProgressiveShopUpgrades(Toggle):
     display_name = "Add shop upgrades to the item pool"
     default = 0
 
+
 class ProgressiveShopBattleUnlock(Toggle):
     """
     Enables unlocking the first 2 shop upgrades by fighting 10 and 20 battles total.
@@ -569,7 +570,6 @@ class ProgressiveShopBattleUnlock(Toggle):
     """
     display_name = "Unlock up to 2 shop upgrades by fighting battles"
     default = 1
-
 
 
 class ProgressiveShopTiers(OptionShopItems):

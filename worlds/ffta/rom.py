@@ -398,29 +398,32 @@ def generate_output(world, player: int, output_directory: str, player_names) -> 
 
     # Master abilities if units aren't randomized
     if world.options.starting_units.value == 0:
-        world.randomized_jobs[0] = JobID.soldier
         master_abilities(ffta_data, 0, get_job_abilities(JobID.soldier),
                          world.options.starting_abilities.value, patch, world)
 
-        world.randomized_jobs[1] = JobID.blackmagemog
         master_abilities(ffta_data, 1, get_job_abilities(JobID.blackmagemog),
                          world.options.starting_abilities.value, patch, world)
 
-        world.randomized_jobs[2] = JobID.soldier
         master_abilities(ffta_data, 2, get_job_abilities(JobID.soldier),
                          world.options.starting_abilities.value, patch, world)
 
-        world.randomized_jobs[3] = JobID.whitemonk
         master_abilities(ffta_data, 3, get_job_abilities(JobID.whitemonk),
                          world.options.starting_abilities.value, patch, world)
 
-        world.randomized_jobs[4] = JobID.whitemagemou
         master_abilities(ffta_data, 4, get_job_abilities(JobID.whitemagemou),
                          world.options.starting_abilities.value, patch, world)
 
-        world.randomized_jobs[5] = JobID.archervra
         master_abilities(ffta_data, 5, get_job_abilities(JobID.archervra),
                          world.options.starting_abilities.value, patch, world)
+
+        if world.options.starting_unit_equip == 1:
+            for index in range(6):
+                patch.write_token(APTokenTypes.WRITE, ffta_data.formations[index].memory + UnitOffsets.unit_item1,
+                                  struct.pack("<H", world.randomized_weapons[index]))
+                patch.write_token(APTokenTypes.WRITE, ffta_data.formations[index].memory + UnitOffsets.unit_item2,
+                                  struct.pack("<H", world.randomized_equip[index]))
+                patch.write_token(APTokenTypes.WRITE, ffta_data.formations[index].memory + UnitOffsets.unit_item3,
+                                  bytes([0x00, 0x00]))
 
     # Randomize enemies
 
@@ -465,13 +468,6 @@ def generate_output(world, player: int, output_directory: str, player_names) -> 
     # Make Llednar not invincible
     patch.write_token(APTokenTypes.WRITE, 0x130870, struct.pack("<i", 0x00200000))
 
-    unlock_mission(ffta_data, 23, patch)
-    unlock_mission(ffta_data, 259, patch)
-    unlock_mission(ffta_data, 284, patch)
-    unlock_mission(ffta_data, 298, patch)
-    unlock_mission(ffta_data, 142, patch)
-    unlock_mission(ffta_data, 296, patch)
-
     # Randomize locations on map
     for i in range(0, len(world.location_ids)):
         patch.write_token(APTokenTypes.WRITE, 0xb390dc + i, bytes([world.location_ids[i]]))
@@ -495,8 +491,8 @@ def generate_output(world, player: int, output_directory: str, player_names) -> 
     name_address = 0xD00000
 
     # Check if player names exceed the number of unit name pointers
-    if len(player_names) > 725:
-        player_names = player_names[:725]
+    if len(player_names) > 500:
+        player_names = player_names[:500]
 
     for name in player_names:
 

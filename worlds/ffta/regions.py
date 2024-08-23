@@ -203,10 +203,6 @@ def create_regions(world, player) -> None:
 
         gate_string_num += 1
 
-    print(hint_strings)
-
-
-
     # Create region gates
     gate_1 = Region("Gate 1", player, world.multiworld, "Starting Gate")
     gate_2 = Region("Gate 2", player, world.multiworld, hint_strings[0])

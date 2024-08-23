@@ -108,8 +108,8 @@ def master_abilities(data, index: int, ability_list: List[Tuple], percent: float
     if ability_list == 0:
         return
 
-    # Always master learn for blue mage
-    elif ability_list == JobAbilities.bluemage:
+    # Always master learn for blue mage if vanilla abilities are on
+    elif ability_list == JobAbilities.bluemage and world.options.randomize_abilities == 0:
         set_mastered_ability(data.formations[index].memory + UnitOffsets.abilities + 14,
                              3, patch)
 

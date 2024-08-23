@@ -124,6 +124,13 @@ class FFTAWorld(World):
     def create_regions(self) -> None:
         create_regions(self, self.player)
 
+    def extend_hint_information(self, hint_data: Dict[int, Dict[int, str]]) -> None:
+        hint_data.update({self.player: {}})
+        print(hint_data)
+        for location in self.multiworld.get_locations(self.player):
+            if location.address is not None:
+                hint_data[self.player][location.address] = location.parent_region.hint_text
+
     def create_items(self):
 
         required_items = self.get_required_items()
@@ -922,7 +929,7 @@ class FFTAWorld(World):
         self.location_ids.append(0x08)
 
         # Visualize regions
-        #visualize_regions(self.multiworld.get_region("Menu", self.player), "ffta.puml", show_entrance_names=True)
+        visualize_regions(self.multiworld.get_region("Menu", self.player), "ffta.puml", show_entrance_names=True)
 
         # Get player names from the multiworld
         player_names = list(self.multiworld.player_name.values())

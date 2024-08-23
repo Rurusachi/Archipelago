@@ -190,74 +190,91 @@ def create_regions(world, player) -> None:
     #for index, mission in enumerate(FFTAValidLocations):
     #    print("This is the locations in valid locations in order: " + mission.name)
 
-    # Create region gates
-    gate_1 = Region("Gate 1", player, world.multiworld)
-    gate_2 = Region("Gate 2", player, world.multiworld)
-    gate_3 = Region("Gate 3", player, world.multiworld)
-    gate_4 = Region("Gate 4", player, world.multiworld)
-    gate_5 = Region("Gate 5", player, world.multiworld)
-    gate_6 = Region("Gate 6", player, world.multiworld)
-    gate_7 = Region("Gate 7", player, world.multiworld)
-    gate_8 = Region("Gate 8", player, world.multiworld)
-    gate_9 = Region("Gate 9", player, world.multiworld)
-    gate_10 = Region("Gate 10", player, world.multiworld)
-    gate_11 = Region("Gate 11", player, world.multiworld)
-    gate_12 = Region("Gate 12", player, world.multiworld)
-    gate_13 = Region("Gate 13", player, world.multiworld)
-    gate_14 = Region("Gate 14", player, world.multiworld)
-    gate_15 = Region("Gate 15", player, world.multiworld)
-    gate_16 = Region("Gate 16", player, world.multiworld)
-    gate_17 = Region("Gate 17", player, world.multiworld)
-    gate_18 = Region("Gate 18", player, world.multiworld)
-    gate_19 = Region("Gate 19", player, world.multiworld)
-    gate_20 = Region("Gate 20", player, world.multiworld)
-    gate_21 = Region("Gate 21", player, world.multiworld)
-    gate_22 = Region("Gate 22", player, world.multiworld)
-    gate_23 = Region("Gate 23", player, world.multiworld)
-    gate_24 = Region("Gate 24", player, world.multiworld)
-    gate_25 = Region("Gate 25", player, world.multiworld)
-    gate_26 = Region("Gate 26", player, world.multiworld)
-    gate_27 = Region("Gate 27", player, world.multiworld)
-    gate_28 = Region("Gate 28", player, world.multiworld)
-    gate_29 = Region("Gate 29", player, world.multiworld)
-    gate_30 = Region("Gate 30", player, world.multiworld)
-    gate_31 = Region("Gate 31", player, world.multiworld)
-    gate_32 = Region("Gate 32", player, world.multiworld)
-    gate_33 = Region("Gate 33", player, world.multiworld)
+    # Generate gate strings for hints
+    path_names = ["Path 1", "Path 2", "Path 3"]
 
-    dispatch_gate_1 = Region("Dispatch Gate 1", player, world.multiworld)
-    dispatch_gate_2 = Region("Dispatch Gate 2", player, world.multiworld)
-    dispatch_gate_3 = Region("Dispatch Gate 3", player, world.multiworld)
-    dispatch_gate_4 = Region("Dispatch Gate 4", player, world.multiworld)
-    dispatch_gate_5 = Region("Dispatch Gate 5", player, world.multiworld)
-    dispatch_gate_6 = Region("Dispatch Gate 6", player, world.multiworld)
-    dispatch_gate_7 = Region("Dispatch Gate 7", player, world.multiworld)
-    dispatch_gate_8 = Region("Dispatch Gate 8", player, world.multiworld)
-    dispatch_gate_9 = Region("Dispatch Gate 9", player, world.multiworld)
-    dispatch_gate_10 = Region("Dispatch Gate 10", player, world.multiworld)
-    dispatch_gate_11 = Region("Dispatch Gate 11", player, world.multiworld)
-    dispatch_gate_12 = Region("Dispatch Gate 12", player, world.multiworld)
-    dispatch_gate_13 = Region("Dispatch Gate 13", player, world.multiworld)
-    dispatch_gate_14 = Region("Dispatch Gate 14", player, world.multiworld)
-    dispatch_gate_15 = Region("Dispatch Gate 15", player, world.multiworld)
-    dispatch_gate_16 = Region("Dispatch Gate 16", player, world.multiworld)
-    dispatch_gate_17 = Region("Dispatch Gate 17", player, world.multiworld)
-    dispatch_gate_18 = Region("Dispatch Gate 18", player, world.multiworld)
-    dispatch_gate_19 = Region("Dispatch Gate 19", player, world.multiworld)
-    dispatch_gate_20 = Region("Dispatch Gate 20", player, world.multiworld)
-    dispatch_gate_21 = Region("Dispatch Gate 21", player, world.multiworld)
-    dispatch_gate_22 = Region("Dispatch Gate 22", player, world.multiworld)
-    dispatch_gate_23 = Region("Dispatch Gate 23", player, world.multiworld)
-    dispatch_gate_24 = Region("Dispatch Gate 24", player, world.multiworld)
-    dispatch_gate_25 = Region("Dispatch Gate 25", player, world.multiworld)
-    dispatch_gate_26 = Region("Dispatch Gate 26", player, world.multiworld)
-    dispatch_gate_27 = Region("Dispatch Gate 27", player, world.multiworld)
-    dispatch_gate_28 = Region("Dispatch Gate 28", player, world.multiworld)
-    dispatch_gate_29 = Region("Dispatch Gate 29", player, world.multiworld)
-    dispatch_gate_30 = Region("Dispatch Gate 30", player, world.multiworld)
-    dispatch_gate_31 = Region("Dispatch Gate 31", player, world.multiworld)
-    dispatch_gate_32 = Region("Dispatch Gate 32", player, world.multiworld)
-    dispatch_gate_33 = Region("Dispatch Gate 33", player, world.multiworld)
+    hint_strings = []
+
+    gate_string_num = 1
+
+    for i in range(0, int(33 / world.options.gate_paths)):
+        for j in range(world.options.gate_paths):
+            hint_strings.append(path_names[j] + " Gate " + str(gate_string_num))
+
+        gate_string_num += 1
+
+    print(hint_strings)
+
+
+
+    # Create region gates
+    gate_1 = Region("Gate 1", player, world.multiworld, "Starting Gate")
+    gate_2 = Region("Gate 2", player, world.multiworld, hint_strings[0])
+    gate_3 = Region("Gate 3", player, world.multiworld, hint_strings[1])
+    gate_4 = Region("Gate 4", player, world.multiworld, hint_strings[2])
+    gate_5 = Region("Gate 5", player, world.multiworld, hint_strings[3])
+    gate_6 = Region("Gate 6", player, world.multiworld, hint_strings[4])
+    gate_7 = Region("Gate 7", player, world.multiworld, hint_strings[5])
+    gate_8 = Region("Gate 8", player, world.multiworld, hint_strings[6])
+    gate_9 = Region("Gate 9", player, world.multiworld, hint_strings[7])
+    gate_10 = Region("Gate 10", player, world.multiworld, hint_strings[8])
+    gate_11 = Region("Gate 11", player, world.multiworld, hint_strings[9])
+    gate_12 = Region("Gate 12", player, world.multiworld, hint_strings[10])
+    gate_13 = Region("Gate 13", player, world.multiworld, hint_strings[11])
+    gate_14 = Region("Gate 14", player, world.multiworld, hint_strings[12])
+    gate_15 = Region("Gate 15", player, world.multiworld, hint_strings[13])
+    gate_16 = Region("Gate 16", player, world.multiworld, hint_strings[14])
+    gate_17 = Region("Gate 17", player, world.multiworld, hint_strings[15])
+    gate_18 = Region("Gate 18", player, world.multiworld, hint_strings[16])
+    gate_19 = Region("Gate 19", player, world.multiworld, hint_strings[17])
+    gate_20 = Region("Gate 20", player, world.multiworld, hint_strings[18])
+    gate_21 = Region("Gate 21", player, world.multiworld, hint_strings[19])
+    gate_22 = Region("Gate 22", player, world.multiworld, hint_strings[20])
+    gate_23 = Region("Gate 23", player, world.multiworld, hint_strings[21])
+    gate_24 = Region("Gate 24", player, world.multiworld, hint_strings[22])
+    gate_25 = Region("Gate 25", player, world.multiworld, hint_strings[23])
+    gate_26 = Region("Gate 26", player, world.multiworld, hint_strings[24])
+    gate_27 = Region("Gate 27", player, world.multiworld, hint_strings[25])
+    gate_28 = Region("Gate 28", player, world.multiworld, hint_strings[26])
+    gate_29 = Region("Gate 29", player, world.multiworld, hint_strings[27])
+    gate_30 = Region("Gate 30", player, world.multiworld, hint_strings[28])
+    gate_31 = Region("Gate 31", player, world.multiworld, hint_strings[29])
+    gate_32 = Region("Gate 32", player, world.multiworld, hint_strings[30])
+    gate_33 = Region("Gate 33", player, world.multiworld, hint_strings[31])
+
+    dispatch_gate_1 = Region("Dispatch Gate 1", player, world.multiworld, "Dispatch Gate 1")
+    dispatch_gate_2 = Region("Dispatch Gate 2", player, world.multiworld, "Dispatch Gate 2")
+    dispatch_gate_3 = Region("Dispatch Gate 3", player, world.multiworld, "Dispatch Gate 3")
+    dispatch_gate_4 = Region("Dispatch Gate 4", player, world.multiworld, "Dispatch Gate 4")
+    dispatch_gate_5 = Region("Dispatch Gate 5", player, world.multiworld, "Dispatch Gate 5")
+    dispatch_gate_6 = Region("Dispatch Gate 6", player, world.multiworld, "Dispatch Gate 6")
+    dispatch_gate_7 = Region("Dispatch Gate 7", player, world.multiworld, "Dispatch Gate 7")
+    dispatch_gate_8 = Region("Dispatch Gate 8", player, world.multiworld, "Dispatch Gate 8")
+    dispatch_gate_9 = Region("Dispatch Gate 9", player, world.multiworld, "Dispatch Gate 9")
+    dispatch_gate_10 = Region("Dispatch Gate 10", player, world.multiworld, "Dispatch Gate 10")
+    dispatch_gate_11 = Region("Dispatch Gate 11", player, world.multiworld, "Dispatch Gate 11")
+    dispatch_gate_12 = Region("Dispatch Gate 12", player, world.multiworld, "Dispatch Gate 12")
+    dispatch_gate_13 = Region("Dispatch Gate 13", player, world.multiworld, "Dispatch Gate 13")
+    dispatch_gate_14 = Region("Dispatch Gate 14", player, world.multiworld, "Dispatch Gate 14")
+    dispatch_gate_15 = Region("Dispatch Gate 15", player, world.multiworld, "Dispatch Gate 15")
+    dispatch_gate_16 = Region("Dispatch Gate 16", player, world.multiworld, "Dispatch Gate 16")
+    dispatch_gate_17 = Region("Dispatch Gate 17", player, world.multiworld, "Dispatch Gate 17")
+    dispatch_gate_18 = Region("Dispatch Gate 18", player, world.multiworld, "Dispatch Gate 18")
+    dispatch_gate_19 = Region("Dispatch Gate 19", player, world.multiworld, "Dispatch Gate 19")
+    dispatch_gate_20 = Region("Dispatch Gate 20", player, world.multiworld, "Dispatch Gate 20")
+    dispatch_gate_21 = Region("Dispatch Gate 21", player, world.multiworld, "Dispatch Gate 21")
+    dispatch_gate_22 = Region("Dispatch Gate 22", player, world.multiworld, "Dispatch Gate 22")
+    dispatch_gate_23 = Region("Dispatch Gate 23", player, world.multiworld, "Dispatch Gate 23")
+    dispatch_gate_24 = Region("Dispatch Gate 24", player, world.multiworld, "Dispatch Gate 24")
+    dispatch_gate_25 = Region("Dispatch Gate 25", player, world.multiworld, "Dispatch Gate 25")
+    dispatch_gate_26 = Region("Dispatch Gate 26", player, world.multiworld, "Dispatch Gate 26")
+    dispatch_gate_27 = Region("Dispatch Gate 27", player, world.multiworld, "Dispatch Gate 27")
+    dispatch_gate_28 = Region("Dispatch Gate 28", player, world.multiworld, "Dispatch Gate 28")
+    dispatch_gate_29 = Region("Dispatch Gate 29", player, world.multiworld, "Dispatch Gate 29")
+    dispatch_gate_30 = Region("Dispatch Gate 30", player, world.multiworld, "Dispatch Gate 30")
+    dispatch_gate_31 = Region("Dispatch Gate 31", player, world.multiworld, "Dispatch Gate 31")
+    dispatch_gate_32 = Region("Dispatch Gate 32", player, world.multiworld, "Dispatch Gate 32")
+    dispatch_gate_33 = Region("Dispatch Gate 33", player, world.multiworld, "Dispatch Gate 33")
 
     final_mission = Region("Final Mission Gate", player, world.multiworld)
     path_completes = [
@@ -369,6 +386,7 @@ def create_regions(world, player) -> None:
 
     last_gate = False
     last_dispatch_gate = False
+
     if world.options.gate_paths.value == 1:
         for x in range(len(valid_gates)):
             if x == len(valid_gates) - 1:
@@ -386,6 +404,7 @@ def create_regions(world, player) -> None:
 
                 if world.options.gate_items.value == 2 and world.options.dispatch.value > 0:
                     valid_dispatch[x - 1].connect(valid_dispatch[x], valid_dispatch[x].name)
+
     elif world.options.gate_paths.value > 1:
 
         for x in range(len(valid_gates)):

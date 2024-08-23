@@ -232,29 +232,14 @@ class StartingUnits(Choice):
     option_random_monster = 4
 
 
-class StartingSpecialUnit(Choice):
-    """
-    Option for starting units to have a chance to be a special unit like Ritz or Cid.
-
-    None: No starting units will be special units.
-    Special: Chance for any unit besides Marche and Montblanc to be a special unit. Will potentially have any job
-    based on starting unit settings.
-    """
-    display_name = "Starting special units"
-    default = 0
-    option_none = 0
-    option_special = 1
-    #option_special_retain = 2
-
-
 class StartingSpecialChance(Range):
     """
-    Percent chance of a starting unit being a special unit. 1 = 10% and 10 = 100% of abilities mastered
-    This option doesn't apply if none is selected for starting special units.
+    Percent chance of any unit besides Marche and Montblanc to be a special unit such as Ritz or Cid.
+    1 = 10% and 10 = 100% chance that all units are a special unit
     """
     display_name = "Percent chance of starting special units"
-    default = 1
-    range_start = 1
+    default = 0
+    range_start = 0
     range_end = 10
 
 
@@ -279,6 +264,18 @@ class StartingAbilitiesMastered(Range):
     default = 0
     range_start = 0
     range_end = 10
+
+
+class AbilityAP(Range):
+    """
+    Sets a standardized amount of AP needed for job abilities. Set to 0 to have every ability already learned.
+    This also applies to recruits, enemy units etc. Every number goes up by 10, for example 1 = 10 and 64 = 999.
+    Use 65 for vanilla AP values
+    """
+    display_name = "Ability AP"
+    default = 65
+    range_start = 0
+    range_end = 65
 
 
 class AbilityRandom(Choice):
@@ -787,9 +784,9 @@ class FFTAOptions(PerGameCommonOptions):
     goal: Goal
     starting_units: StartingUnits
     starting_unit_equip: StartingUnitEquip
-    starting_special: StartingSpecialUnit
     starting_special_chance: StartingSpecialChance
     starting_abilities: StartingAbilitiesMastered
+    ability_ap: AbilityAP
     randomize_abilities: AbilityRandom
     stat_growth: StatGrowth
     job_unlock_req: JobUnlockReq
@@ -801,7 +798,6 @@ class FFTAOptions(PerGameCommonOptions):
     gate_num: GateNumber
     gate_paths: GatePaths
     dispatch: DispatchMissions
-    #"dispatch_chance": DispatchChance
     randomize_dispatch: DispatchRandom
     gate_items: GateUnlock
     mission_order: MissionOrder

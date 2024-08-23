@@ -462,6 +462,9 @@ def generate_output(world, player: int, output_directory: str, player_names) -> 
     # Remove Llednar's weapon on present day to make it more survivable
     patch.write_token(APTokenTypes.WRITE, 0x52eaf8, bytes([0x00]))
 
+    # Make Llednar not invincible
+    patch.write_token(APTokenTypes.WRITE, 0x130870, struct.pack("<i", 0x00200000))
+
     unlock_mission(ffta_data, 23, patch)
     unlock_mission(ffta_data, 259, patch)
     unlock_mission(ffta_data, 284, patch)
@@ -852,12 +855,6 @@ def set_up_gates(ffta_data: FFTAData, num_gates: int, req_items, final_unlock: i
 
 def set_mission_requirement(ffta_data: FFTAData, current_mission_ID: int, previous_mission_ID: int,
                             patch: FFTAProcedurePatch) -> None:
-
-    print("Current mission ID")
-    print(current_mission_ID)
-
-    print("Previous mission ID")
-    print(previous_mission_ID)
 
     # Set the mission requirements to the specified mission ID
     patch.write_token(APTokenTypes.WRITE, ffta_data.missions[current_mission_ID].memory + MissionOffsets.unlockflag1,

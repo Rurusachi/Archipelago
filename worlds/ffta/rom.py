@@ -181,7 +181,8 @@ def generate_output(world, player: int, output_directory: str, player_names) -> 
         patch.write_token(APTokenTypes.WRITE, 0x51ba4e, bytes([0xc8, 0x03]))
 
     # Guarantee recruitment option
-    if world.options.force_recruitment.value == 1 or world.options.force_recruitment.value == 2:
+    if world.options.force_recruitment.value == 1 or world.options.force_recruitment.value == 2 \
+            or world.options.force_recruitment.value == 3:
         patch.write_token(APTokenTypes.WRITE, 0xd2494, bytes([0x00, 0x20]))
 
     # Scale to the highest unit
@@ -223,7 +224,8 @@ def generate_output(world, player: int, output_directory: str, player_names) -> 
         # patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.clan_reward, 0x0A)
         # patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.clan_reward + 0x07, 0x0A)
 
-        if world.options.force_recruitment.value == 1 and mission.recruit < 0x8a:
+        if world.options.force_recruitment.value == 1 or world.options.force_recruitment.value == 3 \
+                and mission.recruit < 0x8a:
             random_recruit = world.random.choice(world.recruit_units)
             patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.recruit,
                               bytes([random_recruit]))
@@ -603,31 +605,14 @@ def generate_output(world, player: int, output_directory: str, player_names) -> 
 
             job_memory += 0x34
 
-    # Recruitment units
-    recruitment_memory = 0x529788
-    for i in range(0, 47):
-        # Class in recruitment list
-        job = get_random_job(world.random, 6)
-        patch.write_token(APTokenTypes.WRITE, recruitment_memory + 2 + (i * 12), bytes([0x90]))
-        patch.write_token(APTokenTypes.WRITE, recruitment_memory + 3 + (i * 12), bytes([0x10]))
 
-        patch.write_token(APTokenTypes.WRITE, recruitment_memory + 4 + (i * 12), bytes([0x28]))
-        #patch.write_token(APTokenTypes.WRITE, recruitment_memory + 5 + (i * 12), bytes([0x01]))
-        patch.write_token(APTokenTypes.WRITE, recruitment_memory + 6 + (i * 12), bytes([0x24]))
-        patch.write_token(APTokenTypes.WRITE, recruitment_memory + 8 + (i * 12), bytes([0x64]))
-        #patch.write_token(APTokenTypes.WRITE, recruitment_memory + 6 + (i * 12), bytes([0x08]))
-        #patch.write_token(APTokenTypes.WRITE, recruitment_memory + 7 + (i * 12), bytes([0x08]))
-        #patch.write_token(APTokenTypes.WRITE, recruitment_memory + 7 + (i * 12), bytes([0x01]))
-
-        """
-        job_abilities = get_job_abilities(job)
-        percent = random.randint(1, 10)
-        master_amount = int((percent / 10) * len(job_abilities))
-        for x in range(master_amount):
-            ability_set = job_abilities[x][0]
-            ability = job_abilities[x][1]
-            set_mastered_ability(recruitment_memory + 4 + (i * 12), ability, patch)
-        """
+    # Add monsters to recruitment pool if option is selected
+    if world.options.force_recruitment == 3:
+        recruitment_memory = 0x529788
+        for i in range(0, 47):
+            # Class in recruitment list
+            job = get_random_job(world.random, 7)
+            patch.write_token(APTokenTypes.WRITE, recruitment_memory + 3 + (i * 12), bytes([job]))
 
     # Randomize music
     # for address in music_addresses:

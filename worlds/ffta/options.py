@@ -497,12 +497,14 @@ class ForceRecruitment(Choice):
     give their vanilla unit which is Ritz in this example.
     Enabled Secret: Every mission will give a new recruit, special recruit missions will be random and there is a
     chance to receive a special unit such as Ritz, Babus and Cid from any mission.
+    Enabled Monster: Every mission will give a new recruit and there is a chance to receive a monster unit.
     """
     display_name = "Force recruitment"
     default = 0
     option_disabled = 0
     option_enabled = 1
     option_enabled_secret = 2
+    option_enabled_monster = 3
 
 
 class MissionRewards(Range):

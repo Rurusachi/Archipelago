@@ -7,6 +7,7 @@ from Options import Choice, DefaultOnToggle, Option, OptionSet, Range, Toggle, F
 from copy import deepcopy
 from .items import itemGroups, ShopItem
 from Utils import is_iterable_except_str, get_fuzzy_results
+from functools import singledispatchmethod
 
 
 class OptionListSet(OptionSet):
@@ -197,13 +198,45 @@ class OptionShopItems(OptionListList):
         return (parsed_name,) + item[1:]
 
 
+class FixedIntervalRange(Range):
+    interval = 1
+
+    def __init__(self, value: int):
+        # Round down to nearest interval, taking into account range_start.
+        # Example values if range_start=50 and interval=200:
+        # 50, 250, 450, etc.
+        value -= (value - self.range_start) % self.interval
+        super().__init__(value)
+
+
+class FixedIntervalNamedRange(NamedRange):
+    interval = 1
+
+    @singledispatchmethod
+    def __init__(self, value):
+        raise NotImplementedError
+
+    @__init__.register
+    def _(self, value: str):
+        self.value = value
+
+    @__init__.register
+    def _(self, value: int):
+        # Round down to nearest interval, taking into account range_start.
+        # Example values if range_start=50 and interval=200:
+        # 50, 250, 450, etc.
+        if value not in self.special_range_names.values():
+            value -= (value - self.range_start) % self.interval
+        super().__init__(value)
+
+
 class Goal(Choice):
     """
     Sets the unlock condition for the final mission
 
     All mission gates: The final mission is unlocked after going through every mission gate.
     Totema Gauntlet: A series of the five Totema battles must be cleared to unlock the final mission. These are
-    unlocked alongside the mission gates. An additional five items are added to unlock them. 
+    unlocked alongside the mission gates. An additional five items are added to unlock them.
     """
     display_name = "Goal"
     default = 0
@@ -293,7 +326,7 @@ class AbilityRandom(Choice):
     default = 0
     option_vanilla = 0
     option_race = 1
-    option_random = 2
+    option_randomized = 2
     option_random_with_special = 3
 
 
@@ -389,6 +422,25 @@ class StartingGil(Range):
     default = 5000
     range_start = 0
     range_end = 99999999
+
+
+class GilRewards(FixedIntervalNamedRange):
+    """
+    Sets the amount of gil you get for completing a mission.
+    Must be a multiple of 200. Will be rounded down to the nearest 200 if not.
+    individually-randomized(-low/-middle/-high): Sets a random value for each mission (with optional bias)
+    """
+    display_name = "Gil mission rewards"
+    interval = 200
+    default = 1000
+    range_start = 0
+    range_end = 51000  # 1-byte value so max is 255 * 200
+    special_range_names = {
+        "individually-randomized": "individually-randomized",
+        "individually-randomized-low": "individually-randomized-low",
+        "individually-randomized-middle": "individually-randomized-middle",
+        "individually-randomized-high": "individually-randomized-high",
+        }
 
 
 class GateNumber(Range):
@@ -565,13 +617,20 @@ class ProgressiveShopUpgrades(Toggle):
     default = 0
 
 
-class ProgressiveShopBattleUnlock(Toggle):
+class ProgressiveShopBattleUnlock(Choice):
     """
-    Enables unlocking the first 2 shop upgrades by fighting 10 and 20 battles total.
-    This progress does not count towards further upgrades.
+    Enables unlocking 2 shop upgrades by fighting 10 and 20 battles total.
+    Enabled: This progress does not stack with other upgrades. 10 battles + 1 upgrade = 1 upgrade total.
+    Stacking: This progress stacks with other upgrades. 10 battles + 1 upgrade = 2 upgrades total.
+    Replacing: As stacking but also removes 2 shop upgrades from the pool.
+        Fighting 20 battles and finding all shop upgrades will be required to unlock the highest shop tier.
     """
     display_name = "Unlock up to 2 shop upgrades by fighting battles"
-    default = 1
+    default = 2
+    option_disabled = 0
+    option_enabled = 1
+    option_stacking = 2
+    option_replacing = 3
 
 
 class ProgressiveShopTiers(OptionShopItems):
@@ -797,6 +856,7 @@ class FFTAOptions(PerGameCommonOptions):
     scaling: EnemyScaling
     exp_multiplier: ExpMultiplier
     starting_gil: StartingGil
+    gil_rewards: GilRewards
     gate_num: GateNumber
     gate_paths: GatePaths
     dispatch: DispatchMissions

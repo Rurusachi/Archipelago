@@ -3,6 +3,7 @@ import pkgutil
 import random
 import struct
 import typing
+from collections.abc import Callable
 
 from settings import get_settings
 
@@ -203,7 +204,22 @@ def generate_output(world, player: int, output_directory: str, player_names) -> 
     # patch.write_token(APTokenTypes.WRITE, 0x122258, 2, 0x2001)
 
     # This works for removing all missions, maybe do this in the diff file
+    if isinstance(world.options.gil_rewards.value, int):
+        gil_reward = struct.pack("<B", int(world.options.gil_rewards.value / 200))
+        randomized_gil = False
+    else:
+        random_func_dict: dict[str, Callable[[], int]] = {
+            "individually-randomized": lambda: world.random.randint(1, 255),
+            "individually-randomized-low": lambda: int(round(world.random.triangular(1, 255, 1), 0)),
+            "individually-randomized-middle": lambda: int(round(world.random.triangular(1, 255), 0)),
+            "individually-randomized-high": lambda: int(round(world.random.triangular(1, 255, 255), 0)),
+        }
+        get_random_reward = random_func_dict[world.options.gil_rewards.value]
+        randomized_gil = True
     for mission in ffta_data.missions:
+        if randomized_gil:
+            gil_reward = struct.pack("<B", get_random_reward())
+
         patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.unlockflag1, bytes([0x02]))
         patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.unlockflag1 + 1, bytes([0x03]))
         patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.unlockflag1 + 2, bytes([0x01]))
@@ -216,7 +232,7 @@ def generate_output(world, player: int, output_directory: str, player_names) -> 
 
         patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.rank, bytes([0x30, 0x00]))
         patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.ap_reward, bytes([0x05]))
-        patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.gil_reward, bytes([0x05]))
+        patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.gil_reward, gil_reward)
         patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.rewardItem1, bytes([0x00, 0x00]))
         patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.rewardItem2, bytes([0x00, 0x00]))
         patch.write_token(APTokenTypes.WRITE, mission.memory + MissionOffsets.cardItem1, bytes([0x00, 0x00]))

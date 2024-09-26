@@ -617,13 +617,20 @@ class ProgressiveShopUpgrades(Toggle):
     default = 0
 
 
-class ProgressiveShopBattleUnlock(Toggle):
+class ProgressiveShopBattleUnlock(Choice):
     """
-    Enables unlocking the first 2 shop upgrades by fighting 10 and 20 battles total.
-    This progress does not count towards further upgrades.
+    Enables unlocking 2 shop upgrades by fighting 10 and 20 battles total.
+    Enabled: This progress does not stack with other upgrades. 10 battles + 1 upgrade = 1 upgrade total.
+    Stacking: This progress stacks with other upgrades. 10 battles + 1 upgrade = 2 upgrades total.
+    Replacing: As stacking but also removes 2 shop upgrades from the pool.
+        Fighting 20 battles and finding all shop upgrades will be required to unlock the highest shop tier.
     """
     display_name = "Unlock up to 2 shop upgrades by fighting battles"
-    default = 1
+    default = 2
+    option_disabled = 0
+    option_enabled = 1
+    option_stacking = 2
+    option_replacing = 3
 
 
 class ProgressiveShopTiers(OptionShopItems):

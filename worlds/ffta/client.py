@@ -230,12 +230,10 @@ class FFTAClient(BizHawkClient):
                                                            (0x02002AF5, 1, "System Bus"),
                                                            (0x02002AF8, 4, "System Bus"),
                                                            (0x02002AF7, 1, "System Bus"),
-                                                           (0x02001F6C, 1, "System Bus"),
                                                            ])
                     path_counters = [int.from_bytes(x, "little") for x in path_memory_data[0:4]]
                     rand_state = int.from_bytes(path_memory_data[4], "little")
                     shop_level = int.from_bytes(path_memory_data[5], "little")
-                    battle_num = int.from_bytes(path_memory_data[6], "little")
                     initialize_seed = False
                     if rand_state == 0x00:
                         initial_seed = await bizhawk.read(ctx.bizhawk_ctx,
@@ -253,8 +251,6 @@ class FFTAClient(BizHawkClient):
                             path_counters[path] += 1
                     elif next_item_id == 0x3FF:
                         if shop_level < self.progressive_shop_tiers:
-                            if shop_level < 2:
-                                battle_num += 10
                             shop_level += 1
                         next_item_id = 0x1bd
 
@@ -262,7 +258,6 @@ class FFTAClient(BizHawkClient):
                     progressive_writes += [(0x02002AF8, (rand_state).to_bytes(4, "little"), "System Bus")]
                     progressive_writes += [(0x02002AF6, [0x01], "System Bus")] if initialize_seed else []
                     progressive_writes += [(0x02002AF7, (shop_level).to_bytes(1, "little"), "System Bus")]
-                    progressive_writes += [(0x02001F6C, (battle_num).to_bytes(1, "little"), "System Bus")]
 
                     # Make case for trap items received
                     # elif next_item.item - offset == 0x11111:
@@ -281,8 +276,6 @@ class FFTAClient(BizHawkClient):
                                 path_counters[path] += 1
                         elif item_after_id == 0x3FF:
                             if shop_level < self.progressive_shop_tiers:
-                                if shop_level < 2:
-                                    battle_num += 10
                                 shop_level += 1
                             item_after_id = 0x1bd
 
@@ -290,7 +283,6 @@ class FFTAClient(BizHawkClient):
                         progressive_writes += [(0x02002AF8, (rand_state).to_bytes(4, "little"), "System Bus")]
                         progressive_writes += [(0x02002AF6, [0x01], "System Bus")] if initialize_seed else []
                         progressive_writes += [(0x02002AF7, (shop_level).to_bytes(1, "little"), "System Bus")]
-                        progressive_writes += [(0x02001F6C, (battle_num).to_bytes(1, "little"), "System Bus")]
 
                         await bizhawk.guarded_write(ctx.bizhawk_ctx,
                                                     [(0x2002c10, [0x00], "System Bus"),

@@ -270,7 +270,7 @@ class FFTAWorld(World):
         # Go through lists in reverse so later values take priority
         item_groups = []
         random_items = []
-        for tier in self.options.progressive_shop_tiers.value:
+        for i, tier in enumerate(self.options.progressive_shop_tiers.value):
             item_groups_tier = []
             random_items_tier = []
             tier_items = []
@@ -288,7 +288,11 @@ class FFTAWorld(World):
             self.shop_tiers.append(tier_items)
             item_groups.append(item_groups_tier)
             random_items.append(random_items_tier)
-            required_items.append("Progressive Shop")
+            # No item for the first tier, and 2 less items if ProgressiveShopBattleUnlock is set to replace
+            if i > 0 and \
+                (self.options.progressive_shop_battle_unlock.value !=
+                 self.options.progressive_shop_battle_unlock.option_replacing or i > 2):
+                required_items.append("Progressive Shop")
 
         for index, tier in enumerate(item_groups):
             for group_name, group_price in tier:

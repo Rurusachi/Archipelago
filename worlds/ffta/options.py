@@ -236,7 +236,7 @@ class Goal(Choice):
 
     All mission gates: The final mission is unlocked after going through every mission gate.
     Totema Gauntlet: A series of the five Totema battles must be cleared to unlock the final mission. These are
-    unlocked alongside the mission gates. An additional five items are added to unlock them. 
+    unlocked alongside the mission gates. An additional five items are added to unlock them.
     """
     display_name = "Goal"
     default = 0
@@ -326,7 +326,7 @@ class AbilityRandom(Choice):
     default = 0
     option_vanilla = 0
     option_race = 1
-    option_random = 2
+    option_randomized = 2
     option_random_with_special = 3
 
 

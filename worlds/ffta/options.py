@@ -375,6 +375,25 @@ class Laws(Choice):
     option_random_laws = 2
 
 
+class LawCards(Choice):
+    """
+    Add Law cards to the pool.
+    Optionally also unlock law cards and the law card shop from the start.
+    (Using cards and trading with the card shop are normally unlocked after the Antilaws mission.)
+
+    Disabled: No law cards in the pool.
+    Enabled: Law cards are added to the pool.
+    Unlock Cards: As Enabled and law cards are usable from the start.
+    Unlock Cards and Shop: As Unlock Cards and the law card shop is unlocked from the start.
+    """
+    display_name = "Add law cards to the item pool."
+    default = 0
+    option_disabled = 0
+    option_enabled = 1
+    option_unlock_cards = 2
+    option_unlock_cards_and_shop = 3
+
+
 class RandomEnemies(Choice):
     """
     Randomizes the enemy units. Special units such as bosses currently are not randomized.
@@ -852,6 +871,7 @@ class FFTAOptions(PerGameCommonOptions):
     stat_growth: StatGrowth
     job_unlock_req: JobUnlockReq
     laws: Laws
+    law_cards: LawCards
     randomize_enemies: RandomEnemies
     scaling: EnemyScaling
     exp_multiplier: ExpMultiplier

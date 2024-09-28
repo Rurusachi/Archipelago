@@ -40,6 +40,8 @@ class FFTAClient(BizHawkClient):
     progressive_items: bool
     progressive_shop: bool
     progressive_shop_tiers: int
+    unlock_law_cards: bool
+    unlock_law_card_shop: bool
 
     def __init__(self) -> None:
         super().__init__()
@@ -49,6 +51,8 @@ class FFTAClient(BizHawkClient):
         self.progressive_items = False
         self.progressive_shop = False
         self.progressive_shop_tiers = 0
+        self.unlock_law_cards = False
+        self.unlock_law_card_shop = False
 
     async def validate_rom(self, ctx: BizHawkClientContext) -> bool:
 
@@ -105,11 +109,16 @@ class FFTAClient(BizHawkClient):
                 self.progressive_shop = True
                 self.progressive_shop_tiers = len(ctx.slot_data["progressive_shop_tiers"]) - 1
 
+            if ctx.slot_data["law_cards"] > 1:
+                self.unlock_law_cards = True
+                if ctx.slot_data["law_cards"] > 2:
+                    self.unlock_law_card_shop = True
+
             """
             if "job_unlock_req" in ctx.slot_data:
                 if ctx.slot_data["job_unlock_req"] == JobUnlockReq.option_job_items:
                     self.job_unlock = True
-                    
+
             """
         try:
             if self.progressive_items:
@@ -135,6 +144,20 @@ class FFTAClient(BizHawkClient):
                                                     )
                     for path in range(0, 4):
                         self.path_items.append(list(struct.unpack("<" + "H" * path_lengths[path], path_items[path])))
+
+            if self.unlock_law_cards:
+                law_card_read = await bizhawk.read(ctx.bizhawk_ctx,
+                                                   [(0x02001fb0, 1, "System Bus"),
+                                                    (0x02002025, 1, "System Bus"),
+                                                    ])
+                law_card_flags = [int.from_bytes(x, "little") for x in law_card_read]
+
+                write_flags = [(0x02001fb0, (law_card_flags[0] | 0x80).to_bytes(1, "little"), "System Bus")]
+                if self.unlock_law_card_shop:
+                    write_flags += [(0x02002025, (law_card_flags[1] | 0x01).to_bytes(1, "little"), "System Bus")]
+
+                if law_card_flags[0] < 0x80 or (self.unlock_law_card_shop and law_card_flags[1] < 0x01):
+                    await bizhawk.write(ctx.bizhawk_ctx, write_flags)
 
             offset = 41234532
             flag_list = [(0x2001FD0, 50, "System Bus"), (0x2001FD1, 1, "System Bus"),

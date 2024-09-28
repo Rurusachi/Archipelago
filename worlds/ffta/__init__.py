@@ -29,7 +29,7 @@ from .items import (create_item_label_to_code_map, AllItems, item_table, FFTAIte
                     WeaponMaces, WeaponInstruments, WeaponSouls, WeaponRapiers, WeaponGuns, WeaponKnives, ItemData,
                     EquipArmor, EquipRobes, EquipClothing, MissionUnlockItems, TotemaUnlockItems,
                     SoldierWeapons, PaladinWeapons, WarriorWeapons, DefenderWeapons, TemplarWeapons, AssassinWeapons,
-                    DragoonWeapons, itemGroups, JobUnlocks)
+                    DragoonWeapons, itemGroups, JobUnlocks, LawCards)
 from .locations import (create_location_label_to_id_map)
 from .rom import FFTAProcedurePatch, generate_output
 
@@ -175,6 +175,10 @@ class FFTAWorld(World):
         useful_items = []
         for item in AllItems:
             if item.progression == ItemClassification.useful:
+
+                if self.options.law_cards.value == 0:
+                    if item in LawCards:
+                        continue
 
                 if self.options.job_unlock_req != JobUnlockReq.option_job_items:
                     if item in JobUnlocks:
@@ -395,7 +399,8 @@ class FFTAWorld(World):
             "job_unlock_req",
             "progressive_gates",
             "progressive_shop",
-            "progressive_shop_tiers"
+            "progressive_shop_tiers",
+            "law_cards"
         )
 
         return slot_data

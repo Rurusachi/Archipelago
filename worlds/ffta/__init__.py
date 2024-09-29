@@ -180,9 +180,9 @@ class FFTAWorld(World):
                     if item in LawCards:
                         continue
 
-                if self.options.job_unlock_req != JobUnlockReq.option_job_items:
-                    if item in JobUnlocks:
-                        continue
+                #if self.options.job_unlock_req != JobUnlockReq.option_job_items:
+                if item in JobUnlocks:
+                    continue
 
                 useful_items += [item.itemName]
 

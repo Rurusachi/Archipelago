@@ -511,34 +511,35 @@ def generate_output(world, player: int, output_directory: str, player_names) -> 
 
     # Set unit names from players in the multiworld
 
-    pointer_address = 0x5680DC
-    name_address = 0xD00000
+    if world.options.unit_names.value == 1:
+        pointer_address = 0x5680DC
+        name_address = 0xD00000
 
-    # Check if player names exceed the number of unit name pointers
-    if len(player_names) > 500:
-        player_names = player_names[:500]
+        # Check if player names exceed the number of unit name pointers
+        if len(player_names) > 500:
+            player_names = player_names[:500]
 
-    for name in player_names:
+        for name in player_names:
 
-        if len(name) > 14:
-            name = name[:14]
+            if len(name) > 12:
+                name = name[:12]
 
-        name_hex = []
-        for char in name:
-            if char in textDict:
-                name_hex.append(textDict[char])
-            elif char == ' ':
-                name_hex.append(0xF0)
-            else:
-                name_hex.append(0xEB)
+            name_hex = []
+            for char in name:
+                if char in textDict:
+                    name_hex.append(textDict[char])
+                elif char == ' ':
+                    name_hex.append(0xF0)
+                else:
+                    name_hex.append(0xEB)
 
-        patch.write_token(APTokenTypes.WRITE, pointer_address, struct.pack("<i", (name_address + 0x8000000)))
-        patch.write_token(APTokenTypes.WRITE, name_address, bytes([0x01]))
-        patch.write_token(APTokenTypes.WRITE, name_address + 0x01, bytes(name_hex))
-        patch.write_token(APTokenTypes.WRITE, name_address + len(name_hex) + 0x01, bytes([0x00]))
-        # Update name and pointer addresses
-        name_address += len(name_hex) + 0x02
-        pointer_address += 0x04
+            patch.write_token(APTokenTypes.WRITE, pointer_address, struct.pack("<i", (name_address + 0x8000000)))
+            patch.write_token(APTokenTypes.WRITE, name_address, bytes([0x01]))
+            patch.write_token(APTokenTypes.WRITE, name_address + 0x01, bytes(name_hex))
+            patch.write_token(APTokenTypes.WRITE, name_address + len(name_hex) + 0x01, bytes([0x00]))
+            # Update name and pointer addresses
+            name_address += len(name_hex) + 0x02
+            pointer_address += 0x04
 
     last_index = 0
     for i in range(0, len(human_abilities)):

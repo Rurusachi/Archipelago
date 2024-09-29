@@ -175,7 +175,7 @@ class FFTAClient(BizHawkClient):
                     await bizhawk.write(ctx.bizhawk_ctx, [(0x2002B08 + byte_i, bytes([0x00]), "System Bus")])
 
                 # Handle job unlock items
-
+                """
                 if item in JobUnlockDict:
                     await bizhawk.write(ctx.bizhawk_ctx, [(0x2002B08 + byte_i, bytes([0x00]), "System Bus")])
 
@@ -187,7 +187,7 @@ class FFTAClient(BizHawkClient):
 
                     else:
                         await bizhawk.write(ctx.bizhawk_ctx, [(job_unlocks, bytes([0x00]), "ROM")])
-
+                """
             self.goal_flag = read_result[5]
 
             local_checked_locations = set()

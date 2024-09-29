@@ -313,7 +313,8 @@ class AbilityAP(Range):
 
 class AbilityRandom(Choice):
     """
-    Randomize the abilities each job has
+    Randomize the abilities each job can use.
+    WARNING: Currently certain combinations may result in softlocks.
 
     Vanilla: Jobs have their original abilities
     Random within race: Abilities are randomized between jobs in the same race. No duplicate abilities within jobs
@@ -357,7 +358,7 @@ class JobUnlockReq(Choice):
     option_req_vanilla = 0
     option_all_unlocked = 1
     option_all_locked = 2
-    option_job_items = 3
+    #option_job_items = 3
 
 
 class Laws(Choice):
@@ -862,7 +863,12 @@ class ProgressiveShopTiers(OptionShopItems):
         "vanilla_random": vanilla_random
     }
 
-
+class UnitNames(Toggle):
+    """
+    Random unit names are named after players in the multiworld.
+    """
+    display_name = "Random units named after other players"
+    default = 1
 
 
 
@@ -902,3 +908,4 @@ class FFTAOptions(PerGameCommonOptions):
     progressive_shop: ProgressiveShopUpgrades
     progressive_shop_battle_unlock: ProgressiveShopBattleUnlock
     progressive_shop_tiers: ProgressiveShopTiers
+    unit_names: UnitNames

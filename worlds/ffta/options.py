@@ -560,6 +560,14 @@ class QuickOptions(Toggle):
     default = 0
 
 
+class FastReceive(Toggle):
+    """
+    Skip most of the animations and text when receiving items
+    """
+    display_name = "Faster received item popup"
+    default = 1
+
+
 class ForceRecruitment(Choice):
     """
     Forces every mission to give a new recruit.
@@ -885,6 +893,7 @@ class FFTAOptions(PerGameCommonOptions):
     mission_order: MissionOrder
     final_mission: FinalMission
     quick_options: QuickOptions
+    fast_receive: FastReceive
     force_recruitment: ForceRecruitment
     mission_reward_num: MissionRewards
     progressive_gates: ProgressiveGateItems

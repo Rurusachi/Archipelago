@@ -181,6 +181,12 @@ def generate_output(world, player: int, output_directory: str, player_names) -> 
     if world.options.quick_options.value == 1:
         patch.write_token(APTokenTypes.WRITE, 0x51ba4e, bytes([0xc8, 0x03]))
 
+    if world.options.fast_receive.value == 1:
+        patch.write_token(APTokenTypes.WRITE, 0x0003a1cc, bytes([0x04, 0xE0]))
+        patch.write_token(APTokenTypes.WRITE, 0x0003a1f2, bytes([0x00, 0xE0]))
+        patch.write_token(APTokenTypes.WRITE, 0x0003a0dc, bytes([0xA6, 0xE0]))
+        patch.write_token(APTokenTypes.WRITE, 0x0003a6c0, bytes([0x00, 0xE0]))
+
     # Guarantee recruitment option
     if world.options.force_recruitment.value == 1 or world.options.force_recruitment.value == 2 \
             or world.options.force_recruitment.value == 3:

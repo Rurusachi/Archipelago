@@ -25,19 +25,17 @@ class FFTA2Client(BizHawkClient):
     system = "NDS"
     local_checked_locations: Set[int]
     local_set_events: Dict[str, bool]
-    goal_flag: Tuple[int, int]  # Bit, byte
+    goal_flag: Tuple[int, int]  # Byte, bit
     goal_id: int = 0
     path_end_quests: List[Tuple[int, int]]
-    #paths_completed: int = 0
     paths_required: int
-    initialized: bool
 
     def __init__(self) -> None:
         super().__init__()
         self.local_checked_locations = set()
         self.local_set_events = {}
-        self.initialized = False
         self.path_end_quests = []
+        self.goal_flag = (0, 0)
 
     async def validate_rom(self, ctx: BizHawkClientContext) -> bool:
         try:
@@ -63,16 +61,9 @@ class FFTA2Client(BizHawkClient):
         if ctx.slot_data is not None:
             self.path_end_quests = ctx.slot_data["path_end_quests"]
             self.paths_required = ctx.slot_data["paths_required"]
+            self.goal_flag = ctx.slot_data["goal_flag"]
 
-        if not self.initialized:
-            self.goal_flag = [(bitflags[index % 8], index // 8) for index, quest in
-                              enumerate(ffta2_data.quests, start=1)
-                              if quest.name == "The Two Grimoires"][0]
-            self.initialized = True
         try:
-            # Set story progress to unlock everything
-            # await bizhawk.write(ctx.bizhawk_ctx, [(0x212d714, (0x5ff).to_bytes(2, "little"), "ARM9 System Bus")])
-
             flag_list = [(MemoryAddresses.quest_flags, 0x40, "ARM9 System Bus"),
                          (MemoryAddresses.received_items, 2, "ARM9 System Bus"), (MemoryAddresses.event_var, 1, "ARM9 System Bus"),
                          (MemoryAddresses.custom_flags, 0x7, "ARM9 System Bus"),
@@ -86,14 +77,13 @@ class FFTA2Client(BizHawkClient):
 
             for i, item in enumerate(inventory_items):
                 if item[0] in [0x00F5, 0x00F6] and (item[1] > 0 or item[2] > 0):
-                    print("Removing Archipelago item")
                     await bizhawk.write(ctx.bizhawk_ctx, [(MemoryAddresses.inventory + i*4 + 2, bytes([0x00, 0x00]), "ARM9 System Bus")])
 
             local_checked_locations = set()
             game_clear = False
 
             # Check if goal status is reached
-            if flag_bytes[self.goal_flag[1]] & bitflags[self.goal_flag[0]] == bitflags[self.goal_flag[0]]:
+            if flag_bytes[self.goal_flag[0]] & bitflags[self.goal_flag[1]] == bitflags[self.goal_flag[1]]:
                 game_clear = True
 
             # Check set flags

@@ -126,7 +126,8 @@ class QuestOffsets:
     month: int = 0xb
     available_period: int = 0xd  # Maybe?
     days: int = 0x10
-    repeat_days: int = 0x11
+    repeat_failed_days: int = 0x11
+    repeat_completed_days: int = 0x12  # FE = never?, FF = Instant?
     fee: int = 0x13  # multiplied by 100
     required_item1: int = 0x14
     required_item_amount1: int = 0x16
@@ -141,6 +142,7 @@ class QuestOffsets:
     location: int = 0x21
     gil_reward: int = 0x4c
     ap: int = 0x4e  # multiplied by 10?
+    cp: int = 0x4f
     reward_1: int = 0x50
     reward_2: int = 0x52
     reward_3: int = 0x54

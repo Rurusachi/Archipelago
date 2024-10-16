@@ -39,6 +39,19 @@ class GatePathsRequired(Range):
     range_end = 3
 
 
+class FinalQuests(Choice):
+    """
+    Sets the final questline. "The Two Grimoires" leads directly into "From The Rift".
+
+    The Ritual: You must complete "The Ritual", "The Two Grimoires", and "From the Rift" to win.
+    The Two Grimoires: You must complete "The Two Grimoires", and "From the Rift" to win.
+    """
+    display_name = "Final quest"
+    default = 0
+    option_the_ritual = 0
+    option_the_two_grimoires = 1
+
+
 class QuestRewards(Range):
     """
     Sets the number of locations per quest.
@@ -122,6 +135,7 @@ class FFTA2Options(PerGameCommonOptions):
     gate_num: GateNumber
     path_num: GatePaths
     paths_required: GatePathsRequired
+    final_quests: FinalQuests
     reward_num: QuestRewards
     quest_ap: QuestAP
     quest_exp: QuestEXP

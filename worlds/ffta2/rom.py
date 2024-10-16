@@ -46,7 +46,7 @@ def generate_output(world, player: int, output_directory: str) -> None:
 
     patch.write_file("base_patch.bsdiff4", pkgutil.get_data(__name__, "ffta2_data/base_patch.bsdiff4"))
 
-    for quest in ffta2_data.quests:
+    for index, quest in enumerate(ffta2_data.quests):
 
         patch.write_token(APTokenTypes.OR_8, quest.memory + QuestOffsets.region, 0x7e)
 
@@ -57,7 +57,8 @@ def generate_output(world, player: int, output_directory: str) -> None:
         patch.write_token(APTokenTypes.WRITE, quest.memory + QuestOffsets.month, struct.pack("<B", 0x0))
         patch.write_token(APTokenTypes.WRITE, quest.memory + QuestOffsets.available_period, struct.pack("<B", 0x0))
         patch.write_token(APTokenTypes.WRITE, quest.memory + QuestOffsets.days, struct.pack("<B", 0x0))
-        patch.write_token(APTokenTypes.WRITE, quest.memory + QuestOffsets.repeat_days, struct.pack("<B", 0x0))
+        patch.write_token(APTokenTypes.WRITE, quest.memory + QuestOffsets.repeat_failed_days, struct.pack("<B", 0x0))
+        patch.write_token(APTokenTypes.WRITE, quest.memory + QuestOffsets.repeat_completed_days, struct.pack("<B", 0xFE))  # FE = Never?
         patch.write_token(APTokenTypes.WRITE, quest.memory + QuestOffsets.fee, struct.pack("<B", 0x0))
 
         patch.write_token(APTokenTypes.WRITE, quest.memory + QuestOffsets.required_item1, struct.pack("<H", 0x0))
@@ -76,6 +77,7 @@ def generate_output(world, player: int, output_directory: str) -> None:
 
         patch.write_token(APTokenTypes.WRITE, quest.memory + QuestOffsets.exp, struct.pack("<B", world.options.quest_exp.value))
         patch.write_token(APTokenTypes.WRITE, quest.memory + QuestOffsets.ap, struct.pack("<B", world.options.quest_ap.value))
+        patch.write_token(APTokenTypes.WRITE, quest.memory + QuestOffsets.cp, struct.pack("<B", 0x0))
 
         if world.options.quest_gil.value != -1:
             patch.write_token(APTokenTypes.WRITE, quest.memory + QuestOffsets.gil_reward, struct.pack("<H", world.options.quest_gil.value))
@@ -83,9 +85,27 @@ def generate_output(world, player: int, output_directory: str) -> None:
         if world.options.dispatch_quests.value == DispatchQuests.option_no_dispatch:
             patch.write_token(APTokenTypes.WRITE, quest.memory + QuestOffsets.is_dispatch, struct.pack("<H", 0x0))
 
-        if quest.name == "The Two Grimoires":
+        if quest.name in ["Wanted: Woodcutter", "Clan Mates recruit"]:
+            # Move out of locked location in Targ
+            patch.write_token(APTokenTypes.WRITE, quest.memory + QuestOffsets.location, struct.pack("<B", 0x4))
+        elif quest.name in ["Seeding the Harvest", "A Harvest Hand"] or index == 0x1a6:
+            # Move out of locked location in Camoa
+            patch.write_token(APTokenTypes.WRITE, quest.memory + QuestOffsets.location, struct.pack("<B", 0xa))
+        elif quest.name == "Brightmoon Tor":
+            patch.write_token(APTokenTypes.WRITE, quest.memory + QuestOffsets.location, struct.pack("<B", 0x22))
+
+        if quest.name == "The Two Grimoires" and world.options.final_quests.value == 1:
             # Put the final quest near Targ so it's actually accessible
             patch.write_token(APTokenTypes.WRITE, quest.memory + QuestOffsets.location, struct.pack("<B", 0x2))
+        elif quest.name.endswith("recruit") or quest.name.endswith("random"):
+            patch.write_token(APTokenTypes.WRITE, quest.memory + QuestOffsets.story_requirement, struct.pack("<H", 0x1))
+            patch.write_token(APTokenTypes.WRITE, quest.memory + QuestOffsets.days, struct.pack("<B", 5))
+            patch.write_token(APTokenTypes.WRITE, quest.memory + QuestOffsets.repeat_failed_days, struct.pack("<B", 20))
+            patch.write_token(APTokenTypes.WRITE, quest.memory + QuestOffsets.repeat_completed_days, struct.pack("<B", 20))
+            if quest.name.endswith("recruit"):
+                patch.write_token(APTokenTypes.WRITE, quest.memory + QuestOffsets.exp, struct.pack("<B", 0))
+                patch.write_token(APTokenTypes.WRITE, quest.memory + QuestOffsets.ap, struct.pack("<B", 0))
+                patch.write_token(APTokenTypes.WRITE, quest.memory + QuestOffsets.gil_reward, struct.pack("<H", 0))
 
     for formation in ffta2_data.formations:
         for unit in range(formation.units):
@@ -158,8 +178,11 @@ def set_up_gates(ffta2_data: FFTA2Data, num_gates: int,
     # set_required_items(ffta2_data,
     #                    world.QuestGroups[3][0][0].quest_id, GateItems[0].itemID, patch)
 
-    final_quest_list = [0x17]
-    final_quest_id = final_quest_list[0]
+    final_quest_list = [0x16, 0x17]  # "The Ritual", "The Two Grimoires"
+    final_quest_id = final_quest_list[world.options.final_quests.value]
+
+    if world.options.final_quests.value == 0:
+        set_quest_requirement(ffta2_data, 0x17, 0x16, patch)
 
     # quest_index = 4
     # quest_unlock = 3

@@ -24,59 +24,64 @@ QuestGroups: Tuple[List[FFTA2LocationData], int, int] = []
 bitflags = [0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80]
 
 unused_quests = ["-",  # Dummy quests
-                   "The Two Grimoires",  # Final quest
-                   "Stranger in the Woods",  # Story quests break when changing story progress
-                   "A Paw Full of Feathers",
-                   "The Yellow Wings",
-                   "You Say Tomato",
-                   "Wanted: Ugohr",
-                   "Wanted: Gilmunto",
-                   "Now That's a Fire!",
-                   "Pearls in the Deep",
-                   "Mountain Watch",
-                   "Grounded!",
-                   "Rumors Abound",
-                   "Sleepless Nights",
-                   "Making Music",
-                   "Making Music part 2",
-                   "Seeking the Stone",
-                   "Wanted: Sky Pirate Vaan",
-                   "A Request",
-                   "The Rift",
-                   "The Dig",
-                   "Through Another's Eyes",
-                   "Pirate Problems",
-                   "The Ritual",
-                   "From the Rift",
-                   "The Search",  # Heritor quests? Work but there is no indicator where to go
-                   "Gifted",  # instant-loss without Adelle
-                   "An Elegant Encounter",
-                   "Where Could He Be?",
-                   "A Moment's Respite",
-                   "I've Been Had, Kupo!",
-                   "A Refined Recruit",
-                   "I'm Back, Kupo!",
-                   "Wanted: Friends, Kupo!",
-                   "A Lost Companion",
-                   "Help!",
-                   "Woman of the Wood",
-                   "The Beast of Aisenfield",
-                   "Shrine of the Paling Gods",
-                   "Bringer of Doom",
-                   "Unplumbed Depths",
-                   "A Dashing Duel",
-                   "Brightmoon Tor",
-                   "Brightmoon Tor, 2nd Ascent",
-                   "Brightmoon Tor, 3rd Ascent",
-                   #"The Moon Seal",  # Not available in pub for some reason (possibly fixed)
-                   ]
+                 "Stranger in the Woods",  # Story quests break when changing story progress
+                 "A Paw Full of Feathers",
+                 "The Yellow Wings",
+                 "You Say Tomato",
+                 "Wanted: Ugohr",
+                 "Wanted: Gilmunto",
+                 "Now That's a Fire!",
+                 "Pearls in the Deep",
+                 "Mountain Watch",
+                 "Grounded!",
+                 "Rumors Abound",
+                 "Sleepless Nights",
+                 "Making Music",
+                 "Making Music part 2",
+                 "Seeking the Stone",
+                 "Wanted: Sky Pirate Vaan",
+                 "A Request",
+                 "The Rift",
+                 "The Dig",
+                 "Through Another's Eyes",
+                 "Pirate Problems",
+                 "The Ritual",  # Final quest
+                 "The Two Grimoires",  # Final quest
+                 "From the Rift",
+                 "The Search",  # Heritor quests? Work but there is no indicator where to go
+                 "Gifted",  # instant-loss without Adelle
+                 "An Elegant Encounter",
+                 "Where Could He Be?",
+                 "A Moment's Respite",
+                 "I've Been Had, Kupo!",
+                 "A Refined Recruit",
+                 "I'm Back, Kupo!",
+                 "Wanted: Friends, Kupo!",
+                 "A Lost Companion",
+                 "Help!",
+                 "Woman of the Wood",
+                 "The Beast of Aisenfield",
+                 "Shrine of the Paling Gods",
+                 "Bringer of Doom",
+                 "Unplumbed Depths",
+                 "A Dashing Duel",
+                 "Brightmoon Tor",
+                 "Brightmoon Tor, 2nd Ascent",
+                 "Brightmoon Tor, 3rd Ascent",
+                 "Champ's Reward",
+                 "Master's Reward",
+                 ]
 
 FFTA2Locations: List[List[FFTA2LocationData]] = [
         [FFTA2LocationData(f"{quest.name} Reward 1", id, quest.memory + QuestOffsets.reward_1),
          FFTA2LocationData(f"{quest.name} Reward 2", id, quest.memory + QuestOffsets.reward_2),
          FFTA2LocationData(f"{quest.name} Reward 3", id, quest.memory + QuestOffsets.reward_3),
          #FFTA2LocationData(f"{quest.name} Reward 4", id, quest.memory + QuestOffsets.reward_4),
-         ] for id, quest in enumerate(ffta2_data.quests) if quest.region != 0 and quest.name not in unused_quests and re.search("part [0-9]*\Z", quest.name) is None  # and quest.battle != 0
+         ] for id, quest in enumerate(ffta2_data.quests) if quest.region != 0 and\
+                                                            quest.name not in unused_quests and\
+                                                            re.search("part [0-9]*\Z", quest.name) is None and\
+                                                            not quest.name.endswith("random") and\
+                                                            not quest.name.endswith("recruit")  # and quest.battle != 0
     ]
 
 duplicates = []

@@ -17,6 +17,7 @@ from .options import (FFTA2Options, GateNumber, JobUnlockRequirements)
 from .items import (create_item_label_to_code_map, AllItems, item_table, FFTA2Item, FillerItems, GateItems, jobUnlockItems)
 from .locations import (create_location_label_to_id_map)
 from .rom import FFTA2ProcedurePatch, generate_output
+from .data import (get_flag, FlagOffsets)
 
 
 class FFTA2WebWorld(WebWorld):
@@ -76,6 +77,7 @@ class FFTA2World(World):
         self.location_ids = []
         self.path_quests: List[List[Tuple[int, List[int]]]] = []
         self.path_end_quests: List[Tuple[int, int]] = []
+        self.goal_flag: Tuple[int, int] = (0, 0)
 
     def get_filler_item_name(self) -> str:
         filler = [x.itemName for x in FillerItems]
@@ -136,6 +138,9 @@ class FFTA2World(World):
         # Setting the victory item at the victory location
         victory_event = FFTA2Item('Victory', ItemClassification.progression, None, self.player)
 
+        (byte_index, bit_index, _) = get_flag(0x17, FlagOffsets.Quest)
+        self.goal_flag = (byte_index - FlagOffsets.Quest[0], bit_index)
+
         self.multiworld.get_location("The Two Grimoires", self.player)\
             .place_locked_item(victory_event)
 
@@ -167,6 +172,7 @@ class FFTA2World(World):
         )
 
         slot_data["path_end_quests"] = self.path_end_quests
+        slot_data["goal_flag"] = self.goal_flag
 
         return slot_data
 

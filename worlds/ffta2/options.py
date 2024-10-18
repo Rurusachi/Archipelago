@@ -83,6 +83,7 @@ class JobUnlockRequirements(Choice):
     No Quests: Jobs require mastered abilities, but not quests.
     All Unlocked: Jobs have no requirements.
     All Locked: All jobs are locked. Units can only be their starting job.
+    Job Items: All jobs start locked. Job unlocks are checks.
     """
     display_name = "Job unlocks"
     default = 1

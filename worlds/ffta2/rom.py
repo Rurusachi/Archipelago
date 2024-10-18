@@ -7,7 +7,7 @@ from settings import get_settings
 
 from worlds.Files import APProcedurePatch, APTokenMixin, APTokenTypes
 
-from .data import (FFTA2Data, ffta2_data, QuestOffsets, FormationOffsets, Formations, UnitOffsets, JobRequirementOffsets, FlagOffsets, MemoryAddresses, jobUnlockList, get_flag)
+from .data import (FFTA2Data, ffta2_data, QuestOffsets, FormationOffsets, Formations, UnitOffsets, RecruitableUnitOffsets, JobRequirementOffsets, FlagOffsets, MemoryAddresses, jobUnlockList, get_flag, recruitableUnitNames)
 from .items import (GateItems, jobUnlockOffset, jobUnlockItems)
 from .locations import (FFTA2Locations)
 from .options import (JobUnlockRequirements, DispatchQuests)
@@ -146,8 +146,13 @@ def generate_output(world, player: int, output_directory: str) -> None:
                 job_flag_pointer = 0x168  # 2D bytes, 0 bits (0x0212d761, should always be 0, otherwise item events break)
                 patch.write_token(APTokenTypes.WRITE, job.memory + JobRequirementOffsets.quest_requirement, struct.pack("<H", job_flag_pointer))
 
+    for i in range(1, 6):
+        patch.write_token(APTokenTypes.WRITE, ffta2_data.recruitableUnits[i].memory + RecruitableUnitOffsets.starter, struct.pack("<B", 0x0))
 
-
+    for unit_name in world.options.starting_units.value:
+        unit_index = recruitableUnitNames.index(unit_name)
+        patch.write_token(APTokenTypes.WRITE, ffta2_data.recruitableUnits[unit_index].memory + RecruitableUnitOffsets.starter, struct.pack("<B", 0x8))
+        patch.write_token(APTokenTypes.WRITE, ffta2_data.recruitableUnits[unit_index].memory + RecruitableUnitOffsets.min_level, struct.pack("<B", 0x3))
 
     gate_number = world.options.gate_num.value
     if gate_number > 30 and world.options.goal.value == 1:

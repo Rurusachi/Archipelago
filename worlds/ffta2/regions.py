@@ -3,6 +3,7 @@ from typing import List, Tuple
 
 from BaseClasses import Entrance, ItemClassification, Region, Location
 from .locations import FFTA2Location, QuestGroups
+from .data import ffta2_data
 
 
 class GatePosition(IntEnum):
@@ -40,11 +41,37 @@ def create_regions(world, player) -> None:
     world.multiworld.regions.append(menu_region)
 
     # Set quest order here
-    world.random.shuffle(world.QuestGroups)
+    # world.random.shuffle(world.QuestGroups)
 
-    # Adding quests to valid locations to create the locations
-    # for index, quest in enumerate(world.QuestGroups):
-    #     FFTA2ValidLocations.append([FFTA2Location(player, reward.name, reward.rom_address) for reward in quest[0]])
+    paths: int = world.options.path_num.value
+    gate_number: int = world.options.gate_num.value + paths - 1
+    gate_balancing: int = world.options.gate_balancing.value
+
+    def calculate_weight(gate, rank):
+        '''
+            gate and rank should be in range [-1, 1].
+            returns value in range [1, 2]. Value is highest when gate and rank are equal.
+        '''
+        return (gate**2*rank**2 - gate**2 - rank**2 + gate*rank + 1)/2 + 1.5
+
+    chosen_indices = []
+    quest_indices = range(len(world.QuestGroups))
+    for gate in range(gate_number):
+        quest_weights = [calculate_weight(gate / gate_number * 2 - 1, ffta2_data.quests[x[0][0].quest_id].rank / 99 * 2 - 1)**gate_balancing if i not in chosen_indices else 0 for i, x in enumerate(world.QuestGroups)]
+        remaining = 4
+        while remaining > 0:
+            chosen = world.random.choices(quest_indices, weights=quest_weights, k=remaining)
+            for x in chosen:
+                if quest_weights[x] != 0:
+                    # print(quest_weights[x])
+                    chosen_indices.append(x)
+                    quest_weights[x] = 0
+                    remaining -= 1
+
+    chosen_quests = [world.QuestGroups[i] for i in chosen_indices]
+    # print([(ffta2_data.quests[x[0][0].quest_id].rank, x[0][0].name) for x in chosen_quests])
+    # print(len(chosen_quests))
+    world.QuestGroups = chosen_quests
 
     # Create region gates
     gates.extend([Region(f"Gate {i+1}", player, world.multiworld) for i in range(30)])
@@ -56,9 +83,6 @@ def create_regions(world, player) -> None:
     final_quest.locations.append(final_location)
     final_location.parent_region = final_quest
     world.multiworld.regions.append(final_quest)
-
-    paths: int = world.options.path_num.value
-    gate_number: int = world.options.gate_num.value + paths - 1
 
     path_completion_gates = []
     if paths > 1:

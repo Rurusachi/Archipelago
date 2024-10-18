@@ -3,6 +3,19 @@ Option definitions for Final Fantasy Tactics A2
 """
 from dataclasses import dataclass
 from Options import Choice, DefaultOnToggle, Option, OptionSet, Range, Toggle, FreeText, DeathLink, PerGameCommonOptions, NamedRange, OptionList
+from .data import recruitableUnitNames
+
+
+class GateBalancing(Range):
+    """
+    Randomizes quests with weights based on gate number and quest rank.
+    Low rank quests have higher weights in early gates, and high rank quests have higher weights in late gates.
+    A value of 0 means no balancing. Higher values are more heavily weighted.
+    """
+    display_name = "Gate balancing"
+    default = 5
+    range_start = 0
+    range_end = 20
 
 
 class GateNumber(Range):
@@ -130,8 +143,49 @@ class DispatchQuests(Choice):
     option_no_dispatch = 1
 
 
+class RandomizeStartingUnitRaces(Toggle):
+    """
+    Randomizes starting unit races.
+    """
+
+
+class RandomizeStartingUnitJobs(Toggle):
+    """
+    Randomizes starting unit jobs.
+    """
+
+
+class RandomizeStartingUnitEquipment(Toggle):
+    """
+    Randomizes the starting unit equipment.
+    """
+
+
+class StartingUnits(OptionSet):
+    """
+    Sets the starting units.
+    If starting unit randomization is enabled it will be applied to these units.
+
+    Format:
+        ["{Name}", "{Name}", ..., "{Name}"]
+        {Name} can be a special unit, or a Race and Job.
+        Special units are: Adelle, Cid, Hurdy, Vaan, Penelo, Al-Cid, Montblanc, Frimelda
+        Race and Job examples: Hume Archer, Nu Mou Black Mage
+        No duplicates allowed.
+    """
+    display_name = "Dispatch quests"
+    default = ["Nu Mou Black Mage",
+               "Viera White Mage",
+               "Bangaa Warrior",
+               "Hume Archer",
+               "Moogle Thief",
+               ]
+    valid_keys = recruitableUnitNames
+
+
 @dataclass
 class FFTA2Options(PerGameCommonOptions):
+    gate_balancing: GateBalancing
     gate_num: GateNumber
     path_num: GatePaths
     paths_required: GatePathsRequired
@@ -142,3 +196,7 @@ class FFTA2Options(PerGameCommonOptions):
     quest_gil: QuestGil
     dispatch_quests: DispatchQuests
     job_unlock_req: JobUnlockRequirements
+    #randomize_starting_races: RandomizeStartingUnitRaces
+    #randomize_starting_jobs: RandomizeStartingUnitJobs
+    #randomize_starting_equipment: RandomizeStartingUnitEquipment
+    starting_units: StartingUnits

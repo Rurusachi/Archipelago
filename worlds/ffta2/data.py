@@ -1,6 +1,83 @@
 from typing import NamedTuple, List, Tuple
 from .quests import (QuestData, questData)
 
+recruitableUnitNames = [
+    "Luso",
+    "Nu Mou Black Mage",
+    "Viera White Mage",
+    "Bangaa Warrior",
+    "Hume Archer",
+    "Moogle Thief",
+    "Adelle",
+    "Cid",
+    "Hurdy",
+    "Vaan",
+    "Penelo",
+    "Al-Cid",
+    "Montblanc",
+    "Frimelda",
+    "Hume Soldier",
+    "Hume Thief",
+    "Hume White Mage",
+    "Hume Black Mage",
+    "Hume Archer",
+    "Hume Paladin",
+    "Hume Fighter",
+    "Hume Parivir",
+    "Hume Ninja",
+    "Hume Illusionist",
+    "Hume Blue Mage",
+    "Hume Hunter",
+    "Hume Seer",
+    "Bangaa Warrior",
+    "Bangaa White Monk",
+    "Bangaa Dragoon",
+    "Bangaa Defender",
+    "Bangaa Gladiator",
+    "Bangaa Master Monk",
+    "Bangaa Bishop",
+    "Bangaa Templar",
+    "Bangaa Cannoneer",
+    "Bangaa Trickster",
+    "Nu Mou White Mage",
+    "Nu Mou Black Mage",
+    "Nu Mou Beastmaster",
+    "Nu Mou Time Mage",
+    "Nu Mou Illusionist",
+    "Nu Mou Alchemist",
+    "Nu Mou Arcanist",
+    "Nu Mou Sage",
+    "Nu Mou Scholar",
+    "Nu Mou Keeper",
+    "Viera Fencer",
+    "Viera White Mage",
+    "Viera Green Mage",
+    "Viera Archer",
+    "Viera Elementalist",
+    "Viera Red Mage",
+    "Viera Spellblade",
+    "Viera Summoner",
+    "Viera Assassin",
+    "Viera Sniper",
+    "Moogle Animist",
+    "Moogle Thief",
+    "Moogle Black Mage",
+    "Moogle Moogle Knight",
+    "Moogle Fusilier",
+    "Moogle Juggler",
+    "Moogle Tinker",
+    "Moogle Time Mage",
+    "Moogle Chocobo Knight",
+    "Moogle Flintlock",
+    "Seeq Berserker",
+    "Seeq Ranger",
+    "Seeq Lanista",
+    "Seeq Viking",
+    "Gria Hunter",
+    "Gria Raptor",
+    "Gria Ravager",
+    "Gria Geomancer",
+]
 
 formationLengths = [
     4, 4, 6, 7, 6, 5, 6, 5, 5, 6, 7, 6, 6, 5, 6, 7, 6, 6, 6, 6,
@@ -191,6 +268,28 @@ class JobRequirementOffsets:
     skills3: int = 0xb
 
 
+class RecruitableUnitOffsets:
+    character: int = 0x0
+    starting_job: int = 0x1
+    min_level: int = 0x2
+    max_level: int = 0x3
+    dialogue_role: int = 0x4
+    ability1: int = 0xe
+    ability2: int = 0x10
+    ability3: int = 0x12
+    ability4: int = 0x14
+    ability5: int = 0x16
+    ability6: int = 0x18
+    reaction_ability: int = 0x24
+    passive_ability: int = 0x26
+    equip1: int = 0x28
+    equip2: int = 0x2a
+    equip3: int = 0x2c
+    equip4: int = 0x2e
+    equip5: int = 0x30
+    starter: int = 0x3a
+
+
 class MemorySpace(NamedTuple):
     offset: int
     byteSize: int
@@ -228,6 +327,12 @@ class JobRequirements(MemorySpace):
     length = 0x64
 
 
+class RecruitableUnits(MemorySpace):
+    offset = 0x0512A388
+    byteSize = 0x3c
+    length = 0x4b
+
+
 class FFTA2Object:
     memory: int = 0
     name: str = ""
@@ -240,12 +345,14 @@ class FFTA2Object:
 class FFTA2Quest(FFTA2Object):
     battle: int = 0
     region: int = 0
+    rank: int = 0
 
     def __init__(self, memory, data: QuestData):
         self.memory = memory
         self.name = data.name
         self.battle = data.battle
         self.region = data.region
+        self.rank = data.rank
 
 
 class FFTA2Formation(FFTA2Object):
@@ -277,11 +384,19 @@ class FFTA2JobRequirement(FFTA2Object):
         self.name = name
 
 
+class FFTA2RecruitableUnit(FFTA2Object):
+
+    def __init__(self, memory, name):
+        self.memory = memory
+        self.name = name
+
+
 class FFTA2Data:
     quests: List[FFTA2Quest]
     formations: List[FFTA2Formation]
     bazaarCategories: List[FFTA2BazaarCategory]
     bazaarRecipes: List[FFTA2BazaarRecipe]
+    recruitableUnits: List[FFTA2RecruitableUnit]
 
     def __init__(self):
         self.quests = self.initializeQuests()
@@ -289,6 +404,7 @@ class FFTA2Data:
         self.bazaarCategories = self.initializeBazaarCategories()
         self.bazaarRecipes = self.initializeBazaarRecipes()
         self.jobRequirements = self.initializeJobRequirements()
+        self.recruitableUnits = self.initializeRecruitableUnits()
 
     def initializeQuests(self) -> List[FFTA2Quest]:
         quests: List[FFTA2Quest] = []
@@ -340,6 +456,16 @@ class FFTA2Data:
             recipes.append(new_item)
 
         return recipes
+
+    def initializeRecruitableUnits(self) -> List[FFTA2RecruitableUnit]:
+        units: List[FFTA2RecruitableUnit] = []
+        for n in range(RecruitableUnits.length):
+            memory = RecruitableUnits.offset + RecruitableUnits.byteSize * n
+
+            new_item = FFTA2RecruitableUnit(memory, recruitableUnitNames[n])
+            units.append(new_item)
+
+        return units
 
 
 ffta2_data: FFTA2Data = FFTA2Data()

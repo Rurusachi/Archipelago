@@ -148,12 +148,12 @@ class RandomizeStartingUnits(Choice):
     """
     Randomizes starting units.
 
-    Disabled: Starting units will not be randomized
-    Random Jobs: Starting units will have their jobs randomized
+    Disabled: Starting units will not be randomized.
+    Random Jobs: Starting units will have their jobs randomized.
     Random Races and Jobs: Starting units will have their race and jobs randomized.
         Special units will only have their jobs randomized.
     Random Races and Jobs Experimental: Starting units will have their race and jobs randomized including special units.
-        Special units with randomized races may crash or freeze the game
+        Special units with randomized races may crash or freeze the game.
     """
     display_name = "Randomize starting units"
     default = 0
@@ -165,10 +165,10 @@ class RandomizeStartingUnits(Choice):
 
 class StartingUnitEquipment(Choice):
     """
-    Randomizes starting unit equipment.
+    Sets starting unit equipment.
 
-    Job: Units will start with basic equipment for their job
-    Special: As Job, except special units will start with their normal equipment
+    Basic: Units will start with basic equipment for their job.
+    Randomized: Units will start with random equipment.
     """
     display_name = "Starting equipment"
     default = 0
@@ -179,7 +179,7 @@ class StartingUnitEquipment(Choice):
 class StartingUnits(OptionSet):
     """
     Sets the starting units. Starting unit randomization overrides this except for special units.
-    You cannot start with more than 5 non-special units
+    You cannot start with more than 5 non-special units.
 
     Format:
         ["{Name}", "{Name}", ..., "{Name}"]
@@ -225,6 +225,6 @@ class FFTA2Options(PerGameCommonOptions):
     dispatch_quests: DispatchQuests
     job_unlock_req: JobUnlockRequirements
     randomize_starting_units: RandomizeStartingUnits
-    randomize_starting_equipment: StartingUnitEquipment
+    starting_equipment: StartingUnitEquipment
     starting_units: StartingUnits
     bazaar_options: BazaarOptions

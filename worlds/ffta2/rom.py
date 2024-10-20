@@ -50,7 +50,7 @@ def set_starting_equipment(world, patch: FFTA2ProcedurePatch, unit_index: int, j
                           ffta2_data.recruitableUnits[unit_index].memory + RecruitableUnitOffsets.equip1 + index*2,
                           struct.pack("<H", 0x0))
 
-    if world.options.randomize_starting_equipment.value == StartingUnitEquipment.option_randomized:
+    if world.options.starting_equipment.value == StartingUnitEquipment.option_randomized:
         jobEquipment = jobToEquipment[job_name]
 
         weapon: ItemData = world.random.choice(jobEquipment.weapon)

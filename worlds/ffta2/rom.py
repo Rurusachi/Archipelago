@@ -1,16 +1,19 @@
 import os
 import pkgutil
 import struct
-from typing import Tuple
+from typing import Tuple, Dict
 
 from settings import get_settings
 
 from worlds.Files import APProcedurePatch, APTokenMixin, APTokenTypes
 
-from .data import (FFTA2Data, ffta2_data, QuestOffsets, FormationOffsets, Formations, UnitOffsets, RecruitableUnitOffsets, JobRequirementOffsets, FlagOffsets, MemoryAddresses, jobUnlockList, get_flag, recruitableUnitNames)
-from .items import (GateItems, jobUnlockOffset, jobUnlockItems)
+from .data import (FFTA2Data, ffta2_data, QuestOffsets, FormationOffsets, Formations, UnitOffsets,
+                   RecruitableUnitOffsets, JobRequirementOffsets, FlagOffsets, MemoryAddresses,
+                   jobUnlockList, get_flag, recruitableUnitNames, specialUnitNames)
+from .items import (GateItems, jobUnlockOffset, jobUnlockItems, item_table, ItemData, EquipShields, Accessories)
 from .locations import (FFTA2Locations)
-from .options import (JobUnlockRequirements, DispatchQuests)
+from .options import (JobUnlockRequirements, DispatchQuests, RandomizeStartingUnits, StartingUnitEquipment)
+from .jobs import (races, raceToJobs, RaceJobOffsets, jobToEquipment, jobStartingEquipment, JobEquipment)
 
 
 def get_base_rom_as_bytes() -> bytes:
@@ -36,9 +39,122 @@ class FFTA2ProcedurePatch(APProcedurePatch, APTokenMixin):
         return get_base_rom_as_bytes()
 
 
-def unlock_quest(ffta2_data, index: int, patch: FFTA2ProcedurePatch):
+def unlock_quest(index: int, patch: FFTA2ProcedurePatch):
     patch.write_token(APTokenTypes.WRITE, ffta2_data.quests[index].memory + QuestOffsets.story_requirement,
                       struct.pack("<H", 0x1))
+
+
+def set_starting_equipment(world, patch: FFTA2ProcedurePatch, unit_index: int, job_name: str):
+    for index in range(5):
+        patch.write_token(APTokenTypes.WRITE,
+                          ffta2_data.recruitableUnits[unit_index].memory + RecruitableUnitOffsets.equip1 + index*2,
+                          struct.pack("<H", 0x0))
+
+    if world.options.randomize_starting_equipment.value == StartingUnitEquipment.option_randomized:
+        jobEquipment = jobToEquipment[job_name]
+
+        weapon: ItemData = world.random.choice(jobEquipment.weapon)
+        patch.write_token(APTokenTypes.WRITE,
+                          ffta2_data.recruitableUnits[unit_index].memory + RecruitableUnitOffsets.equip1,
+                          struct.pack("<H", weapon.itemID))
+
+        armor: ItemData = world.random.choice(jobEquipment.body)
+        patch.write_token(APTokenTypes.WRITE,
+                          ffta2_data.recruitableUnits[unit_index].memory + RecruitableUnitOffsets.equip2,
+                          struct.pack("<H", armor.itemID))
+
+        if jobEquipment.shield:
+            shield: ItemData = world.random.choice(EquipShields)
+            patch.write_token(APTokenTypes.WRITE,
+                              ffta2_data.recruitableUnits[unit_index].memory + RecruitableUnitOffsets.equip3,
+                              struct.pack("<H", shield.itemID))
+
+        # Chance of head item
+        if world.random.random() < 0.5 and jobEquipment.head is not None:
+            head: ItemData = world.random.choice(jobEquipment.head)
+            patch.write_token(APTokenTypes.WRITE,
+                              ffta2_data.recruitableUnits[unit_index].memory + RecruitableUnitOffsets.equip4,
+                              struct.pack("<H", head.itemID))
+
+        if world.random.random() < 0.5:
+            accessory: ItemData = world.random.choice(Accessories)
+            patch.write_token(APTokenTypes.WRITE,
+                              ffta2_data.recruitableUnits[unit_index].memory + RecruitableUnitOffsets.equip5,
+                              struct.pack("<H", accessory.itemID))
+    else:
+        for index, item_name in enumerate(jobStartingEquipment[job_name]):
+            item = item_table[item_name]
+            patch.write_token(APTokenTypes.WRITE,
+                              ffta2_data.recruitableUnits[unit_index].memory + RecruitableUnitOffsets.equip1 + index*2,
+                              struct.pack("<H", item.itemID))
+
+
+def set_starting_units(world, patch: FFTA2ProcedurePatch):
+    for i in range(1, 6):
+        patch.write_token(APTokenTypes.WRITE,
+                          ffta2_data.recruitableUnits[i].memory + RecruitableUnitOffsets.starter,
+                          struct.pack("<B", 0x0))
+
+    normal_unit_index = 1
+    for unit_name in ["Luso"] + list(world.options.starting_units.value):
+        if unit_name in specialUnitNames:
+            unit_index = recruitableUnitNames.index(unit_name)
+            specialUnits: Dict[str, Tuple[str, str]] = {
+                "Luso": ("Hume", "Soldier"),
+                "Adelle": ("Hume", "Thief"),
+                "Cid": ("Bangaa", "White Monk"),
+                "Hurdy": ("Moogle", "Bard"),
+                "Vaan": ("Hume", "Sky Pirate"),
+                "Penelo": ("Viera", "Dancer"),
+                "Al-Cid": ("Hume", "Agent"),
+                "Montblanc": ("Moogle", "Black Mage"),
+                "Frimelda": ("Hume", "Paladin"),
+                }
+            (race_name, job_name) = specialUnits[unit_name]
+
+            if world.options.randomize_starting_units.value == RandomizeStartingUnits.option_random_jobs or\
+               world.options.randomize_starting_units.value == RandomizeStartingUnits.option_random_races_and_jobs:
+                job_name = world.random.choice(raceToJobs[race_name])
+                patch.write_token(APTokenTypes.WRITE,
+                                  ffta2_data.recruitableUnits[unit_index].memory + RecruitableUnitOffsets.starting_job,
+                                  struct.pack("<B", RaceJobOffsets[race_name] + raceToJobs[race_name].index(job_name)))
+            elif world.options.randomize_starting_units.value == RandomizeStartingUnits.option_random_races_and_jobs_experimental:
+                race_name = world.random.choice(races)
+                job_name = world.random.choice(raceToJobs[race_name])
+                patch.write_token(APTokenTypes.WRITE,
+                                  ffta2_data.recruitableUnits[unit_index].memory + RecruitableUnitOffsets.starting_job,
+                                  struct.pack("<B", RaceJobOffsets[race_name] + raceToJobs[race_name].index(job_name)))
+        else:
+            if normal_unit_index > 5:
+                raise Exception("Too many non-special starting units to randomize")
+            unit_index = normal_unit_index
+            normal_unit_index += 1
+            if world.options.randomize_starting_units.value == RandomizeStartingUnits.option_disabled:
+                for race in races:
+                    if unit_name.startswith(race):
+                        race_name = race
+                        job_name = unit_name.split(race)[1].strip()
+                        break
+            elif world.options.randomize_starting_units.value == RandomizeStartingUnits.option_random_jobs:
+                for race in races:
+                    if unit_name.startswith(race):
+                        race_name = race
+                        job_name = world.random.choice(raceToJobs[race_name])
+                        break
+            elif world.options.randomize_starting_units.value >= RandomizeStartingUnits.option_random_races_and_jobs:
+                race_name = world.random.choice(races)
+                job_name = world.random.choice(raceToJobs[race_name])
+            patch.write_token(APTokenTypes.WRITE,
+                              ffta2_data.recruitableUnits[unit_index].memory + RecruitableUnitOffsets.starting_job,
+                              struct.pack("<B", RaceJobOffsets[race_name] + raceToJobs[race_name].index(job_name)))
+
+        patch.write_token(APTokenTypes.WRITE,
+                          ffta2_data.recruitableUnits[unit_index].memory + RecruitableUnitOffsets.starter,
+                          struct.pack("<B", 0x8))
+        patch.write_token(APTokenTypes.WRITE,
+                          ffta2_data.recruitableUnits[unit_index].memory + RecruitableUnitOffsets.min_level,
+                          struct.pack("<B", 0x3))
+        set_starting_equipment(world, patch, unit_index, job_name)
 
 
 def generate_output(world, player: int, output_directory: str) -> None:
@@ -146,19 +262,13 @@ def generate_output(world, player: int, output_directory: str) -> None:
                 job_flag_pointer = 0x168  # 2D bytes, 0 bits (0x0212d761, should always be 0, otherwise item events break)
                 patch.write_token(APTokenTypes.WRITE, job.memory + JobRequirementOffsets.quest_requirement, struct.pack("<H", job_flag_pointer))
 
-    for i in range(1, 6):
-        patch.write_token(APTokenTypes.WRITE, ffta2_data.recruitableUnits[i].memory + RecruitableUnitOffsets.starter, struct.pack("<B", 0x0))
-
-    for unit_name in world.options.starting_units.value:
-        unit_index = recruitableUnitNames.index(unit_name)
-        patch.write_token(APTokenTypes.WRITE, ffta2_data.recruitableUnits[unit_index].memory + RecruitableUnitOffsets.starter, struct.pack("<B", 0x8))
-        patch.write_token(APTokenTypes.WRITE, ffta2_data.recruitableUnits[unit_index].memory + RecruitableUnitOffsets.min_level, struct.pack("<B", 0x3))
+    set_starting_units(world, patch)
 
     gate_number = world.options.gate_num.value
     if gate_number > 30 and world.options.goal.value == 1:
         gate_number = 30
 
-    set_up_gates(ffta2_data, gate_number, world, patch)
+    set_up_gates(gate_number, world, patch)
 
     set_items(world.multiworld, player, patch)
 
@@ -172,70 +282,53 @@ def generate_output(world, player: int, output_directory: str) -> None:
                      f"{out_file_name}{patch.patch_file_ending}"))
 
 
-def set_up_gates(ffta2_data: FFTA2Data, num_gates: int,
+def set_up_gates(num_gates: int,
                  world, patch: FFTA2ProcedurePatch) -> None:
-    unlock_quest(ffta2_data, world.QuestGroups[0][0][0].quest_id, patch)
-    unlock_quest(ffta2_data, world.QuestGroups[1][0][0].quest_id, patch)
-    unlock_quest(ffta2_data, world.QuestGroups[2][0][0].quest_id, patch)
+    unlock_quest(world.QuestGroups[0][0][0].quest_id, patch)
+    unlock_quest(world.QuestGroups[1][0][0].quest_id, patch)
+    unlock_quest(world.QuestGroups[2][0][0].quest_id, patch)
 
-    # unlock_quest(ffta2_data, world.QuestGroups[3][0][0].quest_id, patch)
+    # unlock_quest(world.QuestGroups[3][0][0].quest_id, patch)
 
-    # set_required_items(ffta2_data,
-    #                    world.QuestGroups[3][0][0].quest_id, GateItems[0].itemID, patch)
+    # set_required_items(world.QuestGroups[3][0][0].quest_id, GateItems[0].itemID, patch)
 
     final_quest_list = [0x16, 0x17]  # "The Ritual", "The Two Grimoires"
     final_quest_id = final_quest_list[world.options.final_quests.value]
 
     if world.options.final_quests.value == 0:
-        set_quest_requirement(ffta2_data, 0x17, 0x16, patch)
+        set_quest_requirement(0x17, 0x16, patch)
 
     # quest_index = 4
     # quest_unlock = 3
     # item_index = 0
 
     if num_gates == 1:
-        unlock_quest(ffta2_data, world.QuestGroups[3][0][0].quest_id, patch)
-        set_required_items(ffta2_data,
-                           world.QuestGroups[3][0][0].quest_id, GateItems[0].itemID, patch)
-        set_quest_requirement(ffta2_data, final_quest_id, world.QuestGroups[3][0][0].quest_id, patch)
+        unlock_quest(world.QuestGroups[3][0][0].quest_id, patch)
+        set_required_items(world.QuestGroups[3][0][0].quest_id, GateItems[0].itemID, patch)
+        set_quest_requirement(final_quest_id, world.QuestGroups[3][0][0].quest_id, patch)
         return
-
-    # if True:
-    #     for i in range(2, num_gates + 1):
-
-    #         for j in range(4):
-    #             set_quest_requirement(ffta2_data, world.QuestGroups[quest_index][0][0].quest_id,
-    #                                     world.QuestGroups[quest_unlock][0][0].quest_id, patch)
-    #             quest_index += 1
-
-    #         quest_unlock += 4
-
-    #         set_required_items(ffta2_data, world.QuestGroups[quest_unlock][0][0].quest_id,
-    #                            GateItems[item_index].itemID,
-    #                            patch)
-    #         item_index += 1
 
     num_paths = len(world.path_quests)
 
     # Unlock the first gate quest in each path
     for path in world.path_quests:
-        unlock_quest(ffta2_data, world.QuestGroups[path[0][0]][0][0].quest_id, patch)
+        unlock_quest(world.QuestGroups[path[0][0]][0][0].quest_id, patch)
 
     for path_index, path in enumerate(world.path_quests):
         item_index: int = path_index
         for previous_quest, quests in path:
             for quest_index in quests:
-                set_quest_requirement(ffta2_data, world.QuestGroups[quest_index][0][0].quest_id,
+                set_quest_requirement(world.QuestGroups[quest_index][0][0].quest_id,
                                       world.QuestGroups[previous_quest][0][0].quest_id, patch)
 
-            set_required_items(ffta2_data, world.QuestGroups[previous_quest][0][0].quest_id,
+            set_required_items(world.QuestGroups[previous_quest][0][0].quest_id,
                                GateItems[item_index].itemID,
                                patch)
             item_index += num_paths
 
     # Set final quest to unlock after all the gates if all quest gates option is selected
     if num_paths == 1:
-        set_quest_requirement(ffta2_data, final_quest_id,
+        set_quest_requirement(final_quest_id,
                               world.QuestGroups[world.path_quests[0][-1][0]][0][0].quest_id, patch)
     else:
         (byte_index, bit_index, quest_flag) = get_flag(0, FlagOffsets.FinalQuest)
@@ -245,7 +338,7 @@ def set_up_gates(ffta2_data: FFTA2Data, num_gates: int,
                           struct.pack("<H", 0x1))
 
 
-def set_quest_requirement(ffta2_data: FFTA2Data, current_quest_ID: int, previous_quest_ID: int,
+def set_quest_requirement(current_quest_ID: int, previous_quest_ID: int,
                           patch: FFTA2ProcedurePatch) -> None:
 
     (byte_index, bit_index, quest_flag) = get_flag(previous_quest_ID, FlagOffsets.Quest)
@@ -292,7 +385,7 @@ def set_items(multiworld, player, patch: FFTA2ProcedurePatch) -> None:
             patch.write_token(APTokenTypes.WRITE, location.address, struct.pack("<H", item_and_reward))
 
 
-def set_required_items(ffta2_data: FFTA2Data, index: int, item_id, patch: FFTA2ProcedurePatch):
+def set_required_items(index: int, item_id, patch: FFTA2ProcedurePatch):
     patch.write_token(APTokenTypes.WRITE, ffta2_data.quests[index].memory + QuestOffsets.required_item1,
                       struct.pack("<H", item_id))
     patch.write_token(APTokenTypes.WRITE, ffta2_data.quests[index].memory + QuestOffsets.required_item_amount1,

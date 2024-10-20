@@ -13,8 +13,8 @@ from worlds.AutoWorld import WebWorld, World
 from .regions import create_regions
 from .rules import set_rules
 
-from .options import (FFTA2Options, GateNumber, JobUnlockRequirements)
-from .items import (create_item_label_to_code_map, AllItems, item_table, FFTA2Item, FillerItems, GateItems, jobUnlockItems)
+from .options import (FFTA2Options, GateNumber, JobUnlockRequirements, BazaarOptions)
+from .items import (create_item_label_to_code_map, AllItems, item_table, FFTA2Item, FillerItems, GateItems, jobUnlockItems, Loot)
 from .locations import (create_location_label_to_id_map)
 from .rom import FFTA2ProcedurePatch, generate_output
 from .data import (get_flag, FlagOffsets)
@@ -118,6 +118,10 @@ class FFTA2World(World):
             if item.progression == ItemClassification.useful:
                 if self.options.job_unlock_req.value != JobUnlockRequirements.option_job_items:
                     if item in jobUnlockItems:
+                        continue
+
+                if self.options.bazaar_options.value == BazaarOptions.option_no_loot:
+                    if item in Loot:
                         continue
 
                 useful_items += [item.itemName]

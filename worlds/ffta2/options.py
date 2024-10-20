@@ -13,7 +13,7 @@ class GateBalancing(Range):
     A value of 0 means no balancing. Higher values are more heavily weighted.
     """
     display_name = "Gate balancing"
-    default = 5
+    default = 10
     range_start = 0
     range_end = 20
 
@@ -144,28 +144,42 @@ class DispatchQuests(Choice):
     option_no_dispatch = 1
 
 
-class RandomizeStartingUnitRaces(Toggle):
+class RandomizeStartingUnits(Choice):
     """
-    Randomizes starting unit races.
+    Randomizes starting units.
+
+    Disabled: Starting units will not be randomized
+    Random Jobs: Starting units will have their jobs randomized
+    Random Races and Jobs: Starting units will have their race and jobs randomized.
+        Special units will only have their jobs randomized.
+    Random Races and Jobs Experimental: Starting units will have their race and jobs randomized including special units.
+        Special units with randomized races may crash or freeze the game
     """
+    display_name = "Randomize starting units"
+    default = 0
+    option_disabled = 0
+    option_random_jobs = 1
+    option_random_races_and_jobs = 2
+    option_random_races_and_jobs_experimental = 3
 
 
-class RandomizeStartingUnitJobs(Toggle):
+class StartingUnitEquipment(Choice):
     """
-    Randomizes starting unit jobs.
-    """
+    Randomizes starting unit equipment.
 
-
-class RandomizeStartingUnitEquipment(Toggle):
+    Job: Units will start with basic equipment for their job
+    Special: As Job, except special units will start with their normal equipment
     """
-    Randomizes the starting unit equipment.
-    """
+    display_name = "Starting equipment"
+    default = 0
+    option_basic = 0
+    option_randomized = 1
 
 
 class StartingUnits(OptionSet):
     """
-    Sets the starting units.
-    If starting unit randomization is enabled it will be applied to these units.
+    Sets the starting units. Starting unit randomization overrides this except for special units.
+    You cannot start with more than 5 non-special units
 
     Format:
         ["{Name}", "{Name}", ..., "{Name}"]
@@ -174,7 +188,7 @@ class StartingUnits(OptionSet):
         Race and Job examples: Hume Archer, Nu Mou Black Mage
         No duplicates allowed.
     """
-    display_name = "Dispatch quests"
+    display_name = "Starting units"
     default = ["Nu Mou Black Mage",
                "Viera White Mage",
                "Bangaa Warrior",
@@ -182,6 +196,19 @@ class StartingUnits(OptionSet):
                "Moogle Thief",
                ]
     valid_keys = recruitableUnitNames
+
+
+class BazaarOptions(Choice):
+    """
+    Bazaar options.
+
+    Vanilla: All loot items are in the pool. (Not recommended)
+    No Loot: Loot items are removed from the pool of possible checks. This makes equipment checks much more likely. (Recommended)
+    """
+    display_name = "Bazaar"
+    default = 1
+    option_vanilla = 0
+    option_no_loot = 1
 
 
 @dataclass
@@ -197,7 +224,7 @@ class FFTA2Options(PerGameCommonOptions):
     quest_gil: QuestGil
     dispatch_quests: DispatchQuests
     job_unlock_req: JobUnlockRequirements
-    #randomize_starting_races: RandomizeStartingUnitRaces
-    #randomize_starting_jobs: RandomizeStartingUnitJobs
-    #randomize_starting_equipment: RandomizeStartingUnitEquipment
+    randomize_starting_units: RandomizeStartingUnits
+    randomize_starting_equipment: StartingUnitEquipment
     starting_units: StartingUnits
+    bazaar_options: BazaarOptions

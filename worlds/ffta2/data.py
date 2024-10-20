@@ -79,6 +79,18 @@ recruitableUnitNames = [
     "Gria Geomancer",
 ]
 
+specialUnitNames: List[str] = [
+    "Luso",
+    "Adelle",
+    "Cid",
+    "Hurdy",
+    "Vaan",
+    "Penelo",
+    "Al-Cid",
+    "Montblanc",
+    "Frimelda",
+]
+
 formationLengths = [
     4, 4, 6, 7, 6, 5, 6, 5, 5, 6, 7, 6, 6, 5, 6, 7, 6, 6, 6, 6,
     6, 5, 6, 3, 1, 7, 6, 6, 6, 6, 7, 3, 6, 6, 6, 6, 6, 5, 5, 9,

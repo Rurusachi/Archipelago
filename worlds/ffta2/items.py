@@ -18,7 +18,7 @@ class FFTA2Item(Item):
     game: str = "Final Fantasy Tactics A2"
 
 
-Weapons: typing.List[ItemData] = [
+EquipKnives: typing.List[ItemData] = [
     ItemData("Jackknife", ItemClassification.useful, 0x0001),
     ItemData("Kris", ItemClassification.useful, 0x0002),
     ItemData("Khukuri", ItemClassification.useful, 0x0003),
@@ -33,6 +33,9 @@ Weapons: typing.List[ItemData] = [
     ItemData("Tiptaptwo", ItemClassification.useful, 0x000C),
     ItemData("Tonberrian", ItemClassification.useful, 0x000D),
     ItemData("Dagger", ItemClassification.useful, 0x000E),
+]
+
+EquipSwords: typing.List[ItemData] = [
     ItemData("Broadsword", ItemClassification.useful, 0x000F),
     ItemData("Silver Sword", ItemClassification.useful, 0x0010),
     ItemData("Buster Sword", ItemClassification.useful, 0x0011),
@@ -44,6 +47,9 @@ Weapons: typing.List[ItemData] = [
     ItemData("Onion Sword", ItemClassification.useful, 0x0017),
     ItemData("Chirijiraden", ItemClassification.useful, 0x0018),
     ItemData("Shortsword", ItemClassification.useful, 0x0019),
+]
+
+EquipBlades: typing.List[ItemData] = [
     ItemData("Sweep Blade", ItemClassification.useful, 0x001A),
     ItemData("Shadow Blade", ItemClassification.useful, 0x001B),
     ItemData("Sun Blade", ItemClassification.useful, 0x001C),
@@ -62,6 +68,9 @@ Weapons: typing.List[ItemData] = [
     ItemData("Ayvuir Red", ItemClassification.useful, 0x0029),
     ItemData("Ayvuir Blue", ItemClassification.useful, 0x002A),
     ItemData("Iron Blade", ItemClassification.useful, 0x002B),
+]
+
+EquipSabers: typing.List[ItemData] = [
     ItemData("Blue Saber", ItemClassification.useful, 0x002C),
     ItemData("Shamshir", ItemClassification.useful, 0x002D),
     ItemData("Aqua Saber", ItemClassification.useful, 0x002E),
@@ -70,6 +79,9 @@ Weapons: typing.List[ItemData] = [
     ItemData("Light Saber", ItemClassification.useful, 0x0031),
     ItemData("Talwar", ItemClassification.useful, 0x0032),
     ItemData("Soulsaber", ItemClassification.useful, 0x0033),
+]
+
+EquipKnightswords: typing.List[ItemData] = [
     ItemData("Defender", ItemClassification.useful, 0x0034),
     ItemData("Apocalypse", ItemClassification.useful, 0x0035),
     ItemData("Lionheart", ItemClassification.useful, 0x0036),
@@ -82,6 +94,9 @@ Weapons: typing.List[ItemData] = [
     ItemData("The Fallen Angel", ItemClassification.useful, 0x003D),
     ItemData("Nagrarok", ItemClassification.useful, 0x003E),
     ItemData("Sequencer", ItemClassification.useful, 0x003F),
+]
+
+EquipRapiers: typing.List[ItemData] = [
     ItemData("Stinger", ItemClassification.useful, 0x0040),
     ItemData("Estoc", ItemClassification.useful, 0x0041),
     ItemData("Fleuret", ItemClassification.useful, 0x0042),
@@ -100,6 +115,9 @@ Weapons: typing.List[ItemData] = [
     ItemData("Diabolique", ItemClassification.useful, 0x004F),
     ItemData("Femme Fatale", ItemClassification.useful, 0x0050),
     ItemData("Windsong Rapier", ItemClassification.useful, 0x0051),
+]
+
+EquipGreatswords: typing.List[ItemData] = [
     ItemData("Barong", ItemClassification.useful, 0x0052),
     ItemData("Xankbras", ItemClassification.useful, 0x0053),
     ItemData("Dagriohm", ItemClassification.useful, 0x0054),
@@ -113,6 +131,9 @@ Weapons: typing.List[ItemData] = [
     ItemData("Vigilante", ItemClassification.useful, 0x005C),
     ItemData("Master Sword", ItemClassification.useful, 0x005D),
     ItemData("Luabreaker", ItemClassification.useful, 0x005E),
+]
+
+EquipBroadswords: typing.List[ItemData] = [
     ItemData("Samson Sword", ItemClassification.useful, 0x005F),
     ItemData("Falchion", ItemClassification.useful, 0x0060),
     ItemData("Predator", ItemClassification.useful, 0x0061),
@@ -123,6 +144,9 @@ Weapons: typing.List[ItemData] = [
     ItemData("Vajra", ItemClassification.useful, 0x0066),
     ItemData("Rhomphaia", ItemClassification.useful, 0x0067),
     ItemData("Estrella", ItemClassification.useful, 0x0068),
+]
+
+EquipKatanas: typing.List[ItemData] = [
     ItemData("Kunai", ItemClassification.useful, 0x0069),
     ItemData("Murasame", ItemClassification.useful, 0x006A),
     ItemData("Ashura", ItemClassification.useful, 0x006B),
@@ -137,6 +161,9 @@ Weapons: typing.List[ItemData] = [
     ItemData("Hyakushiki-masamune", ItemClassification.useful, 0x0074),
     ItemData("Sumihomura", ItemClassification.useful, 0x0075),
     ItemData("Ragetsu-denbu", ItemClassification.useful, 0x0076),
+]
+
+EquipSpears: typing.List[ItemData] = [
     ItemData("Javelin", ItemClassification.useful, 0x0077),
     ItemData("Lava Spear", ItemClassification.useful, 0x0078),
     ItemData("Gae Bolg", ItemClassification.useful, 0x0079),
@@ -146,6 +173,9 @@ Weapons: typing.List[ItemData] = [
     ItemData("Trident", ItemClassification.useful, 0x007D),
     ItemData("Dragon Whisker", ItemClassification.useful, 0x007E),
     ItemData("Short Spear", ItemClassification.useful, 0x007F),
+]
+
+EquipRods: typing.List[ItemData] = [
     ItemData("Rod", ItemClassification.useful, 0x0080),
     ItemData("Firewheel Rod", ItemClassification.useful, 0x0081),
     ItemData("Thunder Rod", ItemClassification.useful, 0x0082),
@@ -160,6 +190,9 @@ Weapons: typing.List[ItemData] = [
     ItemData("Crown Scepter", ItemClassification.useful, 0x008B),
     ItemData("Bomb Arm", ItemClassification.useful, 0x008C),
     ItemData("Heretic Rod", ItemClassification.useful, 0x008D),
+]
+
+EquipStaves: typing.List[ItemData] = [
     ItemData("White Staff", ItemClassification.useful, 0x008E),
     ItemData("Staff of Protection", ItemClassification.useful, 0x008F),
     ItemData("Judicer's Staff", ItemClassification.useful, 0x0090),
@@ -172,6 +205,9 @@ Weapons: typing.List[ItemData] = [
     ItemData("Cheer Staff", ItemClassification.useful, 0x0097),
     ItemData("Nirvana", ItemClassification.useful, 0x0098),
     ItemData("Staff of the Magi", ItemClassification.useful, 0x0099),
+]
+
+EquipPoles: typing.List[ItemData] = [
     ItemData("Tonfa", ItemClassification.useful, 0x009A),
     ItemData("Cypress Pole", ItemClassification.useful, 0x009B),
     ItemData("Battle Bamboo", ItemClassification.useful, 0x009C),
@@ -184,6 +220,9 @@ Weapons: typing.List[ItemData] = [
     ItemData("Ivory Pole", ItemClassification.useful, 0x00A3),
     ItemData("Eight-fluted Pole", ItemClassification.useful, 0x00A4),
     ItemData("Whale Whisker", ItemClassification.useful, 0x00A5),
+]
+
+EquipKnuckles: typing.List[ItemData] = [
     ItemData("Metal Knuckles", ItemClassification.useful, 0x00A6),
     ItemData("Rising Sun", ItemClassification.useful, 0x00A7),
     ItemData("Poison Knuckles", ItemClassification.useful, 0x00A8),
@@ -198,6 +237,9 @@ Weapons: typing.List[ItemData] = [
     ItemData("Leather Knuckles", ItemClassification.useful, 0x00B1),
     ItemData("Gleisburst", ItemClassification.useful, 0x00B2),
     ItemData("Magick Hands", ItemClassification.useful, 0x00B3),
+]
+
+EquipBows: typing.List[ItemData] = [
     ItemData("Longbow", ItemClassification.useful, 0x00B4),
     ItemData("Char Bow", ItemClassification.useful, 0x00B5),
     ItemData("Thorn Bow", ItemClassification.useful, 0x00B6),
@@ -210,6 +252,9 @@ Weapons: typing.List[ItemData] = [
     ItemData("Shortbow", ItemClassification.useful, 0x00BD),
     ItemData("Crescent Bow", ItemClassification.useful, 0x00BE),
     ItemData("Malbow", ItemClassification.useful, 0x00BF),
+]
+
+EquipGreatbows: typing.List[ItemData] = [
     ItemData("Windslash Bow", ItemClassification.useful, 0x00C0),
     ItemData("Huntsman's Bow", ItemClassification.useful, 0x00C1),
     ItemData("Cranequin", ItemClassification.useful, 0x00C2),
@@ -225,6 +270,9 @@ Weapons: typing.List[ItemData] = [
     ItemData("Marduk", ItemClassification.useful, 0x00CC),
     ItemData("Gastrophetes", ItemClassification.useful, 0x00CD),
     ItemData("Arbalest", ItemClassification.useful, 0x00CE),
+]
+
+EquipGuns: typing.List[ItemData] = [
     ItemData("Aiot Gun", ItemClassification.useful, 0x00CF),
     ItemData("Silver Cannon", ItemClassification.useful, 0x00D0),
     ItemData("Riot Gun", ItemClassification.useful, 0x00D1),
@@ -235,6 +283,9 @@ Weapons: typing.List[ItemData] = [
     ItemData("Longbarrel", ItemClassification.useful, 0x00D6),
     ItemData("Outsider", ItemClassification.useful, 0x00D7),
     ItemData("Goug Mk 29", ItemClassification.useful, 0x00D8),
+]
+
+EquipInstruments: typing.List[ItemData] = [
     ItemData("Demon Bell", ItemClassification.useful, 0x00D9),
     ItemData("Glass Bell", ItemClassification.useful, 0x00DA),
     ItemData("War Trumpet", ItemClassification.useful, 0x00DB),
@@ -249,6 +300,9 @@ Weapons: typing.List[ItemData] = [
     ItemData("Frigid Viol", ItemClassification.useful, 0x00E4),
     ItemData("Brilliant Theorbo", ItemClassification.useful, 0x00E5),
     ItemData("Lamia Harp", ItemClassification.useful, 0x00E6),
+]
+
+EquipHandcannons: typing.List[ItemData] = [
     ItemData("Hand Cannon", ItemClassification.useful, 0x00E7),
     ItemData("Omnis Cannon", ItemClassification.useful, 0x00E8),
     ItemData("Diklum", ItemClassification.useful, 0x00E9),
@@ -259,20 +313,25 @@ Weapons: typing.List[ItemData] = [
     ItemData("Guang Cannon", ItemClassification.useful, 0x00EE),
     ItemData("Dromaeo", ItemClassification.useful, 0x00EF),
     ItemData("Rocket Punch", ItemClassification.useful, 0x00F0),
-    ItemData("Crimson Tear", ItemClassification.useful, 0x00F1),
-    ItemData("Snowy Tear", ItemClassification.useful, 0x00F2),
-    ItemData("Azure Tear", ItemClassification.useful, 0x00F3),
-    ItemData("Moon Maiden", ItemClassification.useful, 0x00F4),
+]
+
+EquipAxes: typing.List[ItemData] = [
     ItemData("Broadaxe", ItemClassification.useful, 0x00FC),
     ItemData("Slasher", ItemClassification.useful, 0x00FD),
     ItemData("Hammerhead", ItemClassification.useful, 0x00FE),
     ItemData("Francisca", ItemClassification.useful, 0x00FF),
     ItemData("Greataxe", ItemClassification.useful, 0x0100),
     ItemData("Golden Axe", ItemClassification.useful, 0x0101),
+]
+
+EquipHammers: typing.List[ItemData] = [
     ItemData("Iron Hammer", ItemClassification.useful, 0x0102),
     ItemData("War Hammer", ItemClassification.useful, 0x0103),
     ItemData("Sledgehammer", ItemClassification.useful, 0x0104),
     ItemData("Mjolnir", ItemClassification.useful, 0x0105),
+]
+
+EquipMaces: typing.List[ItemData] = [
     ItemData("Battle Mace", ItemClassification.useful, 0x0106),
     ItemData("Energy Mace", ItemClassification.useful, 0x0107),
     ItemData("Druid Mace", ItemClassification.useful, 0x0108),
@@ -283,6 +342,9 @@ Weapons: typing.List[ItemData] = [
     ItemData("Lotus Mace", ItemClassification.useful, 0x010D),
     ItemData("Scorpion Tail", ItemClassification.useful, 0x010E),
     ItemData("Zeus Mace", ItemClassification.useful, 0x010F),
+]
+
+EquipCards: typing.List[ItemData] = [
     ItemData("Four of Spades", ItemClassification.useful, 0x0110),
     ItemData("Eight of Hearts", ItemClassification.useful, 0x0111),
     ItemData("Queen of Clubs", ItemClassification.useful, 0x0112),
@@ -292,6 +354,9 @@ Weapons: typing.List[ItemData] = [
     ItemData("Two of Clubs", ItemClassification.useful, 0x0116),
     ItemData("Six of Diamonds", ItemClassification.useful, 0x0117),
     ItemData("Joker", ItemClassification.useful, 0x0118),
+]
+
+EquipBooks: typing.List[ItemData] = [
     ItemData("Battle Folio", ItemClassification.useful, 0x0119),
     ItemData("Mage Manual", ItemClassification.useful, 0x011A),
     ItemData("Urutan Annals", ItemClassification.useful, 0x011B),
@@ -329,10 +394,13 @@ EquipHelmets: typing.List[ItemData] = [
     ItemData("Genji Helm", ItemClassification.useful, 0x0135),
 ]
 
-EquipHats: typing.List[ItemData] = [
+EquipeFemaleHats: typing.List[ItemData] = [
     ItemData("Cachusha", ItemClassification.useful, 0x0136),
     ItemData("Barette", ItemClassification.useful, 0x0137),
     ItemData("Ribbon", ItemClassification.useful, 0x0138),
+    ]
+
+EquipHats: typing.List[ItemData] = [
     ItemData("Plumed Hat", ItemClassification.useful, 0x0139),
     ItemData("Green Beret", ItemClassification.useful, 0x013A),
     ItemData("Circlet", ItemClassification.useful, 0x013B),
@@ -346,7 +414,7 @@ EquipHats: typing.List[ItemData] = [
     ItemData("Golden Skullcap", ItemClassification.useful, 0x0143),
 ]
 
-EquipArmor: typing.List[ItemData] = [
+EquipHeavyArmor: typing.List[ItemData] = [
     ItemData("Linen Cuirass", ItemClassification.useful, 0x0144),
     ItemData("Bronze Armor", ItemClassification.useful, 0x0145),
     ItemData("Iron Armor", ItemClassification.useful, 0x0146),
@@ -364,7 +432,7 @@ EquipArmor: typing.List[ItemData] = [
     ItemData("Peytral", ItemClassification.useful, 0x0152),
 ]
 
-EquipClothing: typing.List[ItemData] = [
+EquipLightArmor: typing.List[ItemData] = [
     ItemData("Leather Clothing", ItemClassification.useful, 0x0153),
     ItemData("Chainmail", ItemClassification.useful, 0x0154),
     ItemData("Adamant Vest", ItemClassification.useful, 0x0155),
@@ -429,6 +497,10 @@ EquipGloves: typing.List[ItemData] = [
 ]
 
 EquipRings: typing.List[ItemData] = [
+    ItemData("Crimson Tear", ItemClassification.useful, 0x00F1),
+    ItemData("Snowy Tear", ItemClassification.useful, 0x00F2),
+    ItemData("Azure Tear", ItemClassification.useful, 0x00F3),
+    ItemData("Moon Maiden", ItemClassification.useful, 0x00F4),
     ItemData("Fortune Ring", ItemClassification.useful, 0x0187),
     ItemData("Magick Ring", ItemClassification.useful, 0x0188),
     ItemData("Angel Ring", ItemClassification.useful, 0x0189),
@@ -750,9 +822,25 @@ jobUnlockItems: typing.List[ItemData] = [
     ItemData("Job Unlock: Geomancer", ItemClassification.useful, 0x434),
 ]
 
-AllItems: typing.List[ItemData] = Weapons + EquipShields + EquipHelmets + EquipHats + EquipArmor + \
-                                  EquipClothing + EquipRobes + EquipShoes + EquipGloves + EquipRings + \
-                                  Consumables + Loot + GateItems + jobUnlockItems
+
+MeleeWeapons: typing.List[ItemData] = EquipKnives + EquipSwords + EquipBlades + EquipSabers + EquipKnightswords + \
+                                 EquipRapiers + EquipGreatswords + EquipBroadswords + EquipKatanas + EquipSpears + \
+                                 EquipRods + EquipStaves + EquipPoles + EquipKnuckles + EquipInstruments + EquipAxes + \
+                                 EquipHammers + EquipMaces + EquipBooks
+
+RangedWeapons: typing.List[ItemData] = EquipBows + EquipGreatbows + EquipGuns + EquipHandcannons + EquipCards
+
+Weapons: typing.List[ItemData] = EquipKnives + EquipSwords + EquipBlades + EquipSabers + EquipKnightswords + \
+                                 EquipRapiers + EquipGreatswords + EquipBroadswords + EquipKatanas + EquipSpears + \
+                                 EquipRods + EquipStaves + EquipPoles + EquipKnuckles + EquipBows + EquipGreatbows + \
+                                 EquipGuns + EquipInstruments + EquipHandcannons + EquipAxes + EquipHammers + \
+                                 EquipMaces + EquipCards + EquipBooks
+
+Accessories: typing.List[ItemData] = EquipShoes + EquipGloves + EquipRings
+
+AllItems: typing.List[ItemData] = Weapons + EquipShields + EquipHelmets + EquipeFemaleHats + EquipHats + \
+                                  EquipHeavyArmor + EquipLightArmor + EquipRobes + EquipShoes + EquipGloves + \
+                                  EquipRings + Consumables + Loot + GateItems + jobUnlockItems
 
 FillerItems: typing.List[ItemData] = [x for x in AllItems if x.progression == ItemClassification.filler]
 

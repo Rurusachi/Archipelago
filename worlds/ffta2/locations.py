@@ -70,6 +70,24 @@ unused_quests = ["-",  # Dummy quests
                  "Brightmoon Tor, 3rd Ascent",
                  "Champ's Reward",
                  "Master's Reward",
+                 "Hunted",
+                 "The Way of the Sword",
+
+                 # Dispatch missions (probably)
+                 "Wanted: Sidekick",
+                 "Wanted: Musician!",
+                 "Wanted: Barmaid!",
+                 "Wanted: Tutor!",
+                 "Wanted: Hatchery Worker",
+                 "Wanted: Assistant"
+                 "Wanted: Caretaker",
+                 "Wanted: Woodworker",
+                 "Wanted: Woodcutter",
+                 "Wanted: Combatants",
+                 "Wanted: Artillery",
+                 "Wanted: Marksman",
+                 "Wanted: Shiny Maces",
+                 "Wanted: Devotees!",
                  ]
 
 FFTA2Locations: List[List[FFTA2LocationData]] = [

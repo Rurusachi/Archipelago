@@ -69,7 +69,7 @@ class FFTA2Client(BizHawkClient):
                          (MemoryAddresses.custom_flags, 0x7, "ARM9 System Bus"),
                          (MemoryAddresses.inventory, 0x27a * 4, "ARM9 System Bus"), ]
             read_result = await bizhawk.read(ctx.bizhawk_ctx, flag_list)
-            flag_bytes = read_result[0]
+            quest_flag_bytes = read_result[0]
             received_items = int.from_bytes(read_result[1], "little")
             inventory_bytes = read_result[4]
 
@@ -83,11 +83,11 @@ class FFTA2Client(BizHawkClient):
             game_clear = False
 
             # Check if goal status is reached
-            if flag_bytes[self.goal_flag[0]] & bitflags[self.goal_flag[1]] == bitflags[self.goal_flag[1]]:
+            if quest_flag_bytes[self.goal_flag[0]] & bitflags[self.goal_flag[1]] == bitflags[self.goal_flag[1]]:
                 game_clear = True
 
             # Check set flags
-            for byte_i, byte in enumerate(flag_bytes):
+            for byte_i, byte in enumerate(quest_flag_bytes):
 
                 for i in range(8):
 

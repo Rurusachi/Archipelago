@@ -207,8 +207,8 @@ def generate_output(world, player: int, output_directory: str) -> None:
         elif quest.name in ["Seeding the Harvest", "A Harvest Hand"] or index == 0x1a6:
             # Move out of locked location in Camoa
             patch.write_token(APTokenTypes.WRITE, quest.memory + QuestOffsets.location, struct.pack("<B", 0xa))
-        elif quest.name == "Brightmoon Tor":
-            patch.write_token(APTokenTypes.WRITE, quest.memory + QuestOffsets.location, struct.pack("<B", 0x22))
+        elif quest.name in ["Brightmoon Tor", "The Sun Seal", "Hunting Season", "Death March", "Death March, II", "Death March, III", "Wanted: Combatants"]:
+            patch.write_token(APTokenTypes.WRITE, quest.memory + QuestOffsets.location, struct.pack("<B", 0x21))
 
         if quest.name == "The Two Grimoires" and world.options.final_quests.value == 1:
             # Put the final quest near Targ so it's actually accessible

@@ -70,10 +70,12 @@ unused_quests = ["-",  # Dummy quests
                  "Brightmoon Tor, 3rd Ascent",
                  "Champ's Reward",
                  "Master's Reward",
+
+                 # Fixed unit quests
                  "Hunted",
                  "The Way of the Sword",
 
-                 # Dispatch missions (probably)
+                 # Dispatch quests (probably)
                  "Wanted: Sidekick",
                  "Wanted: Musician!",
                  "Wanted: Barmaid!",
@@ -88,6 +90,10 @@ unused_quests = ["-",  # Dummy quests
                  "Wanted: Marksman",
                  "Wanted: Shiny Maces",
                  "Wanted: Devotees!",
+                 "Great Land Festival",
+
+                 # Possibly broken (Witch Of The Fens isn't there?)
+                 "Love-struck",
                  ]
 
 FFTA2Locations: List[List[FFTA2LocationData]] = [

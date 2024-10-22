@@ -57,7 +57,7 @@ def create_regions(world, player) -> None:
     chosen_indices = []
     quest_indices = range(len(world.QuestGroups))
     for gate in range(gate_number):
-        quest_weights = [calculate_weight(gate / gate_number * 2 - 1, ffta2_data.quests[x[0][0].quest_id].rank / 99 * 2 - 1)**gate_balancing if i not in chosen_indices else 0 for i, x in enumerate(world.QuestGroups)]
+        quest_weights = [calculate_weight(gate / gate_number * 2 - 1, (ffta2_data.quests[x[0][0].quest_id].rank-1) / 98 * 2 - 1)**gate_balancing if i not in chosen_indices else 0 for i, x in enumerate(world.QuestGroups)]
         remaining = 4
         while remaining > 0:
             chosen = world.random.choices(quest_indices, weights=quest_weights, k=remaining)

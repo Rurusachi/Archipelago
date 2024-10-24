@@ -67,11 +67,17 @@ class FFTA2Client(BizHawkClient):
             flag_list = [(MemoryAddresses.quest_flags, 0x40, "ARM9 System Bus"),
                          (MemoryAddresses.received_items, 2, "ARM9 System Bus"), (MemoryAddresses.event_var, 1, "ARM9 System Bus"),
                          (MemoryAddresses.custom_flags, 0x7, "ARM9 System Bus"),
-                         (MemoryAddresses.inventory, 0x27a * 4, "ARM9 System Bus"), ]
+                         (MemoryAddresses.inventory, 0x27a * 4, "ARM9 System Bus"),
+                         #(MemoryAddresses.region_flags, 20, "ARM9 System Bus"),
+                         ]
             read_result = await bizhawk.read(ctx.bizhawk_ctx, flag_list)
             quest_flag_bytes = read_result[0]
             received_items = int.from_bytes(read_result[1], "little")
             inventory_bytes = read_result[4]
+            #region_location_flags = read_result[5]
+
+            await bizhawk.write(ctx.bizhawk_ctx,
+                                [(MemoryAddresses.region_flags, bytes([0xFF]*20), "ARM9 System Bus"),])
 
             inventory_items = [(int.from_bytes(inventory_bytes[i:i+2], "little"), inventory_bytes[i+2], inventory_bytes[i+3]) for i in range(0, len(inventory_bytes), 4)]
 

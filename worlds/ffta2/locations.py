@@ -70,6 +70,15 @@ unused_quests = ["-",  # Dummy quests
                  "Brightmoon Tor, 3rd Ascent",
                  "Champ's Reward",
                  "Master's Reward",
+                 "Memories",  # Requires Traveler's log quests
+
+                 # Require specific chocobos
+                 "Rancher's Request 8F Yellow",
+                 "Rancher's Request 8F Black",
+                 "Rancher's Request 8F Green",
+                 "Rancher's Request 8F Brown",
+                 "Rancher's Request 8F White",
+                 "Rancher's Request 8F Red",
 
                  # Fixed unit quests
                  "Hunted",

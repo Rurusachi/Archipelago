@@ -336,7 +336,7 @@ class BazaarRecipes(MemorySpace):
 class JobRequirements(MemorySpace):
     offset = 0x53FFEAC  # Skipping an empty slot
     byteSize = 0xc
-    length = 0x64
+    length = 64
 
 
 class RecruitableUnits(MemorySpace):
@@ -485,6 +485,8 @@ ffta2_data: FFTA2Data = FFTA2Data()
 
 class MemoryAddresses:
     all_flags: int = 0x0212d734
+    region_flags: int = 0x0212d73e
+    location_flags: int = 0x0212d741
     job_flags: int = 0x212D784
     quest_flags: int = 0x212D790
     received_items: int = 0x0212d753

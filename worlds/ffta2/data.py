@@ -1,5 +1,7 @@
 from typing import NamedTuple, List, Tuple
 from .quests import (QuestData, questData)
+from .bazaar import (BazaarRecipe, bazaarRecipes)
+from .items import items_by_id
 
 recruitableUnitNames = [
     "Luso",
@@ -260,7 +262,7 @@ class BazaarCategoryOffsets:
     grade9: int = 0x22
 
 
-class BazaarItemOffsets:
+class BazaarRecipeOffsets:
     loot1: int = 0x0
     loot2: int = 0x2
     loot3: int = 0x4
@@ -300,6 +302,42 @@ class RecruitableUnitOffsets:
     equip4: int = 0x2e
     equip5: int = 0x30
     starter: int = 0x3a
+
+
+class EquipmentDataOffsets:
+    weapon_type: int = 0x0
+    name: int = 0x2
+    element: int = 0x4
+    range: int = 0x5
+    equip_location: int = 0x6
+    buy: int = 0xe
+    sell: int = 0x10
+    bonus_effect: int = 0x12
+    attack: int = 0x13
+    defense: int = 0x14
+    magick: int = 0x15
+    resistance: int = 0x16
+    speed: int = 0x17
+    evasion: int = 0x18
+    move: int = 0x19
+    jump: int = 0x1a
+    job1: int = 0x1b
+    job2: int = 0x1c
+    job3: int = 0x1d
+    ability1: int = 0x1e
+    ability2: int = 0x20
+    ability3: int = 0x22
+    properties: int = 0x24
+
+
+class EquipmentDataPropertyFlags:
+    bladed: int = 0x0
+    piercing: int = 0x1
+    blunt: int = 0x2
+    ranged: int = 0x3
+    female: int = 0x4
+    limited_stock: int = 0x5
+    starts_in_shop: int = 0x6
 
 
 class MemorySpace(NamedTuple):
@@ -345,6 +383,12 @@ class RecruitableUnits(MemorySpace):
     length = 0x4b
 
 
+class EquipmentData(MemorySpace):
+    offset = 0x053FB770  # Skipping an empty slot
+    byteSize = 0x28
+    length = 0x19b
+
+
 class FFTA2Object:
     memory: int = 0
     name: str = ""
@@ -383,10 +427,14 @@ class FFTA2BazaarCategory(FFTA2Object):
 
 
 class FFTA2BazaarRecipe(FFTA2Object):
+    item: int
+    inVanilla: bool = False
 
-    def __init__(self, memory, name):
+    def __init__(self, memory, name, item, inVanilla):
         self.memory = memory
         self.name = name
+        self.item = item
+        self.inVanilla = inVanilla
 
 
 class FFTA2JobRequirement(FFTA2Object):
@@ -403,12 +451,21 @@ class FFTA2RecruitableUnit(FFTA2Object):
         self.name = name
 
 
+class FFTA2EquipmentData(FFTA2Object):
+
+    def __init__(self, memory, name):
+        self.memory = memory
+        self.name = name
+
+
 class FFTA2Data:
     quests: List[FFTA2Quest]
     formations: List[FFTA2Formation]
     bazaarCategories: List[FFTA2BazaarCategory]
     bazaarRecipes: List[FFTA2BazaarRecipe]
+    jobRequirements: List[FFTA2JobRequirement]
     recruitableUnits: List[FFTA2RecruitableUnit]
+    equipmentData: List[FFTA2EquipmentData]
 
     def __init__(self):
         self.quests = self.initializeQuests()
@@ -417,6 +474,7 @@ class FFTA2Data:
         self.bazaarRecipes = self.initializeBazaarRecipes()
         self.jobRequirements = self.initializeJobRequirements()
         self.recruitableUnits = self.initializeRecruitableUnits()
+        self.equipmentData = self.initializeEquipmentData()
 
     def initializeQuests(self) -> List[FFTA2Quest]:
         quests: List[FFTA2Quest] = []
@@ -454,7 +512,9 @@ class FFTA2Data:
         for n in range(BazaarRecipes.length):
             memory = BazaarRecipes.offset + BazaarRecipes.byteSize * n
 
-            new_item = FFTA2BazaarRecipe(memory, "")
+            recipe = bazaarRecipes[n+1]
+
+            new_item = FFTA2BazaarRecipe(memory, recipe.item, n+1, recipe.loot1 != " ")
             recipes.append(new_item)
 
         return recipes
@@ -479,6 +539,17 @@ class FFTA2Data:
 
         return units
 
+    def initializeEquipmentData(self) -> List[FFTA2EquipmentData]:
+        items: List[FFTA2EquipmentData] = []
+        for n in range(EquipmentData.length):
+            memory = EquipmentData.offset + EquipmentData.byteSize * n
+
+            name = items_by_id.get(n+1).itemName if items_by_id.get(n+1) is not None else "-"
+            new_item = FFTA2EquipmentData(memory, name)
+            items.append(new_item)
+
+        return items
+
 
 ffta2_data: FFTA2Data = FFTA2Data()
 
@@ -489,6 +560,7 @@ class MemoryAddresses:
     location_flags: int = 0x0212d741
     job_flags: int = 0x212D784
     quest_flags: int = 0x212D790
+    shop_flags: int = 0x0212d6c8
     received_items: int = 0x0212d753
     custom_flags: int = received_items+2
     event_var: int = 0x021c4868

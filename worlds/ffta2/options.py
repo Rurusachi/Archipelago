@@ -203,12 +203,28 @@ class BazaarOptions(Choice):
     Bazaar options.
 
     Vanilla: All loot items are in the pool. (Not recommended)
-    No Loot: Loot items are removed from the pool of possible checks. This makes equipment checks much more likely. (Recommended)
+    No Loot: Loot items are removed from the pool of possible checks. This makes equipment checks much more likely.
+    Randomized Recipes: All recipes in the bazaar are randomized.
+    Checks: All recipes in the bazaar are randomized and are also checks (and still unlock shop items).
     """
     display_name = "Bazaar"
     default = 1
     option_vanilla = 0
     option_no_loot = 1
+    option_randomized_recipes = 2
+    option_checks = 3
+
+
+class BazaarLootPool(Range):
+    """
+    If recipes are randomized this is the max number of different items used of each loot type (7 types).
+    The amount received of a loot item from a check will be enough for all recipes that use that item.
+    Warning: Setting this to 14 or higher is likely to generate fill errors if path_num is set to 1 (and still possible at 3).
+    """
+    display_name = "Bazaar loot pool"
+    default = 10
+    range_start = 3  # Can't go lower due to inventory limit. 3 means loot_amount will be 53, and max is 63
+    range_end = 18  # 18 absolute max, but 14+ likely to give fill errors with 1 gate path
 
 
 @dataclass
@@ -228,3 +244,4 @@ class FFTA2Options(PerGameCommonOptions):
     starting_equipment: StartingUnitEquipment
     starting_units: StartingUnits
     bazaar_options: BazaarOptions
+    bazaar_loot_pool: BazaarLootPool

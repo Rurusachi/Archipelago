@@ -4,7 +4,7 @@ import struct
 from NetUtils import ClientStatus
 import worlds._bizhawk as bizhawk
 from worlds._bizhawk.client import BizHawkClient
-from .locations import (QuestGroups, bitflags)
+from .locations import (QuestGroups, BazaarRecipeGroups, bitflags)
 from .data import (ffta2_data, get_flag, FlagOffsets, MemoryAddresses)
 from .items import (jobUnlockOffset)
 from worlds.LauncherComponents import SuffixIdentifier, components
@@ -29,6 +29,7 @@ class FFTA2Client(BizHawkClient):
     goal_id: int = 0
     path_end_quests: List[Tuple[int, int]]
     paths_required: int
+
 
     def __init__(self) -> None:
         super().__init__()
@@ -62,18 +63,21 @@ class FFTA2Client(BizHawkClient):
             self.path_end_quests = ctx.slot_data["path_end_quests"]
             self.paths_required = ctx.slot_data["paths_required"]
             self.goal_flag = ctx.slot_data["goal_flag"]
+            self.loot_amount = ctx.slot_data["loot_amount"]
 
         try:
             flag_list = [(MemoryAddresses.quest_flags, 0x40, "ARM9 System Bus"),
                          (MemoryAddresses.received_items, 2, "ARM9 System Bus"), (MemoryAddresses.event_var, 1, "ARM9 System Bus"),
                          (MemoryAddresses.custom_flags, 0x7, "ARM9 System Bus"),
                          (MemoryAddresses.inventory, 0x27a * 4, "ARM9 System Bus"),
+                         (MemoryAddresses.shop_flags, 0x35, "ARM9 System Bus"),
                          #(MemoryAddresses.region_flags, 20, "ARM9 System Bus"),
                          ]
             read_result = await bizhawk.read(ctx.bizhawk_ctx, flag_list)
             quest_flag_bytes = read_result[0]
             received_items = int.from_bytes(read_result[1], "little")
             inventory_bytes = read_result[4]
+            shop_flag_bytes = read_result[5]
             #region_location_flags = read_result[5]
 
             await bizhawk.write(ctx.bizhawk_ctx,
@@ -105,6 +109,17 @@ class FFTA2Client(BizHawkClient):
                                     location_id = questLocation.rom_address
                                     if location_id in ctx.server_locations:
                                         local_checked_locations.add(location_id)
+
+            for byte_i, byte in enumerate(shop_flag_bytes):
+                for i in range(8):
+
+                    if byte & (1 << i) == bitflags[i]:
+
+                        for recipe in BazaarRecipeGroups:
+                            if byte & (1 << i) == recipe[1] and byte_i == recipe[2]:
+                                location_id = recipe[0].rom_address
+                                if location_id in ctx.server_locations:
+                                    local_checked_locations.add(location_id)
 
             custom_flag_bytes = list(read_result[3])
             # Send locations
@@ -148,7 +163,7 @@ class FFTA2Client(BizHawkClient):
                     next_item_id = 0
                 if next_item_id >= 0x01AF and next_item_id <= 0x0265:
                     # Extra loot items
-                    amount = 10
+                    amount = self.loot_amount
                 else:
                     amount = 1
 

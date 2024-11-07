@@ -1,9 +1,12 @@
 from enum import IntEnum
-from typing import List, Tuple
+from typing import List, Tuple, Dict
+from math import ceil
 
 from BaseClasses import Entrance, ItemClassification, Region, Location
-from .locations import FFTA2Location, QuestGroups
+from .locations import FFTA2Location, QuestGroups, FFTA2BazaarLocations
 from .data import ffta2_data
+from .items import Loot, LootMagicite, LootMetals, LootSkins, LootBones, LootFlora, LootTimber, LootPhiltres, items_by_id
+from .bazaar import bazaarCategories
 
 
 class GatePosition(IntEnum):
@@ -39,6 +42,57 @@ def create_regions(world, player) -> None:
 
     menu_region = Region("Menu", player, world.multiworld)
     world.multiworld.regions.append(menu_region)
+
+    # Bazaar recipes
+    # Separate loot into types
+    # Group bazaar recipes by bazaar categories
+    # Select 3 loot types for each category
+    if world.options.bazaar_options.value > 1:
+        if world.options.bazaar_options.value == 3:
+            bazaar_region = Region("Bazaar", player, world.multiworld)
+            menu_region.connect(bazaar_region)
+
+        # Loot_max * loot_pool >= 1065 / 7
+        loot_max = ceil(153 / world.options.bazaar_loot_pool.value)+1
+        world.loot_amount = loot_max
+        loot_pool_categories = {
+            "Magicite": {loot_item.itemID: loot_max for loot_item in LootMagicite[:world.options.bazaar_loot_pool.value]},
+            "Metals": {loot_item.itemID: loot_max for loot_item in LootMetals[:world.options.bazaar_loot_pool.value]},
+            "Skins": {loot_item.itemID: loot_max for loot_item in LootSkins[:world.options.bazaar_loot_pool.value]},
+            "Bones": {loot_item.itemID: loot_max for loot_item in LootBones[:world.options.bazaar_loot_pool.value]},
+            "Flora": {loot_item.itemID: loot_max for loot_item in LootFlora[:world.options.bazaar_loot_pool.value]},
+            "Timber": {loot_item.itemID: loot_max for loot_item in LootTimber[:world.options.bazaar_loot_pool.value]},
+            "Philtres": {loot_item.itemID: loot_max for loot_item in LootPhiltres[:world.options.bazaar_loot_pool.value]},
+        }
+        loot_pool_category_keys = list(loot_pool_categories)
+        used_loot = set()
+        for category in sorted(bazaarCategories, key=lambda x: len([y for y in x.items if y[0] != 0]), reverse=True):
+            valid_pools = [k for k in loot_pool_category_keys if sum(loot_pool_categories[k].values()) >= len([i for i in category.items if i[0] != 0])]
+            loot_pools = [loot_pool_categories[k] for k in world.random.sample(valid_pools, 3)]
+            loot_pool_keys = [[k for k, v in pool.items() if v > 0] for pool in loot_pools]
+            print(category.name)
+            for item in category.items:
+                if item[0] != 0:
+                    recipe = ffta2_data.bazaarRecipes[item[0]-1]
+                    location_name = f"{recipe.name} Bazaar Recipe"
+                    if world.options.bazaar_options.value == 3:
+                        bazaar_region.locations.append(FFTA2Location(player, location_name, 0x0542AD48 + recipe.item * 2, bazaar_region))
+
+                    new_recipe = (location_name, item[0], [])
+                    for i, pool in enumerate(loot_pools):
+                        item_id = world.random.choice(loot_pool_keys[i])
+                        new_recipe[2].append(item_id)
+                        pool[item_id] -= 1
+                        used_loot.add(item_id)
+                        if pool[item_id] < 0:
+                            raise ValueError(pool)
+                        if pool[item_id] == 0:
+                            loot_pool_keys[i].remove(item_id)
+                            loot_pool_category_keys = [k for k in loot_pool_category_keys if any(loot_pool_categories[k].values())]
+
+                    print(new_recipe[0], [items_by_id[item_id].itemName for item_id in new_recipe[2]])
+                    world.bazaar_recipes.append(new_recipe)
+        world.bazaar_loot_used_pool = used_loot
 
     # Set quest order here
     # world.random.shuffle(world.QuestGroups)

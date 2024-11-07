@@ -9,9 +9,10 @@ from worlds.Files import APProcedurePatch, APTokenMixin, APTokenTypes
 
 from .data import (FFTA2Data, ffta2_data, QuestOffsets, FormationOffsets, Formations, UnitOffsets,
                    RecruitableUnitOffsets, JobRequirementOffsets, FlagOffsets, MemoryAddresses,
-                   jobUnlockList, get_flag, recruitableUnitNames, specialUnitNames)
+                   jobUnlockList, get_flag, recruitableUnitNames, specialUnitNames, BazaarRecipeOffsets,
+                   EquipmentDataOffsets, EquipmentDataPropertyFlags)
 from .items import (GateItems, jobUnlockOffset, jobUnlockItems, item_table, ItemData, EquipShields, Accessories)
-from .locations import (FFTA2Locations)
+from .locations import (FFTA2QuestLocations)
 from .options import (JobUnlockRequirements, DispatchQuests, RandomizeStartingUnits, StartingUnitEquipment)
 from .jobs import (races, raceToJobs, RaceJobOffsets, jobToEquipment, jobStartingEquipment, JobEquipment)
 
@@ -113,7 +114,8 @@ def set_starting_units(world, patch: FFTA2ProcedurePatch):
             (race_name, job_name) = specialUnits[unit_name]
 
             if world.options.randomize_starting_units.value == RandomizeStartingUnits.option_random_jobs or\
-               world.options.randomize_starting_units.value == RandomizeStartingUnits.option_random_races_and_jobs:
+               world.options.randomize_starting_units.value == RandomizeStartingUnits.option_random_races_and_jobs or\
+               unit_name == "Al-Cid":
                 job_name = world.random.choice(raceToJobs[race_name])
                 patch.write_token(APTokenTypes.WRITE,
                                   ffta2_data.recruitableUnits[unit_index].memory + RecruitableUnitOffsets.starting_job,
@@ -272,7 +274,12 @@ def generate_output(world, player: int, output_directory: str) -> None:
 
     set_up_gates(gate_number, world, patch)
 
-    set_items(world.multiworld, player, patch)
+    set_items(world, world.multiworld, player, patch)
+
+    set_bazaar_recipes(world, patch)
+
+    for item in ffta2_data.equipmentData:
+        patch.write_token(APTokenTypes.AND_8, item.memory + EquipmentDataOffsets.properties, ~(0x1 << EquipmentDataPropertyFlags.limited_stock) & 0xff)
 
     patch.write_file("token_data.bin", patch.get_token_binary())
 
@@ -352,7 +359,7 @@ def set_quest_requirement(current_quest_ID: int, previous_quest_ID: int,
                       struct.pack("<H", 0x1))
 
 
-def set_items(multiworld, player, patch: FFTA2ProcedurePatch) -> None:
+def set_items(world, multiworld, player, patch: FFTA2ProcedurePatch) -> None:
     offset = 0
 
     for location in multiworld.get_filled_locations(player):
@@ -365,7 +372,7 @@ def set_items(multiworld, player, patch: FFTA2ProcedurePatch) -> None:
 
             if item_id > jobUnlockOffset:
                 quest_flag = -1
-                for quest in FFTA2Locations:
+                for quest in FFTA2QuestLocations:
                     for locData in quest:
                         if locData.name == location.name:
                             quest_flag = get_flag(locData.quest_id, FlagOffsets.Quest)[2]
@@ -379,7 +386,7 @@ def set_items(multiworld, player, patch: FFTA2ProcedurePatch) -> None:
 
             if item_id >= 0x01AF and item_id <= 0x0265:
                 # Extra loot items
-                amount = 10
+                amount = world.loot_amount
             else:
                 amount = 1
 
@@ -392,3 +399,14 @@ def set_required_items(index: int, item_id, patch: FFTA2ProcedurePatch):
                       struct.pack("<H", item_id))
     patch.write_token(APTokenTypes.WRITE, ffta2_data.quests[index].memory + QuestOffsets.required_item_amount1,
                       struct.pack("<B", 1))
+
+
+def set_bazaar_recipes(world, patch):
+    for recipe in world.bazaar_recipes:
+        assert ffta2_data.bazaarRecipes[recipe[1]-1].item == recipe[1]
+        patch.write_token(APTokenTypes.WRITE, ffta2_data.bazaarRecipes[recipe[1]-1].memory + BazaarRecipeOffsets.loot1,
+                          struct.pack("<H", recipe[2][0]))
+        patch.write_token(APTokenTypes.WRITE, ffta2_data.bazaarRecipes[recipe[1]-1].memory + BazaarRecipeOffsets.loot2,
+                          struct.pack("<H", recipe[2][1]))
+        patch.write_token(APTokenTypes.WRITE, ffta2_data.bazaarRecipes[recipe[1]-1].memory + BazaarRecipeOffsets.loot3,
+                          struct.pack("<H", recipe[2][2]))

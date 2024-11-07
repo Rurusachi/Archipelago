@@ -546,7 +546,7 @@ Consumables: typing.List[ItemData] = [
     ItemData("Dark Matter", ItemClassification.filler, 0x01AE),
 ]
 
-Loot: typing.List[ItemData] = [
+LootMagicite: typing.List[ItemData] = [
     ItemData("Tarkov Crystal", ItemClassification.useful, 0x01AF),
     ItemData("Mind Ceffyl", ItemClassification.useful, 0x01B0),
     ItemData("Body Ceffyl", ItemClassification.useful, 0x01B1),
@@ -575,6 +575,9 @@ Loot: typing.List[ItemData] = [
     ItemData("Ice Sigil", ItemClassification.useful, 0x01C8),
     ItemData("Low Arcana", ItemClassification.useful, 0x01C9),
     ItemData("High Arcana", ItemClassification.useful, 0x01CA),
+]
+
+LootMetals: typing.List[ItemData] = [
     ItemData("Adamantite", ItemClassification.useful, 0x01CB),
     ItemData("Zodiac Ore", ItemClassification.useful, 0x01CC),
     ItemData("Leestone", ItemClassification.useful, 0x01CD),
@@ -602,6 +605,9 @@ Loot: typing.List[ItemData] = [
     ItemData("Bundle of Needles", ItemClassification.useful, 0x01E3),
     ItemData("Sanative Needle", ItemClassification.useful, 0x01E4),
     ItemData("Moon Ring", ItemClassification.useful, 0x01E5),
+]
+
+LootSkins: typing.List[ItemData] = [
     ItemData("Tiger Hide", ItemClassification.useful, 0x01E6),
     ItemData("Chocobo Skin", ItemClassification.useful, 0x01E7),
     ItemData("Rat Pelt", ItemClassification.useful, 0x01E8),
@@ -623,6 +629,9 @@ Loot: typing.List[ItemData] = [
     ItemData("Cockatrice Skin", ItemClassification.useful, 0x01F8),
     ItemData("Bat Tail", ItemClassification.useful, 0x01F9),
     ItemData("Tanned Beast Hide", ItemClassification.useful, 0x01FA),
+]
+
+LootBones: typing.List[ItemData] = [
     ItemData("Animal Bone", ItemClassification.useful, 0x01FB),
     ItemData("Dragon Bone", ItemClassification.useful, 0x01FC),
     ItemData("Sturdy Bone", ItemClassification.useful, 0x01FD),
@@ -656,6 +665,9 @@ Loot: typing.List[ItemData] = [
     ItemData("Ancient Turtle Shell", ItemClassification.useful, 0x0219),
     ItemData("Bone Chips", ItemClassification.useful, 0x021A),
     ItemData("Skull", ItemClassification.useful, 0x021B),
+]
+
+LootFlora: typing.List[ItemData] = [
     ItemData("Moon Bloom", ItemClassification.useful, 0x021C),
     ItemData("Telaq Flower", ItemClassification.useful, 0x021D),
     ItemData("Silk Bloom", ItemClassification.useful, 0x021E),
@@ -690,6 +702,9 @@ Loot: typing.List[ItemData] = [
     ItemData("Pearl Moss", ItemClassification.useful, 0x023B),
     ItemData("Tomato Stalk", ItemClassification.useful, 0x023C),
     ItemData("Peppergrass", ItemClassification.useful, 0x023D),
+]
+
+LootTimber: typing.List[ItemData] = [
     ItemData("Stradivari", ItemClassification.useful, 0x023E),
     ItemData("Strawood", ItemClassification.useful, 0x023F),
     ItemData("Divariwood", ItemClassification.useful, 0x0240),
@@ -712,6 +727,9 @@ Loot: typing.List[ItemData] = [
     ItemData("Kuraisle Boxwood", ItemClassification.useful, 0x0251),
     ItemData("Wyrmtwig", ItemClassification.useful, 0x0252),
     ItemData("Godwood", ItemClassification.useful, 0x0253),
+]
+
+LootPhiltres: typing.List[ItemData] = [
     ItemData("Green Liquid", ItemClassification.useful, 0x0254),
     ItemData("Yellow Liquid", ItemClassification.useful, 0x0255),
     ItemData("Silver Liquid", ItemClassification.useful, 0x0256),
@@ -837,6 +855,8 @@ Weapons: typing.List[ItemData] = EquipKnives + EquipSwords + EquipBlades + Equip
                                  EquipMaces + EquipCards + EquipBooks
 
 Accessories: typing.List[ItemData] = EquipShoes + EquipGloves + EquipRings
+
+Loot: typing.List[ItemData] = LootMagicite + LootMetals + LootSkins + LootBones + LootFlora + LootTimber + LootPhiltres
 
 AllItems: typing.List[ItemData] = Weapons + EquipShields + EquipHelmets + EquipeFemaleHats + EquipHats + \
                                   EquipHeavyArmor + EquipLightArmor + EquipRobes + EquipShoes + EquipGloves + \

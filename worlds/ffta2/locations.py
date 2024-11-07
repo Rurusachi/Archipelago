@@ -14,13 +14,20 @@ class FFTA2Location(Location):
         super().__init__(player, name, address, parent)
 
 
-class FFTA2LocationData(typing.NamedTuple):
+class FFTA2QuestLocationData(typing.NamedTuple):
     name: str
     quest_id: int
     rom_address: int
 
 
-QuestGroups: Tuple[List[FFTA2LocationData], int, int] = []
+class FFTA2BazaarLocationData(typing.NamedTuple):
+    name: str
+    item_id: int
+    rom_address: int
+
+
+QuestGroups: List[Tuple[List[FFTA2QuestLocationData], int, int]] = []
+BazaarRecipeGroups: List[Tuple[FFTA2BazaarLocationData, int, int]] = []
 bitflags = [0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80]
 
 unused_quests = ["-",  # Dummy quests
@@ -105,10 +112,10 @@ unused_quests = ["-",  # Dummy quests
                  "Love-struck",
                  ]
 
-FFTA2Locations: List[List[FFTA2LocationData]] = [
-        [FFTA2LocationData(f"{quest.name} Reward 1", id, quest.memory + QuestOffsets.reward_1),
-         FFTA2LocationData(f"{quest.name} Reward 2", id, quest.memory + QuestOffsets.reward_2),
-         FFTA2LocationData(f"{quest.name} Reward 3", id, quest.memory + QuestOffsets.reward_3),
+FFTA2QuestLocations: List[List[FFTA2QuestLocationData]] = [
+        [FFTA2QuestLocationData(f"{quest.name} Reward 1", id, quest.memory + QuestOffsets.reward_1),
+         FFTA2QuestLocationData(f"{quest.name} Reward 2", id, quest.memory + QuestOffsets.reward_2),
+         FFTA2QuestLocationData(f"{quest.name} Reward 3", id, quest.memory + QuestOffsets.reward_3),
          #FFTA2LocationData(f"{quest.name} Reward 4", id, quest.memory + QuestOffsets.reward_4),
          ] for id, quest in enumerate(ffta2_data.quests) if quest.region != 0 and\
                                                             quest.name not in unused_quests and\
@@ -117,13 +124,24 @@ FFTA2Locations: List[List[FFTA2LocationData]] = [
                                                             not quest.name.endswith("recruit")  # and quest.battle != 0
     ]
 
+FFTA2BazaarLocations: List[FFTA2BazaarLocationData] = [FFTA2BazaarLocationData(f"{recipe.name} Bazaar Recipe",
+                                                                               recipe.item,
+                                                                               0x0542AD48 + recipe.item * 2)
+                                                       for recipe in ffta2_data.bazaarRecipes if recipe.inVanilla]
+
 duplicates = []
 # Setting up the quest complete flags
-for quest in FFTA2Locations:
+for quest in FFTA2QuestLocations:
     byte_index = (quest[0].quest_id // 8)
     bitflag_index = quest[0].quest_id % 8
 
-    QuestGroups.append(tuple([quest, bitflags[bitflag_index], byte_index]))
+    QuestGroups.append(([quest, bitflags[bitflag_index], byte_index]))
+
+for recipe in FFTA2BazaarLocations:
+    byte_index = (recipe.item_id // 8)
+    bitflag_index = recipe.item_id % 8
+
+    BazaarRecipeGroups.append((recipe, bitflags[bitflag_index], byte_index))
 
 
 def create_location_label_to_id_map() -> Dict[str, int]:
@@ -131,9 +149,11 @@ def create_location_label_to_id_map() -> Dict[str, int]:
     Creates a map from location labels to their AP location id (address)
     """
     label_to_id_map: Dict[str, int] = {}
-    for location_list in FFTA2Locations:
+    for location_list in FFTA2QuestLocations:
         for location in location_list:
             label_to_id_map[location.name] = location.rom_address
+    for location in FFTA2BazaarLocations:
+        label_to_id_map[location.name] = location.rom_address
 
     return label_to_id_map
 

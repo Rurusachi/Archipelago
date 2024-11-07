@@ -2,7 +2,7 @@
 Archipelago World definition for Final Fantasy Tactics A2
 """
 
-from typing import ClassVar, Dict, Any, List, Tuple
+from typing import ClassVar, Dict, Any, List, Tuple, Set
 import settings
 from Utils import visualize_regions
 
@@ -78,6 +78,9 @@ class FFTA2World(World):
         self.path_quests: List[List[Tuple[int, List[int]]]] = []
         self.path_end_quests: List[Tuple[int, int]] = []
         self.goal_flag: Tuple[int, int] = (0, 0)
+        self.bazaar_recipes: List[Tuple[str, int, List[int]]] = []
+        self.bazaar_loot_used_pool: Set[int] = set()
+        self.loot_amount: int = 1
 
     def get_filler_item_name(self) -> str:
         filler = [x.itemName for x in FillerItems]
@@ -113,6 +116,12 @@ class FFTA2World(World):
         for itemName in required_items:
             self.multiworld.itempool.append(self.create_item(itemName))
 
+        if self.options.bazaar_options.value == BazaarOptions.option_checks:
+            for item in Loot:
+                if item.itemID in self.bazaar_loot_used_pool:
+                    self.multiworld.itempool.append(FFTA2Item(item.itemName, ItemClassification.progression, item.itemID, self.player))
+                    items_remaining -= 1
+
         useful_items = []
         for item in AllItems:
             if item.progression == ItemClassification.useful:
@@ -120,12 +129,17 @@ class FFTA2World(World):
                     if item in jobUnlockItems:
                         continue
 
-                if self.options.bazaar_options.value == BazaarOptions.option_no_loot:
+                if self.options.bazaar_options.value == BazaarOptions.option_no_loot or\
+                   self.options.bazaar_options.value == BazaarOptions.option_checks:
                     if item in Loot:
                         continue
 
-                useful_items += [item.itemName]
+                if self.options.bazaar_options.value == BazaarOptions.option_randomized_recipes:
+                    if item in Loot:
+                        if item.itemID not in self.bazaar_loot_used_pool:
+                            continue
 
+                useful_items += [item.itemName]
         # Shuffle the useful items to be added to the pool based on the locations remaining
         self.random.shuffle(useful_items)
 
@@ -177,6 +191,7 @@ class FFTA2World(World):
 
         slot_data["path_end_quests"] = self.path_end_quests
         slot_data["goal_flag"] = self.goal_flag
+        slot_data["loot_amount"] = self.loot_amount
 
         return slot_data
 

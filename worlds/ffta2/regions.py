@@ -70,7 +70,7 @@ def create_regions(world, player) -> None:
             valid_pools = [k for k in loot_pool_category_keys if sum(loot_pool_categories[k].values()) >= len([i for i in category.items if i[0] != 0])]
             loot_pools = [loot_pool_categories[k] for k in world.random.sample(valid_pools, 3)]
             loot_pool_keys = [[k for k, v in pool.items() if v > 0] for pool in loot_pools]
-            print(category.name)
+            # print(category.name)
             for item in category.items:
                 if item[0] != 0:
                     recipe = ffta2_data.bazaarRecipes[item[0]-1]
@@ -90,7 +90,7 @@ def create_regions(world, player) -> None:
                             loot_pool_keys[i].remove(item_id)
                             loot_pool_category_keys = [k for k in loot_pool_category_keys if any(loot_pool_categories[k].values())]
 
-                    print(new_recipe[0], [items_by_id[item_id].itemName for item_id in new_recipe[2]])
+                    # print(new_recipe[0], [items_by_id[item_id].itemName for item_id in new_recipe[2]])
                     world.bazaar_recipes.append(new_recipe)
         world.bazaar_loot_used_pool = used_loot
 

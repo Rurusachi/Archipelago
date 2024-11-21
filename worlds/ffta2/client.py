@@ -86,7 +86,7 @@ class FFTA2Client(BizHawkClient):
             inventory_items = [(int.from_bytes(inventory_bytes[i:i+2], "little"), inventory_bytes[i+2], inventory_bytes[i+3]) for i in range(0, len(inventory_bytes), 4)]
 
             for i, item in enumerate(inventory_items):
-                if item[0] in [0x00F5, 0x00F6] and (item[1] > 0 or item[2] > 0):
+                if item[0] in [0x00FB] and (item[1] > 0 or item[2] > 0):
                     await bizhawk.write(ctx.bizhawk_ctx, [(MemoryAddresses.inventory + i*4 + 2, bytes([0x00, 0x00]), "ARM9 System Bus")])
 
             local_checked_locations = set()

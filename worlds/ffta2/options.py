@@ -70,9 +70,9 @@ class QuestRewards(Range):
     Sets the number of locations per quest.
     """
     display_name = "Number of quest rewards"
-    default = 3
+    default = 4
     range_start = 1
-    range_end = 3
+    range_end = 4
 
 
 class JobUnlockRequirements(Choice):

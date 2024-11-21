@@ -116,7 +116,7 @@ FFTA2QuestLocations: List[List[FFTA2QuestLocationData]] = [
         [FFTA2QuestLocationData(f"{quest.name} Reward 1", id, quest.memory + QuestOffsets.reward_1),
          FFTA2QuestLocationData(f"{quest.name} Reward 2", id, quest.memory + QuestOffsets.reward_2),
          FFTA2QuestLocationData(f"{quest.name} Reward 3", id, quest.memory + QuestOffsets.reward_3),
-         #FFTA2LocationData(f"{quest.name} Reward 4", id, quest.memory + QuestOffsets.reward_4),
+         FFTA2QuestLocationData(f"{quest.name} Reward 4", id, quest.memory + QuestOffsets.reward_4),
          ] for id, quest in enumerate(ffta2_data.quests) if quest.region != 0 and\
                                                             quest.name not in unused_quests and\
                                                             re.search("part [0-9]*\Z", quest.name) is None and\

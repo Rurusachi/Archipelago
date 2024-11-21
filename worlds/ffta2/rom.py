@@ -278,6 +278,8 @@ def generate_output(world, player: int, output_directory: str) -> None:
 
     set_bazaar_recipes(world, patch)
 
+    write_custom_item_names(world, patch)
+
     for item in ffta2_data.equipmentData:
         patch.write_token(APTokenTypes.AND_8, item.memory + EquipmentDataOffsets.properties, ~(0x1 << EquipmentDataPropertyFlags.limited_stock) & 0xff)
 
@@ -366,23 +368,9 @@ def set_items(world, multiworld, player, patch: FFTA2ProcedurePatch) -> None:
 
         if location.item.code is not None:
             if location.item.player != player:
-                item_id = 0x00F5
+                item_id = 0x00FB
             else:
                 item_id = location.item.code - offset
-
-            if item_id > jobUnlockOffset:
-                quest_flag = -1
-                for quest in FFTA2QuestLocations:
-                    for locData in quest:
-                        if locData.name == location.name:
-                            quest_flag = get_flag(locData.quest_id, FlagOffsets.Quest)[2]
-                            break
-                    if quest_flag != -1:
-                        break
-                print(f"{hex(item_id)} -> {hex(quest_flag)}")
-                for i in jobUnlockList[item_id - jobUnlockOffset - 1]:
-                    patch.write_token(APTokenTypes.WRITE, ffta2_data.jobRequirements[i-1].memory + JobRequirementOffsets.quest_requirement, struct.pack("<H", quest_flag))
-                item_id = 0x00F6
 
             if item_id >= 0x01AF and item_id <= 0x0265:
                 # Extra loot items
@@ -394,6 +382,14 @@ def set_items(world, multiworld, player, patch: FFTA2ProcedurePatch) -> None:
             patch.write_token(APTokenTypes.WRITE, location.address, struct.pack("<H", item_and_reward))
 
 
+def write_custom_item_names(world, patch: FFTA2ProcedurePatch):
+    start_address = 0x542B148
+    for item, ids in zip(jobUnlockItems, [x for x in jobUnlockList if x[0] != 0x21]):  # Exclude Keeper
+        name_index = ids[0] + 1000  # job id + job table offset
+        patch.write_token(APTokenTypes.WRITE, start_address + (item.itemID-1 - jobUnlockOffset)*2,
+                          struct.pack("<H", name_index))
+
+
 def set_required_items(index: int, item_id, patch: FFTA2ProcedurePatch):
     patch.write_token(APTokenTypes.WRITE, ffta2_data.quests[index].memory + QuestOffsets.required_item1,
                       struct.pack("<H", item_id))
@@ -401,7 +397,7 @@ def set_required_items(index: int, item_id, patch: FFTA2ProcedurePatch):
                       struct.pack("<B", 1))
 
 
-def set_bazaar_recipes(world, patch):
+def set_bazaar_recipes(world, patch: FFTA2ProcedurePatch):
     for recipe in world.bazaar_recipes:
         assert ffta2_data.bazaarRecipes[recipe[1]-1].item == recipe[1]
         patch.write_token(APTokenTypes.WRITE, ffta2_data.bazaarRecipes[recipe[1]-1].memory + BazaarRecipeOffsets.loot1,

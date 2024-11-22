@@ -110,6 +110,8 @@ unused_quests = ["-",  # Dummy quests
 
                  # Possibly broken (Witch Of The Fens isn't there?)
                  "Love-struck",
+                 "A Small Favor",
+                 "Drowsy Draught",
                  ]
 
 FFTA2QuestLocations: List[List[FFTA2QuestLocationData]] = [

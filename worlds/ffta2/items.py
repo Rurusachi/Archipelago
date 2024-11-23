@@ -775,13 +775,13 @@ GateItems: typing.List[ItemData] = [
 ]
 
 dummyItems: typing.List[ItemData] = [
-    ItemData("-", ItemClassification.useful, 0x00F5),
-    ItemData("-", ItemClassification.useful, 0x00F6),
-    ItemData("-", ItemClassification.useful, 0x00F7),
-    ItemData("-", ItemClassification.useful, 0x00F8),
-    ItemData("-", ItemClassification.useful, 0x00F9),
-    ItemData("-", ItemClassification.useful, 0x00FA),
-    ItemData("-", ItemClassification.useful, 0x00FB),  # Archipelago item for now
+    ItemData("-", ItemClassification.useful, 0x00F5),  # Palette 1 # Archipelago item for now
+    ItemData("-", ItemClassification.useful, 0x00F6),  # Palette 2
+    ItemData("-", ItemClassification.useful, 0x00F7),  # Palette 3
+    ItemData("-", ItemClassification.useful, 0x00F8),  # Palette 2
+    ItemData("-", ItemClassification.useful, 0x00F9),  # Palette 2
+    ItemData("-", ItemClassification.useful, 0x00FA),  # Palette 3
+    ItemData("-", ItemClassification.useful, 0x00FB),  # Palette 2
 ]
 
 jobUnlockOffset = 0x300

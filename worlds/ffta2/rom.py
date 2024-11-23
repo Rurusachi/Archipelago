@@ -368,7 +368,7 @@ def set_items(world, multiworld, player, patch: FFTA2ProcedurePatch) -> None:
 
         if location.item.code is not None:
             if location.item.player != player:
-                item_id = 0x00FB
+                item_id = 0x00F5
             else:
                 item_id = location.item.code - offset
 

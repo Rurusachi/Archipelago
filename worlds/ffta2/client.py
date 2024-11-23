@@ -76,18 +76,17 @@ class FFTA2Client(BizHawkClient):
             read_result = await bizhawk.read(ctx.bizhawk_ctx, flag_list)
             quest_flag_bytes = read_result[0]
             received_items = int.from_bytes(read_result[1], "little")
-            inventory_bytes = read_result[4]
+            # inventory_bytes = read_result[4]
             shop_flag_bytes = read_result[5]
             #region_location_flags = read_result[5]
 
             await bizhawk.write(ctx.bizhawk_ctx,
                                 [(MemoryAddresses.region_flags, bytes([0xFF]*20), "ARM9 System Bus"),])
 
-            inventory_items = [(int.from_bytes(inventory_bytes[i:i+2], "little"), inventory_bytes[i+2], inventory_bytes[i+3]) for i in range(0, len(inventory_bytes), 4)]
-
-            for i, item in enumerate(inventory_items):
-                if item[0] in [0x00FB] and (item[1] > 0 or item[2] > 0):
-                    await bizhawk.write(ctx.bizhawk_ctx, [(MemoryAddresses.inventory + i*4 + 2, bytes([0x00, 0x00]), "ARM9 System Bus")])
+            # inventory_items = [(int.from_bytes(inventory_bytes[i:i+2], "little"), inventory_bytes[i+2], inventory_bytes[i+3]) for i in range(0, len(inventory_bytes), 4)]
+            # for i, item in enumerate(inventory_items):
+            #     if item[0] in [0x00F5] and (item[1] > 0 or item[2] > 0):
+            #         await bizhawk.write(ctx.bizhawk_ctx, [(MemoryAddresses.inventory + i*4 + 2, bytes([0x00, 0x00]), "ARM9 System Bus")])
 
             local_checked_locations = set()
             game_clear = False

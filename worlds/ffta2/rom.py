@@ -383,7 +383,7 @@ def set_items(world, multiworld, player, patch: FFTA2ProcedurePatch) -> None:
 
 
 def write_custom_item_names(world, patch: FFTA2ProcedurePatch):
-    start_address = 0x542B148
+    start_address = 0x542B248
     for item, ids in zip(jobUnlockItems, [x for x in jobUnlockList if x[0] != 0x21]):  # Exclude Keeper
         name_index = ids[0] + 1000  # job id + job table offset
         patch.write_token(APTokenTypes.WRITE, start_address + (item.itemID-1 - jobUnlockOffset)*2,

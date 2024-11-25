@@ -122,7 +122,7 @@ class QuestGil(NamedRange):
     Special values:
         Vanilla: Default value. Same as the vanilla game
     """
-    display_name = "Base exp gained from quests"
+    display_name = "Gil gained from quests"
     default = -1
     range_start = 0
     range_end = 65535
@@ -195,7 +195,7 @@ class StartingUnits(OptionSet):
                "Hume Archer",
                "Moogle Thief",
                ]
-    valid_keys = recruitableUnitNames
+    valid_keys = recruitableUnitNames[6:]
 
 
 class BazaarOptions(Choice):

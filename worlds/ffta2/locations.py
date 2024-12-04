@@ -121,12 +121,12 @@ FFTA2QuestLocations: List[List[FFTA2QuestLocationData]] = [
          FFTA2QuestLocationData(f"{quest.name} Reward 4", id, quest.memory + QuestOffsets.reward_4),
          ] for id, quest in enumerate(ffta2_data.quests) if quest.region != 0 and\
                                                             quest.name not in unused_quests and\
-                                                            re.search("part [0-9]*\Z", quest.name) is None and\
+                                                            re.search(r"part [0-9]*\Z", quest.name) is None and\
                                                             not quest.name.endswith("random") and\
                                                             not quest.name.endswith("recruit")  # and quest.battle != 0
     ]
 
-FFTA2BazaarLocations: List[FFTA2BazaarLocationData] = [FFTA2BazaarLocationData(f"{recipe.name} Bazaar Recipe",
+FFTA2BazaarLocations: List[FFTA2BazaarLocationData] = [FFTA2BazaarLocationData(f"Bazaar Recipe: {recipe.name}",
                                                                                recipe.item,
                                                                                0x0542AD48 + recipe.item * 2)
                                                        for recipe in ffta2_data.bazaarRecipes if recipe.inVanilla]

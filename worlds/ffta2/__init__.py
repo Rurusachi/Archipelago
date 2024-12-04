@@ -2,7 +2,8 @@
 Archipelago World definition for Final Fantasy Tactics A2
 """
 
-from typing import ClassVar, Dict, Any, List, Tuple, Set
+from typing import ClassVar, Dict, Any, List, Tuple, Set, Optional
+from random import Random
 import settings
 from Utils import visualize_regions
 
@@ -14,7 +15,7 @@ from .regions import create_regions
 from .rules import set_rules
 
 from .options import (FFTA2Options, GateNumber, JobUnlockRequirements, BazaarOptions)
-from .items import (create_item_label_to_code_map, AllItems, item_table, FFTA2Item, FillerItems, GateItems, jobUnlockItems, Loot)
+from .items import (create_item_label_to_code_map, AllItems, item_table, FFTA2Item, FillerItems, GateItems, jobUnlockItems, Loot, ItemData)
 from .locations import (create_location_label_to_id_map)
 from .rom import FFTA2ProcedurePatch, generate_output
 from .data import (get_flag, FlagOffsets)
@@ -82,6 +83,16 @@ class FFTA2World(World):
         self.bazaar_loot_used_pool: Set[int] = set()
         self.loot_amount: int = 1
 
+        # Ensure Universal Tracker uses same seed as original generation
+        self.seed = getattr(multiworld, "re_gen_passthrough", {}).get("Final Fantasy Tactics A2", self.random.getrandbits(64))
+        self.random = Random(self.seed)
+
+    def interpret_slot_data(self, slot_data: Dict[str, Any]) -> Optional[int]:
+        seed = slot_data.get("universal_tracker_seed")
+        if seed is None:
+            print("This game was generated before Universal Tracker support")
+        return seed
+
     def get_filler_item_name(self) -> str:
         filler = [x.itemName for x in FillerItems]
         return self.random.choice(filler)
@@ -119,12 +130,12 @@ class FFTA2World(World):
         if self.options.bazaar_options.value == BazaarOptions.option_checks:
             for item in Loot:
                 if item.itemID in self.bazaar_loot_used_pool:
-                    self.multiworld.itempool.append(FFTA2Item(item.itemName, ItemClassification.progression, item.itemID, self.player))
+                    self.multiworld.itempool.append(self.create_item(item.itemName))
                     items_remaining -= 1
 
         useful_items = []
         for item in AllItems:
-            if item.progression == ItemClassification.useful:
+            if item.progression == ItemClassification.useful or item in Loot:
                 if self.options.job_unlock_req.value != JobUnlockRequirements.option_job_items:
                     if item in jobUnlockItems:
                         continue
@@ -147,7 +158,7 @@ class FFTA2World(World):
             if i > len(useful_items) - 1:
                 self.multiworld.itempool.append(self.create_filler())
             else:
-                self.multiworld.itempool.append(self.create_item(useful_items[i]))
+                self.multiworld.itempool.append(self.create_item(useful_items[i], ItemClassification.useful))
 
     def set_rules(self) -> None:
         set_rules(self)
@@ -192,16 +203,17 @@ class FFTA2World(World):
         slot_data["path_end_quests"] = self.path_end_quests
         slot_data["goal_flag"] = self.goal_flag
         slot_data["loot_amount"] = self.loot_amount
+        slot_data["universal_tracker_seed"] = self.seed
 
         return slot_data
 
-    def create_item(self, name: str) -> Item:
+    def create_item(self, name: str, progression: Optional[ItemClassification] = -1) -> Item:
         item = item_table[name]
-        return FFTA2Item(item.itemName, item.progression, item.itemID, self.player)
+        return FFTA2Item(item.itemName, progression if progression != -1 else item.progression, item.itemID, self.player)
 
     def generate_output(self, output_directory: str) -> None:
 
         # Visualize regions
-        visualize_regions(self.multiworld.get_region("Menu", self.player), f"ffta2 {self.player}.puml", show_entrance_names=True)
+        # visualize_regions(self.multiworld.get_region("Menu", self.player), f"ffta2 {self.player}.puml", show_entrance_names=True)
 
         generate_output(self, self.player, output_directory)

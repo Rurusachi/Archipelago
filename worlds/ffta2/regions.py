@@ -74,7 +74,7 @@ def create_regions(world, player) -> None:
             for item in category.items:
                 if item[0] != 0:
                     recipe = ffta2_data.bazaarRecipes[item[0]-1]
-                    location_name = f"{recipe.name} Bazaar Recipe"
+                    location_name = f"Bazaar Recipe: {recipe.name}"
                     if world.options.bazaar_options.value == 3:
                         bazaar_region.locations.append(FFTA2Location(player, location_name, 0x0542AD48 + recipe.item * 2, bazaar_region))
 

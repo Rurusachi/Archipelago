@@ -4,7 +4,7 @@ import re
 
 from BaseClasses import Location, Region
 
-from .data import FFTA2Data, ffta2_data, QuestOffsets
+from .data import ffta2_data, QuestOffsets
 
 
 class FFTA2Location(Location):
@@ -97,7 +97,7 @@ unused_quests = ["-",  # Dummy quests
                  "Wanted: Barmaid!",
                  "Wanted: Tutor!",
                  "Wanted: Hatchery Worker",
-                 "Wanted: Assistant"
+                 "Wanted: Assistant",
                  "Wanted: Caretaker",
                  "Wanted: Woodworker",
                  "Wanted: Woodcutter",
@@ -112,6 +112,9 @@ unused_quests = ["-",  # Dummy quests
                  "Love-struck",
                  "A Small Favor",
                  "Drowsy Draught",
+
+                 # Unreachable
+                 "Survey No. 261",  # In Zellea
                  ]
 
 FFTA2QuestLocations: List[List[FFTA2QuestLocationData]] = [
@@ -119,10 +122,10 @@ FFTA2QuestLocations: List[List[FFTA2QuestLocationData]] = [
          FFTA2QuestLocationData(f"{quest.name} Reward 2", id, quest.memory + QuestOffsets.reward_2),
          FFTA2QuestLocationData(f"{quest.name} Reward 3", id, quest.memory + QuestOffsets.reward_3),
          FFTA2QuestLocationData(f"{quest.name} Reward 4", id, quest.memory + QuestOffsets.reward_4),
-         ] for id, quest in enumerate(ffta2_data.quests) if quest.region != 0 and\
-                                                            quest.name not in unused_quests and\
-                                                            re.search(r"part [0-9]*\Z", quest.name) is None and\
-                                                            not quest.name.endswith("random") and\
+         ] for id, quest in enumerate(ffta2_data.quests) if quest.region != 0 and
+                                                            quest.name not in unused_quests and
+                                                            re.search(r"part [0-9]*\Z", quest.name) is None and
+                                                            not quest.name.endswith("random") and
                                                             not quest.name.endswith("recruit")  # and quest.battle != 0
     ]
 

@@ -115,6 +115,9 @@ unused_quests = ["-",  # Dummy quests
 
                  # Unreachable
                  "Survey No. 261",  # In Zellea
+
+                 # Require certain items (in event data probably)
+                 "Rude Awakening",
                  ]
 
 FFTA2QuestLocations: List[List[FFTA2QuestLocationData]] = [

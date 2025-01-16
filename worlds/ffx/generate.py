@@ -73,4 +73,8 @@ def set_items(world, multiworld, player, patch: FFXProcedurePatch) -> None:
                     item_type = 0x00
                     item_id = 0
 
-            patch.write_token(APTokenTypes.WRITE, location.address, struct.pack("<BBH", item_type, amount, item_id))
+            if location.address & 0x1000 == 0x1000:
+                # Takara.bin
+                patch.write_token(APTokenTypes.WRITE, (location.address & 0xfff) * 4 + 0x14, struct.pack("<BBH", item_type, amount, item_id))
+            else:
+                print("Unknown location address")

@@ -1,9 +1,16 @@
-from BaseClasses import Entrance, ItemClassification, Region, Location
+from BaseClasses import Entrance, ItemClassification, Region, Location, LocationProgressType
 
 from .locations import FFXLocation, FFXTreasureLocations
 
 
 def create_regions(world, player) -> None:
+    def create_region_locations(region, treasures):
+        for treasure_id in treasures:
+            location = FFXTreasureLocations[treasure_id]
+            new_location = FFXLocation(player, location.name, location.rom_address, region)
+            if location.missable:
+                new_location.progress_type = LocationProgressType.EXCLUDED
+            region.locations.append(new_location)
 
     menu_region = Region("Menu", player, world.multiworld)
     world.multiworld.regions.append(menu_region)
@@ -13,4 +20,15 @@ def create_regions(world, player) -> None:
 
     for location in FFXTreasureLocations:
         new_location = FFXLocation(player, location.name, location.rom_address, test_region)
+        new_location.progress_type = LocationProgressType.EXCLUDED
         test_region.locations.append(new_location)
+
+    baaj_1_region = Region("Baaj Temple 1st visit", player, world.multiworld)
+    create_region_locations(baaj_1_region, [0, 1, 2, 3, 6, 7, 219, 213])
+
+    baaj_2_region = Region("Baaj Temple 2nd visit", player, world.multiworld)
+    create_region_locations(baaj_2_region, [204, 205, 5])
+
+
+    besaid_1_region = Region("Besaid Island 1st visit", player, world.multiworld)
+    besaid_2_region = Region("Besaid Island 2nd visit", player, world.multiworld)

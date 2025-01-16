@@ -293,6 +293,25 @@ weapons: List[ItemData] = [
     ItemData("Weapon (Tidus) 85", ItemClassification.useful, 0x5055),  # Offset=0564 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {SOS Overdrive [8010h]} }
 ]
 
+party_members: List[ItemData] = [
+    ItemData("Party Member: Tidus", ItemClassification.useful, 0xF000),
+    ItemData("Party Member: Yuna", ItemClassification.useful, 0xF001),
+    ItemData("Party Member: Auron", ItemClassification.useful, 0xF002),
+    ItemData("Party Member: Kimahri", ItemClassification.useful, 0xF003),
+    ItemData("Party Member: Wakka", ItemClassification.useful, 0xF004),
+    ItemData("Party Member: Lulu", ItemClassification.useful, 0xF005),
+    ItemData("Party Member: Rikku", ItemClassification.useful, 0xF006),
+    # ItemData("Party Member: Seymour", ItemClassification.useful, 0xF007),
+    ItemData("Party Member: Valefor", ItemClassification.useful, 0xF008),
+    ItemData("Party Member: Ifrit", ItemClassification.useful, 0xF009),
+    ItemData("Party Member: Ixion", ItemClassification.useful, 0xF00A),
+    ItemData("Party Member: Shiva", ItemClassification.useful, 0xF00B),
+    ItemData("Party Member: Bahamut", ItemClassification.useful, 0xF00C),
+    ItemData("Party Member: Anima", ItemClassification.useful, 0xF00D),
+    ItemData("Party Member: Yojimbo", ItemClassification.useful, 0xF00E),
+    ItemData("Party Member: Magus Sisters", ItemClassification.useful, 0xF00F),  # Sisters are 0x0f, 0x10, 0x11
+]
+
 AllItems = normal_items + key_items + weapons + filler_items
 
 item_table: typing.Dict[str, ItemData] = {item.itemName: item for item in AllItems}

@@ -29,7 +29,7 @@ for component in components:
         bizhawk_component = component
 
 if not UT_found:
-    bizhawk_component.file_identifier = SuffixIdentifier(*(*component.file_identifier.suffixes, ".apffta2"))
+    bizhawk_component.file_identifier = SuffixIdentifier(*(*bizhawk_component.file_identifier.suffixes, ".apffta2"))
 
 
 class FFTA2Client(BizHawkClient):

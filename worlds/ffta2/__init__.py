@@ -82,6 +82,7 @@ class FFTA2World(World):
         self.bazaar_recipes: List[Tuple[str, int, List[int]]] = []
         self.bazaar_loot_used_pool: Set[int] = set()
         self.loot_amount: int = 1
+        self.ut_can_gen_without_yaml = True
 
         # Ensure Universal Tracker uses same seed as original generation
         self.seed = getattr(multiworld, "re_gen_passthrough", {}).get("Final Fantasy Tactics A2", self.random.getrandbits(64))

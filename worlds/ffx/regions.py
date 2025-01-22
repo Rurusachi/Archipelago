@@ -24,11 +24,20 @@ def create_regions(world, player) -> None:
         test_region.locations.append(new_location)
 
     baaj_1_region = Region("Baaj Temple 1st visit", player, world.multiworld)
-    create_region_locations(baaj_1_region, [0, 1, 2, 3, 6, 7, 219, 213])
+    create_region_locations(baaj_1_region, [0, 1, 2, 3, 6, 7, 219, 213])  # + Klikk
+
+    al_bhed_ship_region = Region("Al Bhed Ship", player, world.multiworld)
+    create_region_locations(al_bhed_ship_region, [296])  # + Tros, Al Bhed Primer I
 
     baaj_2_region = Region("Baaj Temple 2nd visit", player, world.multiworld)
-    create_region_locations(baaj_2_region, [204, 205, 5])
+    create_region_locations(baaj_2_region, [204, 205, 5])  # + Anima
+
+
 
 
     besaid_1_region = Region("Besaid Island 1st visit", player, world.multiworld)
+    create_region_locations(besaid_1_region, [268, 9, 283, 285, 284, 282, 90, 91, 92, 13, 14, 215, 216, 15, 459])  # + Al Bhed Primer II, Yuna, Lulu, Wakka, Valefor, Brotherhood
+
+
+
     besaid_2_region = Region("Besaid Island 2nd visit", player, world.multiworld)

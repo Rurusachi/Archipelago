@@ -15,7 +15,8 @@ from .regions import create_regions
 from .rules import set_rules
 
 from .options import (FFTA2Options, GateNumber, JobUnlockRequirements, BazaarOptions)
-from .items import (create_item_label_to_code_map, AllItems, item_table, FFTA2Item, FillerItems, GateItems, jobUnlockItems, Loot, ItemData)
+from .items import (create_item_label_to_code_map, AllItems, item_table, FFTA2Item, FillerItems, GateItems,
+                    jobUnlockItems, Loot, ItemData)
 from .locations import (create_location_label_to_id_map)
 from .rom import FFTA2ProcedurePatch, generate_output
 from .data import (get_flag, FlagOffsets)

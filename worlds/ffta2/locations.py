@@ -118,6 +118,7 @@ unused_quests = ["-",  # Dummy quests
 
                  # Require certain items (in event data probably)
                  "Rude Awakening",
+                 "All Good Things...",
                  ]
 
 FFTA2QuestLocations: List[List[FFTA2QuestLocationData]] = [

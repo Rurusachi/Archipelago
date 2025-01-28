@@ -215,8 +215,8 @@ def generate_output(world, player: int, output_directory: str) -> None:
         #     patch.write_token(APTokenTypes.WRITE, quest.memory + QuestOffsets.location, struct.pack("<B", 0x4e))
 
         if quest.name == "The Two Grimoires" and world.options.final_quests.value == 1:
-            # Put the final quest near Targ so it's actually accessible
-            patch.write_token(APTokenTypes.WRITE, quest.memory + QuestOffsets.location, struct.pack("<B", 0x2))
+            # Put the final quest in the same location as The Ritual
+            patch.write_token(APTokenTypes.WRITE, quest.memory + QuestOffsets.location, struct.pack("<B", 0x71))
         elif quest.name.endswith("recruit") or quest.name.endswith("random"):
             patch.write_token(APTokenTypes.WRITE, quest.memory + QuestOffsets.story_requirement, struct.pack("<H", 0x1))
             patch.write_token(APTokenTypes.WRITE, quest.memory + QuestOffsets.days, struct.pack("<B", 5))

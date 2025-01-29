@@ -1,15 +1,16 @@
 import asyncio
 import Utils
+import sys
 
 
 def my_launch(*launch_args) -> None:
     from CommonClient import get_base_parser, server_loop, logger, gui_enabled
     from worlds._bizhawk.context import BizHawkClientContext, BizHawkClientCommandProcessor, _patch_and_run_game, _game_watcher
-
     tracker_loaded = False
     try:
-        from worlds.tracker.TrackerClient import TrackerGameContext as SuperContext
-        from worlds.tracker.TrackerClient import TrackerCommandProcessor as SuperCommandProcessor
+        from worlds.tracker.TrackerClient import (TrackerGameContext as SuperContext,
+                                                  TrackerCommandProcessor as SuperCommandProcessor,
+                                                  UT_VERSION)
         tracker_loaded = True
     except ModuleNotFoundError:
         from CommonClient import CommonContext as SuperContext
@@ -30,6 +31,12 @@ def my_launch(*launch_args) -> None:
                 super().on_package(cmd, args)
                 if tracker_loaded:
                     SuperContext.on_package(self, cmd, args)
+
+            def make_gui(self):
+                ui = super().make_gui()
+                if tracker_loaded:
+                    ui.base_title += f" (with Tracker {UT_VERSION}) for AP version"
+                return ui
 
         ctx = MyClientContext(args.connect, args.password)
         ctx.server_task = asyncio.create_task(server_loop(ctx), name="ServerLoop")

@@ -18,23 +18,11 @@ if TYPE_CHECKING:
 else:
     BizHawkClientContext = object
 
-UT_found = False
-bizhawk_component = None
-for component in components:
-    if component.script_name == "BizHawkClientUniversalTracker":
-        component.file_identifier = SuffixIdentifier(*(*component.file_identifier.suffixes, ".apffta2"))
-        UT_found = True
-        break
-    elif component.script_name == "BizHawkClient":
-        bizhawk_component = component
-
-if not UT_found:
-    bizhawk_component.file_identifier = SuffixIdentifier(*(*bizhawk_component.file_identifier.suffixes, ".apffta2"))
-
 
 class FFTA2Client(BizHawkClient):
     game = "Final Fantasy Tactics A2"
     system = "NDS"
+    patch_suffix = ".apffta2"
     local_checked_locations: Set[int]
     local_set_events: Dict[str, bool]
     goal_flag: Tuple[int, int]  # Byte, bit

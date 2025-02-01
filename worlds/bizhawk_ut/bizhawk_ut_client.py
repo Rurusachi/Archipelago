@@ -26,6 +26,7 @@ def my_launch(*launch_args) -> None:
 
         class MyClientContext(BizHawkClientContext, SuperContext):
             command_processor = MyClientCommandProcessor
+            tags = BizHawkClientContext.tags
 
             def on_package(self, cmd, args):
                 super().on_package(cmd, args)

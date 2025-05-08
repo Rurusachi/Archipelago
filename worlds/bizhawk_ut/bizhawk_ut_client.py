@@ -10,7 +10,7 @@ def my_launch(*launch_args) -> None:
     try:
         from worlds.tracker.TrackerClient import (TrackerGameContext as SuperContext,
                                                   TrackerCommandProcessor as SuperCommandProcessor,
-                                                  UT_VERSION)
+                                                  UT_VERSION, updateTracker)
         tracker_loaded = True
     except ModuleNotFoundError:
         from CommonClient import CommonContext as SuperContext
@@ -28,14 +28,18 @@ def my_launch(*launch_args) -> None:
             command_processor = MyClientCommandProcessor
             tags = BizHawkClientContext.tags
 
+            def __init__(self, server_address, password):
+                super().__init__(server_address, password)
+                self.tracker_enabled = tracker_loaded
+
             def on_package(self, cmd, args):
                 super().on_package(cmd, args)
-                if tracker_loaded:
+                if self.tracker_enabled:
                     SuperContext.on_package(self, cmd, args)
 
             def make_gui(self):
                 ui = super().make_gui()
-                if tracker_loaded:
+                if self.tracker_enabled:
                     ui.base_title += f" (with Tracker {UT_VERSION}) for AP version"
                 return ui
 

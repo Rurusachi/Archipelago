@@ -39,6 +39,11 @@ def my_launch(*launch_args) -> None:
                     ui.base_title += f" (with Tracker {UT_VERSION}) for AP version"
                 return ui
 
+        if args.patch_file != "":
+            metadata = _patch_and_run_game(args.patch_file)
+            if "server" in metadata:
+                args.connect = metadata["server"]
+
         ctx = MyClientContext(args.connect, args.password)
         ctx.server_task = asyncio.create_task(server_loop(ctx), name="ServerLoop")
         if tracker_loaded:
@@ -46,9 +51,6 @@ def my_launch(*launch_args) -> None:
         if gui_enabled:
             ctx.run_gui()
         ctx.run_cli()
-
-        if args.patch_file != "":
-            Utils.async_start(_patch_and_run_game(args.patch_file))
 
         watcher_task = asyncio.create_task(_game_watcher(ctx), name="GameWatcher")
 

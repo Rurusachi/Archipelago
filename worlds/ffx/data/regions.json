@@ -1,0 +1,818 @@
+[
+  {
+    "name": "Baaj Temple 1st visit",
+    "id": 0,
+    "treasures": [0, 1, 2, 3, 6, 7, 219, 213],
+    "party_members": [],
+    "bosses": [0],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [1],
+    "rules": []
+  },
+  {
+    "name": "Al Bhed Ship",
+    "id": 1,
+    "treasures": [296],
+    "party_members": [],
+    "bosses": [1],
+    "overdrives": [],
+    "other": [1],
+    "leads_to": [2],
+    "rules": []
+  },
+  {
+    "name": "Baaj Temple 2nd visit",
+    "id": 2,
+    "treasures": [204, 205, 5],
+    "party_members": [13],
+    "bosses": [],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [],
+    "rules": []
+  },
+
+  {
+    "name": "Besaid Island 1st visit",
+    "id": 3,
+    "treasures": [268, 9, 283, 285, 284, 282, 90, 91, 92, 13, 14, 215, 216, 15, 459, 290, 288, 287, 289, 286],
+    "party_members": [1, 3, 4, 5, 8],
+    "bosses": [],
+    "overdrives": [21],
+    "other": [0, 2],
+    "leads_to": [4],
+    "rules": []
+  },
+  {
+    "name": "S.S. Liki 1st visit",
+    "id": 4,
+    "treasures": [16],
+    "party_members": [],
+    "bosses": [3, 4],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [5],
+    "rules": []
+  },
+  {
+    "name": "Besaid Island 2nd visit",
+    "id": 5,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [2],
+    "overdrives": [],
+    "other": [28],
+    "leads_to": [6],
+    "rules": []
+  },
+  {
+    "name": "S.S. Liki 2nd visit",
+    "id": 6,
+    "treasures": [336],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [29],
+    "leads_to": [],
+    "rules": []
+  },
+
+  {
+    "name": "Kilika 1st visit: Pre-Geneaux",
+    "id": 7,
+    "treasures": [17, 18, 27, 28, 293, 295, 29, 292],
+    "party_members": [],
+    "bosses": [5],
+    "overdrives": [],
+    "other": [4],
+    "leads_to": [8],
+    "rules": []
+  },
+
+  {
+    "name": "Kilika 1st visit: Post-Geneaux",
+    "id": 8,
+    "treasures": [19],
+    "party_members": [9],
+    "bosses": [6],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [9],
+    "rules": ["Sinspawn Geneaux"]
+  },
+  {
+    "name": "S.S. Winno 1st visit",
+    "id": 9,
+    "treasures": [31],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [5, 36],
+    "leads_to": [10],
+    "rules": []
+  },
+  {
+    "name": "Kilika 2nd visit",
+    "id": 10,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [11],
+    "rules": []
+  },
+  {
+    "name": "S.S. Winno 2nd visit",
+    "id": 11,
+    "treasures": [365],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [],
+    "rules": []
+  },
+
+  {
+    "name": "Luca 1st visit: Pre-Oblitzerator",
+    "id": 12,
+    "treasures": [36, 33, 34, 32, 35, 206, 37],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [6, 7],
+    "leads_to": [13],
+    "rules": []
+  },
+  {
+    "name": "Luca 1st visit: Post-Oblitzerator",
+    "id": 13,
+    "treasures": [497, 93, 271, 244],
+    "party_members": [2],
+    "bosses": [7],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [14],
+    "rules": ["Oblitzerator"]
+  },
+  {
+    "name": "Luca 2nd visit",
+    "id": 14,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [30],
+    "leads_to": [],
+    "rules": []
+  },
+
+  {
+    "name": "Mi'ihen Highroad 1st visit: Pre-Chocobo Eater",
+    "id": 15,
+    "treasures": [311, 309, 310, 38, 44, 313, 312, 317, 318, 45, 316, 314, 315, 46, 423, 97],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [8],
+    "leads_to": [16],
+    "rules": []
+  },
+  {
+    "name": "Mi'ihen Highroad 1st visit: Post-Chocobo Eater",
+    "id": 16,
+    "treasures": [42, 43, 40, 41, 39, 269],
+    "party_members": [],
+    "bosses": [8],
+    "overdrives": [],
+    "other": [9],
+    "leads_to": [17],
+    "rules": ["Chocobo Eater"]
+  },
+  {
+    "name": "Mi'ihen Highroad 2nd visit",
+    "id": 17,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [31],
+    "leads_to": [],
+    "rules": []
+  },
+
+  {
+    "name": "Mushroom Rock Road 1st visit: Pre-Sinspawn Gui",
+    "id": 18,
+    "treasures": [321, 319, 323, 322, 320, 324, 48, 325, 50, 49, 327, 57, 326, 328, 52, 51],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [10],
+    "leads_to": [19],
+    "rules": []
+  },
+  {
+    "name": "Mushroom Rock Road 1st visit: Post-Sinspawn Gui",
+    "id": 19,
+    "treasures": [98],
+    "party_members": [],
+    "bosses": [9, 10],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [20],
+    "rules": ["Sinspawn Gui"]
+  },
+  {
+    "name": "Mushroom Rock Road 2nd visit",
+    "id": 20,
+    "treasures": [99],
+    "party_members": [],
+    "bosses": [11],
+    "overdrives": [],
+    "other": [32],
+    "leads_to": [],
+    "rules": []
+  },
+
+  {
+    "name": "Djose 1st visit",
+    "id": 21,
+    "treasures": [54, 298, 300, 299, 301, 297, 55, 58, 59, 61, 62, 63, 484, 60, 302, 303, 304],
+    "party_members": [10],
+    "bosses": [],
+    "overdrives": [],
+    "other": [11],
+    "leads_to": [22],
+    "rules": []
+  },
+  {
+    "name": "Djose 2nd visit",
+    "id": 22,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [],
+    "rules": []
+  },
+
+  {
+    "name": "Moonflow 1st visit: Pre-Extractor",
+    "id": 23,
+    "treasures": [376, 197, 377, 378, 198, 199],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [24],
+    "rules": []
+  },
+  {
+    "name": "Moonflow 1st visit: Post-Extractor",
+    "id": 24,
+    "treasures": [200, 201, 202],
+    "party_members": [6],
+    "bosses": [12],
+    "overdrives": [],
+    "other": [12],
+    "leads_to": [25],
+    "rules": ["Extractor"]
+  },
+  {
+    "name": "Moonflow 2nd visit",
+    "id": 25,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [33],
+    "leads_to": [],
+    "rules": []
+  },
+
+  {
+    "name": "Guadosalam 1st visit",
+    "id": 26,
+    "treasures": [65, 64, 66, 67, 218, 272],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [13, 37],
+    "leads_to": [27],
+    "rules": []
+  },
+  {
+    "name": "Guadosalam 2nd visit",
+    "id": 27,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [],
+    "rules": []
+  },
+
+  {
+    "name": "Thunder Plains 1st visit",
+    "id": 28,
+    "treasures": [178, 179, 180, 181, 345, 182, 183, 185, 184, 188, 189, 190, 191, 192, 193, 194, 278],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [14],
+    "leads_to": [29],
+    "rules": []
+  },
+  {
+    "name": "Thunder Plains 2nd visit",
+    "id": 29,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [13],
+    "overdrives": [],
+    "other": [34],
+    "leads_to": [],
+    "rules": []
+  },
+
+  {
+    "name": "Macalania Woods 1st visit: Pre-Spherimorph",
+    "id": 30,
+    "treasures": [69, 68, 70, 277, 73],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [15],
+    "leads_to": [31],
+    "rules": []
+  },
+  {
+    "name": "Macalania Woods 1st visit: Post-Spherimorph",
+    "id": 31,
+    "treasures": [177, 75],
+    "party_members": [],
+    "bosses": [14],
+    "overdrives": [],
+    "other": [27],
+    "leads_to": [32],
+    "rules": ["Spherimorph"]
+  },
+  {
+    "name": "Lake Macalania 1st visit: Pre-Crawler",
+    "id": 32,
+    "treasures": [76],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [16],
+    "leads_to": [33],
+    "rules": []
+  },
+  {
+    "name": "Lake Macalania 1st visit: Post-Crawler",
+    "id": 33,
+    "treasures": [78, 305, 85, 83, 84, 87, 308, 307, 306, 86],
+    "party_members": [],
+    "bosses": [15],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [34],
+    "rules": ["Crawler"]
+  },
+  {
+    "name": "Lake Macalania 1st visit: Post-Seymour/Anima",
+    "id": 34,
+    "treasures": [485, 77],
+    "party_members": [11],
+    "bosses": [16],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [35],
+    "rules": ["Seymour/Anima"]
+  },
+  {
+    "name": "Lake Macalania 1st visit: Post-Wendigo",
+    "id": 35,
+    "treasures": [80, 79],
+    "party_members": [],
+    "bosses": [17],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [36],
+    "rules": ["Wendigo"]
+  },
+  {
+    "name": "Lake Macalania 2nd visit",
+    "id": 36,
+    "treasures": [111],
+    "party_members": [],
+    "bosses": [18],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [],
+    "rules": []
+  },
+
+  {
+    "name": "Bikanel 1st visit",
+    "id": 37,
+    "treasures": [346, 210, 347, 211, 348, 351, 350, 349, 212, 352, 354, 353, 358, 359, 355, 273, 356, 357],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [19, 18, 17],
+    "leads_to": [38],
+    "rules": []
+  },
+  {
+    "name": "Home 1st visit",
+    "id": 38,
+    "treasures": [367, 360, 396, 395, 361, 397, 362, 363, 364],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [21, 20],
+    "leads_to": [39],
+    "rules": []
+  },
+  {
+    "name": "Bikanel 2nd visit",
+    "id": 39,
+    "treasures": [279],
+    "party_members": [],
+    "bosses": [19],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [],
+    "rules": []
+  },
+
+  {
+    "name": "Airship 1st visit: Pre-Evrae",
+    "id": 40,
+    "treasures": [375, 405],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [41, 42],
+    "rules": []
+  },
+  {
+    "name": "Airship Secret Destinations",
+    "id": 41,
+    "treasures": [214, 368, 369, 482, 480, 481, 483],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [],
+    "rules": []
+  },
+  {
+    "name": "Airship 1st visit: Post-Evrae",
+    "id": 42,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [20],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [43],
+    "rules": ["Evrae"]
+  },
+  {
+    "name": "Airship 2nd visit: Sin Fins + Genais",
+    "id": 43,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [21, 22, 23],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [44],
+    "rules": ["Airship Sin"]
+  },
+  {
+    "name": "Airship 2nd visit: Overdrive Sin",
+    "id": 44,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [24],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [45],
+    "rules": ["Overdrive Sin"]
+  },
+  {
+    "name": "Airship 3rd visit",
+    "id": 45,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [25],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [],
+    "rules": []
+  },
+
+  {
+    "name": "Bevelle 1st visit: Pre-Isaaru",
+    "id": 46,
+    "treasures": [217, 102, 110, 105, 104, 109, 106, 107, 108],
+    "party_members": [12],
+    "bosses": [],
+    "overdrives": [],
+    "other": [22],
+    "leads_to": [47],
+    "rules": []
+  },
+  {
+    "name": "Bevelle 1st visit: Post-Isaaru",
+    "id": 47,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [26],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [48],
+    "rules": ["Isaaru"]
+  },
+  {
+    "name": "Bevelle 1st visit: Post-Evrae Altana",
+    "id": 48,
+    "treasures": [101, 100],
+    "party_members": [],
+    "bosses": [27],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [49],
+    "rules": ["Evrae Altana"]
+  },
+  {
+    "name": "Bevelle 1st visit: Post-Seymour Natus",
+    "id": 49,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [28],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [50],
+    "rules": ["Seymour Natus"]
+  },
+  {
+    "name": "Bevelle 2nd visit",
+    "id": 50,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [],
+    "rules": []
+  },
+
+  {
+    "name": "Calm Lands 1st visit: Pre-Defender X",
+    "id": 51,
+    "treasures": [116, 115, 117],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [23],
+    "leads_to": [52, 53, 57],
+    "rules": []
+  },
+  {
+    "name": "Remiem Temple",
+    "id": 52,
+    "treasures": [176, 379, 381, 383, 385, 334, 388, 390, 392, 275],
+    "party_members": [15],
+    "bosses": [],
+    "overdrives": [],
+    "other": [24],
+    "leads_to": [],
+    "rules": []
+  },
+  {
+    "name": "Calm Lands 1st visit: Post-Defender X",
+    "id": 53,
+    "treasures": [118, 337, 338, 339, 340, 114, 274],
+    "party_members": [],
+    "bosses": [29],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [54, 55],
+    "rules": ["Defender X"]
+  },
+  {
+    "name": "Calm Lands 2nd visit",
+    "id": 54,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [],
+    "rules": []
+  },
+
+  {
+    "name": "Cavern of the Stolen Fayth 1st visit",
+    "id": 55,
+    "treasures": [120, 121, 122, 123, 124, 125, 126],
+    "party_members": [14],
+    "bosses": [],
+    "overdrives": [],
+    "other": [25],
+    "leads_to": [56],
+    "rules": []
+  },
+
+  {
+    "name": "Cavern of the Stolen Fayth 2nd visit",
+    "id": 56,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [31],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [],
+    "rules": []
+  },
+
+
+  {
+    "name": "Monster Arena",
+    "id": 57,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [],
+    "rules": []
+  },
+
+
+  {
+    "name": "Mt. Gagazet 1st visit: Pre-Biran and Yenke",
+    "id": 58,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [32],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [59],
+    "rules": ["Biran and Yenke"]
+  },
+  {
+    "name": "Mt. Gagazet 1st visit: Post-Biran and Yenke",
+    "id": 59,
+    "treasures": [128, 129, 130, 131, 132],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [35],
+    "leads_to": [60],
+    "rules": ["Biran and Yenke"]
+  },
+  {
+    "name": "Mt. Gagazet 1st visit: Post-Seymour Flux",
+    "id": 60,
+    "treasures": [270, 136, 137, 138, 139, 135],
+    "party_members": [],
+    "bosses": [33],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [61],
+    "rules": ["Seymour Flux"]
+  },
+  {
+    "name": "Mt. Gagazet 2nd visit",
+    "id": 61,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [34, 35],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [],
+    "rules": ["Sanctuary Keeper"]
+  },
+
+  {
+    "name": "Zanarkand 1st visit: Pre-Spectral Keeper",
+    "id": 62,
+    "treasures": [145, 146, 147, 148, 149, 150, 209],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [63],
+    "rules": []
+  },
+  {
+    "name": "Zanarkand 1st visit: Post-Spectral Keeper",
+    "id": 63,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [36],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [64],
+    "rules": ["Spectral Keeper"]
+  },
+  {
+    "name": "Zanarkand 1st visit: Post-Yunalesca",
+    "id": 64,
+    "treasures": [267],
+    "party_members": [],
+    "bosses": [37],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [65],
+    "rules": ["Yunalesca"]
+  },
+  {
+    "name": "Zanarkand 2nd visit",
+    "id": 65,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [38],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [],
+    "rules": []
+  },
+
+  {
+    "name": "Sin: Pre-Seymour Omnis",
+    "id": 66,
+    "treasures": [166, 167, 163, 164, 165],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [67],
+    "rules": []
+  },
+  {
+    "name": "Sin: Post-Seymour Omnis",
+    "id": 67,
+    "treasures": [168, 169, 170, 171, 174, 172, 173, 175],
+    "party_members": [],
+    "bosses": [39],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [68],
+    "rules": ["Seymour Omnis"]
+  },
+  {
+    "name": "Sin: Braska's Final Aeon",
+    "id": 68,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [],
+    "rules": ["Braska's Final Aeon"]
+  },
+
+  {
+    "name": "Omega Ruins: Pre-Ultima Weapon",
+    "id": 69,
+    "treasures": [330],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [26],
+    "leads_to": [70],
+    "rules": []
+  },
+  {
+    "name": "Omega Ruins: Post-Ultima Weapon",
+    "id": 70,
+    "treasures": [331],
+    "party_members": [],
+    "bosses": [43],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [71],
+    "rules": ["Ultima Weapon"]
+  },
+  {
+    "name": "Omega Ruins: Post-Omega Weapon",
+    "id": 71,
+    "treasures": [332],
+    "party_members": [],
+    "bosses": [44],
+    "overdrives": [],
+    "other": [],
+    "leads_to": [],
+    "rules": ["Omega Weapon"]
+  }
+]

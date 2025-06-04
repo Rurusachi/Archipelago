@@ -1,10 +1,13 @@
 import os
 import pkgutil
 import struct
-from typing import Tuple, Dict
+import zipfile
+import yaml
 
 from settings import get_settings
-from worlds.Files import APProcedurePatch, APTokenMixin, APTokenTypes
+from worlds.AutoWorld import World
+from worlds.Files import APProcedurePatch, APTokenMixin, APTokenTypes, APPatch
+from .locations import location_types, get_location_type
 
 
 def get_base_takara_as_bytes() -> bytes:
@@ -13,6 +16,12 @@ def get_base_takara_as_bytes() -> bytes:
 
     return base_takara_bytes
 
+class APFFXFile(APPatch):
+    game = "Final Fantasy X"
+    def get_manifest(self):
+        manifest = super().get_manifest()
+        manifest["patch_file_ending"] = ".apffx"
+        return manifest
 
 class FFXProcedurePatch(APProcedurePatch, APTokenMixin):
     game = "Final Fantasy X"
@@ -29,17 +38,38 @@ class FFXProcedurePatch(APProcedurePatch, APTokenMixin):
         return get_base_takara_as_bytes()
 
 
-def generate_output(world, player: int, output_directory: str) -> None:
-    patch = FFXProcedurePatch(player=player, player_name=world.multiworld.player_name[player])
+def generate_output(world: World, player: int, output_directory: str) -> None:
 
-    set_items(world, world.multiworld, player, patch)
+    patch_data = dict()
 
-    patch.write_file("token_data.bin", patch.get_token_binary())
+    #locations = []
 
-    out_file_name = world.multiworld.get_out_file_name_base(world.player)
-    patch.write(
-        os.path.join(output_directory,
-                     f"{out_file_name}{patch.patch_file_ending}"))
+    locations = {x: [] for x in location_types.values()}
+
+    for location in world.multiworld.get_filled_locations(player):
+        if location.item.player != player:
+            item_id = 0
+        locations[get_location_type(location.address)].append({"location_name": location.name, "location_id": location.address & 0x0FFF, "item": location.item.code, "item_name": location.item.name})
+        #locations.append({"location_name": location.name, "location_id": location.address, "item": location.item.code, "item_name": location.item.name})
+
+    file_path = os.path.join(output_directory, f"{world.multiworld.get_out_file_name_base(world.player)}.apffx")
+    APFFX = APFFXFile(file_path, player=world.player, player_name=world.multiworld.player_name[world.player])
+    with zipfile.ZipFile(file_path, mode="w", compression=zipfile.ZIP_DEFLATED,
+                         compresslevel=9) as zf:
+        zf.writestr("locations.yaml", yaml.dump(locations))
+        APFFX.write_contents(zf)
+
+
+    # patch = FFXProcedurePatch(player=player, player_name=world.multiworld.player_name[player])
+    #
+    # set_items(world, world.multiworld, player, patch)
+    #
+    # patch.write_file("token_data.bin", patch.get_token_binary())
+    #
+    # out_file_name = world.multiworld.get_out_file_name_base(world.player)
+    # patch.write(
+    #     os.path.join(output_directory,
+    #                  f"{out_file_name}{patch.patch_file_ending}"))
 
 
 def set_items(world, multiworld, player, patch: FFXProcedurePatch) -> None:
@@ -54,18 +84,23 @@ def set_items(world, multiworld, player, patch: FFXProcedurePatch) -> None:
             else:
                 item_id = location.item.code
 
-                if item_id >= 0x2000 and item_id <= 0x206F:
+                if 0x2000 <= item_id <= 0x206F:
                     # Normal item
                     amount = 10
                     item_type = 0x02
-                elif item_id >= 0xA000 and item_id <= 0xA03F:
+                elif 0xA000 <= item_id <= 0xA03F:
                     # Key item
                     amount = 1
                     item_type = 0x0A
-                elif item_id >= 0x5000 and item_id <= 0x5085:
+                elif 0x5000 <= item_id <= 0x5085:
                     # Weapon
                     amount = 1
                     item_type = 0x05
+                    item_id &= 0xff
+                elif 0xD000 <= item_id <= 0xDFFF:
+                    # Ability
+                    amount = 1
+                    item_type = 0x0D
                     item_id &= 0xff
                 elif item_id == 0x1000:
                     # Gil

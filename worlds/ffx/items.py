@@ -1,9 +1,9 @@
-from typing import Dict, List
-import typing
+from typing import NamedTuple
 from BaseClasses import Item, ItemClassification
+import re
 
 
-class ItemData(typing.NamedTuple):
+class ItemData(NamedTuple):
     itemName: str
     progression: ItemClassification
     itemID: int = 0x00
@@ -18,7 +18,7 @@ class FFXItem(Item):
     game: str = "Final Fantasy X"
 
 
-filler_items: List[ItemData] = [
+filler_items: list[ItemData] = [
     ItemData("Potion", ItemClassification.filler, 0x2000),
     ItemData("Hi-Potion", ItemClassification.filler, 0x2001),
     ItemData("X-Potion", ItemClassification.filler, 0x2002),
@@ -38,7 +38,7 @@ filler_items: List[ItemData] = [
     ItemData("1000 Gil", ItemClassification.filler, 0x1000),
 ]
 
-normal_items: List[ItemData] = [
+normal_items: list[ItemData] = [
     ItemData("Power Distiller", ItemClassification.useful, 0x2010),
     ItemData("Mana Distiller", ItemClassification.useful, 0x2011),
     ItemData("Speed Distiller", ItemClassification.useful, 0x2012),
@@ -137,7 +137,7 @@ normal_items: List[ItemData] = [
     ItemData("[Winning Formula]", ItemClassification.useful, 0x206F),
 ]
 
-key_items: List[ItemData] = [
+key_items: list[ItemData] = [
     ItemData("Withered Bouquet", ItemClassification.progression, 0xA000),
     ItemData("Flint", ItemClassification.progression, 0xA001),
     ItemData("Cloudy Mirror", ItemClassification.progression, 0xA002),
@@ -204,7 +204,7 @@ key_items: List[ItemData] = [
     # ItemData("", ItemClassification.progression, 0xA03F),
 ]
 
-weapons: List[ItemData] = [
+equips: list[ItemData] = [
     ItemData("Weapon (Tidus): Crystal Sword", ItemClassification.useful, 0x5000),  # Offset=0014 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Firestrike [801Eh], Icestrike [8022h], Lightningstrike [8026h], Waterstrike [802Ah]} }
     ItemData("Weapon (Tidus): Brotherhood", ItemClassification.useful, 0x5001),  # Offset=0024 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Strength +5% [8063h], Strength +10% [8064h], Waterstrike [802Ah], Sensor [8000h]}, Brotherhood }
     ItemData("Weapon (Yuna): Astral Rod", ItemClassification.useful, 0x5002),  # Offset=0034 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {One MP Cost [800Dh], Empty, Empty, Empty} }
@@ -293,37 +293,358 @@ weapons: List[ItemData] = [
     ItemData("Weapon (Tidus) 85", ItemClassification.useful, 0x5055),  # Offset=0564 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {SOS Overdrive [8010h]} }
 ]
 
-party_members: List[ItemData] = [
-    ItemData("Party Member: Tidus", ItemClassification.useful, 0xF000),
-    ItemData("Party Member: Yuna", ItemClassification.useful, 0xF001),
-    ItemData("Party Member: Auron", ItemClassification.useful, 0xF002),
-    ItemData("Party Member: Kimahri", ItemClassification.useful, 0xF003),
-    ItemData("Party Member: Wakka", ItemClassification.useful, 0xF004),
-    ItemData("Party Member: Lulu", ItemClassification.useful, 0xF005),
-    ItemData("Party Member: Rikku", ItemClassification.useful, 0xF006),
-    # ItemData("Party Member: Seymour", ItemClassification.useful, 0xF007),
-    ItemData("Party Member: Valefor", ItemClassification.useful, 0xF008),
-    ItemData("Party Member: Ifrit", ItemClassification.useful, 0xF009),
-    ItemData("Party Member: Ixion", ItemClassification.useful, 0xF00A),
-    ItemData("Party Member: Shiva", ItemClassification.useful, 0xF00B),
-    ItemData("Party Member: Bahamut", ItemClassification.useful, 0xF00C),
-    ItemData("Party Member: Anima", ItemClassification.useful, 0xF00D),
-    ItemData("Party Member: Yojimbo", ItemClassification.useful, 0xF00E),
-    ItemData("Party Member: Magus Sisters", ItemClassification.useful, 0xF00F),  # Sisters are 0x0f, 0x10, 0x11
+party_members: list[ItemData] = [
+    ItemData("Party Member: Tidus", ItemClassification.progression, 0xF000),
+    ItemData("Party Member: Yuna", ItemClassification.progression, 0xF001),
+    ItemData("Party Member: Auron", ItemClassification.progression, 0xF002),
+    ItemData("Party Member: Kimahri", ItemClassification.progression, 0xF003),
+    ItemData("Party Member: Wakka", ItemClassification.progression, 0xF004),
+    ItemData("Party Member: Lulu", ItemClassification.progression, 0xF005),
+    ItemData("Party Member: Rikku", ItemClassification.progression, 0xF006),
+    ItemData("Party Member: Seymour", ItemClassification.progression, 0xF007),
+    ItemData("Party Member: Valefor", ItemClassification.progression, 0xF008),
+    ItemData("Party Member: Ifrit", ItemClassification.progression, 0xF009),
+    ItemData("Party Member: Ixion", ItemClassification.progression, 0xF00A),
+    ItemData("Party Member: Shiva", ItemClassification.progression, 0xF00B),
+    ItemData("Party Member: Bahamut", ItemClassification.progression, 0xF00C),
+    ItemData("Party Member: Anima", ItemClassification.progression, 0xF00D),
+    ItemData("Party Member: Yojimbo", ItemClassification.progression, 0xF00E),
+    ItemData("Party Member: Magus Sisters", ItemClassification.progression, 0xF00F),  # Sisters are 0x0f, 0x10, 0x11
 ]
 
-AllItems = normal_items + key_items + weapons + filler_items
+character_names = [
+    "Tidus",
+    "Yuna",
+    "Auron",
+    "Kimahri",
+    "Wakka",
+    "Lulu",
+    "Rikku",
+    #"Seymour",
+]
 
-item_table: typing.Dict[str, ItemData] = {item.itemName: item for item in AllItems}
-items_by_id: typing.Dict[int, ItemData] = {item.itemID: item for item in AllItems}
+abilities_per_character: list[ItemData] = [ ItemData(f"{character_names[character]} {ability[0]}", ItemClassification.progression, ability[1] | character << 8) for character in range(7) for ability in [
+    # Lvl 3 lock
+    # Empty node
+    ("Ability: Strength +1", 0xD002),
+    ("Ability: Strength +2", 0xD003),
+    ("Ability: Strength +3", 0xD004),
+    ("Ability: Strength +4", 0xD005),
+
+    ("Ability: Defense +1", 0xD006),
+    ("Ability: Defense +2", 0xD007),
+    ("Ability: Defense +3", 0xD008),
+    ("Ability: Defense +4", 0xD009),
+
+    ("Ability: Magic +1", 0xD00A),
+    ("Ability: Magic +2", 0xD00B),
+    ("Ability: Magic +3", 0xD00C),
+    ("Ability: Magic +4", 0xD00D),
+
+    ("Ability: Magic Defense +1", 0xD00E),
+    ("Ability: Magic Defense +2", 0xD00F),
+    ("Ability: Magic Defense +3", 0xD010),
+    ("Ability: Magic Defense +4", 0xD011),
+
+    ("Ability: Agility +1", 0xD012),
+    ("Ability: Agility +2", 0xD013),
+    ("Ability: Agility +3", 0xD014),
+    ("Ability: Agility +4", 0xD015),
+
+    ("Ability: Luck +1", 0xD016),
+    ("Ability: Luck +2", 0xD017),
+    ("Ability: Luck +3", 0xD018),
+    ("Ability: Luck +4", 0xD019),
+
+    ("Ability: Evasion +1", 0xD01A),
+    ("Ability: Evasion +2", 0xD01B),
+    ("Ability: Evasion +3", 0xD01C),
+    ("Ability: Evasion +4", 0xD01D),
+
+    ("Ability: Accuracy +1", 0xD01E),
+    ("Ability: Accuracy +2", 0xD01F),
+    ("Ability: Accuracy +3", 0xD020),
+    ("Ability: Accuracy +4", 0xD021),
+
+    ("Ability: HP +200", 0xD022),
+    ("Ability: HP +300", 0xD023),
+
+    ("Ability: MP +40", 0xD024),
+    ("Ability: MP +20", 0xD025),
+    ("Ability: MP +10", 0xD026),
+
+    # Lvl 1 lock
+    # Lvl 2 lock
+    # Lvl 4 lock
+
+    ("Ability: Delay Attack", 0xD02A),
+    ("Ability: Delay Buster", 0xD02B),
+    ("Ability: Sleep Attack", 0xD02C),
+    ("Ability: Silence Attack", 0xD02D),
+    ("Ability: Dark Attack", 0xD02E),
+    ("Ability: Zombie Attack", 0xD02F),
+    ("Ability: Sleep Buster", 0xD030),
+    ("Ability: Silence Buster", 0xD031),
+    ("Ability: Dark Buster", 0xD032),
+    ("Ability: Triple Foul", 0xD033),
+    ("Ability: Power Break", 0xD034),
+    ("Ability: Magic Break", 0xD035),
+    ("Ability: Armor Break", 0xD036),
+    ("Ability: Mental Break", 0xD037),
+    ("Ability: Mug", 0xD038),
+    ("Ability: Quick Hit", 0xD039),
+
+    ("Ability: Steal", 0xD03A),
+    ("Ability: Use", 0xD03B),
+    ("Ability: Flee", 0xD03C),
+    ("Ability: Pray", 0xD03D),
+    ("Ability: Cheer", 0xD03E),
+    ("Ability: Focus", 0xD03F),
+    ("Ability: Reflex", 0xD040),
+    ("Ability: Aim", 0xD041),
+    ("Ability: Luck", 0xD042),
+    ("Ability: Jinx", 0xD043),
+    ("Ability: Lancet", 0xD044),
+    ("Ability: Guard", 0xD045),
+    ("Ability: Sentinel", 0xD046),
+    ("Ability: Spare Change", 0xD047),
+    ("Ability: Threaten", 0xD048),
+    ("Ability: Provoke", 0xD049),
+    ("Ability: Entrust", 0xD04A),
+    ("Ability: Copycat", 0xD04B),
+    ("Ability: Doublecast", 0xD04C),
+    ("Ability: Bribe", 0xD04D),
+
+    ("Ability: Cure", 0xD04E),
+    ("Ability: Cura", 0xD04F),
+    ("Ability: Curaga", 0xD050),
+    ("Ability: Nul Frost", 0xD051),
+    ("Ability: Nul Blaze", 0xD052),
+    ("Ability: Nul Shock", 0xD053),
+    ("Ability: Nul Tide", 0xD054),
+    ("Ability: Scan", 0xD055),
+    ("Ability: Esuna", 0xD056),
+    ("Ability: Life", 0xD057),
+    ("Ability: Full Life", 0xD058),
+    ("Ability: Haste", 0xD059),
+    ("Ability: Hastega", 0xD05A),
+    ("Ability: Slow", 0xD05B),
+    ("Ability: Slowga", 0xD05C),
+    ("Ability: Shell", 0xD05D),
+    ("Ability: Protect", 0xD05E),
+    ("Ability: Reflect", 0xD05F),
+    ("Ability: Dispel", 0xD060),
+    ("Ability: Regen", 0xD061),
+    ("Ability: Holy", 0xD062),
+    ("Ability: Auto Life", 0xD063),
+
+    ("Ability: Blizzard", 0xD064),
+    ("Ability: Fire", 0xD065),
+    ("Ability: Thunder", 0xD066),
+    ("Ability: Water", 0xD067),
+    ("Ability: Fira", 0xD068),
+    ("Ability: Blizzara", 0xD069),
+    ("Ability: Thundara", 0xD06A),
+    ("Ability: Watera", 0xD06B),
+    ("Ability: Firaga", 0xD06C),
+    ("Ability: Blizzaga", 0xD06D),
+    ("Ability: Thundaga", 0xD06E),
+    ("Ability: Waterga", 0xD06F),
+    ("Ability: Bio", 0xD070),
+    ("Ability: Demi", 0xD071),
+    ("Ability: Death", 0xD072),
+    ("Ability: Drain", 0xD073),
+    ("Ability: Osmose", 0xD074),
+    ("Ability: Flare", 0xD075),
+    ("Ability: Ultima", 0xD076),
+
+    ("Ability: Pilfer Gil", 0xD077),
+    ("Ability: Full Break", 0xD078),
+    ("Ability: Extract Power", 0xD079),
+    ("Ability: Extract Mana", 0xD07A),
+    ("Ability: Extract Speed", 0xD07B),
+    ("Ability: Extract Ability", 0xD07C),
+
+    ("Ability: Nab Gil", 0xD07D),
+    ("Ability: Quick Pockets", 0xD07E),
+]]
+
+abilities: list[ItemData] = [
+    # Lvl 3 lock
+    # Empty node
+    ItemData("Ability: Strength +1", ItemClassification.progression, 0xD002),
+    ItemData("Ability: Strength +2", ItemClassification.progression, 0xD003),
+    ItemData("Ability: Strength +3", ItemClassification.progression, 0xD004),
+    ItemData("Ability: Strength +4", ItemClassification.progression, 0xD005),
+
+    ItemData("Ability: Defense +1", ItemClassification.progression, 0xD006),
+    ItemData("Ability: Defense +2", ItemClassification.progression, 0xD007),
+    ItemData("Ability: Defense +3", ItemClassification.progression, 0xD008),
+    ItemData("Ability: Defense +4", ItemClassification.progression, 0xD009),
+
+    ItemData("Ability: Magic +1", ItemClassification.progression, 0xD00A),
+    ItemData("Ability: Magic +2", ItemClassification.progression, 0xD00B),
+    ItemData("Ability: Magic +3", ItemClassification.progression, 0xD00C),
+    ItemData("Ability: Magic +4", ItemClassification.progression, 0xD00D),
+
+    ItemData("Ability: Magic Defense +1", ItemClassification.progression, 0xD00E),
+    ItemData("Ability: Magic Defense +2", ItemClassification.progression, 0xD00F),
+    ItemData("Ability: Magic Defense +3", ItemClassification.progression, 0xD010),
+    ItemData("Ability: Magic Defense +4", ItemClassification.progression, 0xD011),
+
+    ItemData("Ability: Agility +1", ItemClassification.progression, 0xD012),
+    ItemData("Ability: Agility +2", ItemClassification.progression, 0xD013),
+    ItemData("Ability: Agility +3", ItemClassification.progression, 0xD014),
+    ItemData("Ability: Agility +4", ItemClassification.progression, 0xD015),
+
+    ItemData("Ability: Luck +1", ItemClassification.progression, 0xD016),
+    ItemData("Ability: Luck +2", ItemClassification.progression, 0xD017),
+    ItemData("Ability: Luck +3", ItemClassification.progression, 0xD018),
+    ItemData("Ability: Luck +4", ItemClassification.progression, 0xD019),
+
+    ItemData("Ability: Evasion +1", ItemClassification.progression, 0xD01A),
+    ItemData("Ability: Evasion +2", ItemClassification.progression, 0xD01B),
+    ItemData("Ability: Evasion +3", ItemClassification.progression, 0xD01C),
+    ItemData("Ability: Evasion +4", ItemClassification.progression, 0xD01D),
+
+    ItemData("Ability: Accuracy +1", ItemClassification.progression, 0xD01E),
+    ItemData("Ability: Accuracy +2", ItemClassification.progression, 0xD01F),
+    ItemData("Ability: Accuracy +3", ItemClassification.progression, 0xD020),
+    ItemData("Ability: Accuracy +4", ItemClassification.progression, 0xD021),
+
+    ItemData("Ability: HP +200", ItemClassification.progression, 0xD022),
+    ItemData("Ability: HP +300", ItemClassification.progression, 0xD023),
+
+    ItemData("Ability: MP +40", ItemClassification.progression, 0xD024),
+    ItemData("Ability: MP +20", ItemClassification.progression, 0xD025),
+    ItemData("Ability: MP +10", ItemClassification.progression, 0xD026),
+
+    # Lvl 1 lock
+    # Lvl 2 lock
+    # Lvl 4 lock
+
+    ItemData("Delay Attack",   ItemClassification.progression, 0xD02A),
+    ItemData("Delay Buster",   ItemClassification.progression, 0xD02B),
+    ItemData("Sleep Attack",   ItemClassification.progression, 0xD02C),
+    ItemData("Silence Attack", ItemClassification.progression, 0xD02D),
+    ItemData("Dark Attack",    ItemClassification.progression, 0xD02E),
+    ItemData("Zombie Attack",  ItemClassification.progression, 0xD02F),
+    ItemData("Sleep Buster",   ItemClassification.progression, 0xD030),
+    ItemData("Silence Buster", ItemClassification.progression, 0xD031),
+    ItemData("Dark Buster",    ItemClassification.progression, 0xD032),
+    ItemData("Triple Foul",    ItemClassification.progression, 0xD033),
+    ItemData("Power Break",    ItemClassification.progression, 0xD034),
+    ItemData("Magic Break",    ItemClassification.progression, 0xD035),
+    ItemData("Armor Break",    ItemClassification.progression, 0xD036),
+    ItemData("Mental Break",   ItemClassification.progression, 0xD037),
+    ItemData("Mug",            ItemClassification.progression, 0xD038),
+    ItemData("Quick Hit",      ItemClassification.progression, 0xD039),
+
+    ItemData("Steal",        ItemClassification.progression, 0xD03A),
+    ItemData("Use",          ItemClassification.progression, 0xD03B),
+    ItemData("Flee",         ItemClassification.progression, 0xD03C),
+    ItemData("Pray",         ItemClassification.progression, 0xD03D),
+    ItemData("Cheer",        ItemClassification.progression, 0xD03E),
+    ItemData("Focus",        ItemClassification.progression, 0xD03F),
+    ItemData("Reflex",       ItemClassification.progression, 0xD040),
+    ItemData("Aim",          ItemClassification.progression, 0xD041),
+    ItemData("Luck",         ItemClassification.progression, 0xD042),
+    ItemData("Jinx",         ItemClassification.progression, 0xD043),
+    ItemData("Lancet",       ItemClassification.progression, 0xD044),
+    ItemData("Guard",        ItemClassification.progression, 0xD045),
+    ItemData("Sentinel",     ItemClassification.progression, 0xD046),
+    ItemData("Spare Change", ItemClassification.progression, 0xD047),
+    ItemData("Threaten",     ItemClassification.progression, 0xD048),
+    ItemData("Provoke",      ItemClassification.progression, 0xD049),
+    ItemData("Entrust",      ItemClassification.progression, 0xD04A),
+    ItemData("Copycat",      ItemClassification.progression, 0xD04B),
+    ItemData("Doublecast",   ItemClassification.progression, 0xD04C),
+    ItemData("Bribe",        ItemClassification.progression, 0xD04D),
+
+    ItemData("Cure",      ItemClassification.progression, 0xD04E),
+    ItemData("Cura",      ItemClassification.progression, 0xD04F),
+    ItemData("Curaga",    ItemClassification.progression, 0xD050),
+    ItemData("Nul Frost", ItemClassification.progression, 0xD051),
+    ItemData("Nul Blaze", ItemClassification.progression, 0xD052),
+    ItemData("Nul Shock", ItemClassification.progression, 0xD053),
+    ItemData("Nul Tide",  ItemClassification.progression, 0xD054),
+    ItemData("Scan",      ItemClassification.progression, 0xD055),
+    ItemData("Esuna",     ItemClassification.progression, 0xD056),
+    ItemData("Life",      ItemClassification.progression, 0xD057),
+    ItemData("Full Life", ItemClassification.progression, 0xD058),
+    ItemData("Haste",     ItemClassification.progression, 0xD059),
+    ItemData("Hastega",   ItemClassification.progression, 0xD05A),
+    ItemData("Slow",      ItemClassification.progression, 0xD05B),
+    ItemData("Slowga",    ItemClassification.progression, 0xD05C),
+    ItemData("Shell",     ItemClassification.progression, 0xD05D),
+    ItemData("Protect",   ItemClassification.progression, 0xD05E),
+    ItemData("Reflect",   ItemClassification.progression, 0xD05F),
+    ItemData("Dispel",    ItemClassification.progression, 0xD060),
+    ItemData("Regen",     ItemClassification.progression, 0xD061),
+    ItemData("Holy",      ItemClassification.progression, 0xD062),
+    ItemData("Auto Life", ItemClassification.progression, 0xD063),
+
+    ItemData("Blizzard", ItemClassification.progression, 0xD064),
+    ItemData("Fire",     ItemClassification.progression, 0xD065),
+    ItemData("Thunder",  ItemClassification.progression, 0xD066),
+    ItemData("Water",    ItemClassification.progression, 0xD067),
+    ItemData("Fira",     ItemClassification.progression, 0xD068),
+    ItemData("Blizzara", ItemClassification.progression, 0xD069),
+    ItemData("Thundara", ItemClassification.progression, 0xD06A),
+    ItemData("Watera",   ItemClassification.progression, 0xD06B),
+    ItemData("Firaga",   ItemClassification.progression, 0xD06C),
+    ItemData("Blizzaga", ItemClassification.progression, 0xD06D),
+    ItemData("Thundaga", ItemClassification.progression, 0xD06E),
+    ItemData("Waterga",  ItemClassification.progression, 0xD06F),
+    ItemData("Bio",      ItemClassification.progression, 0xD070),
+    ItemData("Demi",     ItemClassification.progression, 0xD071),
+    ItemData("Death",    ItemClassification.progression, 0xD072),
+    ItemData("Drain",    ItemClassification.progression, 0xD073),
+    ItemData("Osmose",   ItemClassification.progression, 0xD074),
+    ItemData("Flare",    ItemClassification.progression, 0xD075),
+    ItemData("Ultima",   ItemClassification.progression, 0xD076),
+
+    ItemData("Pilfer Gil",      ItemClassification.progression, 0xD077),
+    ItemData("Full Break",      ItemClassification.progression, 0xD078),
+    ItemData("Extract Power",   ItemClassification.progression, 0xD079),
+    ItemData("Extract Mana",    ItemClassification.progression, 0xD07A),
+    ItemData("Extract Speed",   ItemClassification.progression, 0xD07B),
+    ItemData("Extract Ability", ItemClassification.progression, 0xD07C),
+
+    ItemData("Nab Gil",       ItemClassification.progression, 0xD07D),
+    ItemData("Quick Pockets", ItemClassification.progression, 0xD07E),
+]
+
+stat_abilities = [ability for ability in abilities_per_character if ability.itemID & 0xFF <= 0x26]
+
+skill_abilities = [ability for ability in abilities_per_character if ability not in stat_abilities]
+
+#item_to_stat_value = {item.itemName: int(re.search(r"\+([0-9])+", item.itemName).group(0)) for item in stat_abilities}
+item_to_stat_value: dict[str, tuple[str, int]] = dict()
+for item in stat_abilities:
+    character = re.match(r"([a-zA-Z]+)", item.itemName).group(0)
+    value = int(re.search(r"\+([0-9])+", item.itemName).group(0))
+    if "HP" in item.itemName:
+        value = value / 10
+    elif "MP" in item.itemName:
+        value = value / 5
+
+    item_to_stat_value[item.itemName] = (character, value)
 
 
-def create_item_label_to_code_map() -> Dict[str, int]:
+
+AllItems = normal_items + key_items + equips + filler_items + party_members + abilities_per_character
+
+item_table: dict[str, ItemData] = {item.itemName: item for item in AllItems}
+items_by_id: dict[int, ItemData] = {item.itemID: item for item in AllItems}
+
+
+def create_item_label_to_code_map() -> dict[str, int]:
     """
     Creates a map from item labels to their AP item id (code)
     """
     offset = 0
-    label_to_code_map: Dict[str, int] = {}
+    label_to_code_map: dict[str, int] = {}
     for item in AllItems:
         label_to_code_map[item.itemName] = item.itemID + offset
 

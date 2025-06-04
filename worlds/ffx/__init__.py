@@ -2,7 +2,7 @@
 Archipelago World definition for Final Fantasy X
 """
 
-from typing import ClassVar, Dict, Any, List, Tuple, Set, Optional
+from typing import ClassVar, Any, Optional
 from random import Random
 import settings
 
@@ -12,7 +12,7 @@ from Utils import visualize_regions
 
 from .client import FFXClient
 
-from .items import create_item_label_to_code_map, item_table, key_items, filler_items, AllItems, FFXItem
+from .items import create_item_label_to_code_map, item_table, key_items, filler_items, AllItems, FFXItem, party_members, stat_abilities, skill_abilities
 from .locations import create_location_label_to_id_map
 from .regions import create_regions
 from .options import FFXOptions
@@ -79,10 +79,26 @@ class FFXWorld(World):
         for item in key_items:
             required_items.append(item.itemName)
 
+        for item in skill_abilities:
+            required_items.append(item.itemName)
+
+        for item in stat_abilities:
+            required_items.extend([item.itemName for _ in range(1)])
+
+        starting_character = party_members[0]
+
+        self.multiworld.push_precollected(self.create_item(starting_character.itemName))
+        for party_member in party_members:
+            if party_member == starting_character:
+                continue
+            required_items.append(party_member.itemName)
+
         unfilled_locations = len(self.multiworld.get_unfilled_locations(self.player))
 
         items_remaining = unfilled_locations - len(required_items)
 
+
+        self.multiworld.completion_condition[self.player] = lambda state: state.has_all([character.itemName for character in party_members], self.player)
         for itemName in required_items:
             self.multiworld.itempool.append(self.create_item(itemName))
 

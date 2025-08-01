@@ -2,7 +2,7 @@ import os
 import pkgutil
 import struct
 import zipfile
-import yaml
+import json
 
 from settings import get_settings
 from worlds.AutoWorld import World
@@ -44,20 +44,33 @@ def generate_output(world: World, player: int, output_directory: str) -> None:
 
     #locations = []
 
-    locations = {x: [] for x in location_types.values()}
+    locations: dict[str, list[dict[str, int | str] | int]] = {x: list() for x in location_types.values()}
+    #locations: dict[str, dict[int, dict[str, int | str]]] = {x: dict() for x in location_types.values()}
 
     for location in world.multiworld.get_filled_locations(player):
         if location.item.player != player:
             item_id = 0
-        locations[get_location_type(location.address)].append({"location_name": location.name, "location_id": location.address & 0x0FFF, "item": location.item.code, "item_name": location.item.name})
-        #locations.append({"location_name": location.name, "location_id": location.address, "item": location.item.code, "item_name": location.item.name})
+        else:
+            item_id = location.item.code
+        #locations[get_location_type(location.address)][location.address & 0x0FFF] = {"location_name": location.name, "item_id": item_id, "item_name": location.item.name}
+        locations[get_location_type(location.address)].append({"location_name": location.name, "location_id": location.address & 0x0FFF, "item_id": item_id, "item_name": location.item.name})
+        #locations.append({"location_name": location.name, "location_id": location.address, "item": item_id, "item_name": location.item.name})
 
-    file_path = os.path.join(output_directory, f"{world.multiworld.get_out_file_name_base(world.player)}.apffx")
-    APFFX = APFFXFile(file_path, player=world.player, player_name=world.multiworld.player_name[world.player])
-    with zipfile.ZipFile(file_path, mode="w", compression=zipfile.ZIP_DEFLATED,
-                         compresslevel=9) as zf:
-        zf.writestr("locations.yaml", yaml.dump(locations))
-        APFFX.write_contents(zf)
+    starting_items: list[int] = list()
+
+    for item in world.multiworld.precollected_items[player]:
+        starting_items.append(item.code)
+    locations["StartingItems"] = starting_items
+
+    file_path = os.path.join(output_directory, f"{world.multiworld.get_out_file_name_base(world.player)}.json")
+    with open(file_path, "w") as outfile:
+        outfile.write(json.dumps(locations, indent=4))
+    #file_path = os.path.join(output_directory, f"{world.multiworld.get_out_file_name_base(world.player)}.apffx")
+    #APFFX = APFFXFile(file_path, player=world.player, player_name=world.multiworld.player_name[world.player])
+    #with zipfile.ZipFile(file_path, mode="w", compression=zipfile.ZIP_DEFLATED,
+    #                     compresslevel=9) as zf:
+    #    zf.writestr("locations.json", json.dumps(locations))
+    #    APFFX.write_contents(zf)
 
 
     # patch = FFXProcedurePatch(player=player, player_name=world.multiworld.player_name[player])

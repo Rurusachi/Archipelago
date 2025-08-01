@@ -8,7 +8,7 @@
     "overdrives": [],
     "other": [],
     "leads_to": [1],
-    "rules": []
+    "rules": ["Baaj Temple"]
   },
   {
     "name": "Al Bhed Ship",
@@ -42,7 +42,7 @@
     "overdrives": [21],
     "other": [0, 2],
     "leads_to": [4],
-    "rules": []
+    "rules": ["Besaid"]
   },
   {
     "name": "S.S. Liki 1st visit",
@@ -87,7 +87,7 @@
     "overdrives": [],
     "other": [4],
     "leads_to": [8],
-    "rules": []
+    "rules": ["Kilika"]
   },
 
   {
@@ -144,7 +144,7 @@
     "overdrives": [],
     "other": [6, 7],
     "leads_to": [13],
-    "rules": []
+    "rules": ["Luca"]
   },
   {
     "name": "Luca 1st visit: Post-Oblitzerator",
@@ -178,7 +178,7 @@
     "overdrives": [],
     "other": [8],
     "leads_to": [16],
-    "rules": []
+    "rules": ["Mi'ihen Highroad"]
   },
   {
     "name": "Mi'ihen Highroad 1st visit: Post-Chocobo Eater",
@@ -212,7 +212,7 @@
     "overdrives": [],
     "other": [10],
     "leads_to": [19],
-    "rules": []
+    "rules": ["Mushroom Rock Road"]
   },
   {
     "name": "Mushroom Rock Road 1st visit: Post-Sinspawn Gui",
@@ -230,7 +230,7 @@
     "id": 20,
     "treasures": [99],
     "party_members": [],
-    "bosses": [11],
+    "bosses": [45, 46, 47],
     "overdrives": [],
     "other": [32],
     "leads_to": [],
@@ -246,7 +246,7 @@
     "overdrives": [],
     "other": [11],
     "leads_to": [22],
-    "rules": []
+    "rules": ["Djose"]
   },
   {
     "name": "Djose 2nd visit",
@@ -269,7 +269,7 @@
     "overdrives": [],
     "other": [],
     "leads_to": [24],
-    "rules": []
+    "rules": ["Moonflow"]
   },
   {
     "name": "Moonflow 1st visit: Post-Extractor",
@@ -303,7 +303,7 @@
     "overdrives": [],
     "other": [13, 37],
     "leads_to": [27],
-    "rules": []
+    "rules": ["Guadosalam"]
   },
   {
     "name": "Guadosalam 2nd visit",
@@ -326,7 +326,7 @@
     "overdrives": [],
     "other": [14],
     "leads_to": [29],
-    "rules": []
+    "rules": ["Thunder Plains"]
   },
   {
     "name": "Thunder Plains 2nd visit",
@@ -349,7 +349,7 @@
     "overdrives": [],
     "other": [15],
     "leads_to": [31],
-    "rules": []
+    "rules": ["Macalania"]
   },
   {
     "name": "Macalania Woods 1st visit: Post-Spherimorph",
@@ -427,7 +427,7 @@
     "overdrives": [],
     "other": [19, 18, 17],
     "leads_to": [38],
-    "rules": []
+    "rules": ["Bikanel"]
   },
   {
     "name": "Home 1st visit",
@@ -461,7 +461,7 @@
     "overdrives": [],
     "other": [],
     "leads_to": [41, 42],
-    "rules": []
+    "rules": ["Airship"]
   },
   {
     "name": "Airship Secret Destinations",
@@ -528,7 +528,7 @@
     "overdrives": [],
     "other": [22],
     "leads_to": [47],
-    "rules": []
+    "rules": ["Bevelle"]
   },
   {
     "name": "Bevelle 1st visit: Post-Isaaru",
@@ -584,7 +584,7 @@
     "overdrives": [],
     "other": [23],
     "leads_to": [52, 53, 57],
-    "rules": []
+    "rules": ["Calm Lands"]
   },
   {
     "name": "Remiem Temple",
@@ -629,7 +629,7 @@
     "overdrives": [],
     "other": [25],
     "leads_to": [56],
-    "rules": []
+    "rules": ["Cavern of the Stolen Fayth"]
   },
 
   {
@@ -667,7 +667,7 @@
     "overdrives": [],
     "other": [],
     "leads_to": [59],
-    "rules": ["Biran and Yenke"]
+    "rules": ["Mt. Gagazet"]
   },
   {
     "name": "Mt. Gagazet 1st visit: Post-Biran and Yenke",
@@ -704,7 +704,7 @@
   },
 
   {
-    "name": "Zanarkand 1st visit: Pre-Spectral Keeper",
+    "name": "Zanarkand Ruins 1st visit: Pre-Spectral Keeper",
     "id": 62,
     "treasures": [145, 146, 147, 148, 149, 150, 209],
     "party_members": [],
@@ -712,10 +712,10 @@
     "overdrives": [],
     "other": [],
     "leads_to": [63],
-    "rules": []
+    "rules": ["Zanarkand Ruins"]
   },
   {
-    "name": "Zanarkand 1st visit: Post-Spectral Keeper",
+    "name": "Zanarkand Ruins 1st visit: Post-Spectral Keeper",
     "id": 63,
     "treasures": [],
     "party_members": [],
@@ -726,7 +726,7 @@
     "rules": ["Spectral Keeper"]
   },
   {
-    "name": "Zanarkand 1st visit: Post-Yunalesca",
+    "name": "Zanarkand Ruins 1st visit: Post-Yunalesca",
     "id": 64,
     "treasures": [267],
     "party_members": [],
@@ -737,7 +737,7 @@
     "rules": ["Yunalesca"]
   },
   {
-    "name": "Zanarkand 2nd visit",
+    "name": "Zanarkand Ruins 2nd visit",
     "id": 65,
     "treasures": [],
     "party_members": [],
@@ -757,7 +757,7 @@
     "overdrives": [],
     "other": [],
     "leads_to": [67],
-    "rules": []
+    "rules": ["Sin"]
   },
   {
     "name": "Sin: Post-Seymour Omnis",
@@ -791,7 +791,7 @@
     "overdrives": [],
     "other": [26],
     "leads_to": [70],
-    "rules": []
+    "rules": ["Omega Ruins"]
   },
   {
     "name": "Omega Ruins: Post-Ultima Weapon",

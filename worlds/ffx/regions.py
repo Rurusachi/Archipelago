@@ -6,7 +6,7 @@ from typing import NamedTuple
 from .locations import FFXLocation, FFXTreasureLocations, FFXPartyMemberLocations, FFXBossLocations, \
     FFXOverdriveLocations, FFXOtherLocations, FFXSphereGridLocations, FFXLocationData
 from .rules import ruleDict
-from .items import party_members
+from .items import party_member_items
 from worlds.generic.Rules import add_rule
 from ..AutoWorld import World
 
@@ -146,27 +146,33 @@ def create_regions(world, player) -> None:
 
     for region_id, other_region in region_dict.items():
         if len(other_region.entrances) == 0:
-            menu_region.connect(other_region)
+            rules = region_rules.get(region_id)
+            if rules is not None:
+                rule_lambdas = [ruleDict[x](world) for x in rules]
+                new_rule = lambda state, rule_list=rule_lambdas: all([rule(state) for rule in rule_list])
+            else:
+                new_rule = None
+            menu_region.connect(other_region, rule=new_rule)
 
-    character_names = [
-        "Tidus",
-        "Yuna",
-        "Auron",
-        "Kimahri",
-        "Wakka",
-        "Lulu",
-        "Rikku"
-    ]
-
-    for character, region in enumerate(FFXSphereGridLocations):
-        new_region = Region(f"Sphere Grid: {character_names[character]}", player, world.multiworld)
-        for location in region:
-            new_location = FFXLocation(player, location.name, location.rom_address, new_region)
-            if location.missable:
-                new_location.progress_type = LocationProgressType.EXCLUDED
-            new_region.locations.append(new_location)
-            all_locations.append(new_location)
-        menu_region.connect(new_region, rule=lambda state, i=character: state.has(party_members[i].itemName, world.player))
+    # character_names = [
+    #     "Tidus",
+    #     "Yuna",
+    #     "Auron",
+    #     "Kimahri",
+    #     "Wakka",
+    #     "Lulu",
+    #     "Rikku"
+    # ]
+    #
+    # for character, region in enumerate(FFXSphereGridLocations):
+    #     new_region = Region(f"Sphere Grid: {character_names[character]}", player, world.multiworld)
+    #     for location in region:
+    #         new_location = FFXLocation(player, location.name, location.rom_address, new_region)
+    #         if location.missable:
+    #             new_location.progress_type = LocationProgressType.EXCLUDED
+    #         new_region.locations.append(new_location)
+    #         all_locations.append(new_location)
+    #     menu_region.connect(new_region, rule=lambda state, i=character: state.has(party_members[i].itemName, world.player))
 
 
     #test_region = Region("Test", player, world.multiworld)

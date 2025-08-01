@@ -1,6 +1,8 @@
 from typing import NamedTuple
-from BaseClasses import Item, ItemClassification
+from itertools import chain
 import re
+
+from BaseClasses import Item, ItemClassification
 
 
 class ItemData(NamedTuple):
@@ -18,299 +20,335 @@ class FFXItem(Item):
     game: str = "Final Fantasy X"
 
 
-filler_items: list[ItemData] = [
-    ItemData("Potion", ItemClassification.filler, 0x2000),
-    ItemData("Hi-Potion", ItemClassification.filler, 0x2001),
-    ItemData("X-Potion", ItemClassification.filler, 0x2002),
-    ItemData("Mega-Potion", ItemClassification.filler, 0x2003),
-    ItemData("Ether", ItemClassification.filler, 0x2004),
-    ItemData("Turbo Ether", ItemClassification.filler, 0x2005),
-    ItemData("Phoenix Down", ItemClassification.filler, 0x2006),
-    ItemData("Mega Phoenix", ItemClassification.filler, 0x2007),
-    ItemData("Elixir", ItemClassification.filler, 0x2008),
-    ItemData("Megalixir", ItemClassification.filler, 0x2009),
-    ItemData("Antidote", ItemClassification.filler, 0x200A),
-    ItemData("Soft", ItemClassification.filler, 0x200B),
-    ItemData("Eye Drops", ItemClassification.filler, 0x200C),
-    ItemData("Echo Screen", ItemClassification.filler, 0x200D),
-    ItemData("Holy Water", ItemClassification.filler, 0x200E),
-    ItemData("Remedy", ItemClassification.filler, 0x200F),
-    ItemData("1000 Gil", ItemClassification.filler, 0x1000),
-]
+normalItemOffset      = 0x2000
+keyItemOffset         = 0xA000
+equipItemOffset       = 0x5000
+partyMemberItemOffset = 0xF000
+regionItemOffset      = 0xE000
+abilityItemOffset     = 0xD000
+gilItemOffset         = 0x1000
 
-normal_items: list[ItemData] = [
-    ItemData("Power Distiller", ItemClassification.useful, 0x2010),
-    ItemData("Mana Distiller", ItemClassification.useful, 0x2011),
-    ItemData("Speed Distiller", ItemClassification.useful, 0x2012),
-    ItemData("Ability Distiller", ItemClassification.useful, 0x2013),
-    ItemData("Al Bhed Potion", ItemClassification.useful, 0x2014),
-    ItemData("Healing Water", ItemClassification.useful, 0x2015),
-    ItemData("Tetra Elemental", ItemClassification.useful, 0x2016),
-    ItemData("Antarctic Wind", ItemClassification.useful, 0x2017),
-    ItemData("Arctic Wind", ItemClassification.useful, 0x2018),
-    ItemData("Ice Gem", ItemClassification.useful, 0x2019),
-    ItemData("Bomb Fragment", ItemClassification.useful, 0x201A),
-    ItemData("Bomb Core", ItemClassification.useful, 0x201B),
-    ItemData("Fire Gem", ItemClassification.useful, 0x201C),
-    ItemData("Electro Marble", ItemClassification.useful, 0x201D),
-    ItemData("Lightning Marble", ItemClassification.useful, 0x201E),
-    ItemData("Lightning Gem", ItemClassification.useful, 0x201F),
-    ItemData("Fish Scale", ItemClassification.useful, 0x2020),
-    ItemData("Dragon Scale", ItemClassification.useful, 0x2021),
-    ItemData("Water Gem", ItemClassification.useful, 0x2022),
-    ItemData("Grenade", ItemClassification.useful, 0x2023),
-    ItemData("Frag Grenade", ItemClassification.useful, 0x2024),
-    ItemData("Sleeping Powder", ItemClassification.useful, 0x2025),
-    ItemData("Dream Powder", ItemClassification.useful, 0x2026),
-    ItemData("Silence Grenade", ItemClassification.useful, 0x2027),
-    ItemData("Smoke Bomb", ItemClassification.useful, 0x2028),
-    ItemData("Shadow Gem", ItemClassification.useful, 0x2029),
-    ItemData("Shining Gem", ItemClassification.useful, 0x202A),
-    ItemData("Blessed Gem", ItemClassification.useful, 0x202B),
-    ItemData("Supreme Gem", ItemClassification.useful, 0x202C),
-    ItemData("Poison Fang", ItemClassification.useful, 0x202D),
-    ItemData("Silver Hourglass", ItemClassification.useful, 0x202E),
-    ItemData("Gold Hourglass", ItemClassification.useful, 0x202F),
-    ItemData("Candle of Life", ItemClassification.useful, 0x2030),
-    ItemData("Petrify Grenade", ItemClassification.useful, 0x2031),
-    ItemData("Farplane Shadow", ItemClassification.useful, 0x2032),
-    ItemData("Farplane Wind", ItemClassification.useful, 0x2033),
-    ItemData("[Designer Wallet]", ItemClassification.useful, 0x2034),
-    ItemData("Dark Matter", ItemClassification.useful, 0x2035),
-    ItemData("Chocobo Feather", ItemClassification.useful, 0x2036),
-    ItemData("Chocobo Wing", ItemClassification.useful, 0x2037),
-    ItemData("Lunar Curtain", ItemClassification.useful, 0x2038),
-    ItemData("Light Curtain", ItemClassification.useful, 0x2039),
-    ItemData("Star Curtain", ItemClassification.useful, 0x203A),
-    ItemData("Healing Spring", ItemClassification.useful, 0x203B),
-    ItemData("Mana Spring", ItemClassification.useful, 0x203C),
-    ItemData("Stamina Spring", ItemClassification.useful, 0x203D),
-    ItemData("Soul Spring", ItemClassification.useful, 0x203E),
-    ItemData("Purifying Salt", ItemClassification.useful, 0x203F),
-    ItemData("Stamina Tablet", ItemClassification.useful, 0x2040),
-    ItemData("Mana Tablet", ItemClassification.useful, 0x2041),
-    ItemData("Twin Stars", ItemClassification.useful, 0x2042),
-    ItemData("Stamina Tonic", ItemClassification.useful, 0x2043),
-    ItemData("Mana Tonic", ItemClassification.useful, 0x2044),
-    ItemData("Three Stars", ItemClassification.useful, 0x2045),
-    ItemData("[Power Sphere]", ItemClassification.useful, 0x2046),
-    ItemData("[Mana Sphere]", ItemClassification.useful, 0x2047),
-    ItemData("[Speed Sphere]", ItemClassification.useful, 0x2048),
-    ItemData("[Ability Sphere]", ItemClassification.useful, 0x2049),
-    ItemData("[Fortune Sphere]", ItemClassification.useful, 0x204A),
-    ItemData("[Attribute Sphere]", ItemClassification.useful, 0x204B),
-    ItemData("[Special Sphere]", ItemClassification.useful, 0x204C),
-    ItemData("[Skill Sphere]", ItemClassification.useful, 0x204D),
-    ItemData("[Wht Magic Sphere]", ItemClassification.useful, 0x204E),
-    ItemData("[Blk Magic Sphere]", ItemClassification.useful, 0x204F),
-    ItemData("[Master Sphere]", ItemClassification.useful, 0x2050),
-    ItemData("[Lv. 1 Key Sphere]", ItemClassification.useful, 0x2051),
-    ItemData("[Lv. 2 Key Sphere]", ItemClassification.useful, 0x2052),
-    ItemData("[Lv. 3 Key Sphere]", ItemClassification.useful, 0x2053),
-    ItemData("[Lv. 4 Key Sphere]", ItemClassification.useful, 0x2054),
-    ItemData("[HP Sphere]", ItemClassification.useful, 0x2055),
-    ItemData("[MP Sphere]", ItemClassification.useful, 0x2056),
-    ItemData("[Strength Sphere]", ItemClassification.useful, 0x2057),
-    ItemData("[Defense Sphere]", ItemClassification.useful, 0x2058),
-    ItemData("[Magic Sphere]", ItemClassification.useful, 0x2059),
-    ItemData("[Magic Def Sphere]", ItemClassification.useful, 0x205A),
-    ItemData("[Agility Sphere]", ItemClassification.useful, 0x205B),
-    ItemData("[Evasion Sphere]", ItemClassification.useful, 0x205C),
-    ItemData("[Accuracy Sphere]", ItemClassification.useful, 0x205D),
-    ItemData("[Luck Sphere]", ItemClassification.useful, 0x205E),
-    ItemData("[Clear Sphere]", ItemClassification.useful, 0x205F),
-    ItemData("[Return Sphere]", ItemClassification.useful, 0x2060),
-    ItemData("[Friend Sphere]", ItemClassification.useful, 0x2061),
-    ItemData("[Teleport Sphere]", ItemClassification.useful, 0x2062),
-    ItemData("[Warp Sphere]", ItemClassification.useful, 0x2063),
-    ItemData("[Map]", ItemClassification.useful, 0x2064),
-    ItemData("[Rename Card]", ItemClassification.useful, 0x2065),
-    ItemData("[Musk]", ItemClassification.useful, 0x2066),
-    ItemData("[Hypello Potion]", ItemClassification.useful, 0x2067),
-    ItemData("[Shining Thorn]", ItemClassification.useful, 0x2068),
-    ItemData("[Pendulum]", ItemClassification.useful, 0x2069),
-    ItemData("[Amulet]", ItemClassification.useful, 0x206A),
-    ItemData("[Door to Tomorrow]", ItemClassification.useful, 0x206B),
-    ItemData("[Wings to Discovery]", ItemClassification.useful, 0x206C),
-    ItemData("[Gambler's Spirit]", ItemClassification.useful, 0x206D),
-    ItemData("[Underdog's Secret]", ItemClassification.useful, 0x206E),
-    ItemData("[Winning Formula]", ItemClassification.useful, 0x206F),
-]
 
-key_items: list[ItemData] = [
-    ItemData("Withered Bouquet", ItemClassification.progression, 0xA000),
-    ItemData("Flint", ItemClassification.progression, 0xA001),
-    ItemData("Cloudy Mirror", ItemClassification.progression, 0xA002),
-    ItemData("Celestial Mirror", ItemClassification.progression, 0xA003),
-    ItemData("Al Bhed Primer I", ItemClassification.progression, 0xA004),
-    ItemData("Al Bhed Primer II", ItemClassification.progression, 0xA005),
-    ItemData("Al Bhed Primer III", ItemClassification.progression, 0xA006),
-    ItemData("Al Bhed Primer IV", ItemClassification.progression, 0xA007),
-    ItemData("Al Bhed Primer V", ItemClassification.progression, 0xA008),
-    ItemData("Al Bhed Primer VI", ItemClassification.progression, 0xA009),
-    ItemData("Al Bhed Primer VII", ItemClassification.progression, 0xA00A),
-    ItemData("Al Bhed Primer VIII", ItemClassification.progression, 0xA00B),
-    ItemData("Al Bhed Primer IX", ItemClassification.progression, 0xA00C),
-    ItemData("Al Bhed Primer X", ItemClassification.progression, 0xA00D),
-    ItemData("Al Bhed Primer XI", ItemClassification.progression, 0xA00E),
-    ItemData("Al Bhed Primer XII", ItemClassification.progression, 0xA00F),
-    ItemData("Al Bhed Primer XIII", ItemClassification.progression, 0xA010),
-    ItemData("Al Bhed Primer XIV", ItemClassification.progression, 0xA011),
-    ItemData("Al Bhed Primer XV", ItemClassification.progression, 0xA012),
-    ItemData("Al Bhed Primer XVI", ItemClassification.progression, 0xA013),
-    ItemData("Al Bhed Primer XVII", ItemClassification.progression, 0xA014),
-    ItemData("Al Bhed Primer XVIII", ItemClassification.progression, 0xA015),
-    ItemData("Al Bhed Primer XIX", ItemClassification.progression, 0xA016),
-    ItemData("Al Bhed Primer XX", ItemClassification.progression, 0xA017),
-    ItemData("Al Bhed Primer XXI", ItemClassification.progression, 0xA018),
-    ItemData("Al Bhed Primer XXII", ItemClassification.progression, 0xA019),
-    ItemData("Al Bhed Primer XXIII", ItemClassification.progression, 0xA01A),
-    ItemData("Al Bhed Primer XXIV", ItemClassification.progression, 0xA01B),
-    ItemData("Al Bhed Primer XXV", ItemClassification.progression, 0xA01C),
-    ItemData("Al Bhed Primer XXVI", ItemClassification.progression, 0xA01D),
-    ItemData("Summoner's Soul", ItemClassification.progression, 0xA01E),
-    ItemData("Aeon's Soul", ItemClassification.progression, 0xA01F),
-    ItemData("Jecht's Sphere", ItemClassification.progression, 0xA020),
-    ItemData("Rusty Sword", ItemClassification.progression, 0xA021),
-    # ItemData("", ItemClassification.progression, 0xA022),
-    ItemData("Sun Crest", ItemClassification.progression, 0xA023),
-    ItemData("Sun Sigil", ItemClassification.progression, 0xA024),
-    ItemData("Moon Crest", ItemClassification.progression, 0xA025),
-    ItemData("Moon Sigil", ItemClassification.progression, 0xA026),
-    ItemData("Mars Crest", ItemClassification.progression, 0xA027),
-    ItemData("Mars Sigil", ItemClassification.progression, 0xA028),
-    ItemData("Mark of Conquest", ItemClassification.progression, 0xA029),
-    ItemData("Saturn Crest", ItemClassification.progression, 0xA02A),
-    ItemData("Saturn Sigil", ItemClassification.progression, 0xA02B),
-    ItemData("Jupiter Crest", ItemClassification.progression, 0xA02C),
-    ItemData("Jupiter Sigil", ItemClassification.progression, 0xA02D),
-    ItemData("Venus Crest", ItemClassification.progression, 0xA02E),
-    ItemData("Venus Sigil", ItemClassification.progression, 0xA02F),
-    ItemData("Mercury Crest", ItemClassification.progression, 0xA030),
-    ItemData("Mercury Sigil", ItemClassification.progression, 0xA031),
-    ItemData("Blossom Crown", ItemClassification.progression, 0xA032),
-    ItemData("Flower Scepter", ItemClassification.progression, 0xA033),
-    # ItemData("", ItemClassification.progression, 0xA034),
-    # ItemData("", ItemClassification.progression, 0xA035),
-    # ItemData("", ItemClassification.progression, 0xA036),
-    # ItemData("", ItemClassification.progression, 0xA037),
-    # ItemData("", ItemClassification.progression, 0xA038),
-    # ItemData("", ItemClassification.progression, 0xA039),
-    # ItemData("", ItemClassification.progression, 0xA03A),
-    # ItemData("", ItemClassification.progression, 0xA03B),
-    # ItemData("", ItemClassification.progression, 0xA03C),
-    # ItemData("", ItemClassification.progression, 0xA03D),
-    # ItemData("", ItemClassification.progression, 0xA03E),
-    # ItemData("", ItemClassification.progression, 0xA03F),
-]
 
-equips: list[ItemData] = [
-    ItemData("Weapon (Tidus): Crystal Sword", ItemClassification.useful, 0x5000),  # Offset=0014 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Firestrike [801Eh], Icestrike [8022h], Lightningstrike [8026h], Waterstrike [802Ah]} }
-    ItemData("Weapon (Tidus): Brotherhood", ItemClassification.useful, 0x5001),  # Offset=0024 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Strength +5% [8063h], Strength +10% [8064h], Waterstrike [802Ah], Sensor [8000h]}, Brotherhood }
-    ItemData("Weapon (Yuna): Astral Rod", ItemClassification.useful, 0x5002),  # Offset=0034 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {One MP Cost [800Dh], Empty, Empty, Empty} }
-    ItemData("Weapon (Lulu): Onion Knight", ItemClassification.useful, 0x5003),  # Offset=0044 Weapon [00h], Formula=Celestial MP-based [12h], Power=16, Crit=3%, Slots=4 {No AP [8014h], Empty, Empty, Empty}, Celestial }
-    ItemData("Weapon (Tidus): FLametongue", ItemClassification.useful, 0x5004),  # Offset=0054 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {Firestrike [801Eh]} }
-    ItemData("Weapon (Yuna): Rod of Wisdom", ItemClassification.useful, 0x5005),  # Offset=0064 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {Magic +5% [8067h], !Magic +3% [8066h], !Sensor [8000h]} }
-    ItemData("Weapon (Kimahri): Red Armlet", ItemClassification.useful, 0x5006),  # Offset=0074 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=3 {Fire Ward [801Fh], Ice Ward [8023h], Lightning Ward [8027h]} }
-    ItemData("Weapon (Lulu): Serene Bangle", ItemClassification.useful, 0x5007),  # Offset=0084 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {Berserk Ward [8051h]} }
-    ItemData("Weapon (Wakka): Scout", ItemClassification.useful, 0x5008),  # Offset=0094 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Icestrike [8022h], Sensor [8000h]} }
-    ItemData("Weapon (Tidus): NulBlaze Shield", ItemClassification.useful, 0x5009),  # Offset=00A4 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {SOS NulBlaze [8061h]} }
-    ItemData("Weapon (Kimahri): Tidal Spear", ItemClassification.useful, 0x500a),  # Offset=00B4 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Piercing [800Bh], Waterstrike [802Ah]} }
-    ItemData("Weapon (Tidus): Ice Brand", ItemClassification.useful, 0x500b),  # Offset=00C4 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {Icestrike [8022h]} }
-    ItemData("Weapon (Auron): Thunder Blade", ItemClassification.useful, 0x500c),  # Offset=00D4 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Piercing [800Bh], Lightningstrike [8026h]} }
-    ItemData("Weapon (Wakka): Scout", ItemClassification.useful, 0x500d),  # Offset=00E4 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Lightningstrike [8026h], Sensor [8000h]} }
-    ItemData("Weapon (Kimahri): Heat Lance", ItemClassification.useful, 0x500e),  # Offset=00F4 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Piercing [800Bh], Firestrike [801Eh]} }
-    ItemData("Weapon (Auron) 15", ItemClassification.useful, 0x500f),  # Offset=0104 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {HP +5% [8072h], Berserk Ward [8051h]} }
-    ItemData("Weapon (Lulu) 16", ItemClassification.useful, 0x5010),  # Offset=0114 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Dark Ward [8049h], Empty} }
-    ItemData("Weapon (Yuna) 17", ItemClassification.useful, 0x5011),  # Offset=0124 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Lightning Ward [8027h], Poison Ward [803Dh]} }
-    ItemData("Weapon (Kimahri) 18", ItemClassification.useful, 0x5012),  # Offset=0134 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Dark Ward [8049h], Berserk Ward [8051h]} }
-    ItemData("Weapon (Wakka) 19", ItemClassification.useful, 0x5013),  # Offset=0144 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Strength +3% [8062h], Strength +5% [8063h]} }
-    ItemData("Weapon (Lulu) 20", ItemClassification.useful, 0x5014),  # Offset=0154 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {Sleeptouch [803Fh]} }
-    ItemData("Weapon (Yuna) 21", ItemClassification.useful, 0x5015),  # Offset=0164 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Silence Ward [8045h], Confuse Ward [804Fh]} }
-    ItemData("Weapon (Tidus) 22", ItemClassification.useful, 0x5016),  # Offset=0174 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {Counterattack [8003h]} }
-    ItemData("Weapon (Lulu) 23", ItemClassification.useful, 0x5017),  # Offset=0184 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Silencetouch [8043h], Magic +5% [8067h]} }
-    ItemData("Weapon (Rikku) 24", ItemClassification.useful, 0x5018),  # Offset=0194 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {SOS Shell [8059h]} }
-    ItemData("Weapon (Kimahri) 25", ItemClassification.useful, 0x5019),  # Offset=01A4 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Poison Ward [803Dh], Confuse Ward [804Fh], Silence Ward [8045h], Empty} }
-    ItemData("Weapon (Wakka) 26", ItemClassification.useful, 0x501a),  # Offset=01B4 Weapon [00h], Formula=Celestial HP-based [11h], Power=16, Crit=3%, Slots=4 {No AP [8014h], Empty, Empty, Empty}, Celestial }
-    ItemData("Weapon (Wakka): Scout", ItemClassification.useful, 0x501b),  # Offset=01C4 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {Sensor [8000h]} }
-    ItemData("Weapon (Kimahri): Ice Lance", ItemClassification.useful, 0x501c),  # Offset=01D4 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Piercing [800Bh], Icestrike [8022h]} }
-    ItemData("Weapon (Yuna): Moon Ring", ItemClassification.useful, 0x501d),  # Offset=01E4 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {SOS Shell [8059h], SOS Protect [805Ah]} }
-    ItemData("Weapon (Auron) 30", ItemClassification.useful, 0x501e),  # Offset=01F4 Weapon [00h], Formula=Celestial Auron [13h], Power=16, Crit=3%, Slots=4 {No AP [8014h], Empty, Empty, Empty}, Celestial }
-    ItemData("Weapon (Tidus) 31", ItemClassification.useful, 0x501f),  # Offset=0204 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {Counterattack [8003h]} }
-    ItemData("Weapon (Wakka) 32", ItemClassification.useful, 0x5020),  # Offset=0214 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {Evade & Counter [8004h]} }
-    ItemData("Weapon (Kimahri) 33", ItemClassification.useful, 0x5021),  # Offset=0224 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=3 {Strength +3% [8062h], Strength +5% [8063h], Strength +10% [8064h]} }
-    ItemData("Weapon (Yuna) 34", ItemClassification.useful, 0x5022),  # Offset=0234 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=3 {Silence Ward [8045h], Confuse Ward [804Fh], Poison Ward [803Dh]} }
-    ItemData("Weapon (Wakka) 35", ItemClassification.useful, 0x5023),  # Offset=0244 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Fire Ward [801Fh], Dark Ward [8049h]} }
-    ItemData("Weapon (Yuna): Nirvana", ItemClassification.useful, 0x5024),  # Offset=0254 Weapon [00h], Formula=Celestial MP-based [12h], Power=16, Crit=3%, Slots=4 {No AP [8014h], Empty, Empty, Empty}, Celestial }
-    ItemData("Weapon (Tidus): Caladbolg", ItemClassification.useful, 0x5025),  # Offset=0264 Weapon [00h], Formula=Celestial HP-based [11h], Power=16, Crit=3%, Slots=4 {No AP [8014h], Empty, Empty, Empty}, Celestial }
-    ItemData("Weapon (Kimahri) 38", ItemClassification.useful, 0x5026),  # Offset=0274 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {HP +10% [8073h], Empty, Empty, Empty} }
-    ItemData("Weapon (Rikku) 39", ItemClassification.useful, 0x5027),  # Offset=0284 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Empty, Empty, Empty, Empty} }
-    ItemData("Weapon (Auron) 40", ItemClassification.useful, 0x5028),  # Offset=0294 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Stoneproof [8038h], Poisonproof [803Ch]} }
-    ItemData("Weapon (Wakka) 41", ItemClassification.useful, 0x5029),  # Offset=02A4 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=3 {SOS NulFrost [805Fh], SOS NulShock [8060h], SOS NulBlaze [8061h]} }
-    ItemData("Weapon (Yuna) 42", ItemClassification.useful, 0x502a),  # Offset=02B4 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {HP Stroll [801Bh]} }
-    ItemData("Weapon (Rikku) 43", ItemClassification.useful, 0x502b),  # Offset=02C4 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {MP Stroll [801Ch]} }
-    ItemData("Weapon (Auron) 44", ItemClassification.useful, 0x502c),  # Offset=02D4 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Silenceproof [8044h], Darkproof [8048h]} }
-    ItemData("Weapon (Wakka) 45", ItemClassification.useful, 0x502d),  # Offset=02E4 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Magic Counter [8005h], Counterattack [8003h]} }
-    ItemData("Weapon (Kimahri) 46", ItemClassification.useful, 0x502e),  # Offset=02F4 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Stoneproof [8038h], Poisonproof [803Ch], Empty, Empty} }
-    ItemData("Weapon (Yuna) 47", ItemClassification.useful, 0x502f),  # Offset=0304 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Ice Eater [8025h], Fire Eater [8021h], Lightning Eater [8029h], Empty} }
-    ItemData("Weapon (Lulu) 48", ItemClassification.useful, 0x5030),  # Offset=0314 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {Half MP Cost [800Ch]} }
-    ItemData("Weapon (Rikku) 49", ItemClassification.useful, 0x5031),  # Offset=0324 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {Double AP [8012h], !Double Overdrive [800Eh]} }
-    ItemData("Weapon (Kimahri) 50", ItemClassification.useful, 0x5032),  # Offset=0334 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Magic +3% [8066h], Magic +5% [8067h], Magic +10% [8068h], Empty} }
-    ItemData("Weapon (Yuna) 51", ItemClassification.useful, 0x5033),  # Offset=0344 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Water Eater [802Dh], Fire Eater [8021h], Lightning Eater [8029h], Empty} }
-    ItemData("Weapon (Wakka) 52", ItemClassification.useful, 0x5034),  # Offset=0354 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Waterstrike [802Ah], Firestrike [801Eh], Lightningstrike [8026h], Icestrike [8022h]} }
-    ItemData("Weapon (Auron) 53", ItemClassification.useful, 0x5035),  # Offset=0364 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Darkproof [8048h], Deathproof [8030h], Empty, Empty} }
-    ItemData("Weapon (Yuna) 54", ItemClassification.useful, 0x5036),  # Offset=0374 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {SOS Overdrive [8010h]} }
-    ItemData("Weapon (Wakka) 55", ItemClassification.useful, 0x5037),  # Offset=0384 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Waterstrike [802Ah], Empty} }
-    ItemData("Weapon (Kimahri) 56", ItemClassification.useful, 0x5038),  # Offset=0394 Weapon [00h], Formula=Celestial HP-based [11h], Power=16, Crit=3%, Slots=4 {No AP [8014h], Empty, Empty, Empty}, Celestial }
-    ItemData("Weapon (Yuna) 57", ItemClassification.useful, 0x5039),  # Offset=03A4 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Stone Ward [8039h], HP +5% [8072h]} }
-    ItemData("Weapon (Tidus) 58", ItemClassification.useful, 0x503a),  # Offset=03B4 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Strength +3% [8062h], Strength +5% [8063h]} }
-    ItemData("Weapon (Lulu) 59", ItemClassification.useful, 0x503b),  # Offset=03C4 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Magic +3% [8066h], Magic +5% [8067h], Magic +20% [8069h], Empty} }
-    ItemData("Weapon (Yuna) 60", ItemClassification.useful, 0x503c),  # Offset=03D4 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=3 {Half MP Cost [800Ch], Empty, Empty} }
-    ItemData("Weapon (Rikku) 61", ItemClassification.useful, 0x503d),  # Offset=03E4 Weapon [00h], Formula=Celestial HP-based [11h], Power=16, Crit=3%, Slots=4 {No AP [8014h], Empty, Empty, Empty}, Celestial }
-    ItemData("Weapon (Yuna) 62", ItemClassification.useful, 0x503e),  # Offset=03F4 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {HP +10% [8073h]} }
-    ItemData("Weapon (Tidus) 63", ItemClassification.useful, 0x503f),  # Offset=0404 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Strength +3% [8062h], Empty, Empty, Empty} }
-    ItemData("Weapon (Yuna) 64", ItemClassification.useful, 0x5040),  # Offset=0414 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Stoneproof [8038h], Empty} }
-    ItemData("Weapon (Kimahri) 65", ItemClassification.useful, 0x5041),  # Offset=0424 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Magic +20% [8069h], Empty} }
-    ItemData("Weapon (Kimahri) 66", ItemClassification.useful, 0x5042),  # Offset=0434 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=3 {Piercing [800Bh], Sensor [8000h], Strength +10% [8064h]} }
-    ItemData("Weapon (Yuna) 67", ItemClassification.useful, 0x5043),  # Offset=0444 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {HP +10% [8073h], Fire Ward [801Fh]} }
-    ItemData("Weapon (Lulu) 68", ItemClassification.useful, 0x5044),  # Offset=0454 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {HP +20% [8074h], Empty} }
-    ItemData("Weapon (Tidus) 69", ItemClassification.useful, 0x5045),  # Offset=0464 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Lightningproof [8028h], Empty} }
-    ItemData("Weapon (Wakka) 70", ItemClassification.useful, 0x5046),  # Offset=0474 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Magic +20% [8069h], Magic +10% [8068h], Magic +5% [8067h], Magic +3% [8066h]} }
-    ItemData("Weapon (Yuna) 71", ItemClassification.useful, 0x5047),  # Offset=0484 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {HP +10% [8073h], Empty} }
-    ItemData("Weapon (Rikku) 72", ItemClassification.useful, 0x5048),  # Offset=0494 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Lightningproof [8028h], Fireproof [8020h], Iceproof [8024h], Empty} }
-    ItemData("Weapon (Auron) 73", ItemClassification.useful, 0x5049),  # Offset=04A4 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Piercing [800Bh], One MP Cost [800Dh], Empty, Empty} }
-    ItemData("Weapon (Yuna) 74", ItemClassification.useful, 0x504a),  # Offset=04B4 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {HP +10% [8073h], Silence Ward [8045h]} }
-    ItemData("Weapon (Kimahri) 75", ItemClassification.useful, 0x504b),  # Offset=04C4 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Magic Counter [8005h], Evade & Counter [8004h], Empty, Empty} }
-    ItemData("Weapon (Rikku) 76", ItemClassification.useful, 0x504c),  # Offset=04D4 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=3 {Initiative [8002h], Poisonstrike [803Ah], Empty} }
-    ItemData("Weapon (Lulu) 77", ItemClassification.useful, 0x504d),  # Offset=04E4 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Ice Eater [8025h], Fire Eater [8021h], !Water Eater [802Dh]} }
-    ItemData("Weapon (Tidus) 78", ItemClassification.useful, 0x504e),  # Offset=04F4 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {Double AP [8012h]} }
-    ItemData("Weapon (Wakka) 79", ItemClassification.useful, 0x504f),  # Offset=0504 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Magic Counter [8005h], Empty} }
-    ItemData("Weapon (Auron) 80", ItemClassification.useful, 0x5050),  # Offset=0514 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=3 {Silencestrike [8042h], Stonestrike [8036h], Empty} }
-    ItemData("Weapon (Yuna) 81", ItemClassification.useful, 0x5051),  # Offset=0524 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Magic +10% [8068h], Magic +5% [8067h], Magic +3% [8066h], Empty} }
-    ItemData("Weapon (Kimahri) 82", ItemClassification.useful, 0x5052),  # Offset=0534 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Strength +10% [8064h], Strength +5% [8063h], Strength +3% [8062h], Empty} }
-    ItemData("Weapon (Rikku) 83", ItemClassification.useful, 0x5053),  # Offset=0544 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {One MP Cost [800Dh], Sensor [8000h]} }
-    ItemData("Weapon (Lulu) 84", ItemClassification.useful, 0x5054),  # Offset=0554 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Deathstrike [802Eh], Empty, Empty, Empty} }
-    ItemData("Weapon (Tidus) 85", ItemClassification.useful, 0x5055),  # Offset=0564 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {SOS Overdrive [8010h]} }
-]
 
-party_members: list[ItemData] = [
-    ItemData("Party Member: Tidus", ItemClassification.progression, 0xF000),
-    ItemData("Party Member: Yuna", ItemClassification.progression, 0xF001),
-    ItemData("Party Member: Auron", ItemClassification.progression, 0xF002),
-    ItemData("Party Member: Kimahri", ItemClassification.progression, 0xF003),
-    ItemData("Party Member: Wakka", ItemClassification.progression, 0xF004),
-    ItemData("Party Member: Lulu", ItemClassification.progression, 0xF005),
-    ItemData("Party Member: Rikku", ItemClassification.progression, 0xF006),
-    ItemData("Party Member: Seymour", ItemClassification.progression, 0xF007),
-    ItemData("Party Member: Valefor", ItemClassification.progression, 0xF008),
-    ItemData("Party Member: Ifrit", ItemClassification.progression, 0xF009),
-    ItemData("Party Member: Ixion", ItemClassification.progression, 0xF00A),
-    ItemData("Party Member: Shiva", ItemClassification.progression, 0xF00B),
-    ItemData("Party Member: Bahamut", ItemClassification.progression, 0xF00C),
-    ItemData("Party Member: Anima", ItemClassification.progression, 0xF00D),
-    ItemData("Party Member: Yojimbo", ItemClassification.progression, 0xF00E),
-    ItemData("Party Member: Magus Sisters", ItemClassification.progression, 0xF00F),  # Sisters are 0x0f, 0x10, 0x11
-]
+normal_items: list[ItemData] = [ItemData(x[0], x[1], x[2] | normalItemOffset) for x in [
+    ("Potion",               ItemClassification.filler, 0x0000),
+    ("Hi-Potion",            ItemClassification.filler, 0x0001),
+    ("X-Potion",             ItemClassification.filler, 0x0002),
+    ("Mega-Potion",          ItemClassification.filler, 0x0003),
+    ("Ether",                ItemClassification.filler, 0x0004),
+    ("Turbo Ether",          ItemClassification.filler, 0x0005),
+    ("Phoenix Down",         ItemClassification.filler, 0x0006),
+    ("Mega Phoenix",         ItemClassification.filler, 0x0007),
+    ("Elixir",               ItemClassification.filler, 0x0008),
+    ("Megalixir",            ItemClassification.filler, 0x0009),
+    ("Antidote",             ItemClassification.filler, 0x000A),
+    ("Soft",                 ItemClassification.filler, 0x000B),
+    ("Eye Drops",            ItemClassification.filler, 0x000C),
+    ("Echo Screen",          ItemClassification.filler, 0x000D),
+    ("Holy Water",           ItemClassification.filler, 0x000E),
+    ("Remedy",               ItemClassification.filler, 0x000F),
+    ("Power Distiller",      ItemClassification.useful, 0x0010),
+    ("Mana Distiller",       ItemClassification.useful, 0x0011),
+    ("Speed Distiller",      ItemClassification.useful, 0x0012),
+    ("Ability Distiller",    ItemClassification.useful, 0x0013),
+    ("Al Bhed Potion",       ItemClassification.useful, 0x0014),
+    ("Healing Water",        ItemClassification.useful, 0x0015),
+    ("Tetra Elemental",      ItemClassification.useful, 0x0016),
+    ("Antarctic Wind",       ItemClassification.useful, 0x0017),
+    ("Arctic Wind",          ItemClassification.useful, 0x0018),
+    ("Ice Gem",              ItemClassification.useful, 0x0019),
+    ("Bomb Fragment",        ItemClassification.useful, 0x001A),
+    ("Bomb Core",            ItemClassification.useful, 0x001B),
+    ("Fire Gem",             ItemClassification.useful, 0x001C),
+    ("Electro Marble",       ItemClassification.useful, 0x001D),
+    ("Lightning Marble",     ItemClassification.useful, 0x001E),
+    ("Lightning Gem",        ItemClassification.useful, 0x001F),
+    ("Fish Scale",           ItemClassification.useful, 0x0020),
+    ("Dragon Scale",         ItemClassification.useful, 0x0021),
+    ("Water Gem",            ItemClassification.useful, 0x0022),
+    ("Grenade",              ItemClassification.useful, 0x0023),
+    ("Frag Grenade",         ItemClassification.useful, 0x0024),
+    ("Sleeping Powder",      ItemClassification.useful, 0x0025),
+    ("Dream Powder",         ItemClassification.useful, 0x0026),
+    ("Silence Grenade",      ItemClassification.useful, 0x0027),
+    ("Smoke Bomb",           ItemClassification.useful, 0x0028),
+    ("Shadow Gem",           ItemClassification.useful, 0x0029),
+    ("Shining Gem",          ItemClassification.useful, 0x002A),
+    ("Blessed Gem",          ItemClassification.useful, 0x002B),
+    ("Supreme Gem",          ItemClassification.useful, 0x002C),
+    ("Poison Fang",          ItemClassification.useful, 0x002D),
+    ("Silver Hourglass",     ItemClassification.useful, 0x002E),
+    ("Gold Hourglass",       ItemClassification.useful, 0x002F),
+    ("Candle of Life",       ItemClassification.useful, 0x0030),
+    ("Petrify Grenade",      ItemClassification.useful, 0x0031),
+    ("Farplane Shadow",      ItemClassification.useful, 0x0032),
+    ("Farplane Wind",        ItemClassification.useful, 0x0033),
+    ("[Designer Wallet]",    ItemClassification.useful, 0x0034),
+    ("Dark Matter",          ItemClassification.useful, 0x0035),
+    ("Chocobo Feather",      ItemClassification.useful, 0x0036),
+    ("Chocobo Wing",         ItemClassification.useful, 0x0037),
+    ("Lunar Curtain",        ItemClassification.useful, 0x0038),
+    ("Light Curtain",        ItemClassification.useful, 0x0039),
+    ("Star Curtain",         ItemClassification.useful, 0x003A),
+    ("Healing Spring",       ItemClassification.useful, 0x003B),
+    ("Mana Spring",          ItemClassification.useful, 0x003C),
+    ("Stamina Spring",       ItemClassification.useful, 0x003D),
+    ("Soul Spring",          ItemClassification.useful, 0x003E),
+    ("Purifying Salt",       ItemClassification.useful, 0x003F),
+    ("Stamina Tablet",       ItemClassification.useful, 0x0040),
+    ("Mana Tablet",          ItemClassification.useful, 0x0041),
+    ("Twin Stars",           ItemClassification.useful, 0x0042),
+    ("Stamina Tonic",        ItemClassification.useful, 0x0043),
+    ("Mana Tonic",           ItemClassification.useful, 0x0044),
+    ("Three Stars",          ItemClassification.useful, 0x0045),
+    ("[Power Sphere]",       ItemClassification.useful, 0x0046),
+    ("[Mana Sphere]",        ItemClassification.useful, 0x0047),
+    ("[Speed Sphere]",       ItemClassification.useful, 0x0048),
+    ("[Ability Sphere]",     ItemClassification.useful, 0x0049),
+    ("[Fortune Sphere]",     ItemClassification.useful, 0x004A),
+    ("[Attribute Sphere]",   ItemClassification.useful, 0x004B),
+    ("[Special Sphere]",     ItemClassification.useful, 0x004C),
+    ("[Skill Sphere]",       ItemClassification.useful, 0x004D),
+    ("[Wht Magic Sphere]",   ItemClassification.useful, 0x004E),
+    ("[Blk Magic Sphere]",   ItemClassification.useful, 0x004F),
+    ("[Master Sphere]",      ItemClassification.useful, 0x0050),
+    ("[Lv. 1 Key Sphere]",   ItemClassification.useful, 0x0051),
+    ("[Lv. 2 Key Sphere]",   ItemClassification.useful, 0x0052),
+    ("[Lv. 3 Key Sphere]",   ItemClassification.useful, 0x0053),
+    ("[Lv. 4 Key Sphere]",   ItemClassification.useful, 0x0054),
+    ("[HP Sphere]",          ItemClassification.useful, 0x0055),
+    ("[MP Sphere]",          ItemClassification.useful, 0x0056),
+    ("[Strength Sphere]",    ItemClassification.useful, 0x0057),
+    ("[Defense Sphere]",     ItemClassification.useful, 0x0058),
+    ("[Magic Sphere]",       ItemClassification.useful, 0x0059),
+    ("[Magic Def Sphere]",   ItemClassification.useful, 0x005A),
+    ("[Agility Sphere]",     ItemClassification.useful, 0x005B),
+    ("[Evasion Sphere]",     ItemClassification.useful, 0x005C),
+    ("[Accuracy Sphere]",    ItemClassification.useful, 0x005D),
+    ("[Luck Sphere]",        ItemClassification.useful, 0x005E),
+    ("[Clear Sphere]",       ItemClassification.useful, 0x005F),
+    ("[Return Sphere]",      ItemClassification.useful, 0x0060),
+    ("[Friend Sphere]",      ItemClassification.useful, 0x0061),
+    ("[Teleport Sphere]",    ItemClassification.useful, 0x0062),
+    ("[Warp Sphere]",        ItemClassification.useful, 0x0063),
+    ("[Map]",                ItemClassification.useful, 0x0064),
+    ("[Rename Card]",        ItemClassification.useful, 0x0065),
+    ("[Musk]",               ItemClassification.useful, 0x0066),
+    ("[Hypello Potion]",     ItemClassification.useful, 0x0067),
+    ("[Shining Thorn]",      ItemClassification.useful, 0x0068),
+    ("[Pendulum]",           ItemClassification.useful, 0x0069),
+    ("[Amulet]",             ItemClassification.useful, 0x006A),
+    ("[Door to Tomorrow]",   ItemClassification.useful, 0x006B),
+    ("[Wings to Discovery]", ItemClassification.useful, 0x006C),
+    ("[Gambler's Spirit]",   ItemClassification.useful, 0x006D),
+    ("[Underdog's Secret]",  ItemClassification.useful, 0x006E),
+    ("[Winning Formula]",    ItemClassification.useful, 0x006F),
+]]
+
+key_items: list[ItemData] = [ItemData(x[0], x[1], x[2] | keyItemOffset) for x in [
+    ("Withered Bouquet",     ItemClassification.progression, 0x0000),
+    ("Flint",                ItemClassification.progression, 0x0001),
+    ("Cloudy Mirror",        ItemClassification.progression, 0x0002),
+    ("Celestial Mirror",     ItemClassification.progression, 0x0003),
+    ("Al Bhed Primer I",     ItemClassification.progression, 0x0004),
+    ("Al Bhed Primer II",    ItemClassification.progression, 0x0005),
+    ("Al Bhed Primer III",   ItemClassification.progression, 0x0006),
+    ("Al Bhed Primer IV",    ItemClassification.progression, 0x0007),
+    ("Al Bhed Primer V",     ItemClassification.progression, 0x0008),
+    ("Al Bhed Primer VI",    ItemClassification.progression, 0x0009),
+    ("Al Bhed Primer VII",   ItemClassification.progression, 0x000A),
+    ("Al Bhed Primer VIII",  ItemClassification.progression, 0x000B),
+    ("Al Bhed Primer IX",    ItemClassification.progression, 0x000C),
+    ("Al Bhed Primer X",     ItemClassification.progression, 0x000D),
+    ("Al Bhed Primer XI",    ItemClassification.progression, 0x000E),
+    ("Al Bhed Primer XII",   ItemClassification.progression, 0x000F),
+    ("Al Bhed Primer XIII",  ItemClassification.progression, 0x0010),
+    ("Al Bhed Primer XIV",   ItemClassification.progression, 0x0011),
+    ("Al Bhed Primer XV",    ItemClassification.progression, 0x0012),
+    ("Al Bhed Primer XVI",   ItemClassification.progression, 0x0013),
+    ("Al Bhed Primer XVII",  ItemClassification.progression, 0x0014),
+    ("Al Bhed Primer XVIII", ItemClassification.progression, 0x0015),
+    ("Al Bhed Primer XIX",   ItemClassification.progression, 0x0016),
+    ("Al Bhed Primer XX",    ItemClassification.progression, 0x0017),
+    ("Al Bhed Primer XXI",   ItemClassification.progression, 0x0018),
+    ("Al Bhed Primer XXII",  ItemClassification.progression, 0x0019),
+    ("Al Bhed Primer XXIII", ItemClassification.progression, 0x001A),
+    ("Al Bhed Primer XXIV",  ItemClassification.progression, 0x001B),
+    ("Al Bhed Primer XXV",   ItemClassification.progression, 0x001C),
+    ("Al Bhed Primer XXVI",  ItemClassification.progression, 0x001D),
+    ("Summoner's Soul",      ItemClassification.progression, 0x001E),
+    ("Aeon's Soul",          ItemClassification.progression, 0x001F),
+    ("Jecht's Sphere",       ItemClassification.progression, 0x0020),
+    ("Rusty Sword",          ItemClassification.progression, 0x0021),
+    # ("",                   ItemClassification.progression, 0x0022),
+    ("Sun Crest",            ItemClassification.progression, 0x0023),
+    ("Sun Sigil",            ItemClassification.progression, 0x0024),
+    ("Moon Crest",           ItemClassification.progression, 0x0025),
+    ("Moon Sigil",           ItemClassification.progression, 0x0026),
+    ("Mars Crest",           ItemClassification.progression, 0x0027),
+    ("Mars Sigil",           ItemClassification.progression, 0x0028),
+    ("Mark of Conquest",     ItemClassification.progression, 0x0029),
+    ("Saturn Crest",         ItemClassification.progression, 0x002A),
+    ("Saturn Sigil",         ItemClassification.progression, 0x002B),
+    ("Jupiter Crest",        ItemClassification.progression, 0x002C),
+    ("Jupiter Sigil",        ItemClassification.progression, 0x002D),
+    ("Venus Crest",          ItemClassification.progression, 0x002E),
+    ("Venus Sigil",          ItemClassification.progression, 0x002F),
+    ("Mercury Crest",        ItemClassification.progression, 0x0030),
+    ("Mercury Sigil",        ItemClassification.progression, 0x0031),
+    ("Blossom Crown",        ItemClassification.progression, 0x0032),
+    ("Flower Scepter",       ItemClassification.progression, 0x0033),
+    # ("",                   ItemClassification.progression, 0x0034),
+    # ("",                   ItemClassification.progression, 0x0035),
+    # ("",                   ItemClassification.progression, 0x0036),
+    # ("",                   ItemClassification.progression, 0x0037),
+    # ("",                   ItemClassification.progression, 0x0038),
+    # ("",                   ItemClassification.progression, 0x0039),
+    # ("",                   ItemClassification.progression, 0x003A),
+    # ("",                   ItemClassification.progression, 0x003B),
+    # ("",                   ItemClassification.progression, 0x003C),
+    # ("",                   ItemClassification.progression, 0x003D),
+    # ("",                   ItemClassification.progression, 0x003E),
+    # ("",                   ItemClassification.progression, 0x003F),
+]]
+
+equip_items: list[ItemData] = [ItemData(x[0], x[1], x[2] | equipItemOffset) for x in [
+    ("Weapon (Tidus): Crystal Sword",   ItemClassification.useful, 0x0000),  # Offset=0014 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Firestrike [801Eh], Icestrike [8022h], Lightningstrike [8026h], Waterstrike [802Ah]} }
+    ("Weapon (Tidus): Brotherhood",     ItemClassification.useful, 0x0001),  # Offset=0024 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Strength +5% [8063h], Strength +10% [8064h], Waterstrike [802Ah], Sensor [8000h]}, Brotherhood }
+    ("Weapon (Yuna): Astral Rod",       ItemClassification.useful, 0x0002),  # Offset=0034 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {One MP Cost [800Dh], Empty, Empty, Empty} }
+    ("Weapon (Lulu): Onion Knight",     ItemClassification.useful, 0x0003),  # Offset=0044 Weapon [00h], Formula=Celestial MP-based [12h], Power=16, Crit=3%, Slots=4 {No AP [8014h], Empty, Empty, Empty}, Celestial }
+    ("Weapon (Tidus): FLametongue",     ItemClassification.useful, 0x0004),  # Offset=0054 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {Firestrike [801Eh]} }
+    ("Weapon (Yuna): Rod of Wisdom",    ItemClassification.useful, 0x0005),  # Offset=0064 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {Magic +5% [8067h], !Magic +3% [8066h], !Sensor [8000h]} }
+    ("Weapon (Kimahri): Red Armlet",    ItemClassification.useful, 0x0006),  # Offset=0074 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=3 {Fire Ward [801Fh], Ice Ward [8023h], Lightning Ward [8027h]} }
+    ("Weapon (Lulu): Serene Bangle",    ItemClassification.useful, 0x0007),  # Offset=0084 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {Berserk Ward [8051h]} }
+    ("Weapon (Wakka): Scout",           ItemClassification.useful, 0x0008),  # Offset=0094 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Icestrike [8022h], Sensor [8000h]} }
+    ("Weapon (Tidus): NulBlaze Shield", ItemClassification.useful, 0x0009),  # Offset=00A4 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {SOS NulBlaze [8061h]} }
+    ("Weapon (Kimahri): Tidal Spear",   ItemClassification.useful, 0x000a),  # Offset=00B4 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Piercing [800Bh], Waterstrike [802Ah]} }
+    ("Weapon (Tidus): Ice Brand",       ItemClassification.useful, 0x000b),  # Offset=00C4 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {Icestrike [8022h]} }
+    ("Weapon (Auron): Thunder Blade",   ItemClassification.useful, 0x000c),  # Offset=00D4 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Piercing [800Bh], Lightningstrike [8026h]} }
+    ("Weapon (Wakka): Scout",           ItemClassification.useful, 0x000d),  # Offset=00E4 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Lightningstrike [8026h], Sensor [8000h]} }
+    ("Weapon (Kimahri): Heat Lance",    ItemClassification.useful, 0x000e),  # Offset=00F4 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Piercing [800Bh], Firestrike [801Eh]} }
+    ("Weapon (Auron) 15",               ItemClassification.useful, 0x000f),  # Offset=0104 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {HP +5% [8072h], Berserk Ward [8051h]} }
+    ("Weapon (Lulu) 16",                ItemClassification.useful, 0x0010),  # Offset=0114 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Dark Ward [8049h], Empty} }
+    ("Weapon (Yuna) 17",                ItemClassification.useful, 0x0011),  # Offset=0124 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Lightning Ward [8027h], Poison Ward [803Dh]} }
+    ("Weapon (Kimahri) 18",             ItemClassification.useful, 0x0012),  # Offset=0134 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Dark Ward [8049h], Berserk Ward [8051h]} }
+    ("Weapon (Wakka) 19",               ItemClassification.useful, 0x0013),  # Offset=0144 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Strength +3% [8062h], Strength +5% [8063h]} }
+    ("Weapon (Lulu) 20",                ItemClassification.useful, 0x0014),  # Offset=0154 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {Sleeptouch [803Fh]} }
+    ("Weapon (Yuna) 21",                ItemClassification.useful, 0x0015),  # Offset=0164 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Silence Ward [8045h], Confuse Ward [804Fh]} }
+    ("Weapon (Tidus) 22",               ItemClassification.useful, 0x0016),  # Offset=0174 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {Counterattack [8003h]} }
+    ("Weapon (Lulu) 23",                ItemClassification.useful, 0x0017),  # Offset=0184 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Silencetouch [8043h], Magic +5% [8067h]} }
+    ("Weapon (Rikku) 24",               ItemClassification.useful, 0x0018),  # Offset=0194 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {SOS Shell [8059h]} }
+    ("Weapon (Kimahri) 25",             ItemClassification.useful, 0x0019),  # Offset=01A4 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Poison Ward [803Dh], Confuse Ward [804Fh], Silence Ward [8045h], Empty} }
+    ("Weapon (Wakka) 26",               ItemClassification.useful, 0x001a),  # Offset=01B4 Weapon [00h], Formula=Celestial HP-based [11h], Power=16, Crit=3%, Slots=4 {No AP [8014h], Empty, Empty, Empty}, Celestial }
+    ("Weapon (Wakka): Scout",           ItemClassification.useful, 0x001b),  # Offset=01C4 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {Sensor [8000h]} }
+    ("Weapon (Kimahri): Ice Lance",     ItemClassification.useful, 0x001c),  # Offset=01D4 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Piercing [800Bh], Icestrike [8022h]} }
+    ("Weapon (Yuna): Moon Ring",        ItemClassification.useful, 0x001d),  # Offset=01E4 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {SOS Shell [8059h], SOS Protect [805Ah]} }
+    ("Weapon (Auron) 30",               ItemClassification.useful, 0x001e),  # Offset=01F4 Weapon [00h], Formula=Celestial Auron [13h], Power=16, Crit=3%, Slots=4 {No AP [8014h], Empty, Empty, Empty}, Celestial }
+    ("Weapon (Tidus) 31",               ItemClassification.useful, 0x001f),  # Offset=0204 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {Counterattack [8003h]} }
+    ("Weapon (Wakka) 32",               ItemClassification.useful, 0x0020),  # Offset=0214 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {Evade & Counter [8004h]} }
+    ("Weapon (Kimahri) 33",             ItemClassification.useful, 0x0021),  # Offset=0224 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=3 {Strength +3% [8062h], Strength +5% [8063h], Strength +10% [8064h]} }
+    ("Weapon (Yuna) 34",                ItemClassification.useful, 0x0022),  # Offset=0234 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=3 {Silence Ward [8045h], Confuse Ward [804Fh], Poison Ward [803Dh]} }
+    ("Weapon (Wakka) 35",               ItemClassification.useful, 0x0023),  # Offset=0244 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Fire Ward [801Fh], Dark Ward [8049h]} }
+    ("Weapon (Yuna): Nirvana",          ItemClassification.useful, 0x0024),  # Offset=0254 Weapon [00h], Formula=Celestial MP-based [12h], Power=16, Crit=3%, Slots=4 {No AP [8014h], Empty, Empty, Empty}, Celestial }
+    ("Weapon (Tidus): Caladbolg",       ItemClassification.useful, 0x0025),  # Offset=0264 Weapon [00h], Formula=Celestial HP-based [11h], Power=16, Crit=3%, Slots=4 {No AP [8014h], Empty, Empty, Empty}, Celestial }
+    ("Weapon (Kimahri) 38",             ItemClassification.useful, 0x0026),  # Offset=0274 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {HP +10% [8073h], Empty, Empty, Empty} }
+    ("Weapon (Rikku) 39",               ItemClassification.useful, 0x0027),  # Offset=0284 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Empty, Empty, Empty, Empty} }
+    ("Weapon (Auron) 40",               ItemClassification.useful, 0x0028),  # Offset=0294 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Stoneproof [8038h], Poisonproof [803Ch]} }
+    ("Weapon (Wakka) 41",               ItemClassification.useful, 0x0029),  # Offset=02A4 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=3 {SOS NulFrost [805Fh], SOS NulShock [8060h], SOS NulBlaze [8061h]} }
+    ("Weapon (Yuna) 42",                ItemClassification.useful, 0x002a),  # Offset=02B4 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {HP Stroll [801Bh]} }
+    ("Weapon (Rikku) 43",               ItemClassification.useful, 0x002b),  # Offset=02C4 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {MP Stroll [801Ch]} }
+    ("Weapon (Auron) 44",               ItemClassification.useful, 0x002c),  # Offset=02D4 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Silenceproof [8044h], Darkproof [8048h]} }
+    ("Weapon (Wakka) 45",               ItemClassification.useful, 0x002d),  # Offset=02E4 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Magic Counter [8005h], Counterattack [8003h]} }
+    ("Weapon (Kimahri) 46",             ItemClassification.useful, 0x002e),  # Offset=02F4 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Stoneproof [8038h], Poisonproof [803Ch], Empty, Empty} }
+    ("Weapon (Yuna) 47",                ItemClassification.useful, 0x002f),  # Offset=0304 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Ice Eater [8025h], Fire Eater [8021h], Lightning Eater [8029h], Empty} }
+    ("Weapon (Lulu) 48",                ItemClassification.useful, 0x0030),  # Offset=0314 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {Half MP Cost [800Ch]} }
+    ("Weapon (Rikku) 49",               ItemClassification.useful, 0x0031),  # Offset=0324 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {Double AP [8012h], !Double Overdrive [800Eh]} }
+    ("Weapon (Kimahri) 50",             ItemClassification.useful, 0x0032),  # Offset=0334 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Magic +3% [8066h], Magic +5% [8067h], Magic +10% [8068h], Empty} }
+    ("Weapon (Yuna) 51",                ItemClassification.useful, 0x0033),  # Offset=0344 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Water Eater [802Dh], Fire Eater [8021h], Lightning Eater [8029h], Empty} }
+    ("Weapon (Wakka) 52",               ItemClassification.useful, 0x0034),  # Offset=0354 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Waterstrike [802Ah], Firestrike [801Eh], Lightningstrike [8026h], Icestrike [8022h]} }
+    ("Weapon (Auron) 53",               ItemClassification.useful, 0x0035),  # Offset=0364 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Darkproof [8048h], Deathproof [8030h], Empty, Empty} }
+    ("Weapon (Yuna) 54",                ItemClassification.useful, 0x0036),  # Offset=0374 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {SOS Overdrive [8010h]} }
+    ("Weapon (Wakka) 55",               ItemClassification.useful, 0x0037),  # Offset=0384 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Waterstrike [802Ah], Empty} }
+    ("Weapon (Kimahri) 56",             ItemClassification.useful, 0x0038),  # Offset=0394 Weapon [00h], Formula=Celestial HP-based [11h], Power=16, Crit=3%, Slots=4 {No AP [8014h], Empty, Empty, Empty}, Celestial }
+    ("Weapon (Yuna) 57",                ItemClassification.useful, 0x0039),  # Offset=03A4 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Stone Ward [8039h], HP +5% [8072h]} }
+    ("Weapon (Tidus) 58",               ItemClassification.useful, 0x003a),  # Offset=03B4 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Strength +3% [8062h], Strength +5% [8063h]} }
+    ("Weapon (Lulu) 59",                ItemClassification.useful, 0x003b),  # Offset=03C4 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Magic +3% [8066h], Magic +5% [8067h], Magic +20% [8069h], Empty} }
+    ("Weapon (Yuna) 60",                ItemClassification.useful, 0x003c),  # Offset=03D4 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=3 {Half MP Cost [800Ch], Empty, Empty} }
+    ("Weapon (Rikku) 61",               ItemClassification.useful, 0x003d),  # Offset=03E4 Weapon [00h], Formula=Celestial HP-based [11h], Power=16, Crit=3%, Slots=4 {No AP [8014h], Empty, Empty, Empty}, Celestial }
+    ("Weapon (Yuna) 62",                ItemClassification.useful, 0x003e),  # Offset=03F4 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {HP +10% [8073h]} }
+    ("Weapon (Tidus) 63",               ItemClassification.useful, 0x003f),  # Offset=0404 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Strength +3% [8062h], Empty, Empty, Empty} }
+    ("Weapon (Yuna) 64",                ItemClassification.useful, 0x0040),  # Offset=0414 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Stoneproof [8038h], Empty} }
+    ("Weapon (Kimahri) 65",             ItemClassification.useful, 0x0041),  # Offset=0424 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Magic +20% [8069h], Empty} }
+    ("Weapon (Kimahri) 66",             ItemClassification.useful, 0x0042),  # Offset=0434 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=3 {Piercing [800Bh], Sensor [8000h], Strength +10% [8064h]} }
+    ("Weapon (Yuna) 67",                ItemClassification.useful, 0x0043),  # Offset=0444 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {HP +10% [8073h], Fire Ward [801Fh]} }
+    ("Weapon (Lulu) 68",                ItemClassification.useful, 0x0044),  # Offset=0454 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {HP +20% [8074h], Empty} }
+    ("Weapon (Tidus) 69",               ItemClassification.useful, 0x0045),  # Offset=0464 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Lightningproof [8028h], Empty} }
+    ("Weapon (Wakka) 70",               ItemClassification.useful, 0x0046),  # Offset=0474 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Magic +20% [8069h], Magic +10% [8068h], Magic +5% [8067h], Magic +3% [8066h]} }
+    ("Weapon (Yuna) 71",                ItemClassification.useful, 0x0047),  # Offset=0484 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {HP +10% [8073h], Empty} }
+    ("Weapon (Rikku) 72",               ItemClassification.useful, 0x0048),  # Offset=0494 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Lightningproof [8028h], Fireproof [8020h], Iceproof [8024h], Empty} }
+    ("Weapon (Auron) 73",               ItemClassification.useful, 0x0049),  # Offset=04A4 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Piercing [800Bh], One MP Cost [800Dh], Empty, Empty} }
+    ("Weapon (Yuna) 74",                ItemClassification.useful, 0x004a),  # Offset=04B4 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {HP +10% [8073h], Silence Ward [8045h]} }
+    ("Weapon (Kimahri) 75",             ItemClassification.useful, 0x004b),  # Offset=04C4 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Magic Counter [8005h], Evade & Counter [8004h], Empty, Empty} }
+    ("Weapon (Rikku) 76",               ItemClassification.useful, 0x004c),  # Offset=04D4 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=3 {Initiative [8002h], Poisonstrike [803Ah], Empty} }
+    ("Weapon (Lulu) 77",                ItemClassification.useful, 0x004d),  # Offset=04E4 Armor [01h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Ice Eater [8025h], Fire Eater [8021h], !Water Eater [802Dh]} }
+    ("Weapon (Tidus) 78",               ItemClassification.useful, 0x004e),  # Offset=04F4 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {Double AP [8012h]} }
+    ("Weapon (Wakka) 79",               ItemClassification.useful, 0x004f),  # Offset=0504 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {Magic Counter [8005h], Empty} }
+    ("Weapon (Auron) 80",               ItemClassification.useful, 0x0050),  # Offset=0514 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=3 {Silencestrike [8042h], Stonestrike [8036h], Empty} }
+    ("Weapon (Yuna) 81",                ItemClassification.useful, 0x0051),  # Offset=0524 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Magic +10% [8068h], Magic +5% [8067h], Magic +3% [8066h], Empty} }
+    ("Weapon (Kimahri) 82",             ItemClassification.useful, 0x0052),  # Offset=0534 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Strength +10% [8064h], Strength +5% [8063h], Strength +3% [8062h], Empty} }
+    ("Weapon (Rikku) 83",               ItemClassification.useful, 0x0053),  # Offset=0544 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=2 {One MP Cost [800Dh], Sensor [8000h]} }
+    ("Weapon (Lulu) 84",                ItemClassification.useful, 0x0054),  # Offset=0554 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Deathstrike [802Eh], Empty, Empty, Empty} }
+    ("Weapon (Tidus) 85",               ItemClassification.useful, 0x0055),  # Offset=0564 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {SOS Overdrive [8010h]} }
+]]
+
+party_member_items: list[ItemData] = [ItemData(x[0], x[1], x[2] | partyMemberItemOffset) for x in [
+    ("Party Member: Tidus",         ItemClassification.progression, 0x0000),
+    ("Party Member: Yuna",          ItemClassification.progression, 0x0001),
+    ("Party Member: Auron",         ItemClassification.progression, 0x0002),
+    ("Party Member: Kimahri",       ItemClassification.progression, 0x0003),
+    ("Party Member: Wakka",         ItemClassification.progression, 0x0004),
+    ("Party Member: Lulu",          ItemClassification.progression, 0x0005),
+    ("Party Member: Rikku",         ItemClassification.progression, 0x0006),
+    ("Party Member: Seymour",       ItemClassification.progression, 0x0007),
+    ("Party Member: Valefor",       ItemClassification.progression, 0x0008),
+    ("Party Member: Ifrit",         ItemClassification.progression, 0x0009),
+    ("Party Member: Ixion",         ItemClassification.progression, 0x000A),
+    ("Party Member: Shiva",         ItemClassification.progression, 0x000B),
+    ("Party Member: Bahamut",       ItemClassification.progression, 0x000C),
+    ("Party Member: Anima",         ItemClassification.progression, 0x000D),
+    ("Party Member: Yojimbo",       ItemClassification.progression, 0x000E),
+    ("Party Member: Magus Sisters", ItemClassification.progression, 0x000F), # Sisters are 0x0f, 0x10, 0x11
+]]
+
+region_unlock_items: list[ItemData] = [ItemData(x[0], x[1], x[2] | regionItemOffset) for x in [
+    #("Region: None",                      ItemClassification.progression,  0),
+    #("Region: Dream Zanarkand",           ItemClassification.progression,  1),
+    ("Region: Baaj Temple",                ItemClassification.progression,  2),
+    ("Region: Besaid",                     ItemClassification.progression,  3),
+    ("Region: Kilika",                     ItemClassification.progression,  4),
+    ("Region: Luca",                       ItemClassification.progression,  5),
+    ("Region: Mi'ihen Highroad",           ItemClassification.progression,  6),
+    ("Region: Mushroom Rock Road",         ItemClassification.progression,  7),
+    ("Region: Djose",                      ItemClassification.progression,  8),
+    ("Region: Moonflow",                   ItemClassification.progression,  9),
+    ("Region: Guadosalam",                 ItemClassification.progression, 10),
+    ("Region: Thunder Plains",             ItemClassification.progression, 11),
+    ("Region: Macalania",                  ItemClassification.progression, 12),
+    ("Region: Bikanel",                    ItemClassification.progression, 13),
+    ("Region: Bevelle",                    ItemClassification.progression, 14),
+    ("Region: Calm Lands",                 ItemClassification.progression, 15),
+    ("Region: Cavern of the Stolen Fayth", ItemClassification.progression, 16),
+    ("Region: Mt. Gagazet",                ItemClassification.progression, 17),
+    ("Region: Zanarkand Ruins",            ItemClassification.progression, 18),
+    ("Region: Sin",                        ItemClassification.progression, 19),
+    ("Region: Airship",                    ItemClassification.progression, 20),
+    ("Region: Omega Ruins",                ItemClassification.progression, 21),
+]]
+
+gil_items: list[ItemData] = [ItemData(x[0], x[1], x[2] | gilItemOffset) for x in [
+    ("1000 Gil", ItemClassification.filler, 0x0000),
+]]
 
 character_names = [
     "Tidus",
@@ -323,150 +361,150 @@ character_names = [
     #"Seymour",
 ]
 
-abilities_per_character: list[ItemData] = [ ItemData(f"{character_names[character]} {ability[0]}", ItemClassification.progression, ability[1] | character << 8) for character in range(7) for ability in [
+abilities_per_character: list[ItemData] = [ ItemData(f"{character_names[character]} {ability[0]}", ItemClassification.progression, ability[1] | abilityItemOffset | character << 8) for character in range(7) for ability in [
     # Lvl 3 lock
     # Empty node
-    ("Ability: Strength +1", 0xD002),
-    ("Ability: Strength +2", 0xD003),
-    ("Ability: Strength +3", 0xD004),
-    ("Ability: Strength +4", 0xD005),
+    ("Ability: Strength +1", 0x0002),
+    ("Ability: Strength +2", 0x0003),
+    ("Ability: Strength +3", 0x0004),
+    ("Ability: Strength +4", 0x0005),
 
-    ("Ability: Defense +1", 0xD006),
-    ("Ability: Defense +2", 0xD007),
-    ("Ability: Defense +3", 0xD008),
-    ("Ability: Defense +4", 0xD009),
+    ("Ability: Defense +1", 0x0006),
+    ("Ability: Defense +2", 0x0007),
+    ("Ability: Defense +3", 0x0008),
+    ("Ability: Defense +4", 0x0009),
 
-    ("Ability: Magic +1", 0xD00A),
-    ("Ability: Magic +2", 0xD00B),
-    ("Ability: Magic +3", 0xD00C),
-    ("Ability: Magic +4", 0xD00D),
+    ("Ability: Magic +1", 0x000A),
+    ("Ability: Magic +2", 0x000B),
+    ("Ability: Magic +3", 0x000C),
+    ("Ability: Magic +4", 0x000D),
 
-    ("Ability: Magic Defense +1", 0xD00E),
-    ("Ability: Magic Defense +2", 0xD00F),
-    ("Ability: Magic Defense +3", 0xD010),
-    ("Ability: Magic Defense +4", 0xD011),
+    ("Ability: Magic Defense +1", 0x000E),
+    ("Ability: Magic Defense +2", 0x000F),
+    ("Ability: Magic Defense +3", 0x0010),
+    ("Ability: Magic Defense +4", 0x0011),
 
-    ("Ability: Agility +1", 0xD012),
-    ("Ability: Agility +2", 0xD013),
-    ("Ability: Agility +3", 0xD014),
-    ("Ability: Agility +4", 0xD015),
+    ("Ability: Agility +1", 0x0012),
+    ("Ability: Agility +2", 0x0013),
+    ("Ability: Agility +3", 0x0014),
+    ("Ability: Agility +4", 0x0015),
 
-    ("Ability: Luck +1", 0xD016),
-    ("Ability: Luck +2", 0xD017),
-    ("Ability: Luck +3", 0xD018),
-    ("Ability: Luck +4", 0xD019),
+    ("Ability: Luck +1", 0x0016),
+    ("Ability: Luck +2", 0x0017),
+    ("Ability: Luck +3", 0x0018),
+    ("Ability: Luck +4", 0x0019),
 
-    ("Ability: Evasion +1", 0xD01A),
-    ("Ability: Evasion +2", 0xD01B),
-    ("Ability: Evasion +3", 0xD01C),
-    ("Ability: Evasion +4", 0xD01D),
+    ("Ability: Evasion +1", 0x001A),
+    ("Ability: Evasion +2", 0x001B),
+    ("Ability: Evasion +3", 0x001C),
+    ("Ability: Evasion +4", 0x001D),
 
-    ("Ability: Accuracy +1", 0xD01E),
-    ("Ability: Accuracy +2", 0xD01F),
-    ("Ability: Accuracy +3", 0xD020),
-    ("Ability: Accuracy +4", 0xD021),
+    ("Ability: Accuracy +1", 0x001E),
+    ("Ability: Accuracy +2", 0x001F),
+    ("Ability: Accuracy +3", 0x0020),
+    ("Ability: Accuracy +4", 0x0021),
 
-    ("Ability: HP +200", 0xD022),
-    ("Ability: HP +300", 0xD023),
+    ("Ability: HP +200", 0x0022),
+    ("Ability: HP +300", 0x0023),
 
-    ("Ability: MP +40", 0xD024),
-    ("Ability: MP +20", 0xD025),
-    ("Ability: MP +10", 0xD026),
+    ("Ability: MP +40", 0x0024),
+    ("Ability: MP +20", 0x0025),
+    ("Ability: MP +10", 0x0026),
 
     # Lvl 1 lock
     # Lvl 2 lock
     # Lvl 4 lock
 
-    ("Ability: Delay Attack", 0xD02A),
-    ("Ability: Delay Buster", 0xD02B),
-    ("Ability: Sleep Attack", 0xD02C),
-    ("Ability: Silence Attack", 0xD02D),
-    ("Ability: Dark Attack", 0xD02E),
-    ("Ability: Zombie Attack", 0xD02F),
-    ("Ability: Sleep Buster", 0xD030),
-    ("Ability: Silence Buster", 0xD031),
-    ("Ability: Dark Buster", 0xD032),
-    ("Ability: Triple Foul", 0xD033),
-    ("Ability: Power Break", 0xD034),
-    ("Ability: Magic Break", 0xD035),
-    ("Ability: Armor Break", 0xD036),
-    ("Ability: Mental Break", 0xD037),
-    ("Ability: Mug", 0xD038),
-    ("Ability: Quick Hit", 0xD039),
+    ("Ability: Delay Attack",   0x002A),
+    ("Ability: Delay Buster",   0x002B),
+    ("Ability: Sleep Attack",   0x002C),
+    ("Ability: Silence Attack", 0x002D),
+    ("Ability: Dark Attack",    0x002E),
+    ("Ability: Zombie Attack",  0x002F),
+    ("Ability: Sleep Buster",   0x0030),
+    ("Ability: Silence Buster", 0x0031),
+    ("Ability: Dark Buster",    0x0032),
+    ("Ability: Triple Foul",    0x0033),
+    ("Ability: Power Break",    0x0034),
+    ("Ability: Magic Break",    0x0035),
+    ("Ability: Armor Break",    0x0036),
+    ("Ability: Mental Break",   0x0037),
+    ("Ability: Mug",            0x0038),
+    ("Ability: Quick Hit",      0x0039),
 
-    ("Ability: Steal", 0xD03A),
-    ("Ability: Use", 0xD03B),
-    ("Ability: Flee", 0xD03C),
-    ("Ability: Pray", 0xD03D),
-    ("Ability: Cheer", 0xD03E),
-    ("Ability: Focus", 0xD03F),
-    ("Ability: Reflex", 0xD040),
-    ("Ability: Aim", 0xD041),
-    ("Ability: Luck", 0xD042),
-    ("Ability: Jinx", 0xD043),
-    ("Ability: Lancet", 0xD044),
-    ("Ability: Guard", 0xD045),
-    ("Ability: Sentinel", 0xD046),
-    ("Ability: Spare Change", 0xD047),
-    ("Ability: Threaten", 0xD048),
-    ("Ability: Provoke", 0xD049),
-    ("Ability: Entrust", 0xD04A),
-    ("Ability: Copycat", 0xD04B),
-    ("Ability: Doublecast", 0xD04C),
-    ("Ability: Bribe", 0xD04D),
+    ("Ability: Steal",        0x003A),
+    ("Ability: Use",          0x003B),
+    ("Ability: Flee",         0x003C),
+    ("Ability: Pray",         0x003D),
+    ("Ability: Cheer",        0x003E),
+    ("Ability: Focus",        0x003F),
+    ("Ability: Reflex",       0x0040),
+    ("Ability: Aim",          0x0041),
+    ("Ability: Luck",         0x0042),
+    ("Ability: Jinx",         0x0043),
+    ("Ability: Lancet",       0x0044),
+    ("Ability: Guard",        0x0045),
+    ("Ability: Sentinel",     0x0046),
+    ("Ability: Spare Change", 0x0047),
+    ("Ability: Threaten",     0x0048),
+    ("Ability: Provoke",      0x0049),
+    ("Ability: Entrust",      0x004A),
+    ("Ability: Copycat",      0x004B),
+    ("Ability: Doublecast",   0x004C),
+    ("Ability: Bribe",        0x004D),
 
-    ("Ability: Cure", 0xD04E),
-    ("Ability: Cura", 0xD04F),
-    ("Ability: Curaga", 0xD050),
-    ("Ability: Nul Frost", 0xD051),
-    ("Ability: Nul Blaze", 0xD052),
-    ("Ability: Nul Shock", 0xD053),
-    ("Ability: Nul Tide", 0xD054),
-    ("Ability: Scan", 0xD055),
-    ("Ability: Esuna", 0xD056),
-    ("Ability: Life", 0xD057),
-    ("Ability: Full Life", 0xD058),
-    ("Ability: Haste", 0xD059),
-    ("Ability: Hastega", 0xD05A),
-    ("Ability: Slow", 0xD05B),
-    ("Ability: Slowga", 0xD05C),
-    ("Ability: Shell", 0xD05D),
-    ("Ability: Protect", 0xD05E),
-    ("Ability: Reflect", 0xD05F),
-    ("Ability: Dispel", 0xD060),
-    ("Ability: Regen", 0xD061),
-    ("Ability: Holy", 0xD062),
-    ("Ability: Auto Life", 0xD063),
+    ("Ability: Cure",      0x004E),
+    ("Ability: Cura",      0x004F),
+    ("Ability: Curaga",    0x0050),
+    ("Ability: Nul Frost", 0x0051),
+    ("Ability: Nul Blaze", 0x0052),
+    ("Ability: Nul Shock", 0x0053),
+    ("Ability: Nul Tide",  0x0054),
+    ("Ability: Scan",      0x0055),
+    ("Ability: Esuna",     0x0056),
+    ("Ability: Life",      0x0057),
+    ("Ability: Full Life", 0x0058),
+    ("Ability: Haste",     0x0059),
+    ("Ability: Hastega",   0x005A),
+    ("Ability: Slow",      0x005B),
+    ("Ability: Slowga",    0x005C),
+    ("Ability: Shell",     0x005D),
+    ("Ability: Protect",   0x005E),
+    ("Ability: Reflect",   0x005F),
+    ("Ability: Dispel",    0x0060),
+    ("Ability: Regen",     0x0061),
+    ("Ability: Holy",      0x0062),
+    ("Ability: Auto Life", 0x0063),
 
-    ("Ability: Blizzard", 0xD064),
-    ("Ability: Fire", 0xD065),
-    ("Ability: Thunder", 0xD066),
-    ("Ability: Water", 0xD067),
-    ("Ability: Fira", 0xD068),
-    ("Ability: Blizzara", 0xD069),
-    ("Ability: Thundara", 0xD06A),
-    ("Ability: Watera", 0xD06B),
-    ("Ability: Firaga", 0xD06C),
-    ("Ability: Blizzaga", 0xD06D),
-    ("Ability: Thundaga", 0xD06E),
-    ("Ability: Waterga", 0xD06F),
-    ("Ability: Bio", 0xD070),
-    ("Ability: Demi", 0xD071),
-    ("Ability: Death", 0xD072),
-    ("Ability: Drain", 0xD073),
-    ("Ability: Osmose", 0xD074),
-    ("Ability: Flare", 0xD075),
-    ("Ability: Ultima", 0xD076),
+    ("Ability: Blizzard", 0x0064),
+    ("Ability: Fire",     0x0065),
+    ("Ability: Thunder",  0x0066),
+    ("Ability: Water",    0x0067),
+    ("Ability: Fira",     0x0068),
+    ("Ability: Blizzara", 0x0069),
+    ("Ability: Thundara", 0x006A),
+    ("Ability: Watera",   0x006B),
+    ("Ability: Firaga",   0x006C),
+    ("Ability: Blizzaga", 0x006D),
+    ("Ability: Thundaga", 0x006E),
+    ("Ability: Waterga",  0x006F),
+    ("Ability: Bio",      0x0070),
+    ("Ability: Demi",     0x0071),
+    ("Ability: Death",    0x0072),
+    ("Ability: Drain",    0x0073),
+    ("Ability: Osmose",   0x0074),
+    ("Ability: Flare",    0x0075),
+    ("Ability: Ultima",   0x0076),
 
-    ("Ability: Pilfer Gil", 0xD077),
-    ("Ability: Full Break", 0xD078),
-    ("Ability: Extract Power", 0xD079),
-    ("Ability: Extract Mana", 0xD07A),
-    ("Ability: Extract Speed", 0xD07B),
-    ("Ability: Extract Ability", 0xD07C),
+    ("Ability: Pilfer Gil",      0x0077),
+    ("Ability: Full Break",      0x0078),
+    ("Ability: Extract Power",   0x0079),
+    ("Ability: Extract Mana",    0x007A),
+    ("Ability: Extract Speed",   0x007B),
+    ("Ability: Extract Ability", 0x007C),
 
-    ("Ability: Nab Gil", 0xD07D),
-    ("Ability: Quick Pockets", 0xD07E),
+    ("Ability: Nab Gil",       0x007D),
+    ("Ability: Quick Pockets", 0x007E),
 ]]
 
 abilities: list[ItemData] = [
@@ -633,7 +671,13 @@ for item in stat_abilities:
 
 
 
-AllItems = normal_items + key_items + equips + filler_items + party_members + abilities_per_character
+AllItems = list(chain(normal_items,
+                      key_items,
+                      equip_items,
+                      party_member_items,
+                      region_unlock_items))
+
+filler_items: list[ItemData] = [item for item in AllItems if item.progression == ItemClassification.filler]
 
 item_table: dict[str, ItemData] = {item.itemName: item for item in AllItems}
 items_by_id: dict[int, ItemData] = {item.itemID: item for item in AllItems}

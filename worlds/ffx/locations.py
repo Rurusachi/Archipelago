@@ -1,5 +1,5 @@
-import typing
-from typing import Dict, Optional, List, Tuple
+from typing import Dict, Optional, List, Tuple, NamedTuple
+from itertools import chain
 
 from BaseClasses import Location, Region
 
@@ -11,7 +11,7 @@ class FFXLocation(Location):
         super().__init__(player, name, address, parent)
 
 
-class FFXLocationData(typing.NamedTuple):
+class FFXLocationData(NamedTuple):
     rom_address: int
     name: str
     location_id: int
@@ -38,9 +38,59 @@ SphereGridOffset: "SphereGrid",}
 def get_location_type(location_id: int):
     return location_types[location_id & 0xF000]
 
+encounter_to_id = {
+    "Baaj Temple: Klikk Defeated"              : ["bjyt04_00"],
+    "Al Bhed Ship: Tros Defeated"              : ["cdsp07_00"],
+    "Besaid: Dark Valefor"                     : ["bsil07_70"],
+    "S.S. Liki: Sin Fin"                       : ["slik02_00"],
+    "S.S. Liki: Sinspawn Echuilles"            : ["slik02_01"],
+    "Kilika: Lord Ochu"                        : ["klyt00_00"],
+    "Kilika: Sinspawn Geneaux"                 : ["klyt01_00"],
+    "Luca: Oblitzerator defeated"              : ["cdsp02_00"],
+    "Mi'Hen Highroad: Chocobo Eater"           : ["mihn02_00"],
+    "Mushroom Rock Road: Sinspawn Gui"         : ["kino03_10"],
+    "Mushroom Rock Road: Sinspawn Gui 2"       : ["kino02_00"],
+    "Moonflow: Extractor"                      : ["genk09_00"],
+    "Thunder Plains: Dark Ixion"               : ["kami03_71"],
+    "Macalania Woods: Spherimorph"             : ["mcfr03_00"],
+    "Lake Macalania: Crawler"                  : ["maca02_00"],
+    "Lake Macalania: Seymour/Anima"            : ["mcyt06_00"],
+    "Lake Macalania: Wendigo"                  : ["maca02_01"],
+    "Lake Macalania: Dark Shiva"               : ["mcyt00_70"],
+    "Bikanel: Dark Ifrit"                      : ["bika03_70"],
+    "Airship: Evrae"                           : ["hiku15_00"],
+    "Airship: Sin Left Fin"                    : ["ssbt00_00"],
+    "Airship: Sin Right Fin"                   : ["ssbt01_00"],
+    "Airship: Sinspawn Genais"                 : ["ssbt02_00"],
+    "Airship: Overdrive Sin"                   : ["ssbt03_00"],
+    "Airship: Penance"                         : ["hiku15_70"],
+    "Bevelle: Isaaru"                          : ["bvyt09_12"], # Probably?
+    "Bevelle: Evrae Altana"                    : ["stbv00_10"],
+    "Bevelle: Seymour Natus"                   : ["stbv01_10"],
+    "Calm Lands: Defender X"                   : ["nagi01_00"],
+    "Monster Arena: Nemesis"                   : ["zzzz02_76"],
+    "Cavern of the Stolen Fayth: Dark Yojimbo" : ["nagi05_74"],
+    "Gagazet (Outside): Biran and Yenke"       : ["mtgz01_10"],
+    "Gagazet (Outside): Seymour Flux"          : ["mtgz02_00"],
+    "Gagazet (Outside): Dark Anima"            : ["mtgz01_70"],
+    "Gagazet: Sanctuary Keeper"                : ["mtgz08_00"],
+    "Zanarkand: Spectral Keeper"               : ["dome02_00"],
+    "Zanarkand: Yunalesca"                     : ["dome06_00"],
+    "Zanarkand: Dark Bahamut"                  : ["dome06_70"],
+    "Sin: Seymour Omnis"                       : ["sins03_00"],
+    "Sin: Braska's Final Aeon"                 : ["sins06_00"],
+    "Sin: Contest of Aeons"                    : ["sins07_0x"],
+    "Sin: Yu Yevon"                            : ["sins07_10"],
+    "Omega Ruins: Ultima Weapon"               : ["omeg00_10"],
+    "Omega Ruins: Omega Weapon"                : ["omeg01_10"],
+    "Mushroom Rock Road: Dark Mindy"           : ["kino00_70", "kino01_70", "kino01_72", "kino05_71"],
+    "Mushroom Rock Road: Dark Sandy"           : ["kino00_70", "kino01_70", "kino01_72", "kino05_70"],
+    "Mushroom Rock Road: Dark Cindy"           : ["kino00_70", "kino01_70", "kino01_71"],
+}
+
 
 FFXBossLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+BossOffset, *location) for location in [
-    ("Baaj Temple : Klikk Defeated",              0, False),
+    ("Baaj Temple: Klikk Defeated",               0, False),
     ("Al Bhed Ship: Tros Defeated",               1, False),
     ("Besaid: Dark Valefor",                      2, False),
     ("S.S. Liki: Sin Fin",                        3, False),
@@ -51,7 +101,7 @@ FFXBossLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+BossOffs
     ("Mi'Hen Highroad: Chocobo Eater",            8, False),
     ("Mushroom Rock Road: Sinspawn Gui",          9, False),
     ("Mushroom Rock Road: Sinspawn Gui 2",       10, False),
-    ("Mushroom Rock Road: Dark Magus Sisters",   11, False),
+    #("Mushroom Rock Road: Dark Magus Sisters",   11, False),
     ("Moonflow: Extractor",                      12, False),
     ("Thunder Plains: Dark Ixion",               13, False),
     ("Macalania Woods: Spherimorph",             14, False),
@@ -85,6 +135,9 @@ FFXBossLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+BossOffs
     ("Sin: Yu Yevon",                            42, False),
     ("Omega Ruins: Ultima Weapon",               43, False),
     ("Omega Ruins: Omega Weapon",                44, False),
+    ("Mushroom Rock Road: Dark Mindy",           45, False),
+    ("Mushroom Rock Road: Dark Sandy",           46, False),
+    ("Mushroom Rock Road: Dark Cindy",           47, False),
 ]]
 
 FFXOverdriveLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+OverdriveOffset, *location) for location in [
@@ -712,12 +765,20 @@ FFXSphereGridLocations: List[List[FFXLocationData]] = [
 ]
 
 
+allLocations = list(chain(FFXTreasureLocations,
+                          FFXBossLocations,
+                          FFXPartyMemberLocations,
+                          FFXOverdriveLocations,
+                          FFXOverdriveModeLocations,
+                          FFXOtherLocations,
+                          *FFXSphereGridLocations))
+
 def create_location_label_to_id_map() -> Dict[str, int]:
     """
     Creates a map from location labels to their AP location id (address)
     """
     label_to_id_map: Dict[str, int] = {}
-    for location in FFXTreasureLocations:
+    for location in allLocations:
         label_to_id_map[location.name] = location.rom_address
 
     return label_to_id_map

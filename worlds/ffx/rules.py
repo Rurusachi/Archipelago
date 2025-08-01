@@ -1,13 +1,17 @@
+import typing
 from collections import Counter
 from typing import Callable
 
 from BaseClasses import CollectionState
 from worlds.generic.Rules import add_rule, CollectionRule
 from .items import character_names, stat_abilities, item_to_stat_value
-from ..AutoWorld import World
+if typing.TYPE_CHECKING:
+    from .__init__ import FFXWorld
+else:
+    FFXWorld = object
 
 
-def create_ability_rule(world: World, ability_name: str):
+def create_ability_rule(world: FFXWorld, ability_name: str):
     #return lambda state: state.has_any([f"{name} Ability: {ability_name}" for name in character_names], world.player)
     #return lambda state: True;               "       Ability: Fire"
     #temp = [(f"{name} Ability: {ability_name}", f"Party Member: {name}") for name in character_names]
@@ -20,7 +24,7 @@ def create_ability_rule(world: World, ability_name: str):
 
 #def create_stat_rule(world: World, stat_total: int):
 #    return lambda state: state.has
-def create_stat_total_rule(world: World, num_party_members: int, stat_total: int) -> CollectionRule:
+def create_stat_total_rule(world: FFXWorld, num_party_members: int, stat_total: int) -> CollectionRule:
     def has_stat_total(state: CollectionState) -> bool:
         player_prog_items = state.prog_items[world.player]
         totals = Counter()
@@ -36,20 +40,9 @@ def create_stat_total_rule(world: World, num_party_members: int, stat_total: int
         #return False
     return has_stat_total
 
-ruleDict: dict[str, Callable[[World], CollectionRule]] = {
-    "Sinspawn Geneaux": lambda world: lambda state: create_ability_rule(world, "Esuna")(state)
-                                                    and
-                                                    create_ability_rule(world, "Fire")(state)
-                                                    and
-                                                    (
-                                                            create_ability_rule(world, "Silence")(state)
-                                                            or
-                                                            create_ability_rule(world, "Nul Tide")(state)
-                                                    )
-                                                    and create_stat_total_rule(world, 3, 50),
-    "Oblitzerator": lambda world: lambda state: create_ability_rule(world, "Thunder")(state) or
-                                                create_ability_rule(world, "Thundara")(state) or
-                                                create_ability_rule(world, "Thundaga")(state),
+ruleDict: dict[str, Callable[[FFXWorld], CollectionRule]] = {
+    "Sinspawn Geneaux": lambda world: lambda state: True,
+    "Oblitzerator": lambda world: lambda state: True,
     "Chocobo Eater": lambda world: lambda state: True,
     "Sinspawn Gui": lambda world: lambda state: True,
     "Extractor": lambda world: lambda state: True,
@@ -74,9 +67,30 @@ ruleDict: dict[str, Callable[[World], CollectionRule]] = {
     "Braska's Final Aeon": lambda world: lambda state: True,
     "Ultima Weapon": lambda world: lambda state: True,
     "Omega Weapon": lambda world: lambda state: True,
+
+    "Baaj Temple": lambda world: lambda state: state.has("Region: Baaj Temple", world.player),
+    "Besaid": lambda world: lambda state: state.has("Region: Besaid", world.player),
+    "Kilika": lambda world: lambda state: state.has("Region: Kilika", world.player),
+    "Luca": lambda world: lambda state: state.has("Region: Luca", world.player),
+    "Mi'ihen Highroad": lambda world: lambda state: state.has("Region: Mi'ihen Highroad", world.player),
+    "Mushroom Rock Road": lambda world: lambda state: state.has("Region: Mushroom Rock Road", world.player),
+    "Djose": lambda world: lambda state: state.has("Region: Djose", world.player),
+    "Moonflow": lambda world: lambda state: state.has("Region: Moonflow", world.player),
+    "Guadosalam": lambda world: lambda state: state.has("Region: Guadosalam", world.player),
+    "Thunder Plains": lambda world: lambda state: state.has("Region: Thunder Plains", world.player),
+    "Macalania": lambda world: lambda state: state.has("Region: Macalania", world.player),
+    "Bikanel": lambda world: lambda state: state.has("Region: Bikanel", world.player),
+    "Bevelle": lambda world: lambda state: state.has("Region: Bevelle", world.player),
+    "Calm Lands": lambda world: lambda state: state.has("Region: Calm Lands", world.player),
+    "Cavern of the Stolen Fayth": lambda world: lambda state: state.has("Region: Cavern of the Stolen Fayth", world.player),
+    "Mt. Gagazet": lambda world: lambda state: state.has("Region: Mt. Gagazet", world.player),
+    "Zanarkand Ruins": lambda world: lambda state: state.has("Region: Zanarkand Ruins", world.player),
+    "Sin": lambda world: lambda state: state.has("Region: Sin", world.player),
+    "Airship": lambda world: lambda state: state.has("Region: Airship", world.player),
+    "Omega Ruins": lambda world: lambda state: state.has("Region: Omega Ruins", world.player),
 }
 
 
-def set_rules(world: World, player) -> None:
+def set_rules(world: FFXWorld, player) -> None:
     pass
     #add_rule(world.multiworld.get_region("Kilika 1st visit: Post-Geneaux", player).entrances[0], ruleDict["Sinspawn Geneaux"](world))

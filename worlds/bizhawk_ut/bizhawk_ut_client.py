@@ -10,7 +10,7 @@ def my_launch(*launch_args) -> None:
     try:
         from worlds.tracker.TrackerClient import (TrackerGameContext as SuperContext,
                                                   TrackerCommandProcessor as SuperCommandProcessor,
-                                                  UT_VERSION, updateTracker)
+                                                  UT_VERSION)
         tracker_loaded = True
     except ModuleNotFoundError:
         from CommonClient import CommonContext as SuperContext

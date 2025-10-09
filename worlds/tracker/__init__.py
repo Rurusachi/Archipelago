@@ -107,6 +107,9 @@ class UTMapTabData:
     map_page_locations: list[str]
     """The relative paths within the map_page_folder of the location.json"""
 
+    map_page_layouts: list[str]
+    """The relative paths within the map_page_folder of the layout.json"""
+
     map_page_setting_key: str
     """Data storage key used to determine which page should be loaded"""
 
@@ -130,9 +133,9 @@ class UTMapTabData:
 
     def __init__(
             self, player_id, team_id, map_page_folder: str = "", map_page_maps: list[str] | str = "",
-            map_page_locations: list[str] | str = "", map_page_setting_key: str | None = None,
-            map_page_index: Callable[[Any], int] | None = None, external_pack_key: str = "",
-            poptracker_name_mapping: dict[str, int] | None = None,
+            map_page_locations: list[str] | str = "", map_page_layouts: list[str] | str | None = None,
+            map_page_setting_key: str | None = None, map_page_index: Callable[[Any], int] | None = None,
+            external_pack_key: str = "", poptracker_name_mapping: dict[str, int] | None = None,
             location_setting_key: str|None = None,
             location_icon_coords: Callable[[int, Any], tuple[int,int]]|None= None,
             poptracker_entrance_mapping: dict[str, str]|None = None, **kwargs):
@@ -145,6 +148,12 @@ class UTMapTabData:
             self.map_page_locations = [map_page_locations]
         else:
             self.map_page_locations = map_page_locations
+        if isinstance(map_page_layouts, str):
+            self.map_page_layouts = [map_page_layouts]
+        elif isinstance(map_page_layouts, list):
+            self.map_page_layouts = map_page_layouts
+        else:
+            self.map_page_layouts = []
         self.map_page_setting_key = map_page_setting_key
         if isinstance(self.map_page_setting_key, str):
             self.map_page_setting_key = self.map_page_setting_key.format(player=player_id, team=team_id)

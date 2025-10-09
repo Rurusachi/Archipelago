@@ -251,7 +251,6 @@ class TrackerGameContext(CommonContext):
     ldeferred_dict: dict[str,list] = {}
     map_page_coords_func = lambda *args: {}
     watcher_task = None
-    auto_tab = True
     update_callback: Callable[[list[str]], bool] | None = None
     region_callback: Callable[[list[str]], bool] | None = None
     events_callback: Callable[[list[str]], bool] | None = None
@@ -262,6 +261,20 @@ class TrackerGameContext(CommonContext):
     use_split = True
     re_gen_passthrough = None
     local_items: list[NetworkItem] = []
+
+    _auto_tab = True
+
+    @property
+    def auto_tab(self):
+        return self._auto_tab
+
+    @auto_tab.setter
+    def auto_tab(self, value):
+        self._auto_tab = value
+        self.ui.auto_tab = value
+        if value:
+            self.load_map(None)
+            self.updateTracker()
 
     @property
     def tracker_items_received(self):
@@ -407,6 +420,59 @@ class TrackerGameContext(CommonContext):
 
         return updateTracker_ret
 
+    def parse_layout_node(self, node, curr_path, is_tab=False):
+        if is_tab:
+            name = node["title"]
+            curr_path = name if curr_path is None else f"{curr_path}/{name}"
+        else:
+            name = None
+        maps = []
+
+        if "type" in node and node["type"] == "map":
+            maps = node["maps"]
+            if curr_path is not None:
+                for m in maps:
+                    self.map_to_name[m] = curr_path
+        elif "content" in node:
+            if isinstance(node["content"], list):
+                for item in node["content"]:
+                    result = self.parse_layout_node(item, curr_path)
+                    if isinstance(result, list):
+                        maps.extend(result)
+                    elif result:
+                        maps.append(result)
+            else:
+                result = self.parse_layout_node(node["content"], curr_path)
+                if result:
+                    maps = result
+        elif "tabs" in node:
+            if isinstance(node["tabs"], list):
+                for item in node["tabs"]:
+                    result = self.parse_layout_node(item, curr_path, True)
+                    if isinstance(result, list):
+                        maps.extend(result)
+                    elif result:
+                        maps.append(result)
+            else:
+                result = self.parse_layout_node(node["tabs"], curr_path, True)
+                if result:
+                    maps = result
+
+        return (name, maps) if name is not None else maps
+
+    def parse_layouts(self):
+        all_layouts = []
+        self.map_to_name = {}
+        for layout in self.layouts:
+            maps = []
+            for key, node in layout.items():
+                result = self.parse_layout_node(node, None)
+                if result:
+                    maps.extend(result)
+            if maps:
+                all_layouts.extend(maps)
+        self.map_groups = all_layouts
+
     def load_pack(self):
         assert self.tracker_core.player_id is not None
         assert self.tracker_world is not None
@@ -414,6 +480,7 @@ class TrackerGameContext(CommonContext):
         assert current_world
         self.maps = []
         self.locs = []
+        self.layouts = []
         if self.tracker_world.external_pack_key:
             assert current_world.settings
             try:
@@ -431,6 +498,8 @@ class TrackerGameContext(CommonContext):
                             self.maps += load_json_zip(packRef, f"{map_page}")
                         for loc_page in self.tracker_world.map_page_locations:
                             self.locs += load_json_zip(packRef, f"{loc_page}")
+                        for layout_page in self.tracker_world.map_page_layouts:
+                            self.layouts.append(load_json_zip(packRef, f"{layout_page}"))
                     else:
                         current_world.settings.update({self.tracker_world.external_pack_key: ""}) #failed to find a pack, prompt next launch
                         current_world.settings._changed = True
@@ -452,6 +521,9 @@ class TrackerGameContext(CommonContext):
                 self.maps += load_json(PACK_NAME, f"/{self.tracker_world.map_page_folder}/{map_page}")
             for loc_page in self.tracker_world.map_page_locations:
                 self.locs += load_json(PACK_NAME, f"/{self.tracker_world.map_page_folder}/{loc_page}")
+            for layout_page in self.tracker_world.map_page_layouts:
+                self.layouts += load_json(PACK_NAME, f"/{self.tracker_world.map_page_folder}/{layout_page}")
+        self.parse_layouts()
         self.load_map(None)
 
     def load_map(self, map_id: Union[int, str, None]):
@@ -483,6 +555,10 @@ class TrackerGameContext(CommonContext):
                 return
             m = self.maps[map_id]
         self.map_id = map_id
+        if self.map_to_name is not None:
+            self.ui.current_map = self.map_to_name.get(m["name"], m["name"])
+        else:
+            self.ui.current_map = m["name"]
         location_name_to_id = AutoWorld.AutoWorldRegister.world_types[self.game].location_name_to_id
         # m = [m for m in self.maps if m["name"] == map_name]
         if self.tracker_world.external_pack_key:
@@ -626,6 +702,10 @@ class TrackerGameContext(CommonContext):
         from kivy.metrics import dp
         from kvui import ApAsyncImage, ToolTip
         from .TrackerKivy import SomethingNeatJustToMakePythonHappy
+
+        class CheckItem(BoxLayout):
+            text = StringProperty()
+            active = BooleanProperty()
 
         class TrackerLayout(BoxLayout):
             pass
@@ -919,6 +999,9 @@ class TrackerGameContext(CommonContext):
         ui = super().make_gui()  # before the kivy imports so kvui gets loaded first
         from kvui import HintLog, HintLabel, TooltipLabel
         from kivy.properties import StringProperty, NumericProperty, BooleanProperty
+        from kivymd.uix.menu import MDDropdownMenu
+        from kivy.metrics import dp
+        from kivy.animation import Animation
         from kvui import ImageLoader
 
         class TrackerManager(ui):
@@ -928,6 +1011,8 @@ class TrackerGameContext(CommonContext):
             loc_border = NumericProperty(5)
             enable_map = BooleanProperty(False)
             iconSource = StringProperty("")
+            current_map = StringProperty("")
+            auto_tab = BooleanProperty(True)
             base_title = f"Tracker {UT_VERSION} for AP version"  # core appends ap version so this works
 
             def build(self):
@@ -987,6 +1072,63 @@ class TrackerGameContext(CommonContext):
                     self.ctx.disconnected_intentionally = True
                     raise e
                 return super().update_hints()
+
+            def set_dropdown_items(self, menu: MDDropdownMenu, menu_items):
+                menu.items = menu_items
+
+                menu.set_menu_properties()
+                menu.position = menu.adjust_position()
+                if menu.width <= 100:
+                    menu.width = dp(240)
+                menu._tar_x, menu._tar_y = menu.get_target_pos()
+
+                anim = Animation(
+                    height=menu.target_height,
+                    x=menu._tar_x,
+                    y=menu._tar_y - menu.target_height,
+                    scale_value_center=menu.caller.center,
+
+                    duration=menu.hide_duration*2,
+                    transition=menu.hide_transition,
+                )
+                anim.start(menu)
+
+            def create_dropdown_menu_items(self, menu: MDDropdownMenu, groups: list[tuple[str, list]]):
+                menu_items = []
+                for group in groups:
+                    if isinstance(group[1], list) and len(group[1]) == 1 and isinstance(group[1][0], str):
+                       trailing_icon = ""
+                    else:
+                       trailing_icon = "menu-right"
+                    menu_items.append({"text": group[0], "trailing_icon": trailing_icon, "on_release": lambda menu=menu, x=group[1]: self.map_dropdown_callback(menu, x)})
+                return menu_items
+
+            def open_map_dropdown(self, item):
+                dropdown_menu = MDDropdownMenu(caller=item, hor_growth="right", ver_growth="down")
+                if self.ctx.map_groups:
+                    menu_items = self.create_dropdown_menu_items(dropdown_menu, self.ctx.map_groups)
+                else:
+                    menu_items = [
+                        *[{"text": m["name"], "on_release": lambda i=i: self.map_dropdown_callback(dropdown_menu, i)} for i, m in enumerate(self.ctx.maps)]
+                    ]
+                dropdown_menu.items = menu_items
+                dropdown_menu.open()
+
+            def map_dropdown_callback(self, menu: MDDropdownMenu, group_item):
+                if not isinstance(group_item, list):
+                    self.ctx.load_map(group_item)
+                    self.ctx.updateTracker()
+                elif isinstance(group_item, list) and len(group_item) == 1 and isinstance(group_item[0], str):
+                    self.ctx.load_map(group_item[0])
+                    self.ctx.updateTracker()
+                else:
+                    menu_items = [{"text": "Return", "leading_icon": "menu-left", "on_release": lambda menu=menu, items=menu.items: self.set_dropdown_items(menu, items)}]
+                    menu_items.extend(self.create_dropdown_menu_items(menu, group_item))
+
+                    self.set_dropdown_items(menu, menu_items)
+
+            def on_auto_tab_active(self, checkitem, value):
+                self.ctx.auto_tab = value
 
         self.load_kv()
         return TrackerManager

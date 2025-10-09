@@ -14,15 +14,38 @@
         orientation: 'vertical'
         spacing: dp(3)
 
+<CheckItem>:
+    size_hint: None, None
+    size: self.minimum_size
+    MDCheckbox:
+        id: checkitem_box
+        active: root.active
+        on_active: root.active = self.active
+    MDLabel:
+        id: checkitem_label
+        adaptive_size: True
+        text: root.text
+
 <VisualTracker>:
     BoxLayout:
         orientation: "vertical"
-        # DropDown
-        #     id: map_list
-        #     Button:
-        #         text: "First Item"
-        #     Button:
-        #         text: "Second Item"
+        BoxLayout:
+            orientation: "horizontal"
+            pos_hint: {'center_x': 0.5}
+            size_hint: None, None
+            size: self.minimum_size
+            CheckItem:
+                id: auto_tab_checkitem
+                text: "Auto Tab"
+                active: app.auto_tab
+                on_active: app.on_auto_tab_active(*args)
+                padding: [20, 0]
+            MDDropDownItem:
+                id: map_list
+                on_release: app.open_map_dropdown(self)
+                MDDropDownItemText:
+                    id: drop_text
+                    text: "Current Map: " + app.current_map
         ApAsyncImage:
             id: tracker_map
             source: app.source

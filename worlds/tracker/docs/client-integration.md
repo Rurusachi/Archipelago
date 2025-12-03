@@ -22,6 +22,12 @@ class YourGameContext(SuperContext):
     tags = {"AP"}
 ```
 
+if your client has an `on_package` function, remember to call UT's `on_package` in order for it to respond to network events
+```py
+def on_package(self, cmd: str, args: dict):
+    super().on_package(cmd, args)
+```
+
 if you edit your GameManager at all, just use super().make_gui() to inheret UT's ui if it got loaded
 ```py
 def make_gui(self):

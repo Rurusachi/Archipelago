@@ -37,7 +37,7 @@ class TrackerCore():
         self.locations_available = []
         self.launch_multiworld = None
         self.multiworld = None
-        self.enforce_deferred_connections = DeferredEntranceMode.default
+        self.enforce_deferred_connections = None
         self.enable_glitched_logic = True
         self.glitched_locations = []
         self.quit_after_update = print_list or print_count
@@ -190,7 +190,8 @@ class TrackerCore():
                 args[option_name].update(player_mapping)
 
         try:
-            yaml_path, self.output_format, self.hide_excluded, self.use_split, self.enforce_deferred_connections, self.enable_glitched_logic = self._set_host_settings()
+            yaml_path, self.output_format, self.hide_excluded, self.use_split, enforce_deferred_connections, self.enable_glitched_logic = self._set_host_settings()
+            if self.enforce_deferred_connections is None: self.enforce_deferred_connections = enforce_deferred_connections
             # strip command line args, they won't be useful from the client anyway
             sys.argv = sys.argv[:1]
             args = mystery_argparse()
@@ -262,7 +263,6 @@ class TrackerCore():
                 "set_rules",
                 "connect_entrances",
                 "generate_basic",
-                "pre_fill",
             )
         )
 
@@ -271,6 +271,7 @@ class TrackerCore():
         multiworld.generation_is_fake = True
         if self.re_gen_passthrough is not None:
             multiworld.re_gen_passthrough = self.re_gen_passthrough
+        if self.enforce_deferred_connections is None: self.enforce_deferred_connections = DeferredEntranceMode.default
         multiworld.enforce_deferred_connections = self.enforce_deferred_connections.value
 
         multiworld.set_seed(seed, args.race, str(args.outputname) if args.outputname else None)
@@ -299,7 +300,8 @@ class TrackerCore():
         prog_items = Counter()
         all_items = Counter()
 
-        callback_list = []
+        callback_list:list[str] = []
+        glitches_callback_list:list[str] = []
 
         item_id_to_name = self.multiworld.worlds[self.player_id].item_id_to_name
         location_id_to_name = self.multiworld.worlds[self.player_id].location_id_to_name
@@ -331,7 +333,7 @@ class TrackerCore():
         regions = []
         locations = []
         readable_locations = []
-        glitches_locations:list[str] = []
+        glitches_locations:list[int] = []
         hinted_locations = []
         for temp_loc in self.multiworld.get_reachable_locations(state, self.player_id):
             if temp_loc.address is None or isinstance(temp_loc.address, list):
@@ -378,7 +380,7 @@ class TrackerCore():
                 self.log_to_tab("ERROR: location " + temp_loc.name + " broke something, report this to discord")
                 pass
         events = [location.item.name for location in state.advancements if location.player == self.player_id]
-
+        event_locations = [location.name for location in state.advancements if location.player == self.player_id]
         unconnected_entrances = [entrance for region in state.reachable_regions[self.player_id] for entrance in region.exits if entrance.can_reach(state) and entrance.connected_region is None]
 
         self.locations_available = locations
@@ -403,7 +405,8 @@ class TrackerCore():
                         continue # already in logic
                     try:
                         if (temp_loc.address in self.missing_locations):
-                            glitches_locations.append(temp_loc.name)
+                            glitches_locations.append(temp_loc.address)
+                            glitches_callback_list.append(temp_loc.name)
                             region = ""
                             if temp_loc.parent_region is not None:  
                                 region = temp_loc.parent_region.name
@@ -439,8 +442,8 @@ class TrackerCore():
                         pass
         self.glitched_locations = glitches_locations
 
-        return CurrentTrackerState(all_items, prog_items, glitches_locations, events, callback_list, regions, unconnected_entrances, readable_locations, hinted_locations, state)
-    
+        return CurrentTrackerState(all_items, prog_items, glitches_callback_list, events, event_locations, callback_list, regions, unconnected_entrances, readable_locations, hinted_locations, state)
+
     def write_empty_yaml(self, game, player_name, tempdir):
         import json
         import os

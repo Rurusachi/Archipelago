@@ -111,7 +111,7 @@ class FFXWorld(World):
         #     required_items.extend([item.itemName for _ in range(1)])
 
         possible_starting_regions = [f"Region: {region}" for region, level in world_battle_levels.items() if
-                                     level < min(self.options.logic_difficulty.value, 3)]
+                                     level <= min(self.options.logic_difficulty.value, 3)]
         starting_region = self.random.choice(possible_starting_regions)
 
         self.multiworld.push_precollected(self.create_item(starting_region))

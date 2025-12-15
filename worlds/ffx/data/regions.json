@@ -40,7 +40,7 @@
     "party_members": [1, 3, 4, 5, 8],
     "bosses": [],
     "overdrives": [21],
-    "other": [0, 2],
+    "other": [0, 2, 52],
     "leads_to": [4],
     "rules": ["Besaid"]
   },
@@ -97,7 +97,7 @@
     "party_members": [9],
     "bosses": [6],
     "overdrives": [],
-    "other": [],
+    "other": [53],
     "leads_to": [9],
     "rules": ["Sinspawn Geneaux"]
   },
@@ -244,7 +244,7 @@
     "party_members": [10],
     "bosses": [],
     "overdrives": [],
-    "other": [11],
+    "other": [11, 54],
     "leads_to": [22],
     "rules": ["Djose"]
   },
@@ -391,7 +391,7 @@
     "party_members": [11],
     "bosses": [16],
     "overdrives": [],
-    "other": [],
+    "other": [55],
     "leads_to": [35],
     "rules": ["Seymour/Anima"]
   },
@@ -515,7 +515,7 @@
     "party_members": [12],
     "bosses": [],
     "overdrives": [],
-    "other": [22],
+    "other": [22, 56],
     "leads_to": [47],
     "rules": ["Bevelle"]
   },
@@ -710,7 +710,7 @@
     "party_members": [],
     "bosses": [36],
     "overdrives": [],
-    "other": [],
+    "other": [57],
     "leads_to": [64],
     "rules": ["Spectral Keeper"]
   },

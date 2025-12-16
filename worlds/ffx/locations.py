@@ -249,7 +249,7 @@ FFXOtherLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+OtherOf
 ]]
 
 FFXPartyMemberLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+PartyMemberOffset, *location) for location in [
-    ("Party Member: Tidus",           0, False),
+    # ("Party Member: Tidus",           0, False),
     ("Party Member: Yuna",            1, False),
     ("Party Member: Auron",           2, False),
     ("Party Member: Kimahri",         3, False),

@@ -246,17 +246,6 @@ def create_regions(world: FFXWorld, player) -> None:
             final_aeon.access_rule = lambda state: state.has_from_list_unique(
                 [character.itemName for character in party_member_items], world.player, world.options.required_party_members.value)
         case world.options.goal_requirement.option_pilgrimage:
-            # pilgrimage_events = {
-            #     "Besaid Island 1st visit": "Valefor",
-            #     "Kilika 1st visit: Post-Geneaux": "Party Member: Ifrit",
-            #     "Djose 1st visit": "Party Member: Ixion",
-            #     "Lake Macalania 1st visit: Post-Seymour/Anima": "Party Member: Shiva",
-            #     "Bevelle 1st visit: Pre-Isaaru": "Party Member: Bahamut",
-            #     "Zanarkand Ruins 1st visit: Post-Yunalesca": "Zanarkand: Yunalesca",
-            # }
-            # for region_name, location_name in pilgrimage_events.items():
-            #     world.get_region(region_name).add_event(location_name, location_type=FFXLocation, item_type=FFXItem)
-            # final_aeon.access_rule = lambda state: state.has_all(list(pilgrimage_events.values()), world.player)
             final_aeon.access_rule = lambda state: (
                 state.can_reach_location(world.location_id_to_name[8 | PartyMemberOffset], world.player) and    # Valefor
                 state.can_reach_location(world.location_id_to_name[9 | PartyMemberOffset], world.player) and    # Ifrit

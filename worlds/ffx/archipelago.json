@@ -1,6 +1,6 @@
 {
     "game": "Final Fantasy X",
     "authors": [ "Rurusachi" ],
-    "minimum_ap_version": "0.6.3",
-    "world_version": "0.1.7"
+    "minimum_ap_version": "0.6.4",
+    "world_version": "0.1.8"
 }

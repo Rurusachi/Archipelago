@@ -5,7 +5,7 @@ import typing
 from typing import NamedTuple
 
 from .locations import FFXLocation, FFXTreasureLocations, FFXPartyMemberLocations, FFXBossLocations, \
-    FFXOverdriveLocations, FFXOtherLocations, FFXSphereGridLocations, FFXLocationData, TreasureOffset, BossOffset
+    FFXOverdriveLocations, FFXOtherLocations, FFXSphereGridLocations, FFXLocationData, TreasureOffset, BossOffset, PartyMemberOffset
 from .rules import ruleDict
 from .items import party_member_items, FFXItem
 from worlds.generic.Rules import add_rule
@@ -246,14 +246,30 @@ def create_regions(world: FFXWorld, player) -> None:
             final_aeon.access_rule = lambda state: state.has_from_list_unique(
                 [character.itemName for character in party_member_items], world.player, world.options.required_party_members.value)
         case world.options.goal_requirement.option_pilgrimage:
+            pilgrimage_locations = [
+                ("Besaid Island 1st visit", 8, PartyMemberOffset),                          # Valefor
+                ("Kilika 1st visit: Post-Geneaux", 9, PartyMemberOffset),                   # Ifrit
+                ("Djose 1st visit", 10, PartyMemberOffset),                                 # Ixion
+                ("Lake Macalania 1st visit: Post-Seymour/Anima", 11, PartyMemberOffset),    # Shiva
+                ("Bevelle 1st visit: Pre-Isaaru", 12, PartyMemberOffset),                   # Bahamut
+                ("Zanarkand Ruins 1st visit: Post-Yunalesca", 37, BossOffset)               # Yunalesca
+            ]
             pilgrimage_events = {
-                "S.S. Liki 1st visit": "Pilgrimage: Besaid",
-                "S.S. Winno 1st visit": "Pilgrimage: Kilika",
+                "Besaid Island 1st visit": "Pilgrimage: Besaid",
+                "Kilika 1st visit: Post-Geneaux": "Pilgrimage: Kilika",
                 "Djose 1st visit": "Pilgrimage: Djose",
-                "Lake Macalania 1st visit: Post-Wendigo": "Pilgrimage: Macalania",
-                "Bevelle 1st visit: Post-Seymour Natus": "Pilgrimage: Bevelle",
-                "Zanarkand Ruins 1st visit: Post-Yunalesca": "Pilgrimage: Zanarkand Ruins",
+                "Lake Macalania 1st visit: Post-Seymour/Anima": "Pilgrimage: Macalania",
+                "Bevelle 1st visit: Pre-Isaaru": "Pilgrimage: Bevelle",
+                "Zanarkand Ruins 1st visit: Post-Yunalesca": "Zanarkand: Yunalesca",
             }
+            
+            for region_name, id, offset in pilgrimage_locations:
+                location_name = world.location_id_to_name[id | offset]
+                CollectionState.can_reach_location(location_name, world.player)
+
+                
+            final_aeon.access_rule = lambda state: state.has_all(pilgrimage_locations, world.player)
+            
             for region_name, location_name in pilgrimage_events.items():
                 world.get_region(region_name).add_event(location_name, location_type=FFXLocation, item_type=FFXItem)
             final_aeon.access_rule = lambda state: state.has_all(list(pilgrimage_events.values()), world.player)

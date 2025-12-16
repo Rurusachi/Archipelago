@@ -133,9 +133,9 @@ FFXBossLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+BossOffs
     ("Zanarkand: Yunalesca",                     37, False),
     ("Zanarkand: Dark Bahamut",                  38, False),
     ("Sin: Seymour Omnis",                       39, False),
-    #("Sin: Braska's Final Aeon",                 40, False),
-    #("Sin: Contest of Aeons",                    41, False),
-    #("Sin: Yu Yevon",                            42, False),
+    ("Sin: Braska's Final Aeon",                 40, False),
+    ("Sin: Contest of Aeons",                    41, False),
+    ("Sin: Yu Yevon",                            42, False),
     ("Omega Ruins: Ultima Weapon",               43, False),
     ("Omega Ruins: Omega Weapon",                44, False),
     ("Mushroom Rock Road: Dark Mindy",           45, False),
@@ -246,14 +246,6 @@ FFXOtherLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+OtherOf
     ("Onion Knight Sigil Upgrade",      49, False),
     ("Godhand Crest Upgrade",           50, False),
     ("Godhand Sigil Upgrade",           51, False),
-
-    ("Besaid Cloister: Valefor",        52, False),
-    ("Kilika Cloister: Ifrit",          53, False),
-    ("Djose Cloister: Ixion",           54, False),
-    ("Macalania Cloister: Shiva",       55, False),
-    ("Bevelle Cloister: Bahamut",       56, False),
-    ("Zanarkand Cloister: Yunalesca",   57, False),
-
 ]]
 
 FFXPartyMemberLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+PartyMemberOffset, *location) for location in [

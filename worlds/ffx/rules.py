@@ -6,7 +6,7 @@ from BaseClasses import CollectionState
 from worlds.generic.Rules import add_rule, CollectionRule
 from . import key_items
 from .items import character_names, stat_abilities, item_to_stat_value, aeon_names, region_unlock_items, equipItemOffset
-from .locations import TreasureOffset, OtherOffset, BossOffset
+from .locations import TreasureOffset, OtherOffset, BossOffset, PartyMemberOffset
 
 if typing.TYPE_CHECKING:
     from .__init__ import FFXWorld
@@ -221,7 +221,20 @@ def set_rules(world: FFXWorld) -> None:
         add_rule(world.get_location(world.location_id_to_name[location_id | BossOffset]),
                  ruleDict[aeon](world))
 
-
+    ## Aeons
+    # Anima
+    add_rule(world.get_location(world.location_id_to_name[13 | PartyMemberOffset]), lambda state: (
+        state.can_reach_location(world.location_id_to_name[15 | TreasureOffset], world.player),   # Besaid
+        state.can_reach_location(world.location_id_to_name[19 | TreasureOffset], world.player),   # Kilika
+        state.can_reach_location(world.location_id_to_name[484 | TreasureOffset], world.player),  # Djose
+        state.can_reach_location(world.location_id_to_name[485 | TreasureOffset], world.player),  # Macalania
+        state.can_reach_location(world.location_id_to_name[217 | TreasureOffset], world.player),  # Bevelle
+        state.can_reach_location(world.location_id_to_name[209 | TreasureOffset], world.player),  # Zanarkand
+    ))
+    # Yojimbo
+    add_rule(world.get_location(world.location_id_to_name[14 | PartyMemberOffset]), lambda state: state.has_all([f"Region: {name}" for name in ["Calm Lands", "Cavern of the Stolen Fayth"]], world.player))
+    # Magus Sisters
+    add_rule(world.get_location(world.location_id_to_name[15 | PartyMemberOffset]), lambda state: state.has_all([f"{name}" for name in ["Flower Scepter", "Blossom Crown"]], world.player))
 
 
 

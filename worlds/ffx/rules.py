@@ -231,8 +231,6 @@ def set_rules(world: FFXWorld) -> None:
         state.can_reach_location(world.location_id_to_name[217 | TreasureOffset], world.player),  # Bevelle
         state.can_reach_location(world.location_id_to_name[209 | TreasureOffset], world.player),  # Zanarkand
     ))
-    # Yojimbo
-    add_rule(world.get_location(world.location_id_to_name[14 | PartyMemberOffset]), lambda state: state.has_all([f"Region: {name}" for name in ["Calm Lands", "Cavern of the Stolen Fayth"]], world.player))
     # Magus Sisters
     add_rule(world.get_location(world.location_id_to_name[15 | PartyMemberOffset]), lambda state: state.has_all([f"{name}" for name in ["Flower Scepter", "Blossom Crown"]], world.player))
 

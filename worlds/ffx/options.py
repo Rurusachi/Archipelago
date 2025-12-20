@@ -10,7 +10,7 @@ class GoalRequirement(Choice):
     None: No requirements.
     Party Members: Requires unlocking a number of party members (not counting Aeons).
     Party Members and Aeons: Requires unlocking a number of party members (including Aeons).
-    Pilgrimage: Complete all the temples.
+    Pilgrimage: Complete all required temples, and defeat the boss in Zanarkand Ruins.
     """
     display_name = "Goal Requirement"
     default = 0

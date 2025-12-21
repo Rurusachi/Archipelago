@@ -247,12 +247,12 @@ def create_regions(world: FFXWorld, player) -> None:
                 [character.itemName for character in party_member_items], world.player, world.options.required_party_members.value)
         case world.options.goal_requirement.option_pilgrimage:
             final_aeon.access_rule = lambda state: (
-                state.can_reach_location(world.location_id_to_name[8 | PartyMemberOffset], world.player) and    # Valefor
-                state.can_reach_location(world.location_id_to_name[9 | PartyMemberOffset], world.player) and    # Ifrit
+                state.can_reach_location(world.location_id_to_name[ 8 | PartyMemberOffset], world.player) and   # Valefor
+                state.can_reach_location(world.location_id_to_name[ 9 | PartyMemberOffset], world.player) and   # Ifrit
                 state.can_reach_location(world.location_id_to_name[10 | PartyMemberOffset], world.player) and   # Ixion
                 state.can_reach_location(world.location_id_to_name[11 | PartyMemberOffset], world.player) and   # Shiva
                 state.can_reach_location(world.location_id_to_name[12 | PartyMemberOffset], world.player) and   # Bahamut
-                state.can_reach_location(world.location_id_to_name[37 | BossOffset], world.player)              # Yunalesca
+                state.can_reach_location(world.location_id_to_name[37 | BossOffset       ], world.player)       # Yunalesca
             )
 
 

@@ -5,7 +5,7 @@ import typing
 from typing import NamedTuple
 
 from .locations import FFXLocation, FFXTreasureLocations, FFXPartyMemberLocations, FFXBossLocations, \
-    FFXOverdriveLocations, FFXOtherLocations, FFXSphereGridLocations, FFXLocationData, TreasureOffset, BossOffset, PartyMemberOffset
+    FFXOverdriveLocations, FFXOtherLocations, FFXRecruitLocations, FFXSphereGridLocations, FFXLocationData, TreasureOffset, BossOffset, PartyMemberOffset, RecruitOffset
 from .rules import ruleDict
 from .items import party_member_items, FFXItem
 from worlds.generic.Rules import add_rule
@@ -38,6 +38,9 @@ class RegionData(dict):
     @property
     def other(self) -> list[int]:
         return self["other"]
+    @property
+    def recruits(self) -> list[int]:
+        return self["recruits"]
     @property
     def leads_to(self) -> list[int]:
         return self["leads_to"]
@@ -145,6 +148,8 @@ def create_regions(world: FFXWorld, player) -> None:
         #     new_region.locations.append(new_location)
         #     all_locations.append(new_location)
 
+        add_locations_by_ids(new_region, region_data.recruits, FFXRecruitLocations, "Recruit")
+
     for region_data in region_data_list:
         curr_region = region_dict[region_data.id]
         for region_id in region_data.leads_to:
@@ -228,6 +233,13 @@ def create_regions(world: FFXWorld, player) -> None:
             #world.get_location(location_name).progress_type = LocationProgressType.EXCLUDED
             world.options.exclude_locations.value.add(location_name)
 
+    if not world.options.recruit_sanity.value:
+        recruit_location_ids = []
+        for location in FFXRecruitLocations:
+            recruit_location_ids.append(location.location_id)
+        for id in recruit_location_ids:
+            location_name = world.location_id_to_name[id | RecruitOffset]
+            world.options.exclude_locations.value.add(location_name)
 
     final_region = world.get_region("Sin: Braska's Final Aeon")
     final_region.add_event("Sin: Braska's Final Aeon", "Victory", location_type=FFXLocation, item_type=FFXItem)

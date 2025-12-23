@@ -25,7 +25,8 @@ PartyMemberOffset: int = 0x3000
 OverdriveOffset: int = 0x4000
 OverdriveModeOffset: int = 0x5000
 OtherOffset: int = 0x6000
-SphereGridOffset: int = 0x7000
+RecruitOffset: int = 0x7000
+SphereGridOffset: int = 0x8000
 
 location_types: Dict[int, str] = {
     TreasureOffset: "Treasure",
@@ -34,7 +35,8 @@ location_types: Dict[int, str] = {
     OverdriveOffset: "Overdrive",
     OverdriveModeOffset: "OverdriveMode",
     OtherOffset: "Other",
-    SphereGridOffset: "SphereGrid",
+    RecruitOffset: "Recruit",
+    SphereGridOffset: "SphereGrid"
 }
 
 def get_location_type(location_id: int):
@@ -265,6 +267,33 @@ FFXPartyMemberLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+P
     ("Party Member: Anima",          13, False),
     ("Party Member: Yojimbo",        14, False),
     ("Party Member: Magus Sisters",  15, False),
+]]
+
+FFXRecruitLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+RecruitOffset, *location) for location in [
+    ("Recruit: Biggs",       1, False),
+    ("Recruit: Brother",     2, False),
+    ("Recruit: Durren",      3, False),
+    ("Recruit: Jumal",       4, False),
+    ("Recruit: Kiyuri",      5, False),
+    ("Recruit: Kyou",        6, False),
+    ("Recruit: Linna",       7, False),
+    ("Recruit: Mep",         8, False),
+    ("Recruit: Mifurey",     9, False),
+    ("Recruit: Miyu",       10, False),
+    ("Recruit: Naida",      11, False),
+    ("Recruit: Nedus",      12, False),
+    ("Recruit: Rin",        13, False),
+    ("Recruit: Ropp",       14, False),
+    ("Recruit: Shaami",     15, False),
+    ("Recruit: Shuu",       16, False),
+    ("Recruit: Svanda",     17, False),
+    ("Recruit: Tatts",      18, False),
+    ("Recruit: Vilucha",    19, False),
+    ("Recruit: Wakka",      20, False),
+    ("Recruit: Wedge",      21, False),
+    ("Recruit: Yuma Guado", 22, False),
+    ("Recruit: Zalits",     23, False),
+    ("Recruit: Zev Ronso",  24, False)
 ]]
 
 FFXTreasureLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+TreasureOffset, *location) for location in [
@@ -790,6 +819,7 @@ allLocations = list(chain(FFXTreasureLocations,
                           FFXOverdriveLocations,
                           FFXOverdriveModeLocations,
                           FFXOtherLocations,
+                          FFXRecruitLocations,
                           *FFXSphereGridLocations))
 
 def create_location_label_to_id_map() -> Dict[str, int]:

@@ -223,14 +223,14 @@ def set_rules(world: FFXWorld) -> None:
 
     ## Aeons
     # Anima
-    add_rule(world.get_location(world.location_id_to_name[13 | PartyMemberOffset]), lambda state: (
+    add_rule(world.get_location(world.location_id_to_name[13 | PartyMemberOffset]), lambda state: all((
         state.can_reach_location(world.location_id_to_name[ 15 | TreasureOffset], world.player),  # Besaid
         state.can_reach_location(world.location_id_to_name[ 19 | TreasureOffset], world.player),  # Kilika
         state.can_reach_location(world.location_id_to_name[484 | TreasureOffset], world.player),  # Djose
         state.can_reach_location(world.location_id_to_name[485 | TreasureOffset], world.player),  # Macalania
         state.can_reach_location(world.location_id_to_name[217 | TreasureOffset], world.player),  # Bevelle
         state.can_reach_location(world.location_id_to_name[209 | TreasureOffset], world.player),  # Zanarkand
-    ))
+    )))
     # Magus Sisters
     add_rule(world.get_location(world.location_id_to_name[15 | PartyMemberOffset]), lambda state: state.has_all(["Flower Scepter", "Blossom Crown"], world.player))
 

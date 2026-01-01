@@ -155,7 +155,7 @@
     "bosses": [],
     "overdrives": [],
     "other": [6, 7],
-    "recruits": [],
+    "recruits": [1, 4, 12, 15, 21, 23, 24],
     "leads_to": [13],
     "rules": ["Luca"]
   },
@@ -179,7 +179,7 @@
     "bosses": [],
     "overdrives": [],
     "other": [30],
-    "recruits": [1, 4, 12, 15, 16, 21, 23, 24],
+    "recruits": [16],
     "leads_to": [],
     "rules": []
   },

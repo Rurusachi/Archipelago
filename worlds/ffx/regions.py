@@ -226,7 +226,9 @@ def create_regions(world: FFXWorld, player) -> None:
             277, # "Saturn Sigil",
             279, # "Mercury Sigil",
             244, # "Jupiter Sigil",
-            114, # "Caladbolg"
+            114, # "Caladbolg",
+            93,  # "World Champion",
+            176, # "Cloudy Mirror",
         ]
         for id in mini_game_location_ids:
             location_name = world.location_id_to_name[id | TreasureOffset]

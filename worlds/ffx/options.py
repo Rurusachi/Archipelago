@@ -31,6 +31,17 @@ class RequiredPartyMembers(Range):
     range_end = 16
 
 
+class RequiredPrimers(Range):
+    """
+    Set how many Al Bhed Primers are required to allow access to the goal.
+    This is in addition to the regular goal_requirement, meaning that for example, both Party Members & Primers may be required.
+    """
+    display_name = "Required Al Bhed Primers"
+    default = 0
+    range_start = 0
+    range_end = 26
+
+
 class APMultiplier(Range):
     """
     Sets the AP multiplier.
@@ -109,6 +120,7 @@ class LogicDifficulty(Range):
 class FFXOptions(PerGameCommonOptions):
     goal_requirement: GoalRequirement
     required_party_members: RequiredPartyMembers
+    required_primers: RequiredPrimers
     ap_multiplier: APMultiplier
     sphere_grid_randomization: SphereGridRandomization
     super_bosses: SuperBosses

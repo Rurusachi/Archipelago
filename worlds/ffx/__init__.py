@@ -175,6 +175,7 @@ class FFXWorld(World):
             # Options
             "goal_requirement": self.options.goal_requirement.value,
             "required_party_members": self.options.required_party_members.value,
+            "required_primers": self.options.required_primers.value,
             "sphere_grid_randomization": self.options.sphere_grid_randomization.value,
             "super_bosses": self.options.super_bosses.value,
             "mini_games": self.options.mini_games.value,

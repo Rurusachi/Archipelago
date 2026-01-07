@@ -29,6 +29,7 @@ def generate_output(world: FFXWorld, player: int, output_directory: str) -> None
         "SeedId": world.multiworld.get_out_file_name_base(world.player),
         "GoalRequirement": world.options.goal_requirement.value,
         "RequiredPartyMembers": world.options.required_party_members.value,
+        "RequiredPrimers": world.options.required_primers.value,
         "APMultiplier": world.options.ap_multiplier.value,
     }
 

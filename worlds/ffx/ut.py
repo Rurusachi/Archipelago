@@ -13,6 +13,7 @@ def setup_options_from_slot_data(world: FFXWorld) -> None:
 
             world.options.goal_requirement.value          = world.passthrough["goal_requirement"]
             world.options.required_party_members.value    = world.passthrough["required_party_members"]
+            world.options.required_primers.value          = world.passthrough["required_primers"]
             world.options.sphere_grid_randomization.value = world.passthrough["sphere_grid_randomization"]
             world.options.super_bosses.value              = world.passthrough["super_bosses"]
             world.options.mini_games.value                = world.passthrough["mini_games"]

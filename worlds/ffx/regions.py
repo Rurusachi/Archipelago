@@ -5,7 +5,7 @@ import typing
 from typing import NamedTuple
 
 from .locations import FFXLocation, FFXTreasureLocations, FFXPartyMemberLocations, FFXBossLocations, \
-    FFXOverdriveLocations, FFXOtherLocations, FFXRecruitLocations, FFXSphereGridLocations, FFXLocationData, TreasureOffset, BossOffset, PartyMemberOffset, RecruitOffset
+    FFXOverdriveLocations, FFXOtherLocations, FFXRecruitLocations, FFXSphereGridLocations, FFXCaptureLocations, FFXLocationData, TreasureOffset, BossOffset, PartyMemberOffset, RecruitOffset, CaptureOffset
 from .rules import ruleDict
 from .items import party_member_items, key_items, FFXItem
 from worlds.generic.Rules import add_rule
@@ -41,6 +41,9 @@ class RegionData(dict):
     @property
     def recruits(self) -> list[int]:
         return self["recruits"]
+    @property
+    def captures(self) -> list[int]:
+        return self["captures"]
     @property
     def leads_to(self) -> list[int]:
         return self["leads_to"]
@@ -176,6 +179,8 @@ def create_regions(world: FFXWorld, player) -> None:
 
         add_locations_by_ids(new_region, region_data.recruits, FFXRecruitLocations, "Recruit")
 
+        add_locations_by_ids(new_region, region_data.captures, FFXCaptureLocations, "Capture")
+
     for region_data in region_data_list:
         curr_region = region_dict[region_data.id]
         for region_id in region_data.leads_to:
@@ -267,6 +272,14 @@ def create_regions(world: FFXWorld, player) -> None:
             recruit_location_ids.append(location.location_id)
         for id in recruit_location_ids:
             location_name = world.location_id_to_name[id | RecruitOffset]
+            world.options.exclude_locations.value.add(location_name)
+    
+    if not world.options.capture_sanity.value:
+        capture_location_ids = []
+        for location in FFXCaptureLocations:
+            capture_location_ids.append(location.location_id)
+        for id in capture_location_ids:
+            location_name = world.location_id_to_name[id | CaptureOffset]
             world.options.exclude_locations.value.add(location_name)
 
     final_region = world.get_region("Sin: Braska's Final Aeon")

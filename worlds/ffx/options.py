@@ -84,12 +84,24 @@ class MiniGames(Toggle):
     option_off = 0
     option_on = 1
 
+
 class RecruitSanity(Toggle):
     """
     Sets whether Blitzball Free Agents are included or not. If off they will only have filler items.
     Default is off.
     """
     display_name = "Recruit Sanity"
+    default = 0
+    option_off = 0
+    option_on = 1
+
+
+class CaptureSanity(Toggle):
+    """
+    Sets whether Fiend Captures are included or not. If off they will only have filler items.
+    Default is off.
+    """
+    display_name = "Capture Sanity"
     default = 0
     option_off = 0
     option_on = 1
@@ -126,5 +138,6 @@ class FFXOptions(PerGameCommonOptions):
     super_bosses: SuperBosses
     mini_games: MiniGames
     recruit_sanity: RecruitSanity
+    capture_sanity: CaptureSanity
     trap_percentage: TrapPercentage
     logic_difficulty: LogicDifficulty

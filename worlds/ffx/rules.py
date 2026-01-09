@@ -6,7 +6,7 @@ from BaseClasses import CollectionState
 from worlds.generic.Rules import add_rule, CollectionRule
 from . import key_items
 from .items import character_names, stat_abilities, item_to_stat_value, aeon_names, region_unlock_items, equipItemOffset
-from .locations import TreasureOffset, OtherOffset, BossOffset, PartyMemberOffset
+from .locations import TreasureOffset, OtherOffset, BossOffset, PartyMemberOffset, CaptureOffset
 
 if typing.TYPE_CHECKING:
     from .__init__ import FFXWorld
@@ -235,7 +235,11 @@ def set_rules(world: FFXWorld) -> None:
     add_rule(world.get_location(world.location_id_to_name[15 | PartyMemberOffset]), lambda state: state.has_all(["Flower Scepter", "Blossom Crown"], world.player))
 
 
-
+    ## Captures
+    for location_id in range(102):
+        add_rule(world.get_location(world.location_id_to_name[location_id | CaptureOffset]), 
+            lambda state: state.has("Region: Calm Lands", world.player)
+        )
 
 
     celestial_weapon_locations = [

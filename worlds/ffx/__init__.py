@@ -180,7 +180,8 @@ class FFXWorld(World):
             "super_bosses": self.options.super_bosses.value,
             "mini_games": self.options.mini_games.value,
             "logic_difficulty": self.options.logic_difficulty.value,
-            "recruit_sanity": self.options.recruit_sanity.value
+            "recruit_sanity": self.options.recruit_sanity.value,
+            "capture_sanity": self.options.capture_sanity.value
         }
         return slot_data
 

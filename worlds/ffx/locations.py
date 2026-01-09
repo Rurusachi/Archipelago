@@ -27,6 +27,7 @@ OverdriveModeOffset: int = 0x5000
 OtherOffset: int = 0x6000
 RecruitOffset: int = 0x7000
 SphereGridOffset: int = 0x8000
+CaptureOffset: int = 0x9000
 
 location_types: Dict[int, str] = {
     TreasureOffset: "Treasure",
@@ -36,7 +37,8 @@ location_types: Dict[int, str] = {
     OverdriveModeOffset: "OverdriveMode",
     OtherOffset: "Other",
     RecruitOffset: "Recruit",
-    SphereGridOffset: "SphereGrid"
+    SphereGridOffset: "SphereGrid",
+    CaptureOffset: "Capture"
 }
 
 def get_location_type(location_id: int):
@@ -797,6 +799,111 @@ FFXTreasureLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+Trea
     ("Story Win vs. Luca Goers Reward",                                              497, False),  # Item: 1x Strength Sphere [2057h]
 ]]
 
+FFXCaptureLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+CaptureOffset, *location) for location in [
+    ("Fiend Capture: Dingo",            0,   False),    # Besaid
+    ("Fiend Capture: Condor",           1,   False),
+    ("Fiend Capture: Water Flan",       2,   False),
+    ("Fiend Capture: Dinonix",          3,   False),    # Kilika
+    ("Fiend Capture: Killer Bee",       4,   False),
+    ("Fiend Capture: Yellow Element",   5,   False),
+    ("Fiend Capture: Ragora",           6,   False),
+    ("Fiend Capture: Mi'ihen Fang",     7,   False),    # Miihen Highroad
+    ("Fiend Capture: Ipiria",           8,   False),
+    ("Fiend Capture: Floating Eye",     9,   False),
+    ("Fiend Capture: White Element",    10,  False),
+    ("Fiend Capture: Raldo",            11,  False),
+    ("Fiend Capture: Vouivre",          12,  False),
+    ("Fiend Capture: Bomb",             13,  False),
+    ("Fiend Capture: Dual Horn",        14,  False),
+    ("Fiend Capture: Raptor",           15,  False),    # Mushroom Rock Road
+    ("Fiend Capture: Gandarewa",        16,  False),
+    ("Fiend Capture: Thunder Flan",     17,  False),
+    ("Fiend Capture: Red Element",      18,  False),
+    ("Fiend Capture: Lamashtu",         19,  False),
+    ("Fiend Capture: Funguar",          20,  False),
+    ("Fiend Capture: Garuda",           21,  False),
+    ("Fiend Capture: Garm",             22,  False),    # Djose
+    ("Fiend Capture: Simurgh",          23,  False),
+    ("Fiend Capture: Bite Bug",         24,  False),
+    ("Fiend Capture: Snow Flan",        25,  False),
+    ("Fiend Capture: Bunyip",           26,  False),
+    ("Fiend Capture: Basilisk",         27,  False),
+    ("Fiend Capture: Ochu",             28,  False),    # Moonflow
+    ("Fiend Capture: Melusine",         29,  False),    # Thunder Plains
+    ("Fiend Capture: Aerouge",          30,  False),
+    ("Fiend Capture: Buer",             31,  False),
+    ("Fiend Capture: Gold Element",     32,  False),
+    ("Fiend Capture: Kusariqqu",        33,  False),
+    ("Fiend Capture: Larva",            34,  False),
+    ("Fiend Capture: Iron Giant",       35,  False),
+    ("Fiend Capture: Qactuar",          36,  False),
+    ("Fiend Capture: Snow Wolf",        37,  False),    # Macalania
+    ("Fiend Capture: Iguion",           38,  False),
+    ("Fiend Capture: Wasp",             39,  False),
+    ("Fiend Capture: Evil Eye",         40,  False),
+    ("Fiend Capture: Ice Flan",         41,  False),
+    ("Fiend Capture: Blue Element",     42,  False),
+    ("Fiend Capture: Murussu",          43,  False),
+    ("Fiend Capture: Mafdet",           44,  False),
+    ("Fiend Capture: Xiphos",           45,  False),
+    ("Fiend Capture: Chimera",          46,  False),
+    ("Fiend Capture: Sand Wolf",        47,  False),    # Bikanel
+    ("Fiend Capture: Alcyone",          48,  False),
+    ("Fiend Capture: Mushussu",         49,  False),
+    ("Fiend Capture: Zu",               50,  False),
+    ("Fiend Capture: Sand Worm",        51,  False),
+    ("Fiend Capture: Cactuar",          52,  False),
+    ("Fiend Capture: Skoll",            53,  False),    # Calm Lands
+    ("Fiend Capture: Nebiros",          54,  False),
+    ("Fiend Capture: Flame Flan",       55,  False),
+    ("Fiend Capture: Shred",            56,  False),
+    ("Fiend Capture: Anacondaur",       57,  False),
+    ("Fiend Capture: Ogre",             58,  False),
+    ("Fiend Capture: Coeurl",           59,  False),
+    ("Fiend Capture: Chimera Brain",    60,  False),
+    ("Fiend Capture: Malboro",          61,  False),
+    ("Fiend Capture: Yowie",            62,  False),    # Cavern of the Stolen Fayth
+    ("Fiend Capture: Imp",              63,  False),
+    ("Fiend Capture: Dark Element",     64,  False),
+    ("Fiend Capture: Nidhogg",          65,  False),
+    ("Fiend Capture: Thorn",            66,  False),
+    ("Fiend Capture: Valaha",           67,  False),
+    ("Fiend Capture: Epaaj",            68,  False),
+    ("Fiend Capture: Ghost",            69,  False),
+    ("Fiend Capture: Tonberry",         70,  False),
+    ("Fiend Capture: Bandersnatch",     71,  False),    # Mt. Gagazet
+    ("Fiend Capture: Ahriman",          72,  False),
+    ("Fiend Capture: Dark Flan",        73,  False),
+    ("Fiend Capture: Grenade",          74,  False),
+    ("Fiend Capture: Grat",             75,  False),
+    ("Fiend Capture: Grendel",          76,  False),
+    ("Fiend Capture: Bashura",          77,  False),
+    ("Fiend Capture: Mandragora",       78,  False),
+    ("Fiend Capture: Behemoth",         79,  False),
+    ("Fiend Capture: Splasher",         80,  False),
+    ("Fiend Capture: Achelous",         81,  False),
+    ("Fiend Capture: Maelspike",        82,  False),
+    ("Fiend Capture: Exoray",           83,  False),    # Inside Sin
+    ("Fiend Capture: Wraith",           84,  False),
+    ("Fiend Capture: Gemini (Sword)",   85,  False),
+    ("Fiend Capture: Gemini (Club)",    86,  False),
+    ("Fiend Capture: Demonolith",       87,  False),
+    ("Fiend Capture: Great Malboro",    88,  False),
+    ("Fiend Capture: Barbatos",         89,  False),
+    ("Fiend Capture: Adamantoise",      90,  False),
+    ("Fiend Capture: Behemoth King",    91,  False),
+    ("Fiend Capture: Zaurus",           92,  False),    # Omega Ruins
+    ("Fiend Capture: Floating Death",   93,  False),
+    ("Fiend Capture: Black Element",    94,  False),
+    ("Fiend Capture: Halma",            95,  False),
+    ("Fiend Capture: Puroboros",        96,  False),
+    ("Fiend Capture: Spirit",           97,  False),
+    ("Fiend Capture: Machea",           98,  False),
+    ("Fiend Capture: Master Coeurl",    99,  False),
+    ("Fiend Capture: Master Tonberry",  100, False),
+    ("Fiend Capture: Varuna",           101, False)
+]]
+
 character_names = [
     "Tidus",
     "Yuna",
@@ -820,6 +927,7 @@ allLocations = list(chain(FFXTreasureLocations,
                           FFXOverdriveModeLocations,
                           FFXOtherLocations,
                           FFXRecruitLocations,
+                          FFXCaptureLocations,
                           *FFXSphereGridLocations))
 
 def create_location_label_to_id_map() -> Dict[str, int]:

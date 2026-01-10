@@ -146,6 +146,41 @@ FFXBossLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+BossOffs
     ("Mushroom Rock Road: Dark Sandy",           46, False),
     ("Mushroom Rock Road: Dark Cindy",           47, False),
     ("Baaj Temple: Geosgaeno",                   48, False),
+    ("Monster Arena: Stratoavis",                49, False),
+    ("Monster Arena: Malboro Menace",            50, False),
+    ("Monster Arena: Kottos",                    51, False),
+    ("Monster Arena: Coeurlregina",              52, False),
+    ("Monster Arena: Jormungand",                53, False),
+    ("Monster Arena: Cactuar King",              54, False),
+    ("Monster Arena: Espada",                    55, False),
+    ("Monster Arena: Abyss Worm",                56, False),
+    ("Monster Arena: Chimerageist",              57, False),
+    ("Monster Arena: Don Tonberry",              58, False),
+    ("Monster Arena: Catoblepas",                59, False),
+    ("Monster Arena: Abaddon",                   60, False),
+    ("Monster Arena: Vorban",                    61, False),
+    ("Monster Arena: Fenrir",                    62, False),
+    ("Monster Arena: Ornitholestes",             63, False),
+    ("Monster Arena: Pteryx",                    64, False),
+    ("Monster Arena: Hornet",                    65, False),
+    ("Monster Arena: Vidatu",                    66, False),
+    ("Monster Arena: One-Eye",                   67, False),
+    ("Monster Arena: Jumbo Flan",                68, False),
+    ("Monster Arena: Nega Elemental",            69, False),
+    ("Monster Arena: Tanket",                    70, False),
+    ("Monster Arena: Fafnir",                    71, False),
+    ("Monster Arena: Sleep Sprout",              72, False),
+    ("Monster Arena: Bomb King",                 73, False),
+    ("Monster Arena: Juggernaut",                74, False),
+    ("Monster Arena: Ironclad",                  75, False),
+    ("Monster Arena: Earth Eater",               76, False),
+    ("Monster Arena: Greater Sphere",            77, False),
+    ("Monster Arena: Catastrophe",               78, False),
+    ("Monster Arena: Th'uban",                   79, False),
+    ("Monster Arena: Neslug",                    80, False),
+    ("Monster Arena: Ultima Buster",             81, False),
+    ("Monster Arena: Shinryu",                   82, False),
+    ("Monster Arena: Nemesis",                   83, False),
 ]]
 
 FFXOverdriveLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+OverdriveOffset, *location) for location in [
@@ -723,19 +758,19 @@ FFXTreasureLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+Trea
     ("Calm Lands: Wings to Discovery x30 (Chocobo Race Reward)",                     421, False),  # Item: 30x Wings to Discovery [206Ch]
     # ("Treasure 422",                                                               422, False),  # Item: 1x Potion [2000h]
     ("Mi'ihen Highroad: Lv. 1 Key Sphere x1 (NPC)",                                  423, False),  # Item: 1x Lv. 1 Key Sphere [2051h]
-    ("Monster Arena: Area Conquest - Besaid",                                        424, False),  # Item: 99x Stamina Tonic [2043h]
-    ("Monster Arena: Area Conquest - Kilika",                                        425, False),  # Item: 99x Poison Fang [202Dh]
-    ("Monster Arena: Area Conquest - Miihen Highroad",                               426, False),  # Item: 99x Soul Spring [203Eh]
-    ("Monster Arena: Area Conquest - Mushroom Rock Road",                            427, False),  # Item: 99x Candle of Life [2030h]
-    ("Monster Arena: Area Conquest - Djose Road",                                    428, False),  # Item: 99x Petrify Grenade [2031h]
-    ("Monster Arena: Area Conquest - Thunder Plains",                                429, False),  # Item: 99x Chocobo Wing [2037h]
-    ("Monster Arena: Area Conquest - Macalania",                                     430, False),  # Item: 60x Shining Gem [202Ah]
-    ("Monster Arena: Area Conquest - Bikanel",                                       431, False),  # Item: 99x Shadow Gem [2029h]
-    ("Monster Arena: Area Conquest - Calm Lands",                                    432, False),  # Item: 60x Farplane Wind [2033h]
-    ("Monster Arena: Area Conquest - Cavern of the Stolen Fayth",                    433, False),  # Item: 40x Silver Hourglass [202Eh]
-    ("Monster Arena: Area Conquest - Mt. Gagazet",                                   434, False),  # Key Item: Blossom Crown [A032h]
-    ("Monster Arena: Area Conquest - Sin",                                           435, False),  # Item: 99x Lunar Curtain [2038h]
-    ("Monster Arena: Area Conquest - Omega Dungeon",                                 436, False),  # Item: 60x Designer Wallet [2034h]
+    ("Monster Arena: Area Conquest - Stratoavis",                                        424, False),  # Item: 99x Stamina Tonic [2043h]
+    ("Monster Arena: Area Conquest - Malboro Menace",                                        425, False),  # Item: 99x Poison Fang [202Dh]
+    ("Monster Arena: Area Conquest - Kottos",                               426, False),  # Item: 99x Soul Spring [203Eh]
+    ("Monster Arena: Area Conquest - Coeurlregina",                            427, False),  # Item: 99x Candle of Life [2030h]
+    ("Monster Arena: Area Conquest - Jormungand",                                    428, False),  # Item: 99x Petrify Grenade [2031h]
+    ("Monster Arena: Area Conquest - Cactuar King",                                429, False),  # Item: 99x Chocobo Wing [2037h]
+    ("Monster Arena: Area Conquest - Espada",                                     430, False),  # Item: 60x Shining Gem [202Ah]
+    ("Monster Arena: Area Conquest - Abyss Worm",                                       431, False),  # Item: 99x Shadow Gem [2029h]
+    ("Monster Arena: Area Conquest - Chimerageist",                                    432, False),  # Item: 60x Farplane Wind [2033h]
+    ("Monster Arena: Area Conquest - Don Tonberry",                    433, False),  # Item: 40x Silver Hourglass [202Eh]
+    ("Monster Arena: Area Conquest - Catoblepas",                                   434, False),  # Key Item: Blossom Crown [A032h]
+    ("Monster Arena: Area Conquest - Abaddon",                                           435, False),  # Item: 99x Lunar Curtain [2038h]
+    ("Monster Arena: Area Conquest - Vorban",                                 436, False),  # Item: 60x Designer Wallet [2034h]
     ("Monster Arena: Species Conquest - Fenrir",                                     437, False),  # Item: 99x Chocobo Feather [2036h]
     ("Monster Arena: Species Conquest - Ornitholestes",                              438, False),  # Item: 99x Stamina Spring [203Dh]
     ("Monster Arena: Species Conquest - Pteryx",                                     439, False),  # Item: 99x Mega Phoenix [2007h]

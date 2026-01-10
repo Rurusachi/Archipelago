@@ -225,7 +225,41 @@ def create_regions(world: FFXWorld, player) -> None:
             34, # "Gagazet (Outside): Dark Anima"
             25, # "Airship: Penance"
             44, # "Omega Ruins: Omega Weapon"
-            #30, # "Monster Arena: Nemesis"
+            49, # Stratoavis
+            50, # Malboro Menace
+            51, # Kottos
+            52, # Coeurlregina
+            53, # Jormungand
+            54, # Cactuar King
+            55, # Espada
+            56, # Abyss Worm
+            57, # Chimerageist
+            58, # Don Tonberry
+            59, # Catoblepas
+            60, # Abaddon
+            61, # Vorban
+            62, # Fenrir
+            63, # Ornitholestes
+            64, # Pteryx
+            65, # Hornet
+            66, # Vidatu
+            67, # One-Eye
+            68, # Jumbo Flan
+            69, # Nega Elemental
+            70, # Tanket
+            71, # Fafnir
+            72, # Sleep Sprout
+            73, # Bomb King
+            74, # Juggernaut
+            75, # Ironclad
+            76, # Earth Eater
+            77, # Greater Sphere
+            78, # Catastrophe
+            79, # Th'uban
+            80, # Neslug
+            81, # Ultima Buster
+            82, # Shinryu
+            83, # Nemesis
         ]
         for id in super_boss_location_ids:
             location_name = world.location_id_to_name[id | BossOffset]

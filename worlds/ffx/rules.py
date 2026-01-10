@@ -159,6 +159,44 @@ ruleDict: dict[str, Callable[[FFXWorld], CollectionRule]] = {
     "Dark Yojimbo":        lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
     "Dark Magus Sisters":  lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
 
+    "Stratoavis":          lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Malboro Menace":      lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Kottos":              lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Coeurlregina":        lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Jormungand":          lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Cactuar King":        lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Espada":              lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Abyss Worm":          lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Chimerageist":        lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Don Tonberry":        lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Catoblepas":          lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Abaddon":             lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Vorban":              lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+
+    "Fenrir":              lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Ornitholestes":       lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Pteryx":              lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Hornet":              lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Vidatu":              lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "One-Eye":             lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Jumbo Flan":          lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Nega Elemental":      lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Tanket":              lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Fafnir":              lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Sleep Sprout":        lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Bomb King":           lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Juggernaut":          lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Ironclad":            lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    
+    "Earth Eater":         lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Greater Sphere":      lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Catastrophe":         lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Th'uban":             lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Neslug":              lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Ultima Buster":       lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Shinryu":             lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Nemesis":             lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+
     "Baaj Temple":                lambda world: create_region_access_rule(world, "Baaj Temple"), # lambda state: state.has("Region: Baaj Temple", world.player),
     "Besaid":                     lambda world: create_region_access_rule(world, "Besaid"),
     "Kilika":                     lambda world: create_region_access_rule(world, "Kilika"),
@@ -244,28 +282,29 @@ def set_rules(world: FFXWorld) -> None:
     add_rule(world.get_location(world.location_id_to_name[15 | PartyMemberOffset]), lambda state: state.has_all(["Flower Scepter", "Blossom Crown"], world.player))
 
 
-    # Captures
+    ## Captures
     # Fiend Captures
     for location_id in range(102):
         add_rule(world.get_location(world.location_id_to_name[location_id | CaptureOffset]), 
             lambda state: state.has("Region: Calm Lands", world.player)
         )
 
+    ## Capture Rewards
     # Area Conquest
     area_conquest = [
-        (424, ("Besaid"                    )),  # Besaid
-        (425, ("Kilika"                    )),  # Kilika
-        (426, ("Miihen Highroad"           )),  # Miihen Highroad
-        (427, ("Mushroom Rock Road"        )),  # Mushroom Rock Road
-        (428, ("Djose", "Moonflow"         )),  # Djose Road
-        (429, ("Thunder Plains"            )),  # Thunder Plains
-        (430, ("Macalania"                 )),  # Macalania
-        (431, ("Bikanel"                   )),  # Bikanel
-        (432, ("Calm Lands"                )),  # Calm Lands
-        (433, ("Cavern of the Stolen Fayth")),  # Cavern of the Stolen Fayth
-        (434, ("Mt. Gagazet"               )),  # Mt. Gagazet
-        (435, ("Sin"                       )),  # Sin
-        (436, ("Omega Ruins"               )),  # Omega Dungeon
+        (424, ("Besaid"                    )),  # Stratoavis
+        (425, ("Kilika"                    )),  # Malboro Menace
+        (426, ("Miihen Highroad"           )),  # Kottos
+        (427, ("Mushroom Rock Road"        )),  # Coeurlregina
+        (428, ("Djose", "Moonflow"         )),  # Jormungand
+        (429, ("Thunder Plains"            )),  # Cactuar King
+        (430, ("Macalania"                 )),  # Espada
+        (431, ("Bikanel"                   )),  # Abyss Worm
+        (432, ("Calm Lands"                )),  # Chimerageist
+        (433, ("Cavern of the Stolen Fayth")),  # Don Tonberry
+        (434, ("Mt. Gagazet"               )),  # Catoblepas
+        (435, ("Sin"                       )),  # Abaddon
+        (436, ("Omega Ruins"               )),  # Vorban
     ]
     for location_id, regions in area_conquest:
         for region in regions:
@@ -275,7 +314,7 @@ def set_rules(world: FFXWorld) -> None:
     
     # Species Conquest
     species_conquest = [
-        (437, ("Besaid", "Miihen Highroad", "Djose", "Macalania", "Bikanel", "Calm Lands", "Mt. Gagazet")), # Fafnir
+        (437, ("Besaid", "Miihen Highroad", "Djose", "Macalania", "Bikanel", "Calm Lands", "Mt. Gagazet")), # Fenrir
         (438, ("Kilika", "Miihen Highroad", "Mushroom Rock Road", "Thunder Plains", "Macalania",            
                "Cavern of the Stolen Fayth", "Omega Ruins"                                              )), # Ornitholestes
         (439, ("Besaid", "Djose", "Bikanel"                                                             )), # Pteryx
@@ -320,8 +359,8 @@ def set_rules(world: FFXWorld) -> None:
     for location_id in original_creation_captures:
         capture_regions = region_unlock_items[1:3] + region_unlock_items[4:8] + region_unlock_items[9:12] + region_unlock_items[14:]
         add_rule(world.get_location(world.location_id_to_name[location_id | TreasureOffset]),
-            lambda state, capture_regions = capture_regions: state.has_from_list_unique(
-                [region.itemName for region in capture_regions], world.player, 15
+            lambda state, capture_regions = capture_regions: state.has_all(
+                [region.itemName for region in capture_regions], world.player
             )
         )
     
@@ -332,6 +371,7 @@ def set_rules(world: FFXWorld) -> None:
     )
 
 
+    ## Celestials
     celestial_weapon_locations = [
         5,
         93,
@@ -380,6 +420,7 @@ def set_rules(world: FFXWorld) -> None:
                                               ], world.player))
 
 
+    ## Primers
     # Complete Al Bhed Primers
     al_bhed_primers = [item.itemName for item in key_items[0x4:0x1D+1]]
     add_rule(world.get_location(world.location_id_to_name[405 | TreasureOffset]),

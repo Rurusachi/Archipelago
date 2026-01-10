@@ -336,85 +336,103 @@ def set_rules(world: FFXWorld) -> None:
                 lambda state: state.can_reach_region("Monster Arena", world.player)
             )
 
+
     ## Capture Rewards
     # Area Conquest
     area_conquest = [
-        (424, ("Besaid"                    )),  # Stratoavis
-        (425, ("Kilika"                    )),  # Malboro Menace
-        (426, ("Miihen Highroad"           )),  # Kottos
-        (427, ("Mushroom Rock Road"        )),  # Coeurlregina
-        (428, ("Djose", "Moonflow"         )),  # Jormungand
-        (429, ("Thunder Plains"            )),  # Cactuar King
-        (430, ("Macalania"                 )),  # Espada
-        (431, ("Bikanel"                   )),  # Abyss Worm
-        (432, ("Calm Lands"                )),  # Chimerageist
-        (433, ("Cavern of the Stolen Fayth")),  # Don Tonberry
-        (434, ("Mt. Gagazet"               )),  # Catoblepas
-        (435, ("Sin"                       )),  # Abaddon
-        (436, ("Omega Ruins"               )),  # Vorban
+        (424, 49, ("Besaid"                    )),  # Stratoavis
+        (425, 50, ("Kilika"                    )),  # Malboro Menace
+        (426, 51, ("Miihen Highroad"           )),  # Kottos
+        (427, 52, ("Mushroom Rock Road"        )),  # Coeurlregina
+        (428, 53, ("Djose", "Moonflow"         )),  # Jormungand
+        (429, 54, ("Thunder Plains"            )),  # Cactuar King
+        (430, 55, ("Macalania"                 )),  # Espada
+        (431, 56, ("Bikanel"                   )),  # Abyss Worm
+        (432, 57, ("Calm Lands"                )),  # Chimerageist
+        (433, 58, ("Cavern of the Stolen Fayth")),  # Don Tonberry
+        (434, 59, ("Mt. Gagazet"               )),  # Catoblepas
+        (435, 60, ("Sin"                       )),  # Abaddon
+        (436, 61, ("Omega Ruins"               )),  # Vorban
     ]
-    for location_id, regions in area_conquest:
+    for location_id, boss_id, regions in area_conquest:
+        location = world.get_location(world.location_id_to_name[location_id | TreasureOffset])
+        boss = world.get_location(world.location_id_to_name[boss_id | BossOffset])
+        
         for region in regions:
-            add_rule(world.get_location(world.location_id_to_name[location_id | TreasureOffset]), 
-                lambda state: state.has(f"Region: {region}", world.player)
-            )
+            add_rule(location, lambda state: state.has(f"Region: {region}", world.player))
+        add_rule(boss, lambda state: state.can_reach_location(location), world.player)
     
+
     # Species Conquest
     species_conquest = [
-        (437, ("Besaid", "Miihen Highroad", "Djose", "Macalania", "Bikanel", "Calm Lands", "Mt. Gagazet")), # Fenrir
-        (438, ("Kilika", "Miihen Highroad", "Mushroom Rock Road", "Thunder Plains", "Macalania",            
-               "Cavern of the Stolen Fayth", "Omega Ruins"                                              )), # Ornitholestes
-        (439, ("Besaid", "Djose", "Bikanel"                                                             )), # Pteryx
-        (440, ("Kilika", "Djose", "Macalania", "Calm Lands"                                             )), # Hornet
-        (441, ("Mushroom Rock Road", "Thunder Plains", "Cavern of the Stolen Fayth"                     )), # Vidatu
-        (442, ("Miihen Highroad", "Thunder Plains", "Macalania", "Zanarkand Ruins", "Omega Ruins"       )), # One-Eye
-        (443, ("Besaid", "Mushroom Rock Road", "Djose", "Macalania", "Calm Lands", "Zanarkand Ruins"    )), # Jumbo Flan
-        (444, ("Kilika", "Miihen Highroad", "Mushroom Rock Road", "Thunder Plains", "Macalania",            
-               "Cavern of the Stolen Fayth", "Omega Ruins"                                              )), # Nega Elemental
-        (445, ("Miihen Highroad", "Djose", "Macalania", "Calm Lands", "Omega Ruins"                     )), # Tanket
-        (446, ("Miihen Highroad", "Mushroom Rock Road", "Thunder Plains", "Bikanel",                        
-               "Cavern of the Stolen Fayth"                                                             )), # Fafnir
-        (447, ("Mushroom Rock Road", "Cavern of the Stolen Fayth", "Sin"                                )), # Sleep Sprout
-        (448, ("Miihen Highroad", "Mt. Gagazet", "Omega Ruins"                                          )), # Bomb King
-        (449, ("Miihen Highroad", "Cavern of the Stolen Fayth", "Zanarkand Ruins"                       )), # Juggernaut
-        (450, ("Thunder Plains", "Sin"                                                                  )), # Ironclad
+        (437, 62, ("Besaid", "Miihen Highroad", "Djose", "Macalania", "Bikanel", "Calm Lands", "Mt. Gagazet")), # Fenrir
+        (438, 63, ("Kilika", "Miihen Highroad", "Mushroom Rock Road", "Thunder Plains", "Macalania",            
+                   "Cavern of the Stolen Fayth", "Omega Ruins"                                              )), # Ornitholestes
+        (439, 64, ("Besaid", "Djose", "Bikanel"                                                             )), # Pteryx
+        (440, 65, ("Kilika", "Djose", "Macalania", "Calm Lands"                                             )), # Hornet
+        (441, 66, ("Mushroom Rock Road", "Thunder Plains", "Cavern of the Stolen Fayth"                     )), # Vidatu
+        (442, 67, ("Miihen Highroad", "Thunder Plains", "Macalania", "Zanarkand Ruins", "Omega Ruins"       )), # One-Eye
+        (443, 68, ("Besaid", "Mushroom Rock Road", "Djose", "Macalania", "Calm Lands", "Zanarkand Ruins"    )), # Jumbo Flan
+        (444, 69, ("Kilika", "Miihen Highroad", "Mushroom Rock Road", "Thunder Plains", "Macalania",            
+                   "Cavern of the Stolen Fayth", "Omega Ruins"                                              )), # Nega Elemental
+        (445, 69, ("Miihen Highroad", "Djose", "Macalania", "Calm Lands", "Omega Ruins"                     )), # Tanket
+        (446, 70, ("Miihen Highroad", "Mushroom Rock Road", "Thunder Plains", "Bikanel",                        
+                   "Cavern of the Stolen Fayth"                                                             )), # Fafnir
+        (447, 71, ("Mushroom Rock Road", "Cavern of the Stolen Fayth", "Sin"                                )), # Sleep Sprout
+        (448, 72, ("Miihen Highroad", "Mt. Gagazet", "Omega Ruins"                                          )), # Bomb King
+        (449, 73, ("Miihen Highroad", "Cavern of the Stolen Fayth", "Zanarkand Ruins"                       )), # Juggernaut
+        (450, 74, ("Thunder Plains", "Sin"                                                                  )), # Ironclad
     ]
-    for location_id, regions in species_conquest:
+    for location_id, boss_id, regions in species_conquest:
+        location = world.get_location(world.location_id_to_name[location_id | TreasureOffset])
+        boss = world.get_location(world.location_id_to_name[boss_id | BossOffset])
+        
         for region in regions:
-            add_rule(world.get_location(world.location_id_to_name[location_id | TreasureOffset]), 
-                lambda state: state.has(f"Region: {region}", world.player)
+            add_rule(location, lambda state: state.has(f"Region: {region}", world.player)
             )
+        add_rule(boss, lambda state: state.can_reach_location(location), world.player)
  
+
     # Original Creations    
     original_creation_conquests = [
-        (451, area_conquest,    2), # Earth Eather
-        (452, species_conquest, 2), # Greater Sphere
-        (453, area_conquest,    6), # Catastrophe
-        (454, species_conquest, 6), # Th'uban
+        (451, 76, area_conquest,    2), # Earth Eather
+        (452, 77, species_conquest, 2), # Greater Sphere
+        (453, 78, area_conquest,    6), # Catastrophe
+        (454, 79, species_conquest, 6), # Th'uban
     ]
-    for location_id, arena_type, creations_required in original_creation_conquests:
-        locations = [world.get_location(world.location_id_to_name[arena_id | TreasureOffset]) for arena_id, _ in arena_type]
-        add_rule(world.get_location(world.location_id_to_name[location_id | TreasureOffset]),
-            lambda state, locations = locations: can_reach_minimum_locations(state, locations, creations_required)
-        )
+    for location_id, boss_id, arena_type, creations_required in original_creation_conquests:
+        location = world.get_location(world.location_id_to_name[location_id | TreasureOffset])
+        boss = world.get_location(world.location_id_to_name[boss_id | BossOffset])
+        capture_locations = [world.get_location(world.location_id_to_name[arena_id | TreasureOffset]) for arena_id, _ in arena_type]
+        
+        add_rule(world.get_location(location), lambda state, capture_locations = capture_locations: 
+                can_reach_minimum_locations(state, capture_locations, creations_required))
+        add_rule(boss, lambda state: state.can_reach_location(location), world.player)
     
+
     original_creation_captures = [
-        455, # Neslug (1x Capture)
-        456, # Ultima Buster (5x Captures)
-        458, # Nemesis (10x Captures)
+        (455, 80), # Neslug (1x Capture)
+        (456, 81), # Ultima Buster (5x Captures)
+        (458, 83), # Nemesis (10x Captures)
     ]
-    for location_id in original_creation_captures:
+    for location_id, boss_id in original_creation_captures:
+        location = world.get_location(world.location_id_to_name[location_id | TreasureOffset])
+        boss = world.get_location(world.location_id_to_name[boss_id | BossOffset])
         capture_regions = region_unlock_items[1:3] + region_unlock_items[4:8] + region_unlock_items[9:12] + region_unlock_items[14:]
-        add_rule(world.get_location(world.location_id_to_name[location_id | TreasureOffset]),
-            lambda state, capture_regions = capture_regions: state.has_all(
-                [region.itemName for region in capture_regions], world.player
-            )
+        
+        add_rule(location, lambda state, capture_regions = capture_regions: state.has_all(
+                [region.itemName for region in capture_regions], world.player)
         )
+        add_rule(boss, lambda state: state.can_reach_location(location), world.player)
     
+
     add_rule(world.get_location(world.location_id_to_name[457 | TreasureOffset]), # Shinryu (Underwater Captures in Gagazet)
-        lambda state: 
-            state.has(f"Region: Mt. Gagazet", world.player) and
-            create_min_swimmers_rule(world, 1)(state)
+            lambda state: 
+                state.has(f"Region: Mt. Gagazet", world.player) and
+                create_min_swimmers_rule(world, 1)(state)
+    )
+    add_rule(world.get_location(world.location_id_to_name[82 | BossOffset]), 
+             lambda state: state.can_reach_location(world.get_location(world.location_id_to_name[457 | TreasureOffset])), world.player
     )
 
 

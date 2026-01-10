@@ -298,6 +298,86 @@ def set_rules(world: FFXWorld) -> None:
                 lambda state: state.can_reach_region("Monster Arena", world.player)
             )
 
+    # Area Conquest
+    area_conquest = [
+        (424, ("Besaid"                    )),  # Besaid
+        (425, ("Kilika"                    )),  # Kilika
+        (426, ("Miihen Highroad"           )),  # Miihen Highroad
+        (427, ("Mushroom Rock Road"        )),  # Mushroom Rock Road
+        (428, ("Djose", "Moonflow"         )),  # Djose Road
+        (429, ("Thunder Plains"            )),  # Thunder Plains
+        (430, ("Macalania"                 )),  # Macalania
+        (431, ("Bikanel"                   )),  # Bikanel
+        (432, ("Calm Lands"                )),  # Calm Lands
+        (433, ("Cavern of the Stolen Fayth")),  # Cavern of the Stolen Fayth
+        (434, ("Mt. Gagazet"               )),  # Mt. Gagazet
+        (435, ("Sin"                       )),  # Sin
+        (436, ("Omega Ruins"               )),  # Omega Dungeon
+    ]
+    for location_id, regions in area_conquest:
+        for region in regions:
+            add_rule(world.get_location(world.location_id_to_name[location_id | TreasureOffset]), 
+                lambda state: state.has(f"Region: {region}", world.player)
+            )
+    
+    # Species Conquest
+    species_conquest = [
+        (437, ("Besaid", "Miihen Highroad", "Djose", "Macalania", "Bikanel", "Calm Lands", "Mt. Gagazet")), # Fafnir
+        (438, ("Kilika", "Miihen Highroad", "Mushroom Rock Road", "Thunder Plains", "Macalania",            
+               "Cavern of the Stolen Fayth", "Omega Ruins"                                              )), # Ornitholestes
+        (439, ("Besaid", "Djose", "Bikanel"                                                             )), # Pteryx
+        (440, ("Kilika", "Djose", "Macalania", "Calm Lands"                                             )), # Hornet
+        (441, ("Mushroom Rock Road", "Thunder Plains", "Cavern of the Stolen Fayth"                     )), # Vidatu
+        (442, ("Miihen Highroad", "Thunder Plains", "Macalania", "Zanarkand Ruins", "Omega Ruins"       )), # One-Eye
+        (443, ("Besaid", "Mushroom Rock Road", "Djose", "Macalania", "Calm Lands", "Zanarkand Ruins"    )), # Jumbo Flan
+        (444, ("Kilika", "Miihen Highroad", "Mushroom Rock Road", "Thunder Plains", "Macalania",            
+               "Cavern of the Stolen Fayth", "Omega Ruins"                                              )), # Nega Elemental
+        (445, ("Miihen Highroad", "Djose", "Macalania", "Calm Lands", "Omega Ruins"                     )), # Tanket
+        (446, ("Miihen Highroad", "Mushroom Rock Road", "Thunder Plains", "Bikanel",                        
+               "Cavern of the Stolen Fayth"                                                             )), # Fafnir
+        (447, ("Mushroom Rock Road", "Cavern of the Stolen Fayth", "Sin"                                )), # Sleep Sprout
+        (448, ("Miihen Highroad", "Mt. Gagazet", "Omega Ruins"                                          )), # Bomb King
+        (449, ("Miihen Highroad", "Cavern of the Stolen Fayth", "Zanarkand Ruins"                       )), # Juggernaut
+        (450, ("Thunder Plains", "Sin"                                                                  )), # Ironclad
+    ]
+    for location_id, regions in species_conquest:
+        for region in regions:
+            add_rule(world.get_location(world.location_id_to_name[location_id | TreasureOffset]), 
+                lambda state: state.has(f"Region: {region}", world.player)
+            )
+ 
+    # Original Creations    
+    original_creation_conquests = [
+        (451, area_conquest,    2), # Earth Eather
+        (452, species_conquest, 2), # Greater Sphere
+        (453, area_conquest,    6), # Catastrophe
+        (454, species_conquest, 6), # Th'uban
+    ]
+    for location_id, arena_type, creations_required in original_creation_conquests:
+        locations = [world.get_location(world.location_id_to_name[arena_id | TreasureOffset]) for arena_id, _ in arena_type]
+        add_rule(world.get_location(world.location_id_to_name[location_id | TreasureOffset]),
+            lambda state, locations = locations: can_reach_minimum_locations(state, locations, creations_required)
+        )
+    
+    original_creation_captures = [
+        455, # Neslug (1x Capture)
+        456, # Ultima Buster (5x Captures)
+        458, # Nemesis (10x Captures)
+    ]
+    for location_id in original_creation_captures:
+        capture_regions = region_unlock_items[1:3] + region_unlock_items[4:8] + region_unlock_items[9:12] + region_unlock_items[14:]
+        add_rule(world.get_location(world.location_id_to_name[location_id | TreasureOffset]),
+            lambda state, capture_regions = capture_regions: state.has_from_list_unique(
+                [region.itemName for region in capture_regions], world.player, 15
+            )
+        )
+    
+    add_rule(world.get_location(world.location_id_to_name[457 | TreasureOffset]), # Shinryu (Underwater Captures in Gagazet)
+        lambda state: 
+            state.has(f"Region: Mt. Gagazet", world.player) and
+            create_min_swimmers_rule(world, 1)(state)
+    )
+
 
     ## Capture Rewards
     # Area Conquest

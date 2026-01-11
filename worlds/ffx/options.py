@@ -68,6 +68,7 @@ class SphereGridRandomization(Choice):
 class SuperBosses(Toggle):
     """
     Sets whether super boss locations are included or not. If off they will only have filler items.
+    Monster Arena super boss locations are always excluded if Capture Sanity is not enabled.
     Default is off.
     """
     display_name = "Super Bosses"
@@ -101,6 +102,8 @@ class RecruitSanity(Toggle):
 class CaptureSanity(Toggle):
     """
     Sets whether Fiend Captures are included or not. If off they will only have filler items.
+    Includes a location for each unique capture, as well as each Monster Arena creation reward.
+    Monster Arena boss kill locations are always excluded is Super Bosses is not enabled.
     Default is off.
     """
     display_name = "Capture Sanity"

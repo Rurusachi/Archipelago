@@ -6,6 +6,7 @@ import json
 import typing
 
 from settings import get_settings
+from Options import OptionError
 from worlds.AutoWorld import World
 from worlds.Files import APProcedurePatch, APTokenMixin, APTokenTypes, APPatch
 from .locations import location_types, get_location_type
@@ -22,6 +23,13 @@ class APFFXFile(APPatch):
         manifest = super().get_manifest()
         manifest["patch_file_ending"] = ".apffx"
         return manifest
+
+
+def options_validation(world: FFXWorld) -> None:
+    if world.options.goal_requirement.value == world.options.goal_requirement.option_nemesis:
+        if not world.options.super_bosses.value or not world.options.capture_sanity.value:
+            raise OptionError(f"[Final Fantasy X - '{world.player_name}'] "
+                "Goal Requirement: Nemesis cannot be chosen if Capture Sanity or Super Bosses is disabled.")
 
 
 def generate_output(world: FFXWorld, player: int, output_directory: str) -> None:

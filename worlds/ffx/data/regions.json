@@ -49,7 +49,7 @@
     "other": [0, 2],
     "recruits": [19],
     "leads_to": [4],
-    "captures": [],
+    "captures": [0, 1, 2],
     "rules": ["Besaid"]
   },
   {
@@ -102,7 +102,7 @@
     "other": [4],
     "recruits": [18],
     "leads_to": [8],
-    "captures": [],
+    "captures": [3, 4, 5, 6],
     "rules": ["Kilika"]
   },
 
@@ -209,7 +209,7 @@
     "other": [8],
     "recruits": [14],
     "leads_to": [16],
-    "captures": [],
+    "captures": [7, 9, 10, 11, 13, 14],
     "rules": ["Mi'ihen Highroad"]
   },
   {
@@ -222,7 +222,7 @@
     "other": [9],
     "recruits": [],
     "leads_to": [17],
-    "captures": [],
+    "captures": [8, 12],
     "rules": ["Chocobo Eater"]
   },
   {
@@ -249,7 +249,7 @@
     "other": [10],
     "recruits": [],
     "leads_to": [19],
-    "captures": [],
+    "captures": [15, 16, 17, 18, 19, 20, 21],
     "rules": ["Mushroom Rock Road"]
   },
   {
@@ -289,7 +289,7 @@
     "other": [11],
     "recruits": [6],
     "leads_to": [22],
-    "captures": [],
+    "captures": [22, 23, 24, 25, 26, 27],
     "rules": ["Djose"]
   },
   {
@@ -316,7 +316,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [24],
-    "captures": [],
+    "captures": [28],
     "rules": ["Moonflow"]
   },
   {
@@ -383,7 +383,7 @@
     "other": [14],
     "recruits": [9],
     "leads_to": [29],
-    "captures": [],
+    "captures": [29, 30, 31, 32, 33, 34, 35, 36],
     "rules": ["Thunder Plains"]
   },
   {
@@ -410,7 +410,7 @@
     "other": [15],
     "recruits": [],
     "leads_to": [31],
-    "captures": [],
+    "captures": [38, 39, 42, 43, 45, 46],
     "rules": ["Macalania"]
   },
   {
@@ -436,7 +436,7 @@
     "other": [16],
     "recruits": [],
     "leads_to": [33],
-    "captures": [],
+    "captures": [37, 40, 41, 44],
     "rules": []
   },
   {
@@ -502,7 +502,7 @@
     "other": [19, 18, 17],
     "recruits": [],
     "leads_to": [38],
-    "captures": [],
+    "captures": [47, 48, 49, 50, 51, 52],
     "rules": ["Bikanel"]
   },
   {
@@ -727,7 +727,7 @@
     "other": [25],
     "recruits": [],
     "leads_to": [56],
-    "captures": [],
+    "captures": [62, 63, 64, 65, 66, 67, 68, 69, 70],
     "rules": ["Cavern of the Stolen Fayth"]
   },
 
@@ -784,7 +784,7 @@
     "other": [35],
     "recruits": [],
     "leads_to": [60],
-    "captures": [],
+    "captures": [71, 74, 75, 77],
     "rules": ["Biran and Yenke"]
   },
   {
@@ -797,7 +797,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [61],
-    "captures": [],
+    "captures": [72, 73, 76, 78, 79, 80, 81, 82],
     "rules": ["Seymour Flux"]
   },
   {
@@ -877,7 +877,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [67],
-    "captures": [],
+    "captures": [83, 85, 86, 90, 91],
     "rules": ["Sin"]
   },
   {
@@ -890,7 +890,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [68],
-    "captures": [],
+    "captures": [84, 87, 88, 89],
     "rules": ["Seymour Omnis"]
   },
   {
@@ -917,7 +917,7 @@
     "other": [26],
     "recruits": [],
     "leads_to": [70],
-    "captures": [],
+    "captures": [92, 93, 94, 95, 96, 97, 98, 99, 100, 101],
     "rules": ["Omega Ruins"]
   },
   {

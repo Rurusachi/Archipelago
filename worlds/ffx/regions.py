@@ -95,6 +95,10 @@ def create_regions(world: FFXWorld, player) -> None:
                     state.can_reach_location(world.location_id_to_name[12 | PartyMemberOffset], world.player) and   # Bahamut
                     state.can_reach_location(world.location_id_to_name[37 | BossOffset       ], world.player)       # Yunalesca
                 )
+            case world.options.goal_requirement.option_nemesis:
+                return (
+                    state.can_reach_location(world.location_id_to_name[83 | BossOffset       ], world.player)       # Nemesis
+                )
     
     def primer_requirement_rule(state):
         if world.options.required_primers.value > 0:
@@ -310,11 +314,55 @@ def create_regions(world: FFXWorld, player) -> None:
     
     if not world.options.capture_sanity.value:
         capture_location_ids = []
+        
         for location in FFXCaptureLocations:
             capture_location_ids.append(location.location_id)
         for id in capture_location_ids:
             location_name = world.location_id_to_name[id | CaptureOffset]
             world.options.exclude_locations.value.add(location_name)
+        
+        if world.options.super_bosses.value:
+            capture_superboss_location_ids = [
+                49, # Stratoavis
+                50, # Malboro Menace
+                51, # Kottos
+                52, # Coeurlregina
+                53, # Jormungand
+                54, # Cactuar King
+                55, # Espada
+                56, # Abyss Worm
+                57, # Chimerageist
+                58, # Don Tonberry
+                59, # Catoblepas
+                60, # Abaddon
+                61, # Vorban
+                62, # Fenrir
+                63, # Ornitholestes
+                64, # Pteryx
+                65, # Hornet
+                66, # Vidatu
+                67, # One-Eye
+                68, # Jumbo Flan
+                69, # Nega Elemental
+                70, # Tanket
+                71, # Fafnir
+                72, # Sleep Sprout
+                73, # Bomb King
+                74, # Juggernaut
+                75, # Ironclad
+                76, # Earth Eater
+                77, # Greater Sphere
+                78, # Catastrophe
+                79, # Th'uban
+                80, # Neslug
+                81, # Ultima Buster
+                82, # Shinryu
+                83, # Nemesis
+            ]
+            for id in capture_superboss_location_ids: # Monster Arena Super Bosses
+                location_name = world.location_id_to_name[id | BossOffset]
+                world.options.exclude_locations.value.add(location_name)
+
 
     final_region = world.get_region("Sin: Braska's Final Aeon")
     final_region.add_event("Sin: Braska's Final Aeon", "Victory", location_type=FFXLocation, item_type=FFXItem)

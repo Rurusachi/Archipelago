@@ -17,7 +17,7 @@ from .items import create_item_label_to_code_map, item_table, key_items, filler_
 from .locations import create_location_label_to_id_map, FFXLocation, allLocations
 from .regions import create_regions
 from .options import FFXOptions
-from .generate import generate_output
+from .generate import generate_output, options_validation
 from .rules import set_rules, world_battle_levels
 from .ut import tracker_world, setup_options_from_slot_data
 
@@ -78,6 +78,7 @@ class FFXWorld(World):
         return slot_data
 
     def generate_early(self) -> None:
+        options_validation(self)
         setup_options_from_slot_data(self)
 
     def get_filler_item_name(self) -> str:

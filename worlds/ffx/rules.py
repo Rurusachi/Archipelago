@@ -356,9 +356,9 @@ def set_rules(world: FFXWorld) -> None:
     for location_id, boss_id, arena_type, creations_required in original_creation_conquests:
         location = world.get_location(world.location_id_to_name[location_id | TreasureOffset])
         boss = world.get_location(world.location_id_to_name[boss_id | BossOffset])
-        capture_locations = [world.get_location(world.location_id_to_name[arena_id | TreasureOffset]) for arena_id, _ in arena_type]
+        capture_locations = [world.get_location(world.location_id_to_name[arena_id | TreasureOffset]) for arena_id, _, _ in arena_type]
         
-        add_rule(world.get_location(location), lambda state, capture_locations = capture_locations: 
+        add_rule(location, lambda state, capture_locations = capture_locations: 
                 can_reach_minimum_locations(state, capture_locations, creations_required))
         add_rule(boss, lambda state: state.can_reach_location(location), world.player)
     

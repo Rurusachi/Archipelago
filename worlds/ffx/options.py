@@ -11,7 +11,7 @@ class GoalRequirement(Choice):
     Party Members: Requires unlocking a number of party members (not counting Aeons).
     Party Members and Aeons: Requires unlocking a number of party members (including Aeons).
     Pilgrimage: Complete all required temples, and defeat the boss in Zanarkand Ruins.
-    Nemesis: Requires defeating Nemesis in the Monster Arena. Super Bosses & Capture Sanity must be enabled if this option is selected
+    Nemesis: Requires defeating Nemesis in the Monster Arena. Capture Sanity & Super Bosses must be enabled if this option is selected
     """
     display_name = "Goal Requirement"
     default = 0

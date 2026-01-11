@@ -9,6 +9,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [1],
+    "captures": [],
     "rules": ["Baaj Temple"]
   },
   {
@@ -21,6 +22,7 @@
     "other": [1],
     "recruits": [],
     "leads_to": [2],
+    "captures": [],
     "rules": []
   },
   {
@@ -33,6 +35,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [],
+    "captures": [],
     "rules": ["Geosgaeno"]
   },
 
@@ -46,6 +49,7 @@
     "other": [0, 2],
     "recruits": [19],
     "leads_to": [4],
+    "captures": [],
     "rules": ["Besaid"]
   },
   {
@@ -58,6 +62,7 @@
     "other": [3],
     "recruits": [],
     "leads_to": [5],
+    "captures": [],
     "rules": ["Sin Fin", "Sinspawn Echuilles"]
   },
   {
@@ -70,6 +75,7 @@
     "other": [28],
     "recruits": [],
     "leads_to": [6],
+    "captures": [],
     "rules": []
   },
   {
@@ -82,6 +88,7 @@
     "other": [29],
     "recruits": [],
     "leads_to": [],
+    "captures": [],
     "rules": []
   },
 
@@ -95,6 +102,7 @@
     "other": [4],
     "recruits": [18],
     "leads_to": [8],
+    "captures": [],
     "rules": ["Kilika"]
   },
 
@@ -108,6 +116,7 @@
     "other": [],
     "recruits": [8],
     "leads_to": [9],
+    "captures": [],
     "rules": ["Sinspawn Geneaux"]
   },
   {
@@ -120,6 +129,7 @@
     "other": [5, 36],
     "recruits": [5],
     "leads_to": [10],
+    "captures": [],
     "rules": []
   },
   {
@@ -132,6 +142,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [11],
+    "captures": [],
     "rules": []
   },
   {
@@ -144,6 +155,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [],
+    "captures": [],
     "rules": []
   },
 
@@ -157,6 +169,7 @@
     "other": [6, 7],
     "recruits": [1, 4, 12, 15, 21, 23, 24],
     "leads_to": [13],
+    "captures": [],
     "rules": ["Luca"]
   },
   {
@@ -169,6 +182,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [14],
+    "captures": [],
     "rules": ["Oblitzerator"]
   },
   {
@@ -181,6 +195,7 @@
     "other": [30],
     "recruits": [16],
     "leads_to": [],
+    "captures": [],
     "rules": []
   },
 
@@ -194,6 +209,7 @@
     "other": [8],
     "recruits": [14],
     "leads_to": [16],
+    "captures": [],
     "rules": ["Mi'ihen Highroad"]
   },
   {
@@ -206,6 +222,7 @@
     "other": [9],
     "recruits": [],
     "leads_to": [17],
+    "captures": [],
     "rules": ["Chocobo Eater"]
   },
   {
@@ -218,6 +235,7 @@
     "other": [31],
     "recruits": [],
     "leads_to": [],
+    "captures": [],
     "rules": []
   },
 
@@ -231,6 +249,7 @@
     "other": [10],
     "recruits": [],
     "leads_to": [19],
+    "captures": [],
     "rules": ["Mushroom Rock Road"]
   },
   {
@@ -243,6 +262,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [20, 21],
+    "captures": [],
     "rules": ["Sinspawn Gui"]
   },
   {
@@ -255,6 +275,7 @@
     "other": [32],
     "recruits": [],
     "leads_to": [],
+    "captures": [],
     "rules": []
   },
 
@@ -268,6 +289,7 @@
     "other": [11],
     "recruits": [6],
     "leads_to": [22],
+    "captures": [],
     "rules": ["Djose"]
   },
   {
@@ -280,6 +302,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [],
+    "captures": [],
     "rules": []
   },
 
@@ -293,6 +316,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [24],
+    "captures": [],
     "rules": ["Moonflow"]
   },
   {
@@ -305,6 +329,7 @@
     "other": [12],
     "recruits": [10],
     "leads_to": [25],
+    "captures": [],
     "rules": ["Extractor"]
   },
   {
@@ -317,6 +342,7 @@
     "other": [33],
     "recruits": [],
     "leads_to": [],
+    "captures": [],
     "rules": []
   },
 
@@ -330,6 +356,7 @@
     "other": [13, 37],
     "recruits": [22],
     "leads_to": [27],
+    "captures": [],
     "rules": ["Guadosalam"]
   },
   {
@@ -342,6 +369,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [],
+    "captures": [],
     "rules": []
   },
 
@@ -355,6 +383,7 @@
     "other": [14],
     "recruits": [9],
     "leads_to": [29],
+    "captures": [],
     "rules": ["Thunder Plains"]
   },
   {
@@ -367,6 +396,7 @@
     "other": [34],
     "recruits": [],
     "leads_to": [],
+    "captures": [],
     "rules": []
   },
 
@@ -380,6 +410,7 @@
     "other": [15],
     "recruits": [],
     "leads_to": [31],
+    "captures": [],
     "rules": ["Macalania"]
   },
   {
@@ -392,6 +423,7 @@
     "other": [27],
     "recruits": [],
     "leads_to": [32],
+    "captures": [],
     "rules": ["Spherimorph"]
   },
   {
@@ -404,6 +436,7 @@
     "other": [16],
     "recruits": [],
     "leads_to": [33],
+    "captures": [],
     "rules": []
   },
   {
@@ -416,6 +449,7 @@
     "other": [],
     "recruits": [7],
     "leads_to": [34],
+    "captures": [],
     "rules": ["Crawler"]
   },
   {
@@ -428,6 +462,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [35],
+    "captures": [],
     "rules": ["Seymour/Anima"]
   },
   {
@@ -440,6 +475,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [36],
+    "captures": [],
     "rules": ["Wendigo"]
   },
   {
@@ -452,6 +488,7 @@
     "other": [38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51],
     "recruits": [],
     "leads_to": [],
+    "captures": [],
     "rules": []
   },
 
@@ -465,6 +502,7 @@
     "other": [19, 18, 17],
     "recruits": [],
     "leads_to": [38],
+    "captures": [],
     "rules": ["Bikanel"]
   },
   {
@@ -477,6 +515,7 @@
     "other": [21, 20],
     "recruits": [],
     "leads_to": [39],
+    "captures": [],
     "rules": []
   },
   {
@@ -489,6 +528,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [],
+    "captures": [],
     "rules": []
   },
 
@@ -502,6 +542,7 @@
     "other": [],
     "recruits": [2, 13, 20],
     "leads_to": [42],
+    "captures": [],
     "rules": ["Airship"]
   },
   {
@@ -514,6 +555,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [43],
+    "captures": [],
     "rules": ["Evrae"]
   },
   {
@@ -526,6 +568,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [44],
+    "captures": [],
     "rules": ["Airship Sin"]
   },
   {
@@ -538,6 +581,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [45],
+    "captures": [],
     "rules": ["Overdrive Sin"]
   },
   {
@@ -550,6 +594,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [],
+    "captures": [],
     "rules": []
   },
 
@@ -563,6 +608,7 @@
     "other": [22],
     "recruits": [],
     "leads_to": [47],
+    "captures": [],
     "rules": ["Bevelle"]
   },
   {
@@ -575,6 +621,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [48],
+    "captures": [],
     "rules": ["Isaaru"]
   },
   {
@@ -587,6 +634,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [49],
+    "captures": [],
     "rules": ["Evrae Altana"]
   },
   {
@@ -599,6 +647,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [50],
+    "captures": [],
     "rules": ["Seymour Natus"]
   },
   {
@@ -611,6 +660,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [],
+    "captures": [],
     "rules": []
   },
 
@@ -624,6 +674,7 @@
     "other": [23],
     "recruits": [11, 17],
     "leads_to": [52, 53, 57],
+    "captures": [53, 54, 55, 56, 57, 58, 59, 60, 61],
     "rules": ["Calm Lands"]
   },
   {
@@ -636,6 +687,7 @@
     "other": [24],
     "recruits": [],
     "leads_to": [],
+    "captures": [],
     "rules": []
   },
   {
@@ -648,6 +700,7 @@
     "other": [],
     "recruits": [3],
     "leads_to": [54, 55],
+    "captures": [],
     "rules": ["Defender X"]
   },
   {
@@ -660,6 +713,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [],
+    "captures": [],
     "rules": []
   },
 
@@ -673,6 +727,7 @@
     "other": [25],
     "recruits": [],
     "leads_to": [56],
+    "captures": [],
     "rules": ["Cavern of the Stolen Fayth"]
   },
 
@@ -686,6 +741,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [],
+    "captures": [],
     "rules": []
   },
 
@@ -700,6 +756,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [],
+    "captures": [],
     "rules": []
   },
 
@@ -714,6 +771,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [59],
+    "captures": [],
     "rules": ["Mt. Gagazet"]
   },
   {
@@ -726,6 +784,7 @@
     "other": [35],
     "recruits": [],
     "leads_to": [60],
+    "captures": [],
     "rules": ["Biran and Yenke"]
   },
   {
@@ -738,6 +797,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [61],
+    "captures": [],
     "rules": ["Seymour Flux"]
   },
   {
@@ -750,6 +810,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [],
+    "captures": [],
     "rules": ["Sanctuary Keeper"]
   },
 
@@ -763,6 +824,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [63],
+    "captures": [],
     "rules": ["Zanarkand Ruins"]
   },
   {
@@ -775,6 +837,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [64],
+    "captures": [],
     "rules": ["Spectral Keeper"]
   },
   {
@@ -787,6 +850,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [65],
+    "captures": [],
     "rules": ["Yunalesca"]
   },
   {
@@ -799,6 +863,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [],
+    "captures": [],
     "rules": []
   },
 
@@ -812,6 +877,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [67],
+    "captures": [],
     "rules": ["Sin"]
   },
   {
@@ -824,6 +890,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [68],
+    "captures": [],
     "rules": ["Seymour Omnis"]
   },
   {
@@ -836,6 +903,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [],
+    "captures": [],
     "rules": ["Braska's Final Aeon"]
   },
 
@@ -849,6 +917,7 @@
     "other": [26],
     "recruits": [],
     "leads_to": [70],
+    "captures": [],
     "rules": ["Omega Ruins"]
   },
   {
@@ -861,6 +930,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [71],
+    "captures": [],
     "rules": ["Ultima Weapon"]
   },
   {
@@ -873,6 +943,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [],
+    "captures": [],
     "rules": ["Omega Weapon"]
   }
 ]

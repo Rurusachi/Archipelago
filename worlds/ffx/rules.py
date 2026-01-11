@@ -240,7 +240,7 @@ ruleDict: dict[str, Callable[[FFXWorld], CollectionRule]] = {
     "Th'uban":             lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
     "Neslug":              lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
     "Ultima Buster":       lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
-    "Shinryu":             lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Shinryu":             lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_swimmers_rule(world, 3)(state),
     "Nemesis":             lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
 
     "Baaj Temple":                lambda world: create_region_access_rule(world, "Baaj Temple"), # lambda state: state.has("Region: Baaj Temple", world.player),

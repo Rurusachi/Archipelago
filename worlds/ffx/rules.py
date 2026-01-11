@@ -425,6 +425,12 @@ def set_rules(world: FFXWorld) -> None:
         )
         add_rule(boss, lambda state: state.can_reach_location(location), world.player)
     
+    # Nemesis requires killing all other creations
+    nemesis = world.get_location(world.location_id_to_name[83 | BossOffset])
+    for boss_id in range(49, 83):
+        creation = world.get_location(world.location_id_to_name[boss_id | BossOffset])
+        add_rule(nemesis, lambda state: state.can_reach_location(creation)
+        )
 
     add_rule(world.get_location(world.location_id_to_name[457 | TreasureOffset]), # Shinryu (Underwater Captures in Gagazet)
             lambda state: 

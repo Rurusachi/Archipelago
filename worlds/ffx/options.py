@@ -103,7 +103,7 @@ class CaptureSanity(Toggle):
     """
     Sets whether Fiend Captures are included or not. If off they will only have filler items.
     Includes a location for each unique capture, as well as each Monster Arena creation reward.
-    Monster Arena boss kill locations are always excluded is Super Bosses is not enabled.
+    Monster Arena boss kill locations are always excluded if Super Bosses is not enabled.
     Default is off.
     """
     display_name = "Capture Sanity"

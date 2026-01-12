@@ -340,19 +340,19 @@ def set_rules(world: FFXWorld) -> None:
     ## Capture Rewards
     # Area Conquest
     area_conquest = [
-        (424, 49, ("Besaid"                           )),  # Stratoavis
-        (425, 50, ("Kilika"                           )),  # Malboro Menace
-        (426, 51, ("Mi'ihen Highroad", "Chocobo Eater")),  # Kottos
-        (427, 52, ("Mushroom Rock Road"               )),  # Coeurlregina
-        (428, 53, ("Djose", "Moonflow"                )),  # Jormungand
-        (429, 54, ("Thunder Plains"                   )),  # Cactuar King
-        (430, 55, ("Macalania", "Spherimorph"         ))  # Espada
-        (431, 56, ("Bikanel"                          )),  # Abyss Worm
-        (432, 57, ("Calm Lands"                       )),  # Chimerageist
-        (433, 58, ("Cavern of the Stolen Fayth"       )),  # Don Tonberry
-        (434, 59, ("Mt. Gagazet", "Seymour Flux"      )),  # Catoblepas
-        (435, 60, ("Sin", "Seymour Omnis"             )),  # Abaddon
-        (436, 61, ("Omega Ruins"                      )),  # Vorban
+        (424, 49, ("Besaid",                           )),  # Stratoavis
+        (425, 50, ("Kilika",                           )),  # Malboro Menace
+        (426, 51, ("Mi'ihen Highroad", "Chocobo Eater",)),  # Kottos
+        (427, 52, ("Mushroom Rock Road",               )),  # Coeurlregina
+        (428, 53, ("Djose", "Moonflow",                )),  # Jormungand
+        (429, 54, ("Thunder Plains",                   )),  # Cactuar King
+        (430, 55, ("Macalania", "Spherimorph",         )),  # Espada
+        (431, 56, ("Bikanel",                          )),  # Abyss Worm
+        (432, 57, ("Calm Lands",                       )),  # Chimerageist
+        (433, 58, ("Cavern of the Stolen Fayth",       )),  # Don Tonberry
+        (434, 59, ("Mt. Gagazet", "Seymour Flux",      )),  # Catoblepas
+        (435, 60, ("Sin", "Seymour Omnis",             )),  # Abaddon
+        (436, 61, ("Omega Ruins",                      )),  # Vorban
     ]
     for location_id, boss_id, rules in area_conquest:
         location = world.get_location(world.location_id_to_name[location_id | TreasureOffset])
@@ -360,14 +360,14 @@ def set_rules(world: FFXWorld) -> None:
         
         for rule in rules:
             add_rule(location, ruleDict[rule](world))
-        add_rule(boss, lambda state: state.can_reach_location(location), world.player)
+        add_rule(boss, lambda state: state.can_reach_location(location, world.player))
     
 
     # Species Conquest
     species_conquest = [
         (437, 62, ("Besaid", "Mi'ihen Highroad", "Djose", "Macalania", "Spherimorph", "Bikanel", 
                    "Calm Lands", "Mt. Gagazet"                                                            )), # Fenrir
-        (438, 63, ("Kilika", "Miihen Highroad", "Chocobo Eater", "Mushroom Rock Road", "Thunder Plains", 
+        (438, 63, ("Kilika", "Mi'ihen Highroad", "Chocobo Eater", "Mushroom Rock Road", "Thunder Plains", 
                    "Macalania", "Cavern of the Stolen Fayth", "Omega Ruins"                               )), # Ornitholestes
         (439, 64, ("Besaid", "Djose", "Bikanel"                                                           )), # Pteryx
         (440, 65, ("Kilika", "Djose", "Macalania", "Calm Lands"                                           )), # Hornet
@@ -392,7 +392,7 @@ def set_rules(world: FFXWorld) -> None:
         
         for rule in rules:
             add_rule(location, ruleDict[rule](world))
-        add_rule(boss, lambda state: state.can_reach_location(location), world.player)
+        add_rule(boss, lambda state: state.can_reach_location(location, world.player))
  
 
     # Original Creations    
@@ -409,7 +409,7 @@ def set_rules(world: FFXWorld) -> None:
         
         add_rule(location, lambda state, capture_locations = capture_locations: 
                 can_reach_minimum_locations(state, capture_locations, creations_required))
-        add_rule(boss, lambda state: state.can_reach_location(location), world.player)
+        add_rule(boss, lambda state: state.can_reach_location(location, world.player))
     
 
     original_creation_captures = [
@@ -439,7 +439,7 @@ def set_rules(world: FFXWorld) -> None:
         
         for rule in capture_rules:
             add_rule(location, ruleDict[rule](world))
-        add_rule(boss, lambda state: state.can_reach_location(location), world.player)
+        add_rule(boss, lambda state: state.can_reach_location(location, world.player))
 
     # Shinryu (Underwater Captures in Gagazet)
     shinryu_rules = [
@@ -450,14 +450,14 @@ def set_rules(world: FFXWorld) -> None:
     boss = world.get_location(world.location_id_to_name[82 | BossOffset])
     for rule in shinryu_rules:
             add_rule(location, ruleDict[rule](world))
-    add_rule(location, lambda world, state: create_min_swimmers_rule(world, 1)(state))
-    add_rule(boss,lambda state: state.can_reach_location(location), world.player)
+    # add_rule(location, lambda world, state: create_min_swimmers_rule(world, 1)(state))
+    add_rule(boss, lambda state: state.can_reach_location(location, world.player))
 
     # Nemesis requires killing all other creations
     nemesis = world.get_location(world.location_id_to_name[83 | BossOffset])
-    for boss_id in range(49, 83):
-        creation = world.get_location(world.location_id_to_name[boss_id | BossOffset])
-        add_rule(nemesis, lambda state: state.can_reach_location(creation))
+    creation_bosses = [world.get_location(world.location_id_to_name[boss_id | BossOffset]) for boss_id in range(49, 83)]
+    for creation in creation_bosses:
+        add_rule(nemesis, lambda state: state.can_reach_location(creation, world.player))
 
     ## Capture Rewards
     # Area Conquest

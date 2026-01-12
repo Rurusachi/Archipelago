@@ -312,7 +312,7 @@ def set_rules(world: FFXWorld) -> None:
         boss = world.get_location(world.location_id_to_name[boss_id | BossOffset])
         
         for region in regions:
-            add_rule(location, lambda state: state.has(f"Region: {region}", world.player))
+            add_rule(location, lambda world: create_region_access_rule(world, region))
         add_rule(boss, lambda state: state.can_reach_location(location), world.player)
     
 
@@ -341,8 +341,7 @@ def set_rules(world: FFXWorld) -> None:
         boss = world.get_location(world.location_id_to_name[boss_id | BossOffset])
         
         for region in regions:
-            add_rule(location, lambda state: state.has(f"Region: {region}", world.player)
-            )
+            add_rule(location, lambda world: create_region_access_rule(world, region))
         add_rule(boss, lambda state: state.can_reach_location(location), world.player)
  
 
@@ -373,16 +372,13 @@ def set_rules(world: FFXWorld) -> None:
         boss = world.get_location(world.location_id_to_name[boss_id | BossOffset])
         capture_regions = region_unlock_items[1:3] + region_unlock_items[4:8] + region_unlock_items[9:12] + region_unlock_items[14:]
         
-        add_rule(location, lambda state, capture_regions = capture_regions: state.has_all(
-                [region.itemName for region in capture_regions], world.player)
-        )
+        for region in capture_regions:
+            add_rule(location, lambda world: create_region_access_rule(world, region.itemName))
         add_rule(boss, lambda state: state.can_reach_location(location), world.player)
 
     add_rule(world.get_location(world.location_id_to_name[457 | TreasureOffset]), # Shinryu (Underwater Captures in Gagazet)
-            lambda state: 
-                state.has(f"Region: Mt. Gagazet", world.player) and
-                create_min_swimmers_rule(world, 1)(state)
-    )
+            lambda world, state: create_region_access_rule(world, "Mt. Gagazet") and
+                                 create_min_swimmers_rule(world, 1)(state))
     add_rule(world.get_location(world.location_id_to_name[82 | BossOffset]), 
              lambda state: state.can_reach_location(world.get_location(world.location_id_to_name[457 | TreasureOffset])), world.player
     )

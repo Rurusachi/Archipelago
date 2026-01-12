@@ -286,7 +286,7 @@ def set_rules(world: FFXWorld) -> None:
     # Fiend Captures
     for location_id in range(102):
         add_rule(world.get_location(world.location_id_to_name[location_id | CaptureOffset]), 
-            lambda state: state.has("Region: Calm Lands", world.player)
+            lambda world: create_region_access_rule(world, "Calm Lands"),
         )
 
 

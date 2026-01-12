@@ -360,7 +360,7 @@ def set_rules(world: FFXWorld) -> None:
         
         for rule in rules:
             add_rule(location, ruleDict[rule](world))
-        add_rule(boss, lambda state: state.can_reach_location(location, world.player))
+        add_rule(boss, lambda state, location=location: state.can_reach_location(location, world.player))
     
 
     # Species Conquest
@@ -392,7 +392,7 @@ def set_rules(world: FFXWorld) -> None:
         
         for rule in rules:
             add_rule(location, ruleDict[rule](world))
-        add_rule(boss, lambda state: state.can_reach_location(location, world.player))
+        add_rule(boss, lambda state, location=location: state.can_reach_location(location, world.player))
  
 
     # Original Creations    
@@ -407,9 +407,9 @@ def set_rules(world: FFXWorld) -> None:
         boss = world.get_location(world.location_id_to_name[boss_id | BossOffset])
         capture_locations = [world.get_location(world.location_id_to_name[arena_id | TreasureOffset]) for arena_id, _, _ in arena_type]
         
-        add_rule(location, lambda state, capture_locations = capture_locations: 
+        add_rule(location, lambda state, capture_locations=capture_locations, creations_required=creations_required: 
                 can_reach_minimum_locations(state, capture_locations, creations_required))
-        add_rule(boss, lambda state: state.can_reach_location(location, world.player))
+        add_rule(boss, lambda state, location=location: state.can_reach_location(location, world.player))
     
 
     original_creation_captures = [
@@ -439,7 +439,8 @@ def set_rules(world: FFXWorld) -> None:
         
         for rule in capture_rules:
             add_rule(location, ruleDict[rule](world))
-        add_rule(boss, lambda state: state.can_reach_location(location, world.player))
+        add_rule(boss, lambda state, location=location: state.can_reach_location(location, world.player))
+
 
     # Shinryu (Underwater Captures in Gagazet)
     shinryu_rules = [
@@ -453,11 +454,13 @@ def set_rules(world: FFXWorld) -> None:
     # add_rule(location, lambda world, state: create_min_swimmers_rule(world, 1)(state))
     add_rule(boss, lambda state: state.can_reach_location(location, world.player))
 
+
     # Nemesis requires killing all other creations
     nemesis = world.get_location(world.location_id_to_name[83 | BossOffset])
     creation_bosses = [world.get_location(world.location_id_to_name[boss_id | BossOffset]) for boss_id in range(49, 83)]
     for creation in creation_bosses:
-        add_rule(nemesis, lambda state: state.can_reach_location(creation, world.player))
+        add_rule(nemesis, lambda state, creation=creation: state.can_reach_location(creation, world.player))
+
 
     ## Capture Rewards
     # Area Conquest

@@ -313,55 +313,25 @@ def create_regions(world: FFXWorld, player) -> None:
             world.options.exclude_locations.value.add(location_name)
     
     if not world.options.capture_sanity.value:
-        capture_location_ids = []
-        
-        for location in FFXCaptureLocations:
-            capture_location_ids.append(location.location_id)
-        for id in capture_location_ids:
-            location_name = world.location_id_to_name[id | CaptureOffset]
-            world.options.exclude_locations.value.add(location_name)
-        
+        reward_locations = [
+            424, 425, 426, 427, 428, 429, 430, 431, 432, 433, 434, 435, 436,        # Area Conquest
+            437, 438, 439, 440, 441, 442, 443, 444, 445, 446, 447, 448, 449, 450,   # Species Conquest
+            451, 452, 453, 454, 455, 456, 457, 458                                  # Original Creations
+        ]
+        boss_locations = [
+            49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61,                     # Area Conquest
+            62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75,                 # Species Conquest
+            76, 77, 78, 79, 80, 81, 82, 83                                          # Original Creations
+        ]
+        for capture_location in FFXCaptureLocations:
+            world.options.exclude_locations.value.add(capture_location.name)
+        for reward_id in reward_locations:  # Monster Arena Reward Locations
+            reward_name = world.location_id_to_name[reward_id | TreasureOffset]
+            world.options.exclude_locations.value.add(reward_name)
         if world.options.super_bosses.value:
-            capture_superboss_location_ids = [
-                49, # Stratoavis
-                50, # Malboro Menace
-                51, # Kottos
-                52, # Coeurlregina
-                53, # Jormungand
-                54, # Cactuar King
-                55, # Espada
-                56, # Abyss Worm
-                57, # Chimerageist
-                58, # Don Tonberry
-                59, # Catoblepas
-                60, # Abaddon
-                61, # Vorban
-                62, # Fenrir
-                63, # Ornitholestes
-                64, # Pteryx
-                65, # Hornet
-                66, # Vidatu
-                67, # One-Eye
-                68, # Jumbo Flan
-                69, # Nega Elemental
-                70, # Tanket
-                71, # Fafnir
-                72, # Sleep Sprout
-                73, # Bomb King
-                74, # Juggernaut
-                75, # Ironclad
-                76, # Earth Eater
-                77, # Greater Sphere
-                78, # Catastrophe
-                79, # Th'uban
-                80, # Neslug
-                81, # Ultima Buster
-                82, # Shinryu
-                83, # Nemesis
-            ]
-            for id in capture_superboss_location_ids: # Monster Arena Super Bosses
-                location_name = world.location_id_to_name[id | BossOffset]
-                world.options.exclude_locations.value.add(location_name)
+            for boss_id in boss_locations: # Monster Arena Super Bosses
+                boss_name = world.location_id_to_name[boss_id | BossOffset]
+                world.options.exclude_locations.value.add(boss_name)
 
 
     final_region = world.get_region("Sin: Braska's Final Aeon")

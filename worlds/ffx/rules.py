@@ -313,7 +313,7 @@ def set_rules(world: FFXWorld) -> None:
         
         for rule in rules:
             add_rule(location, ruleDict[rule](world))
-        add_rule(boss, lambda state, location=location: state.can_reach_location(location, world.player))
+        add_rule(boss, lambda state, location=location: state.can_reach_location(location.name, world.player))
     
 
     # Species Conquest
@@ -345,7 +345,7 @@ def set_rules(world: FFXWorld) -> None:
         
         for rule in rules:
             add_rule(location, ruleDict[rule](world))
-        add_rule(boss, lambda state, location=location: state.can_reach_location(location, world.player))
+        add_rule(boss, lambda state, location=location: state.can_reach_location(location.name, world.player))
  
 
     # Original Creations    
@@ -362,7 +362,7 @@ def set_rules(world: FFXWorld) -> None:
         
         add_rule(location, lambda state, capture_locations=capture_locations, creations_required=creations_required: 
                 can_reach_minimum_locations(state, capture_locations, creations_required))
-        add_rule(boss, lambda state, location=location: state.can_reach_location(location, world.player))
+        add_rule(boss, lambda state, location=location: state.can_reach_location(location.name, world.player))
     
 
     original_creation_captures = [
@@ -392,7 +392,7 @@ def set_rules(world: FFXWorld) -> None:
         
         for rule in capture_rules:
             add_rule(location, ruleDict[rule](world))
-        add_rule(boss, lambda state, location=location: state.can_reach_location(location, world.player))
+        add_rule(boss, lambda state, location=location: state.can_reach_location(location.name, world.player))
 
 
     # Shinryu (Underwater Captures in Gagazet)
@@ -405,14 +405,20 @@ def set_rules(world: FFXWorld) -> None:
     for rule in shinryu_rules:
             add_rule(location, ruleDict[rule](world))
     # add_rule(location, lambda world, state: create_min_swimmers_rule(world, 1)(state))
-    add_rule(boss, lambda state: state.can_reach_location(location, world.player))
+    add_rule(boss, lambda state: state.can_reach_location(location.name, world.player))
 
 
     # Nemesis requires killing all other creations
+    creation_bosses = [
+    49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61,     # Area Conquest
+    62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, # Species Conquest
+    76, 77, 78, 79, 80, 81, 82                              # Original Creations
+    ]
     nemesis = world.get_location(world.location_id_to_name[83 | BossOffset])
-    creation_bosses = [world.get_location(world.location_id_to_name[boss_id | BossOffset]) for boss_id in range(49, 83)]
-    for creation in creation_bosses:
-        add_rule(nemesis, lambda state, creation=creation: state.can_reach_location(creation, world.player))
+    # creation_bosses = [world.get_location(world.location_id_to_name[boss_id | BossOffset]) for boss_id in range(49, 83)]
+    for creation_id in creation_bosses:
+        creation_name = world.location_id_to_name[creation_id | BossOffset]
+        add_rule(nemesis, lambda state, creation_name=creation_name: state.can_reach_location(creation_name, world.player))
 
 
     ## Celestials

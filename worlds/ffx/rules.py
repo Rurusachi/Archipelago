@@ -159,43 +159,43 @@ ruleDict: dict[str, Callable[[FFXWorld], CollectionRule]] = {
     "Dark Yojimbo":        lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
     "Dark Magus Sisters":  lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
 
-    "Stratoavis":          lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Malboro Menace":      lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Kottos":              lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Coeurlregina":        lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Jormungand":          lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Cactuar King":        lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Espada":              lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Abyss Worm":          lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Chimerageist":        lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Don Tonberry":        lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Catoblepas":          lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Abaddon":             lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Vorban":              lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Stratoavis":          lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Malboro Menace":      lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Kottos":              lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Coeurlregina":        lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Jormungand":          lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Cactuar King":        lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Espada":              lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Abyss Worm":          lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Chimerageist":        lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Don Tonberry":        lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Catoblepas":          lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Abaddon":             lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Vorban":              lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
 
-    "Fenrir":              lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Ornitholestes":       lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Pteryx":              lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Hornet":              lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Vidatu":              lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "One-Eye":             lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Jumbo Flan":          lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Nega Elemental":      lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Tanket":              lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Fafnir":              lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Sleep Sprout":        lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Bomb King":           lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Juggernaut":          lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Ironclad":            lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Fenrir":              lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Ornitholestes":       lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Pteryx":              lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Hornet":              lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Vidatu":              lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: One-Eye":             lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Jumbo Flan":          lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Nega Elemental":      lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Tanket":              lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Fafnir":              lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Sleep Sprout":        lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Bomb King":           lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Juggernaut":          lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Ironclad":            lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
     
-    "Earth Eater":         lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
-    "Greater Sphere":      lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
-    "Catastrophe":         lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
-    "Th'uban":             lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
-    "Neslug":              lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
-    "Ultima Buster":       lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
-    "Shinryu":             lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_swimmers_rule(world, 3)(state),
-    "Nemesis":             lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Earth Eater":         lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Greater Sphere":      lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Catastrophe":         lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Th'uban":             lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Neslug":              lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Ultima Buster":       lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Shinryu":             lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_swimmers_rule(world, 3)(state),
+    "Monster Arena: Nemesis":             lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
 
     "Baaj Temple":                lambda world: create_region_access_rule(world, "Baaj Temple"), # lambda state: state.has("Region: Baaj Temple", world.player),
     "Besaid":                     lambda world: create_region_access_rule(world, "Besaid"),
@@ -286,35 +286,36 @@ def set_rules(world: FFXWorld) -> None:
     # Fiend Captures
     for location_id in range(102):
         add_rule(world.get_location(world.location_id_to_name[location_id | CaptureOffset]), 
-            ruleDict["Calm Lands"](world),
+            lambda state: state.can_reach_region("Monster Arena", world.player)
         )
 
 
     ## Capture Rewards
     # Area Conquest
     area_conquest = [
-        (424, 49, ("Besaid",                           )),  # Stratoavis
-        (425, 50, ("Kilika",                           )),  # Malboro Menace
-        (426, 51, ("Mi'ihen Highroad", "Chocobo Eater",)),  # Kottos
-        (427, 52, ("Mushroom Rock Road",               )),  # Coeurlregina
-        (428, 53, ("Djose", "Moonflow",                )),  # Jormungand
-        (429, 54, ("Thunder Plains",                   )),  # Cactuar King
-        (430, 55, ("Macalania", "Spherimorph",         )),  # Espada
-        (431, 56, ("Bikanel",                          )),  # Abyss Worm
-        (432, 57, ("Calm Lands",                       )),  # Chimerageist
-        (433, 58, ("Cavern of the Stolen Fayth",       )),  # Don Tonberry
-        (434, 59, ("Mt. Gagazet", "Seymour Flux",      )),  # Catoblepas
-        (435, 60, ("Sin", "Seymour Omnis",             )),  # Abaddon
-        (436, 61, ("Omega Ruins",                      )),  # Vorban
+        (424, 49, ("Besaid Island 1st visit",                             )),  # Stratoavis
+        (425, 50, ("Kilika 1st visit: Pre-Geneaux",                       )),  # Malboro Menace
+        (426, 51, ("Mi'ihen Highroad 1st visit: Post-Chocobo Eater",      )),  # Kottos
+        (427, 52, ("Mushroom Rock Road 1st visit: Pre-Sinspawn Gui",      )),  # Coeurlregina
+        (428, 53, ("Djose 1st visit", "Moonflow 1st visit: Pre-Extractor",)),  # Jormungand
+        (429, 54, ("Thunder Plains 1st visit",                            )),  # Cactuar King
+        (430, 55, ("Lake Macalania 1st visit: Pre-Crawler",               )),  # Espada
+        (431, 56, ("Bikanel 1st visit",                                   )),  # Abyss Worm
+        (432, 57, ("Calm Lands 1st visit: Pre-Defender X",                )),  # Chimerageist
+        (433, 58, ("Cavern of the Stolen Fayth 1st visit",                )),  # Don Tonberry
+        (434, 59, ("Mt. Gagazet 1st visit: Post-Seymour Flux",            )),  # Catoblepas
+        (435, 60, ("Sin: Post-Seymour Omnis",                             )),  # Abaddon
+        (436, 61, ("Omega Ruins: Pre-Ultima Weapon",                      )),  # Vorban
     ]
-    for location_id, boss_id, rules in area_conquest:
+    for location_id, boss_id, regions in area_conquest:
         location = world.get_location(world.location_id_to_name[location_id | TreasureOffset])
         boss = world.get_location(world.location_id_to_name[boss_id | BossOffset])
         
-        for rule in rules:
-            add_rule(location, ruleDict[rule](world))
+        for region in regions:
+            add_rule(location, lambda state: state.can_reach_region(region, world.player))
         add_rule(boss, lambda state, location=location: state.can_reach_location(location.name, world.player))
-    
+        add_rule(boss, ruleDict[boss.name](world))
+
 
     # Species Conquest
     species_conquest = [
@@ -346,6 +347,7 @@ def set_rules(world: FFXWorld) -> None:
         for rule in rules:
             add_rule(location, ruleDict[rule](world))
         add_rule(boss, lambda state, location=location: state.can_reach_location(location.name, world.player))
+        add_rule(boss, ruleDict[boss.name](world))
  
 
     # Original Creations    
@@ -363,6 +365,7 @@ def set_rules(world: FFXWorld) -> None:
         add_rule(location, lambda state, capture_locations=capture_locations, creations_required=creations_required: 
                 can_reach_minimum_locations(state, capture_locations, creations_required))
         add_rule(boss, lambda state, location=location: state.can_reach_location(location.name, world.player))
+        add_rule(boss, ruleDict[boss.name](world))
     
 
     original_creation_captures = [
@@ -370,42 +373,38 @@ def set_rules(world: FFXWorld) -> None:
         (456, 81), # Ultima Buster (5x Captures)
         (458, 83), # Nemesis (10x Captures)
     ]
-    capture_rules = [
-        "Besaid",
-        "Kilika",
-        "Mi'ihen Highroad", "Chocobo Eater",
-        "Mushroom Rock Road",
-        "Djose",
-        "Moonflow",
-        "Thunder Plains",
-        "Macalania", "Spherimorph",
-        "Bikanel",
-        "Calm Lands",
-        "Cavern of the Stolen Fayth",
-        "Mt. Gagazet", "Seymour Flux",
-        "Sin",
-        "Omega Ruins"
+    capture_regions = [
+        "Besaid Island 1st visit",
+        "Kilika 1st visit: Pre-Geneaux",
+        "Mi'ihen Highroad 1st visit: Post-Chocobo Eater",
+        "Mushroom Rock Road 1st visit: Pre-Sinspawn Gui",
+        "Djose 1st visit",
+        "Moonflow 1st visit: Pre-Extractor",
+        "Thunder Plains 1st visit",
+        "Lake Macalania 1st visit: Pre-Crawler",
+        "Bikanel 1st visit",
+        "Calm Lands 1st visit: Pre-Defender X",
+        "Cavern of the Stolen Fayth 1st visit",
+        "Mt. Gagazet 1st visit: Post-Seymour Flux",
+        "Sin: Post-Seymour Omnis",
+        "Omega Ruins: Pre-Ultima Weapon"
     ]
     for location_id, boss_id in original_creation_captures:
         location = world.get_location(world.location_id_to_name[location_id | TreasureOffset])
         boss = world.get_location(world.location_id_to_name[boss_id | BossOffset])
         
-        for rule in capture_rules:
-            add_rule(location, ruleDict[rule](world))
+        for region in capture_regions:
+            add_rule(location, lambda state: state.can_reach_region(region, world.player))
         add_rule(boss, lambda state, location=location: state.can_reach_location(location.name, world.player))
+        add_rule(boss, ruleDict[boss.name](world))
 
 
     # Shinryu (Underwater Captures in Gagazet)
-    shinryu_rules = [
-        "Mt. Gagazet", 
-        "Seymour Flux",
-    ]
     location = world.get_location(world.location_id_to_name[457 | TreasureOffset])
     boss = world.get_location(world.location_id_to_name[82 | BossOffset])
-    for rule in shinryu_rules:
-            add_rule(location, ruleDict[rule](world))
-    # add_rule(location, lambda world, state: create_min_swimmers_rule(world, 1)(state))
+    add_rule(location, lambda state: state.can_reach_region("Mt. Gagazet 1st visit: Post-Seymour Flux", world.player))
     add_rule(boss, lambda state: state.can_reach_location(location.name, world.player))
+    add_rule(boss, ruleDict["Monster Arena: Shinryu"](world))
 
 
     # Nemesis requires killing all other creations
@@ -419,6 +418,7 @@ def set_rules(world: FFXWorld) -> None:
     for creation_id in creation_bosses:
         creation_name = world.location_id_to_name[creation_id | BossOffset]
         add_rule(nemesis, lambda state, creation_name=creation_name: state.can_reach_location(creation_name, world.player))
+    add_rule(nemesis, ruleDict[nemesis.name](world))
 
 
     ## Celestials

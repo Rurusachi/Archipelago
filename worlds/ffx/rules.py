@@ -366,33 +366,27 @@ def set_rules(world: FFXWorld) -> None:
 
     # Species Conquest
     species_conquest = [
-        (437, 62, ("Besaid", "Mi'ihen Highroad", "Djose", "Macalania", "Spherimorph", "Bikanel", 
-                   "Calm Lands", "Mt. Gagazet"                                                            )), # Fenrir
-        (438, 63, ("Kilika", "Mi'ihen Highroad", "Chocobo Eater", "Mushroom Rock Road", "Thunder Plains", 
-                   "Macalania", "Cavern of the Stolen Fayth", "Omega Ruins"                               )), # Ornitholestes
-        (439, 64, ("Besaid", "Djose", "Bikanel"                                                           )), # Pteryx
-        (440, 65, ("Kilika", "Djose", "Macalania", "Calm Lands"                                           )), # Hornet
-        (441, 66, ("Mushroom Rock Road", "Thunder Plains", "Cavern of the Stolen Fayth"                   )), # Vidatu
-        (442, 67, ("Mi'ihen Highroad", "Thunder Plains", "Macalania", "Spherimorph", 
-                   "Mt. Gagazet", "Seymour Flux", "Omega Ruins"                                           )), # One-Eye
-        (443, 68, ("Besaid", "Mushroom Rock Road", "Djose", "Macalania", "Spherimorph", "Calm Lands", 
-                   "Mt. Gagazet", "Seymour Flux"                                                          )), # Jumbo Flan
-        (444, 69, ("Kilika", "Mi'ihen Highroad", "Mushroom Rock Road", "Thunder Plains", "Macalania",            
-                   "Cavern of the Stolen Fayth", "Omega Ruins"                                            )), # Nega Elemental
-        (445, 69, ("Mi'ihen Highroad", "Djose", "Macalania", "Spherimorph", "Calm Lands", "Omega Ruins"   )), # Tanket
-        (446, 70, ("Mi'ihen Highroad", "Chocobo Eater", "Mushroom Rock Road", "Thunder Plains", "Bikanel",                 
-                   "Cavern of the Stolen Fayth"                                                           )), # Fafnir
-        (447, 71, ("Mushroom Rock Road", "Cavern of the Stolen Fayth", "Sin"                              )), # Sleep Sprout
-        (448, 72, ("Mi'ihen Highroad", "Mt. Gagazet", "Omega Ruins"                                       )), # Bomb King
-        (449, 73, ("Mi'ihen Highroad", "Cavern of the Stolen Fayth", "Mt. Gagazet", "Seymour Flux"        )), # Juggernaut
-        (450, 74, ("Thunder Plains", "Sin"                                                                )), # Ironclad
+        (437, 62, (0, 7, 22, 37, 47, 53, 71 )), # Fenrir
+        (438, 63, (3, 8, 15, 29, 38, 62, 92 )), # Ornitholestes
+        (439, 64, (1, 23, 48                )), # Pteryx
+        (440, 65, (4, 24, 39, 54            )), # Hornet
+        (441, 66, (16, 30, 63               )), # Vidatu
+        (442, 67, (9, 31, 40, 72, 93        )), # One-Eye
+        (443, 68, (2, 17, 25, 41, 55, 73    )), # Jumbo Flan
+        (444, 69, (5, 10, 18, 32, 42, 64, 94)), # Nega Elemental
+        (445, 69, (11, 26, 43, 44, 56, 95   )), # Tanket
+        (446, 70, (12, 19, 33, 49, 65       )), # Fafnir
+        (447, 71, (20, 66, 83               )), # Sleep Sprout
+        (448, 72, (13, 74, 96               )), # Bomb King
+        (449, 73, (14, 67, 76               )), # Juggernaut
+        (450, 74, (35, 85, 86               )), # Ironclad
     ]
-    for location_id, boss_id, rules in species_conquest:
+    for location_id, boss_id, captures in species_conquest:
         location = world.get_location(world.location_id_to_name[location_id | TreasureOffset])
         boss = world.get_location(world.location_id_to_name[boss_id | BossOffset])
         
-        for rule in rules:
-            add_rule(location, ruleDict[rule](world))
+        for capture_id in captures:
+            add_rule(location, lambda state: state.can_reach_location(world.location_id_to_name[capture_id | CaptureOffset]))
         add_rule(boss, lambda state, location=location: state.can_reach_location(location.name, world.player))
         add_rule(boss, ruleDict[boss.name](world))
  

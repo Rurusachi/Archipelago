@@ -386,7 +386,7 @@ def set_rules(world: FFXWorld) -> None:
         boss = world.get_location(world.location_id_to_name[boss_id | BossOffset])
         
         for capture_id in captures:
-            add_rule(location, lambda state: state.can_reach_location(world.location_id_to_name[capture_id | CaptureOffset]))
+            add_rule(location, lambda state: state.can_reach_location(world.location_id_to_name[capture_id | CaptureOffset], world.player))
         add_rule(boss, lambda state, location=location: state.can_reach_location(location.name, world.player))
         add_rule(boss, ruleDict[boss.name](world))
  

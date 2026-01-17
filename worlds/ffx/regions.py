@@ -421,7 +421,7 @@ def create_regions(world: FFXWorld, player) -> None:
     
     if not world.options.capture_sanity.value:
         reward_locations = [
-            424, 425, 426, 427, 428, 429, 430, 431, 432, 433, 434, 435, 436,        # Area Conquest
+            113, 424, 425, 426, 427, 428, 429, 430, 431, 432, 433, 434, 435, 436,   # Area Conquest
             437, 438, 439, 440, 441, 442, 443, 444, 445, 446, 447, 448, 449, 450,   # Species Conquest
             451, 452, 453, 454, 455, 456, 457, 458                                  # Original Creations
         ]

@@ -289,8 +289,7 @@ def create_regions(world: FFXWorld, player) -> None:
         # add_locations_by_ids(new_region, region_data.captures, FFXCaptureLocations, "Capture")
 
     for location_id, region_name in captureDict.items():
-        region = Region(region_name, player, world.multiworld)
-        add_locations_by_ids(region, [location_id], FFXCaptureLocations, "Capture")
+        add_locations_by_ids(world.get_region(region_name), [location_id], FFXCaptureLocations, "Capture")
 
     for region_data in region_data_list:
         curr_region = region_dict[region_data.id]

@@ -2,7 +2,7 @@ from BaseClasses import Entrance, ItemClassification, Region, Location, Location
 import json
 import pkgutil
 import typing
-from typing import NamedTuple
+from typing import NamedTuple, List
 
 from .locations import FFXLocation, FFXTreasureLocations, FFXPartyMemberLocations, FFXBossLocations, \
     FFXOverdriveLocations, FFXOtherLocations, FFXRecruitLocations, FFXSphereGridLocations, FFXCaptureLocations, FFXLocationData, TreasureOffset, BossOffset, PartyMemberOffset, RecruitOffset, CaptureOffset
@@ -106,6 +106,111 @@ def create_regions(world: FFXWorld, player) -> None:
                 [primer.itemName for primer in key_items[4:30]], world.player, world.options.required_primers.value) 
         else:
             return True
+        
+    captureDict: dict [int, str]= {
+    0: "Besaid Island 1st visit",                           # Dingo
+    1: "Besaid Island 1st visit",                           # Condor
+    2: "Besaid Island 1st visit",                           # Water Flan
+    3: "Kilika 1st visit: Pre-Geneaux",                     # Dinonix
+    4: "Kilika 1st visit: Pre-Geneaux",                     # Killer Bee
+    5: "Kilika 1st visit: Pre-Geneaux",                     # Yellow Element
+    6: "Kilika 1st visit: Pre-Geneaux",                     # Ragora
+    7: "Mi'ihen Highroad 1st visit: Pre-Chocobo Eater",     # Mi'ihen Fang
+    8: "Mi'ihen Highroad 1st visit: Post-Chocobo Eater",    # Ipiria
+    9: "Mi'ihen Highroad 1st visit: Pre-Chocobo Eater",     # Floating Eye
+    10: "Mi'ihen Highroad 1st visit: Pre-Chocobo Eater",    # White Element
+    11: "Mi'ihen Highroad 1st visit: Pre-Chocobo Eater",    # Raldo
+    12: "Mi'ihen Highroad 1st visit: Post-Chocobo Eater",   # Vouivre
+    13: "Mi'ihen Highroad 1st visit: Pre-Chocobo Eater",    # Bomb
+    14: "Mi'ihen Highroad 1st visit: Pre-Chocobo Eater",    # Dual Horn
+    15: "Mushroom Rock Road 1st visit: Pre-Sinspawn Gui",   # Raptor
+    16: "Mushroom Rock Road 1st visit: Pre-Sinspawn Gui",   # Gandarewa
+    17: "Mushroom Rock Road 1st visit: Pre-Sinspawn Gui",   # Thunder Flan
+    18: "Mushroom Rock Road 1st visit: Pre-Sinspawn Gui",   # Red Element
+    19: "Mushroom Rock Road 1st visit: Pre-Sinspawn Gui",   # Lamashtu
+    20: "Mushroom Rock Road 1st visit: Pre-Sinspawn Gui",   # Funguar
+    21: "Mushroom Rock Road 1st visit: Pre-Sinspawn Gui",   # Garuda
+    22: "Djose 1st visit",                                  # Garm
+    23: "Djose 1st visit",                                  # Simurgh
+    24: "Djose 1st visit",                                  # Bite Bug
+    25: "Djose 1st visit",                                  # Snow Flan
+    26: "Djose 1st visit",                                  # Bunyip
+    27: "Djose 1st visit",                                  # Basilisk
+    28: "Moonflow 1st visit: Pre-Extractor",                # Ochu
+    29: "Thunder Plains 1st visit",                         # Melusine
+    30: "Thunder Plains 1st visit",                         # Aerouge
+    31: "Thunder Plains 1st visit",                         # Buer
+    32: "Thunder Plains 1st visit",                         # Gold Element
+    33: "Thunder Plains 1st visit",                         # Kusariqqu
+    34: "Thunder Plains 1st visit",                         # Larva
+    35: "Thunder Plains 1st visit",                         # Iron Giant
+    36: "Thunder Plains 1st visit",                         # Qactuar
+    37: "Lake Macalania 1st visit: Pre-Crawler",            # Snow Wolf
+    38: "Macalania Woods 1st visit: Pre-Spherimorph",       # Iguion
+    39: "Macalania Woods 1st visit: Pre-Spherimorph",       # Wasp
+    40: "Lake Macalania 1st visit: Pre-Crawler",            # Evil Eye
+    41: "Lake Macalania 1st visit: Pre-Crawler",            # Ice Flan
+    42: "Macalania Woods 1st visit: Pre-Spherimorph",       # Blue Element
+    43: "Macalania Woods 1st visit: Pre-Spherimorph",       # Murussu
+    44: "Lake Macalania 1st visit: Pre-Crawler",            # Mafdet
+    45: "Macalania Woods 1st visit: Pre-Spherimorph",       # Xiphos
+    46: "Macalania Woods 1st visit: Pre-Spherimorph",       # Chimera
+    47: "Bikanel 1st visit",                                # Sand Wolf
+    48: "Bikanel 1st visit",                                # Alcyone
+    49: "Bikanel 1st visit",                                # Mushussu
+    50: "Bikanel 1st visit",                                # Zu
+    51: "Bikanel 1st visit",                                # Sand Worm
+    52: "Bikanel 1st visit",                                # Cactuar
+    53: "Calm Lands 1st visit: Pre-Defender X",             # Skoll
+    54: "Calm Lands 1st visit: Pre-Defender X",             # Nebiros
+    55: "Calm Lands 1st visit: Pre-Defender X",             # Flame Flan
+    56: "Calm Lands 1st visit: Pre-Defender X",             # Shred
+    57: "Calm Lands 1st visit: Pre-Defender X",             # Anacondaur
+    58: "Calm Lands 1st visit: Pre-Defender X",             # Ogre
+    59: "Calm Lands 1st visit: Pre-Defender X",             # Coeurl
+    60: "Calm Lands 1st visit: Pre-Defender X",             # Chimera Brain
+    61: "Calm Lands 1st visit: Pre-Defender X",             # Malboro
+    62: "Cavern of the Stolen Fayth 1st visit",             # Yowie
+    63: "Cavern of the Stolen Fayth 1st visit",             # Imp
+    64: "Cavern of the Stolen Fayth 1st visit",             # Dark Element
+    65: "Cavern of the Stolen Fayth 1st visit",             # Nidhogg
+    66: "Cavern of the Stolen Fayth 1st visit",             # Thorn
+    67: "Cavern of the Stolen Fayth 1st visit",             # Valaha
+    68: "Cavern of the Stolen Fayth 1st visit",             # Epaaj
+    69: "Cavern of the Stolen Fayth 1st visit",             # Ghost
+    70: "Cavern of the Stolen Fayth 1st visit",             # Tonberry
+    71: "Mt. Gagazet 1st visit: Post-Biran and Yenke",      # Bandersnatch
+    72: "Mt. Gagazet 1st visit: Post-Seymour Flux",         # Ahriman
+    73: "Mt. Gagazet 1st visit: Post-Seymour Flux",         # Dark Flan
+    74: "Mt. Gagazet 1st visit: Post-Biran and Yenke",      # Grenade
+    75: "Mt. Gagazet 1st visit: Post-Biran and Yenke",      # Grat
+    76: "Mt. Gagazet 1st visit: Post-Seymour Flux",         # Grendel
+    77: "Mt. Gagazet 1st visit: Post-Biran and Yenke",      # Bashura
+    78: "Mt. Gagazet 1st visit: Post-Seymour Flux",         # Mandragora
+    79: "Mt. Gagazet 1st visit: Post-Seymour Flux",         # Behemoth
+    80: "Mt. Gagazet 1st visit: Post-Seymour Flux",         # Splasher
+    81: "Mt. Gagazet 1st visit: Post-Seymour Flux",         # Achelous
+    82: "Mt. Gagazet 1st visit: Post-Seymour Flux",         # Maelspike
+    83: "Sin: Pre-Seymour Omnis",                           # Exoray
+    84: "Sin: Post-Seymour Omnis",                          # Wraith
+    85: "Sin: Pre-Seymour Omnis",                           # Gemini Sword
+    86: "Sin: Pre-Seymour Omnis",                           # Gemini Club
+    87: "Sin: Post-Seymour Omnis",                          # Demonolith
+    88: "Sin: Post-Seymour Omnis",                          # Great Malboro
+    89: "Sin: Post-Seymour Omnis",                          # Barbatos
+    90: "Sin: Pre-Seymour Omnis",                           # Adamantoise
+    91: "Sin: Pre-Seymour Omnis",                           # Behemoth King
+    92: "Omega Ruins: Pre-Ultima Weapon",                   # Zaurus
+    93: "Omega Ruins: Pre-Ultima Weapon",                   # Floating Death
+    94: "Omega Ruins: Pre-Ultima Weapon",                   # Black Element
+    95: "Omega Ruins: Pre-Ultima Weapon",                   # Halma
+    96: "Omega Ruins: Pre-Ultima Weapon",                   # Puroboros
+    97: "Omega Ruins: Pre-Ultima Weapon",                   # Spirit
+    98: "Omega Ruins: Pre-Ultima Weapon",                   # Machea
+    99: "Omega Ruins: Pre-Ultima Weapon",                   # Master Coeurl
+    100: "Omega Ruins: Pre-Ultima Weapon",                  # Master Tonberry
+    101: "Omega Ruins: Pre-Ultima Weapon",                  # Varuna
+}
 
 
     menu_region = Region("Menu", player, world.multiworld)
@@ -138,7 +243,6 @@ def create_regions(world: FFXWorld, player) -> None:
         #     new_region.locations.append(new_location)
         #     all_locations.append(new_location)
 
-        # TODO: Implement in client
         add_locations_by_ids(new_region, region_data.party_members, FFXPartyMemberLocations, "Party Member")
         # for id in region_data.party_members:
         #     print(region_data.name, id)
@@ -170,7 +274,6 @@ def create_regions(world: FFXWorld, player) -> None:
         #     new_region.locations.append(new_location)
         #     all_locations.append(new_location)
 
-        # TODO: Implement in client
         add_locations_by_ids(new_region, region_data.other, FFXOtherLocations, "Other")
         # for id in region_data.other:
         #     print(region_data.name, id)
@@ -183,7 +286,11 @@ def create_regions(world: FFXWorld, player) -> None:
 
         add_locations_by_ids(new_region, region_data.recruits, FFXRecruitLocations, "Recruit")
 
-        add_locations_by_ids(new_region, region_data.captures, FFXCaptureLocations, "Capture")
+        # add_locations_by_ids(new_region, region_data.captures, FFXCaptureLocations, "Capture")
+
+    for location_id, region_name in captureDict.items():
+        region = Region(region_name, player, world.multiworld)
+        add_locations_by_ids(region, [location_id], FFXCaptureLocations, "Capture")
 
     for region_data in region_data_list:
         curr_region = region_dict[region_data.id]

@@ -121,7 +121,7 @@ def create_min_summon_rule(world: FFXWorld, num_aeons: int) -> CollectionRule:
 
 def create_ranged_rule(world: FFXWorld) -> CollectionRule:
     return lambda state: (state.has_from_list_unique([f"Party Member: {name}" for name in ["Wakka", "Lulu"]], world.player, 1) or 
-                            (state.has(f"Party Member: Yuna", world.player) and state.has_from_list_unique([f"Party Member: {name}" for name in aeon_names[:6] + aeon_names[7]], world.player, 1))
+                            (state.has(f"Party Member: Yuna", world.player) and state.has_from_list_unique([f"Party Member: {name}" for name in aeon_names[:6] + aeon_names[7:]], world.player, 1))
                          )
 
 ruleDict: dict[str, Callable[[FFXWorld], CollectionRule]] = {

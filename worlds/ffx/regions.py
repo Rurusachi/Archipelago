@@ -108,108 +108,110 @@ def create_regions(world: FFXWorld, player) -> None:
             return True
         
     captureDict: dict [int, str]= {
-    0: "Besaid Island 1st visit",                           # Dingo
-    1: "Besaid Island 1st visit",                           # Condor
-    2: "Besaid Island 1st visit",                           # Water Flan
-    3: "Kilika 1st visit: Pre-Geneaux",                     # Dinonix
-    4: "Kilika 1st visit: Pre-Geneaux",                     # Killer Bee
-    5: "Kilika 1st visit: Pre-Geneaux",                     # Yellow Element
-    6: "Kilika 1st visit: Pre-Geneaux",                     # Ragora
-    7: "Mi'ihen Highroad 1st visit: Pre-Chocobo Eater",     # Mi'ihen Fang
-    8: "Mi'ihen Highroad 1st visit: Post-Chocobo Eater",    # Ipiria
-    9: "Mi'ihen Highroad 1st visit: Pre-Chocobo Eater",     # Floating Eye
-    10: "Mi'ihen Highroad 1st visit: Pre-Chocobo Eater",    # White Element
-    11: "Mi'ihen Highroad 1st visit: Pre-Chocobo Eater",    # Raldo
-    12: "Mi'ihen Highroad 1st visit: Post-Chocobo Eater",   # Vouivre
-    13: "Mi'ihen Highroad 1st visit: Pre-Chocobo Eater",    # Bomb
-    14: "Mi'ihen Highroad 1st visit: Pre-Chocobo Eater",    # Dual Horn
-    15: "Mushroom Rock Road 1st visit: Pre-Sinspawn Gui",   # Raptor
-    16: "Mushroom Rock Road 1st visit: Pre-Sinspawn Gui",   # Gandarewa
-    17: "Mushroom Rock Road 1st visit: Pre-Sinspawn Gui",   # Thunder Flan
-    18: "Mushroom Rock Road 1st visit: Pre-Sinspawn Gui",   # Red Element
-    19: "Mushroom Rock Road 1st visit: Pre-Sinspawn Gui",   # Lamashtu
-    20: "Mushroom Rock Road 1st visit: Pre-Sinspawn Gui",   # Funguar
-    21: "Mushroom Rock Road 1st visit: Pre-Sinspawn Gui",   # Garuda
-    22: "Djose 1st visit",                                  # Garm
-    23: "Djose 1st visit",                                  # Simurgh
-    24: "Djose 1st visit",                                  # Bite Bug
-    25: "Djose 1st visit",                                  # Snow Flan
-    26: "Djose 1st visit",                                  # Bunyip
-    27: "Djose 1st visit",                                  # Basilisk
-    28: "Moonflow 1st visit: Pre-Extractor",                # Ochu
-    29: "Thunder Plains 1st visit",                         # Melusine
-    30: "Thunder Plains 1st visit",                         # Aerouge
-    31: "Thunder Plains 1st visit",                         # Buer
-    32: "Thunder Plains 1st visit",                         # Gold Element
-    33: "Thunder Plains 1st visit",                         # Kusariqqu
-    34: "Thunder Plains 1st visit",                         # Larva
-    35: "Thunder Plains 1st visit",                         # Iron Giant
-    36: "Thunder Plains 1st visit",                         # Qactuar
-    37: "Lake Macalania 1st visit: Pre-Crawler",            # Snow Wolf
-    38: "Macalania Woods 1st visit: Pre-Spherimorph",       # Iguion
-    39: "Macalania Woods 1st visit: Pre-Spherimorph",       # Wasp
-    40: "Lake Macalania 1st visit: Pre-Crawler",            # Evil Eye
-    41: "Lake Macalania 1st visit: Pre-Crawler",            # Ice Flan
-    42: "Macalania Woods 1st visit: Pre-Spherimorph",       # Blue Element
-    43: "Macalania Woods 1st visit: Pre-Spherimorph",       # Murussu
-    44: "Lake Macalania 1st visit: Pre-Crawler",            # Mafdet
-    45: "Macalania Woods 1st visit: Pre-Spherimorph",       # Xiphos
-    46: "Macalania Woods 1st visit: Pre-Spherimorph",       # Chimera
-    47: "Bikanel 1st visit",                                # Sand Wolf
-    48: "Bikanel 1st visit",                                # Alcyone
-    49: "Bikanel 1st visit",                                # Mushussu
-    50: "Bikanel 1st visit",                                # Zu
-    51: "Bikanel 1st visit",                                # Sand Worm
-    52: "Bikanel 1st visit",                                # Cactuar
-    53: "Calm Lands 1st visit: Pre-Defender X",             # Skoll
-    54: "Calm Lands 1st visit: Pre-Defender X",             # Nebiros
-    55: "Calm Lands 1st visit: Pre-Defender X",             # Flame Flan
-    56: "Calm Lands 1st visit: Pre-Defender X",             # Shred
-    57: "Calm Lands 1st visit: Pre-Defender X",             # Anacondaur
-    58: "Calm Lands 1st visit: Pre-Defender X",             # Ogre
-    59: "Calm Lands 1st visit: Pre-Defender X",             # Coeurl
-    60: "Calm Lands 1st visit: Pre-Defender X",             # Chimera Brain
-    61: "Calm Lands 1st visit: Pre-Defender X",             # Malboro
-    62: "Cavern of the Stolen Fayth 1st visit",             # Yowie
-    63: "Cavern of the Stolen Fayth 1st visit",             # Imp
-    64: "Cavern of the Stolen Fayth 1st visit",             # Dark Element
-    65: "Cavern of the Stolen Fayth 1st visit",             # Nidhogg
-    66: "Cavern of the Stolen Fayth 1st visit",             # Thorn
-    67: "Cavern of the Stolen Fayth 1st visit",             # Valaha
+    0: "Mi'ihen Highroad 1st visit: Pre-Chocobo Eater",     # Raldo
+    1: "Djose 1st visit",                                   # Bunyip
+    2: "Macalania Woods 1st visit: Pre-Spherimorph",        # Murussu
+    3: "Lake Macalania 1st visit: Pre-Crawler",             # Mafdet
+    4: "Calm Lands 1st visit: Pre-Defender X",              # Shred
+    5: "Mushroom Rock Road 1st visit: Pre-Sinspawn Gui",    # Gandarewa
+    6: "Thunder Plains 1st visit",                          # Aerouge
+    7: "Cavern of the Stolen Fayth 1st visit",              # Imp
+    8: "Besaid Island 1st visit",                           # Dingo
+    9: "Mi'ihen Highroad 1st visit: Pre-Chocobo Eater",     # Mi'ihen Fang
+    10: "Djose 1st visit",                                  # Garm
+    11: "Lake Macalania 1st visit: Pre-Crawler",            # Snow Wolf
+    12: "Bikanel 1st visit",                                # Sand Wolf
+    13: "Calm Lands 1st visit: Pre-Defender X",             # Skoll
+    14: "Mt. Gagazet 1st visit: Post-Biran and Yenke",      # Bandersnatch
+    15: "Besaid Island 1st visit",                          # Water Flan
+    16: "Mushroom Rock Road 1st visit: Pre-Sinspawn Gui",   # Thunder Flan
+    17: "Djose 1st visit",                                  # Snow Flan
+    18: "Lake Macalania 1st visit: Pre-Crawler",            # Ice Flan
+    19: "Calm Lands 1st visit: Pre-Defender X",             # Flame Flan
+    20: "Cavern of the Stolen Fayth 1st visit",             # Dark Element
+    21: "Kilika 1st visit: Pre-Geneaux",                    # Dinonix
+    22: "Mi'ihen Highroad 1st visit: Post-Chocobo Eater",   # Ipiria
+    23: "Mushroom Rock Road 1st visit: Pre-Sinspawn Gui",   # Raptor
+    24: "Thunder Plains 1st visit",                         # Melusine
+    25: "Macalania Woods 1st visit: Pre-Spherimorph",       # Iguion
+    26: "Cavern of the Stolen Fayth 1st visit",             # Yowie
+    27: "Besaid Island 1st visit",                          # Condor
+    28: "Djose 1st visit",                                  # Simurgh
+    29: "Bikanel 1st visit",                                # Alcyone
+    30: "Kilika 1st visit: Pre-Geneaux",                    # Killer Bee
+    31: "Djose 1st visit",                                  # Bite Bug
+    32: "Macalania Woods 1st visit: Pre-Spherimorph",       # Wasp
+    33: "Calm Lands 1st visit: Pre-Defender X",             # Nebiros
+    34: "Mi'ihen Highroad 1st visit: Pre-Chocobo Eater",    # Floating Eye
+    35: "Thunder Plains 1st visit",                         # Buer
+    36: "Lake Macalania 1st visit: Pre-Crawler",            # Evil Eye
+    37: "Mt. Gagazet 1st visit: Post-Seymour Flux",         # Ahriman
+    38: "Kilika 1st visit: Pre-Geneaux",                    # Ragora
+    39: "Mt. Gagazet 1st visit: Post-Biran and Yenke",      # Grat
+    40: "Mushroom Rock Road 1st visit: Pre-Sinspawn Gui",   # Garuda
+    41: "Bikanel 1st visit",                                # Zu
+    42: "Bikanel 1st visit",                                # Sand Worm
+  # 43: "Unused Arena Index",
+    44: "Cavern of the Stolen Fayth 1st visit",             # Ghost
+    45: "Mt. Gagazet 1st visit: Post-Seymour Flux",         # Achelous
+    46: "Mt. Gagazet 1st visit: Post-Seymour Flux",         # Maelspike
+    47: "Mi'ihen Highroad 1st visit: Pre-Chocobo Eater",    # Dual Horn
+    48: "Cavern of the Stolen Fayth 1st visit",             # Valaha
+    49: "Mt. Gagazet 1st visit: Post-Seymour Flux",         # Grendel
+    50: "Mi'ihen Highroad 1st visit: Post-Chocobo Eater",   # Vouivre
+    51: "Mushroom Rock Road 1st visit: Pre-Sinspawn Gui",   # Lamashtuv
+    52: "Thunder Plains 1st visit",                         # Kusariqqu
+    53: "Bikanel 1st visit",                                # Mushussu
+    54: "Cavern of the Stolen Fayth 1st visit",             # Nidhogg
+    55: "Calm Lands 1st visit: Pre-Defender X",             # Malboro
+    56: "Sin: Post-Seymour Omnis",                          # Great Malboro
+    57: "Calm Lands 1st visit: Pre-Defender X",             # Ogre
+    58: "Mt. Gagazet 1st visit: Post-Biran and Yenke",      # Bashura
+  # 59: "Unused Arena Index",
+    60: "Mt. Gagazet 1st visit: Post-Seymour Flux",         # Splasher
+    61: "Kilika 1st visit: Pre-Geneaux",                    # Yellow Element
+    62: "Mi'ihen Highroad 1st visit: Pre-Chocobo Eater",    # White Element
+    63: "Mushroom Rock Road 1st visit: Pre-Sinspawn Gui",   # Red Element
+    64: "Thunder Plains 1st visit",                         # Gold Element
+    65: "Macalania Woods 1st visit: Pre-Spherimorph",       # Blue Element
+    66: "Mt. Gagazet 1st visit: Post-Seymour Flux",         # Dark Flan
+    67: "Omega Ruins: Pre-Ultima Weapon",                   # Black Element
     68: "Cavern of the Stolen Fayth 1st visit",             # Epaaj
-    69: "Cavern of the Stolen Fayth 1st visit",             # Ghost
-    70: "Cavern of the Stolen Fayth 1st visit",             # Tonberry
-    71: "Mt. Gagazet 1st visit: Post-Biran and Yenke",      # Bandersnatch
-    72: "Mt. Gagazet 1st visit: Post-Seymour Flux",         # Ahriman
-    73: "Mt. Gagazet 1st visit: Post-Seymour Flux",         # Dark Flan
-    74: "Mt. Gagazet 1st visit: Post-Biran and Yenke",      # Grenade
-    75: "Mt. Gagazet 1st visit: Post-Biran and Yenke",      # Grat
-    76: "Mt. Gagazet 1st visit: Post-Seymour Flux",         # Grendel
-    77: "Mt. Gagazet 1st visit: Post-Biran and Yenke",      # Bashura
-    78: "Mt. Gagazet 1st visit: Post-Seymour Flux",         # Mandragora
-    79: "Mt. Gagazet 1st visit: Post-Seymour Flux",         # Behemoth
-    80: "Mt. Gagazet 1st visit: Post-Seymour Flux",         # Splasher
-    81: "Mt. Gagazet 1st visit: Post-Seymour Flux",         # Achelous
-    82: "Mt. Gagazet 1st visit: Post-Seymour Flux",         # Maelspike
-    83: "Sin: Pre-Seymour Omnis",                           # Exoray
-    84: "Sin: Post-Seymour Omnis",                          # Wraith
-    85: "Sin: Pre-Seymour Omnis",                           # Gemini Sword
-    86: "Sin: Pre-Seymour Omnis",                           # Gemini Club
-    87: "Sin: Post-Seymour Omnis",                          # Demonolith
-    88: "Sin: Post-Seymour Omnis",                          # Great Malboro
-    89: "Sin: Post-Seymour Omnis",                          # Barbatos
-    90: "Sin: Pre-Seymour Omnis",                           # Adamantoise
-    91: "Sin: Pre-Seymour Omnis",                           # Behemoth King
-    92: "Omega Ruins: Pre-Ultima Weapon",                   # Zaurus
-    93: "Omega Ruins: Pre-Ultima Weapon",                   # Floating Death
-    94: "Omega Ruins: Pre-Ultima Weapon",                   # Black Element
-    95: "Omega Ruins: Pre-Ultima Weapon",                   # Halma
-    96: "Omega Ruins: Pre-Ultima Weapon",                   # Puroboros
-    97: "Omega Ruins: Pre-Ultima Weapon",                   # Spirit
-    98: "Omega Ruins: Pre-Ultima Weapon",                   # Machea
-    99: "Omega Ruins: Pre-Ultima Weapon",                   # Master Coeurl
-    100: "Omega Ruins: Pre-Ultima Weapon",                  # Master Tonberry
-    101: "Omega Ruins: Pre-Ultima Weapon",                  # Varuna
+    69: "Mt. Gagazet 1st visit: Post-Seymour Flux",         # Behemoth
+    70: "Sin: Pre-Seymour Omnis",                           # Behemoth King
+    71: "Macalania Woods 1st visit: Pre-Spherimorph",       # Chimera
+    72: "Calm Lands 1st visit: Pre-Defender X",             # Chimera Brain
+    73: "Calm Lands 1st visit: Pre-Defender X",             # Coeurl
+    74: "Omega Ruins: Pre-Ultima Weapon",                   # Master Coeurl
+    75: "Sin: Post-Seymour Omnis",                          # Demonolith
+    76: "Thunder Plains 1st visit",                         # Iron Giant
+    77: "Sin: Pre-Seymour Omnis",                           # Gemini Sword
+    78: "Sin: Pre-Seymour Omnis",                           # Gemini Club
+    79: "Djose 1st visit",                                  # Basilisk
+    80: "Calm Lands 1st visit: Pre-Defender X",             # Anacondaur
+    81: "Sin: Pre-Seymour Omnis",                           # Adamantoise
+    82: "Omega Ruins: Pre-Ultima Weapon",                   # Varuna
+    83: "Moonflow 1st visit: Pre-Extractor",                # Ochu
+    84: "Mt. Gagazet 1st visit: Post-Seymour Flux",         # Mandragora
+    85: "Mi'ihen Highroad 1st visit: Pre-Chocobo Eater",    # Bomb
+    86: "Mt. Gagazet 1st visit: Post-Biran and Yenke",      # Grenade
+    87: "Thunder Plains 1st visit",                         # Qactuar
+    88: "Bikanel 1st visit",                                # Cactuar
+    89: "Thunder Plains 1st visit",                         # Larva
+    90: "Sin: Post-Seymour Omnis",                          # Barbatos
+    91: "Mushroom Rock Road 1st visit: Pre-Sinspawn Gui",   # Funguar
+    92: "Cavern of the Stolen Fayth 1st visit",             # Thorn
+    93: "Sin: Pre-Seymour Omnis",                           # Exoray
+    94: "Macalania Woods 1st visit: Pre-Spherimorph",       # Xiphos
+    95: "Omega Ruins: Pre-Ultima Weapon",                   # Puroboros
+    96: "Omega Ruins: Pre-Ultima Weapon",                   # Spirit
+    97: "Sin: Post-Seymour Omnis",                          # Wraith    
+    98: "Cavern of the Stolen Fayth 1st visit",             # Tonberry
+    99: "Omega Ruins: Pre-Ultima Weapon",                   # Master Tonberry
+    100: "Omega Ruins: Pre-Ultima Weapon",                  # Zaurus
+    101: "Omega Ruins: Pre-Ultima Weapon",                  # Halma
+    102: "Omega Ruins: Pre-Ultima Weapon",                  # Floating Death
+    103: "Omega Ruins: Pre-Ultima Weapon",                  # Machea
 }
 
 

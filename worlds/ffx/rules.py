@@ -284,10 +284,11 @@ def set_rules(world: FFXWorld) -> None:
 
     ## Captures
     # Fiend Captures
-    for location_id in range(102):
-        add_rule(world.get_location(world.location_id_to_name[location_id | CaptureOffset]), 
-            lambda state: state.can_reach_region("Monster Arena", world.player)
-        )
+    for location_id in range(104):
+        if (not location_id == 43 and not location_id == 59):
+            add_rule(world.get_location(world.location_id_to_name[location_id | CaptureOffset]), 
+                lambda state: state.can_reach_region("Monster Arena", world.player)
+            )
 
 
     ## Capture Rewards
@@ -319,20 +320,20 @@ def set_rules(world: FFXWorld) -> None:
 
     # Species Conquest
     species_conquest = [
-        (437, 62, (0, 7, 22, 37, 47, 53, 71 )), # Fenrir
-        (438, 63, (3, 8, 15, 29, 38, 62, 92 )), # Ornitholestes
-        (439, 64, (1, 23, 48                )), # Pteryx
-        (440, 65, (4, 24, 39, 54            )), # Hornet
-        (441, 66, (16, 30, 63               )), # Vidatu
-        (442, 67, (9, 31, 40, 72, 93        )), # One-Eye
-        (443, 68, (2, 17, 25, 41, 55, 73    )), # Jumbo Flan
-        (444, 69, (5, 10, 18, 32, 42, 64, 94)), # Nega Elemental
-        (445, 69, (11, 26, 43, 44, 56, 95   )), # Tanket
-        (446, 70, (12, 19, 33, 49, 65       )), # Fafnir
-        (447, 71, (20, 66, 83               )), # Sleep Sprout
-        (448, 72, (13, 74, 96               )), # Bomb King
-        (449, 73, (14, 67, 76               )), # Juggernaut
-        (450, 74, (35, 85, 86               )), # Ironclad
+        (437, 62, (8, 9, 10, 11, 12, 13, 14    )), # Fenrir
+        (438, 63, (21, 22, 23, 24, 25, 26, 100 )), # Ornitholestes
+        (439, 64, (27, 28, 29                  )), # Pteryx
+        (440, 65, (30, 31, 32, 33              )), # Hornet
+        (441, 66, (5, 6, 7                     )), # Vidatu
+        (442, 67, (34, 35, 36, 37, 102         )), # One-Eye
+        (443, 68, (15, 16, 17, 18, 19, 20      )), # Jumbo Flan
+        (444, 69, (61, 62, 63, 64, 65, 66, 67  )), # Nega Elemental
+        (445, 69, (0, 1, 2, 3, 4, 101          )), # Tanket
+        (446, 70, (50, 51, 52, 53, 54          )), # Fafnir
+        (447, 71, (91, 92, 93                  )), # Sleep Sprout
+        (448, 72, (85, 86, 95                  )), # Bomb King
+        (449, 73, (47, 48, 49                  )), # Juggernaut
+        (450, 74, (76, 77, 78                  )), # Ironclad
     ]
     for location_id, boss_id, captures in species_conquest:
         location = world.get_location(world.location_id_to_name[location_id | TreasureOffset])

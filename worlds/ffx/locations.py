@@ -510,7 +510,7 @@ FFXTreasureLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+Trea
     ("Inside Sin: Megalixir x1 (Chest)",                                             174, False),  # Item: 1x Megalixir [2009h]
     ("Inside Sin: Laevatein (Chest)",                                                175, False),  # Gear: buki_get #54 [36h] { Yuna [01h], Weapon {SOS Overdrive [8010h]} }
     ("Cloudy Mirror",                                                                176, False),  # Key Item: Cloudy Mirror [A002h]
-    ("Jecht Sphere",                                                                 177, False),  # Key Item: Jecht's Sphere [A020h]
+    # ("Jecht Sphere",                                                                 177, False),  # Key Item: Jecht's Sphere [A020h]
     ("Thunder Plains: Phoenix Down x2 (Chest)",                                      178, False),  # Item: 2x Phoenix Down [2006h]
     ("Thunder Plains: Hi-Potion x2 (Chest)",                                         179, False),  # Item: 2x Hi-Potion [2001h]
     ("Thunder Plains: 5000 gil (Chest)",                                             180, False),  # Gil: 5000 [32h]

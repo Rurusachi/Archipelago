@@ -119,8 +119,13 @@ def create_min_swimmers_rule(world: FFXWorld, num_characters: int) -> Collection
 def create_min_summon_rule(world: FFXWorld, num_aeons: int) -> CollectionRule:
     return lambda state: state.has(f"Party Member: Yuna", world.player) and state.has_from_list_unique([f"Party Member: {name}" for name in aeon_names], world.player, num_aeons)
 
+def create_ranged_rule(world: FFXWorld) -> CollectionRule:
+    return lambda state: (state.has_from_list_unique([f"Party Member: {name}" for name in ["Wakka", "Lulu"]], world.player, 1) or 
+                            (state.has(f"Party Member: Yuna", world.player) and state.has_from_list_unique([f"Party Member: {name}" for name in aeon_names[:6] + aeon_names[7]], world.player, 1))
+                         )
+
 ruleDict: dict[str, Callable[[FFXWorld], CollectionRule]] = {
-    "Sin Fin":             lambda world: lambda state: create_level_rule(world,  2)(state) and create_min_party_rule   (world, 3)(state) and (state.has("Party Member: Wakka", world.player) or state.has("Party Member: Lulu", world.player) or create_min_summon_rule(world, 1)(state)),
+    "Sin Fin":             lambda world: lambda state: create_level_rule(world,  2)(state) and create_min_party_rule   (world, 3)(state) and create_ranged_rule(world)(state),
     "Sinspawn Echuilles":  lambda world: lambda state: create_level_rule(world,  2)(state) and create_min_swimmers_rule(world, 2)(state),
     "Sinspawn Geneaux":    lambda world: lambda state: create_level_rule(world,  3)(state) and create_min_party_rule   (world, 3)(state),
     "Oblitzerator":        lambda world: lambda state: create_level_rule(world,  4)(state) and create_min_party_rule   (world, 3)(state),

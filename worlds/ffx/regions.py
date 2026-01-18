@@ -420,7 +420,7 @@ def create_regions(world: FFXWorld, player) -> None:
             location_name = world.location_id_to_name[id | RecruitOffset]
             world.options.exclude_locations.value.add(location_name)
     
-    if not world.options.capture_sanity.value:
+    if world.options.capture_sanity.value == world.options.capture_sanity.option_off:
         reward_locations = [
             113, 424, 425, 426, 427, 428, 429, 430, 431, 432, 433, 434, 435, 436,   # Area Conquest
             437, 438, 439, 440, 441, 442, 443, 444, 445, 446, 447, 448, 449, 450,   # Species Conquest
@@ -440,6 +440,10 @@ def create_regions(world: FFXWorld, player) -> None:
             for boss_id in boss_locations: # Monster Arena Super Bosses
                 boss_name = world.location_id_to_name[boss_id | BossOffset]
                 world.options.exclude_locations.value.add(boss_name)
+    elif world.options.capture_sanity.value == world.options.capture_sanity.option_early_global_calm_lands:
+        world.multiworld.early_items[world.player]["Region: Calm Lands"] = 1
+    elif world.options.capture_sanity.value == world.options.capture_sanity.option_early_local_calm_lands:
+        world.multiworld.local_early_items[world.player]["Region: Calm Lands"] = 1
 
 
     final_region = world.get_region("Sin: Braska's Final Aeon")

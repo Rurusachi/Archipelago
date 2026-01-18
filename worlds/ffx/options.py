@@ -99,17 +99,21 @@ class RecruitSanity(Toggle):
     option_on = 1
 
 
-class CaptureSanity(Toggle):
+class CaptureSanity(Choice):
     """
     Sets whether Fiend Captures are included or not. If off they will only have filler items.
     Includes a location for each unique capture, as well as each Monster Arena creation reward.
     Monster Arena boss kill locations are always excluded if Super Bosses is not enabled.
+    Early global/local Calm Lands options ensure that capture weapons are accessible early. 
+    - Captures will be in logic as soon as Calm Lands is accessible, regardless of logic difficulty.
     Default is off.
     """
     display_name = "Capture Sanity"
     default = 0
     option_off = 0
     option_on = 1
+    option_early_global_calm_lands = 2
+    option_early_local_calm_lands = 3
 
 
 class TrapPercentage(Range):

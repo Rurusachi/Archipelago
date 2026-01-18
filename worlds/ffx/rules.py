@@ -332,9 +332,15 @@ def set_rules(world: FFXWorld) -> None:
     # Fiend Captures
     for location_id in range(104):
         if (not location_id == 43 and not location_id == 59):
-            add_rule(world.get_location(world.location_id_to_name[location_id | CaptureOffset]), 
-                lambda state: state.can_reach_region("Monster Arena", world.player)
-            )
+            if (world.options.capture_sanity.value == world.options.capture_sanity.option_early_global_calm_lands 
+            or world.options.capture_sanity.value == world.options.capture_sanity.option_early_local_calm_lands):
+                add_rule(world.get_location(world.location_id_to_name[location_id | CaptureOffset]), 
+                    lambda state: state.has("Region: Calm Lands", world.player)
+                )
+            else:
+                add_rule(world.get_location(world.location_id_to_name[location_id | CaptureOffset]), 
+                    lambda state: state.can_reach_region("Monster Arena", world.player)
+                )
 
 
     ## Capture Rewards

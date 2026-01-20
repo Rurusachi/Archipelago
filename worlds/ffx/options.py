@@ -104,12 +104,15 @@ class CaptureSanity(Toggle):
     Sets whether Fiend Captures are included or not. If off they will only have filler items.
     Includes a location for each unique capture, as well as each Monster Arena creation reward.
     Monster Arena boss kill locations are always excluded if Super Bosses is not enabled.
+    If enabled, Monster Arena will be accessible from the Airship menu.
     Default is off.
     """
     display_name = "Capture Sanity"
     default = 0
     option_off = 0
     option_on = 1
+    option_early_arena_access = 2
+    option_always_arena_access = 3
 
 
 class TrapPercentage(Range):

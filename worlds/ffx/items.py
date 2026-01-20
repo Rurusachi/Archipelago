@@ -345,6 +345,7 @@ region_unlock_items: list[ItemData] = [ItemData(x[0], x[1], x[2] | regionItemOff
     ("Region: Zanarkand Ruins",            ItemClassification.progression, 19),
     ("Region: Sin",                        ItemClassification.progression, 20),
     ("Region: Omega Ruins",                ItemClassification.progression, 21),
+    ("Region: Monster Arena",              ItemClassification.progression, 22),
 ]]
 
 gil_items: list[ItemData] = [ItemData(f"{i*1000} Gil", ItemClassification.filler, (i << 16) | gilItemOffset) for i in range(1, 10)]

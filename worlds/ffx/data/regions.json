@@ -635,7 +635,7 @@
     "overdrives": [],
     "other": [23],
     "recruits": [11, 17],
-    "leads_to": [141, 142, 200],
+    "leads_to": [141, 142],
     "rules": ["Calm Lands"]
   },
   {
@@ -712,7 +712,7 @@
     "other": [],
     "recruits": [],
     "leads_to": [],
-    "rules": []
+    "rules": ["Monster Arena"]
   },
 
 

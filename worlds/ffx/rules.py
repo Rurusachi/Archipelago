@@ -28,6 +28,7 @@ world_battle_levels: dict[str, int] = {
 "Bikanel":                    11,
 "Bevelle":                    12,
 "Calm Lands":                 13,
+"Monster Arena":               0,
 "Cavern of the Stolen Fayth": 13,
 "Mt. Gagazet":                14,
 "Zanarkand Ruins":            15,
@@ -51,6 +52,7 @@ region_to_first_visit: dict[str, str] = {
 "Bikanel":                    "Bikanel 1st visit: Pre-Zu",
 "Bevelle":                    "Bevelle 1st visit: Pre-Isaaru",
 "Calm Lands":                 "Calm Lands 1st visit: Pre-Defender X",
+"Monster Arena":              "Monster Arena",  
 "Cavern of the Stolen Fayth": "Cavern of the Stolen Fayth 1st visit",
 "Mt. Gagazet":                "Mt. Gagazet 1st visit: Pre-Biran and Yenke",
 "Zanarkand Ruins":            "Zanarkand Ruins 1st visit: Pre-Spectral Keeper",
@@ -219,6 +221,7 @@ ruleDict: dict[str, Callable[[FFXWorld], CollectionRule]] = {
     "Bikanel":                    lambda world: create_region_access_rule(world, "Bikanel"),
     "Bevelle":                    lambda world: create_region_access_rule(world, "Bevelle"),
     "Calm Lands":                 lambda world: create_region_access_rule(world, "Calm Lands"),
+    "Monster Arena":              lambda world: create_region_access_rule(world, "Monster Arena"),
     "Cavern of the Stolen Fayth": lambda world: create_region_access_rule(world, "Cavern of the Stolen Fayth"),
     "Mt. Gagazet":                lambda world: create_region_access_rule(world, "Mt. Gagazet"),
     "Zanarkand Ruins":            lambda world: create_region_access_rule(world, "Zanarkand Ruins"),
@@ -294,9 +297,8 @@ def set_rules(world: FFXWorld) -> None:
     # Fiend Captures
     for location_id in range(104):
         if (not location_id == 43 and not location_id == 59):
-            add_rule(world.get_location(world.location_id_to_name[location_id | CaptureOffset]), 
-                lambda state: state.can_reach_region("Monster Arena", world.player)
-            )
+            location = world.get_location(world.location_id_to_name[location_id | CaptureOffset])
+            add_rule(location, lambda state: state.can_reach_location("Region: Monster Arena", world.player))
 
 
     ## Capture Rewards

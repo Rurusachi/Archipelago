@@ -147,33 +147,33 @@ FFXBossLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+BossOffs
     ("MRR: Defeat Dark Sandy (Superboss)",                     46, False),
     ("MRR: Defeat Dark Cindy (Superboss)",                     47, False),
     ("Baaj: Defeat Geosgaeno (Boss)",                          48, False),
-    ("Monster Arena: Defeat Stratoavis (Superboss)",           49, False),
-    ("Monster Arena: Defeat Malboro Menace (Superboss)",       50, False),
-    ("Monster Arena: Defeat Kottos (Superboss)",               51, False),
-    ("Monster Arena: Defeat Coeurlregina (Superboss)",         52, False),
-    ("Monster Arena: Defeat Jormungand (Superboss)",           53, False),
-    ("Monster Arena: Defeat Cactuar King (Superboss)",         54, False),
-    ("Monster Arena: Defeat Espada (Superboss)",               55, False),
-    ("Monster Arena: Defeat Abyss Worm (Superboss)",           56, False),
-    ("Monster Arena: Defeat Chimerageist (Superboss)",         57, False),
-    ("Monster Arena: Defeat Don Tonberry (Superboss)",         58, False),
-    ("Monster Arena: Defeat Catoblepas (Superboss)",           59, False),
-    ("Monster Arena: Defeat Abaddon (Superboss)",              60, False),
-    ("Monster Arena: Defeat Vorban (Superboss)",               61, False),
-    ("Monster Arena: Defeat Fenrir (Superboss)",               62, False),
-    ("Monster Arena: Defeat Ornitholestes (Superboss)",        63, False),
-    ("Monster Arena: Defeat Pteryx (Superboss)",               64, False),
-    ("Monster Arena: Defeat Hornet (Superboss)",               65, False),
-    ("Monster Arena: Defeat Vidatu (Superboss)",               66, False),
-    ("Monster Arena: Defeat One-Eye (Superboss)",              67, False),
-    ("Monster Arena: Defeat Jumbo Flan (Superboss)",           68, False),
-    ("Monster Arena: Defeat Nega Elemental (Superboss)",       69, False),
-    ("Monster Arena: Defeat Tanket (Superboss)",               70, False),
-    ("Monster Arena: Defeat Fafnir (Superboss)",               71, False),
-    ("Monster Arena: Defeat Sleep Sprout (Superboss)",         72, False),
-    ("Monster Arena: Defeat Bomb King (Superboss)",            73, False),
-    ("Monster Arena: Defeat Juggernaut (Superboss)",           74, False),
-    ("Monster Arena: Defeat Ironclad (Superboss)",             75, False),
+    ("Monster Arena: Defeat Stratoavis (Arena Boss)",          49, False),
+    ("Monster Arena: Defeat Malboro Menace (Arena Boss)",      50, False),
+    ("Monster Arena: Defeat Kottos (Arena Boss)",              51, False),
+    ("Monster Arena: Defeat Coeurlregina (Arena Boss)",        52, False),
+    ("Monster Arena: Defeat Jormungand (Arena Boss)",          53, False),
+    ("Monster Arena: Defeat Cactuar King (Arena Boss)",        54, False),
+    ("Monster Arena: Defeat Espada (Arena Boss)",              55, False),
+    ("Monster Arena: Defeat Abyss Worm (Arena Boss)",          56, False),
+    ("Monster Arena: Defeat Chimerageist (Arena Boss)",        57, False),
+    ("Monster Arena: Defeat Don Tonberry (Arena Boss)",        58, False),
+    ("Monster Arena: Defeat Catoblepas (Arena Boss)",          59, False),
+    ("Monster Arena: Defeat Abaddon (Arena Boss)",             60, False),
+    ("Monster Arena: Defeat Vorban (Arena Boss)",              61, False),
+    ("Monster Arena: Defeat Fenrir (Arena Boss)",              62, False),
+    ("Monster Arena: Defeat Ornitholestes (Arena Boss)",       63, False),
+    ("Monster Arena: Defeat Pteryx (Arena Boss)",              64, False),
+    ("Monster Arena: Defeat Hornet (Arena Boss)",              65, False),
+    ("Monster Arena: Defeat Vidatu (Arena Boss)",              66, False),
+    ("Monster Arena: Defeat One-Eye (Arena Boss)",             67, False),
+    ("Monster Arena: Defeat Jumbo Flan (Arena Boss)",          68, False),
+    ("Monster Arena: Defeat Nega Elemental (Arena Boss)",      69, False),
+    ("Monster Arena: Defeat Tanket (Arena Boss)",              70, False),
+    ("Monster Arena: Defeat Fafnir (Arena Boss)",              71, False),
+    ("Monster Arena: Defeat Sleep Sprout (Arena Boss)",        72, False),
+    ("Monster Arena: Defeat Bomb King (Arena Boss)",           73, False),
+    ("Monster Arena: Defeat Juggernaut (Arena Boss)",          74, False),
+    ("Monster Arena: Defeat Ironclad (Arena Boss)",            75, False),
     ("Monster Arena: Defeat Earth Eater (Superboss)",          76, False),
     ("Monster Arena: Defeat Greater Sphere (Superboss)",       77, False),
     ("Monster Arena: Defeat Catastrophe (Superboss)",          78, False),
@@ -760,41 +760,41 @@ FFXTreasureLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+Trea
     ("Calm Lands: 5th Chest in Chocobo Race",                                                       421, False),  # Item: 30x Wings to Discovery [206Ch]
     #("Treasure 422",                                                                               422, False),  # Item: 1x Potion [2000h]
     ("Mi'ihen: Agency - Green NPC After Resting (Event)",                                           423, False),  # Item: 1x Lv. 1 Key Sphere [2051h]
-    ("Monster Arena: Area Conquest - Capture Every Besaid Fiend (Chest)",                           424, False),  # Item: 99x Stamina Tonic [2043h]
-    ("Monster Arena: Area Conquest - Capture Every Kilika Fiend (Chest)",                           425, False),  # Item: 99x Poison Fang [202Dh]
-    ("Monster Arena: Area Conquest - Capture Every Mi'ihen Highraod Fiend (Chest)",                 426, False),  # Item: 99x Soul Spring [203Eh]
-    ("Monster Arena: Area Conquest - Capture Every MRR Fiend (Chest)",                              427, False),  # Item: 99x Candle of Life [2030h]
-    ("Monster Arena: Area Conquest - Capture Every Djose Highroad Fiend (Chest)",                   428, False),  # Item: 99x Petrify Grenade [2031h]
-    ("Monster Arena: Area Conquest - Capture Every Thunder Plains Fiend (Chest)",                   429, False),  # Item: 99x Chocobo Wing [2037h]
-    ("Monster Arena: Area Conquest - Capture Every Macalania Fiend (Chest)",                        430, False),  # Item: 60x Shining Gem [202Ah]
-    ("Monster Arena: Area Conquest - Capture Every Bikanel Fiend (Chest)",                          431, False),  # Item: 99x Shadow Gem [2029h]
-    ("Monster Arena: Area Conquest - Capture Every Calm Lands Fiend (Chest)",                       432, False),  # Item: 60x Farplane Wind [2033h]
-    ("Monster Arena: Area Conquest - Capture Every CotSF Fiend (Chest)",                            433, False),  # Item: 40x Silver Hourglass [202Eh]
-    ("Monster Arena: Area Conquest - Capture Every Gagazet Fiend (Event)",                          434, False),  # Key Item: Blossom Crown [A032h]
-    ("Monster Arena: Area Conquest - Capture Every Inside Sin Fiend (Chest)",                       435, False),  # Item: 99x Lunar Curtain [2038h]
-    ("Monster Arena: Area Conquest - Capture Every Omega Ruins Fiend (Chest)",                      436, False),  # Item: 60x Designer Wallet [2034h]
-    ("Monster Arena: Species Conquest - Capture Every Wolf Fiend (Chest)",                          437, False),  # Item: 99x Chocobo Feather [2036h]
-    ("Monster Arena: Species Conquest - Capture Every Reptile Fiend (Chest)",                       438, False),  # Item: 99x Stamina Spring [203Dh]
-    ("Monster Arena: Species Conquest - Capture Every Bird Fiend (Chest)",                          439, False),  # Item: 99x Mega Phoenix [2007h]
-    ("Monster Arena: Species Conquest - Capture Every Wasp Fiend (Chest)",                          440, False),  # Item: 60x Mana Tonic [2044h]
-    ("Monster Arena: Species Conquest - Capture Every Imp Fiend (Chest)",                           441, False),  # Item: 99x Mana Spring [203Ch]
-    ("Monster Arena: Species Conquest - Capture Every Eye Fiend (Chest)",                           442, False),  # Item: 60x Stamina Tablet [2040h]
-    ("Monster Arena: Species Conquest - Capture Every Flan Fiend (Chest)",                          443, False),  # Item: 60x Twin Stars [2042h]
-    ("Monster Arena: Species Conquest - Capture Every Elemental Fiend (Chest)",                     444, False),  # Item: 99x Star Curtain [203Ah]
-    ("Monster Arena: Species Conquest - Capture Every Helm Fiend (Chest)",                          445, False),  # Item: 99x Gold Hourglass [202Fh]
-    ("Monster Arena: Species Conquest - Capture Every Drake Fiend (Chest)",                         446, False),  # Item: 99x Purifying Salt [203Fh]
-    ("Monster Arena: Species Conquest - Capture Every Fungi Fiend (Chest)",                         447, False),  # Item: 99x Healing Spring [203Bh]
-    ("Monster Arena: Species Conquest - Capture Every Bomb Fiend (Chest)",                          448, False),  # Item: 60x Turbo Ether [2005h]
-    ("Monster Arena: Species Conquest - Capture Every Ruminant Fiend (Chest)",                      449, False),  # Item: 99x Light Curtain [2039h]
-    ("Monster Arena: Species Conquest - Capture Every Iron Giant Fiend (Chest)",                    450, False),  # Item: 60x Mana Tablet [2041h]
-    ("Monster Arena: Original Creation - Complete 2 Area Conquests (Chest)",                        451, False),  # Item: 60x Three Stars [2045h]
-    ("Monster Arena: Original Creation - Complete 2 Species Conquests (Chest)",                     452, False),  # Item: 60x Supreme Gem [202Ch]
-    ("Monster Arena: Original Creation - Complete 6 Area Conquests (Chest)",                        453, False),  # Item: 99x Door to Tomorrow [206Bh]
-    ("Monster Arena: Original Creation - Complete 6 Species Conquests (Chest)",                     454, False),  # Item: 99x Gambler's Spirit [206Dh]
-    ("Monster Arena: Original Creation - Capture 1 of Each Fiend (Chest)",                          455, False),  # Item: 99x Winning Formula [206Fh]
-    ("Monster Arena: Original Creation - Capture 5 of Each Fiend (Chest)",                          456, False),  # Item: 99x Dark Matter [2035h]
-    ("Monster Arena: Original Creation - Capture 2 Underwater Fiends (Chest)",                      457, False),  # Item: 30x Megalixir [2009h]
-    ("Monster Arena: Original Creation - Capture 10 of Each Fiend (Chest)",                         458, False),  # Item: 10x Master Sphere [2050h]
+    ("Monster Arena: Area Conquest - Capture Every Besaid Fiend (NPC)",                             424, False),  # Item: 99x Stamina Tonic [2043h]
+    ("Monster Arena: Area Conquest - Capture Every Kilika Fiend (NPC)",                             425, False),  # Item: 99x Poison Fang [202Dh]
+    ("Monster Arena: Area Conquest - Capture Every Mi'ihen Highraod Fiend (NPC)",                   426, False),  # Item: 99x Soul Spring [203Eh]
+    ("Monster Arena: Area Conquest - Capture Every MRR Fiend (NPC)",                                427, False),  # Item: 99x Candle of Life [2030h]
+    ("Monster Arena: Area Conquest - Capture Every Djose Highroad Fiend (NPC)",                     428, False),  # Item: 99x Petrify Grenade [2031h]
+    ("Monster Arena: Area Conquest - Capture Every Thunder Plains Fiend (NPC)",                     429, False),  # Item: 99x Chocobo Wing [2037h]
+    ("Monster Arena: Area Conquest - Capture Every Macalania Fiend (NPC)",                          430, False),  # Item: 60x Shining Gem [202Ah]
+    ("Monster Arena: Area Conquest - Capture Every Bikanel Fiend (NPC)",                            431, False),  # Item: 99x Shadow Gem [2029h]
+    ("Monster Arena: Area Conquest - Capture Every Calm Lands Fiend (NPC)",                         432, False),  # Item: 60x Farplane Wind [2033h]
+    ("Monster Arena: Area Conquest - Capture Every CotSF Fiend (NPC)",                              433, False),  # Item: 40x Silver Hourglass [202Eh]
+    ("Monster Arena: Area Conquest - Capture Every Gagazet Fiend (NPC)",                            434, False),  # Key Item: Blossom Crown [A032h]
+    ("Monster Arena: Area Conquest - Capture Every Inside Sin Fiend (NPC)",                         435, False),  # Item: 99x Lunar Curtain [2038h]
+    ("Monster Arena: Area Conquest - Capture Every Omega Ruins Fiend (NPC)",                        436, False),  # Item: 60x Designer Wallet [2034h]
+    ("Monster Arena: Species Conquest - Capture Every Wolf Fiend (NPC)",                            437, False),  # Item: 99x Chocobo Feather [2036h]
+    ("Monster Arena: Species Conquest - Capture Every Reptile Fiend (NPC)",                         438, False),  # Item: 99x Stamina Spring [203Dh]
+    ("Monster Arena: Species Conquest - Capture Every Bird Fiend (NPC)",                            439, False),  # Item: 99x Mega Phoenix [2007h]
+    ("Monster Arena: Species Conquest - Capture Every Wasp Fiend (NPC)",                            440, False),  # Item: 60x Mana Tonic [2044h]
+    ("Monster Arena: Species Conquest - Capture Every Imp Fiend (NPC)",                             441, False),  # Item: 99x Mana Spring [203Ch]
+    ("Monster Arena: Species Conquest - Capture Every Eye Fiend (NPC)",                             442, False),  # Item: 60x Stamina Tablet [2040h]
+    ("Monster Arena: Species Conquest - Capture Every Flan Fiend (NPC)",                            443, False),  # Item: 60x Twin Stars [2042h]
+    ("Monster Arena: Species Conquest - Capture Every Elemental Fiend (NPC)",                       444, False),  # Item: 99x Star Curtain [203Ah]
+    ("Monster Arena: Species Conquest - Capture Every Helm Fiend (NPC)",                            445, False),  # Item: 99x Gold Hourglass [202Fh]
+    ("Monster Arena: Species Conquest - Capture Every Drake Fiend (NPC)",                           446, False),  # Item: 99x Purifying Salt [203Fh]
+    ("Monster Arena: Species Conquest - Capture Every Fungi Fiend (NPC)",                           447, False),  # Item: 99x Healing Spring [203Bh]
+    ("Monster Arena: Species Conquest - Capture Every Bomb Fiend (NPC)",                            448, False),  # Item: 60x Turbo Ether [2005h]
+    ("Monster Arena: Species Conquest - Capture Every Ruminant Fiend (NPC)",                        449, False),  # Item: 99x Light Curtain [2039h]
+    ("Monster Arena: Species Conquest - Capture Every Iron Giant Fiend (NPC)",                      450, False),  # Item: 60x Mana Tablet [2041h]
+    ("Monster Arena: Original Creation - Complete 2 Area Conquests (NPC)",                          451, False),  # Item: 60x Three Stars [2045h]
+    ("Monster Arena: Original Creation - Complete 2 Species Conquests (NPC)",                       452, False),  # Item: 60x Supreme Gem [202Ch]
+    ("Monster Arena: Original Creation - Complete 6 Area Conquests (NPC)",                          453, False),  # Item: 99x Door to Tomorrow [206Bh]
+    ("Monster Arena: Original Creation - Complete 6 Species Conquests (NPC)",                       454, False),  # Item: 99x Gambler's Spirit [206Dh]
+    ("Monster Arena: Original Creation - Capture 1 of Each Fiend (NPC)",                            455, False),  # Item: 99x Winning Formula [206Fh]
+    ("Monster Arena: Original Creation - Capture 5 of Each Fiend (NPC)",                            456, False),  # Item: 99x Dark Matter [2035h]
+    ("Monster Arena: Original Creation - Capture 2 Underwater Fiends (NPC)",                        457, False),  # Item: 30x Megalixir [2009h]
+    ("Monster Arena: Original Creation - Capture 10 of Each Fiend (NPC)",                           458, False),  # Item: 10x Master Sphere [2050h]
     ("Besaid: Exit the Village (Event) (2)",                                                        459, False),  # Item: 1x Map [2064h]
     ("Lake Macalania: Fayth Revisit - PLACEHOLDER 1",                                               460, False),  # Item: 1x Magic Def Sphere [205Ah]
     ("Lake Macalania: Fayth Revisit - PLACEHOLDER 2",                                               461, False),  # Item: 1x Accuracy Sphere [205Dh]

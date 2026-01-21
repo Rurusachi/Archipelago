@@ -99,12 +99,15 @@ class RecruitSanity(Toggle):
     option_on = 1
 
 
-class CaptureSanity(Toggle):
+class CaptureSanity(Choice):
     """
     Sets whether Fiend Captures are included or not. If off they will only have filler items.
     Includes a location for each unique capture, as well as each Monster Arena creation reward.
     Monster Arena boss kill locations are always excluded if Super Bosses is not enabled.
-    If enabled, Monster Arena will be accessible from the Airship menu.
+    The Monster Arena will be accessible directly from the Airship menu, instead of via the Calm Lands.
+    On: The Monster Arena region item will be placed in the multiworld, and captures will come into logic per region once the arena is accessible
+    Early Arena: The Monster Arena region item will be placed globally in sphere 1. Otherwise, the same as 'On'
+    Always Arena: Start with the Monster Arena region item, and captures are in logic immediately per region.
     Default is off.
     """
     display_name = "Capture Sanity"

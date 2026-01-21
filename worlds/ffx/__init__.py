@@ -117,9 +117,17 @@ class FFXWorld(World):
         starting_region = self.random.choice(possible_starting_regions)
 
         self.multiworld.push_precollected(self.create_item(starting_region))
+
+        if self.options.capture_sanity.value == self.options.capture_sanity.option_early_arena_access:
+            self.multiworld.early_items[self.player]["Region: Monster Arena"] = 1
+        elif self.options.capture_sanity.value == self.options.capture_sanity.option_always_arena_access:
+            self.multiworld.push_precollected(self.create_item("Region: Monster Arena"))
+
         for item in region_unlock_items:
             if item.itemName != starting_region:
                 required_items.append(item.itemName)
+        if self.options.capture_sanity.value == self.options.capture_sanity.option_always_arena_access:
+            required_items.remove("Region: Monster Arena")
 
         starting_character = party_member_items[0]
 

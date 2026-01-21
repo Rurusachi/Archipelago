@@ -344,19 +344,20 @@ def set_rules(world: FFXWorld) -> None:
             (442, 67, (34, 35, 36, 37, 102         )), # One-Eye
             (443, 68, (15, 16, 17, 18, 19, 20      )), # Jumbo Flan
             (444, 69, (61, 62, 63, 64, 65, 66, 67  )), # Nega Elemental
-            (445, 69, (0, 1, 2, 3, 4, 101          )), # Tanket
-            (446, 70, (50, 51, 52, 53, 54          )), # Fafnir
-            (447, 71, (91, 92, 93                  )), # Sleep Sprout
-            (448, 72, (85, 86, 95                  )), # Bomb King
-            (449, 73, (47, 48, 49                  )), # Juggernaut
-            (450, 74, (76, 77, 78                  )), # Ironclad
+            (445, 70, (0, 1, 2, 3, 4, 101          )), # Tanket
+            (446, 71, (50, 51, 52, 53, 54          )), # Fafnir
+            (447, 72, (91, 92, 93                  )), # Sleep Sprout
+            (448, 73, (85, 86, 95                  )), # Bomb King
+            (449, 74, (47, 48, 49                  )), # Juggernaut
+            (450, 75, (76, 77, 78                  )), # Ironclad
         ]
         for location_id, boss_id, captures in species_conquest:
             location = world.get_location(world.location_id_to_name[location_id | TreasureOffset])
             boss = world.get_location(world.location_id_to_name[boss_id | BossOffset])
             
             for capture_id in captures:
-                add_rule(location, lambda state: state.can_reach_location(world.location_id_to_name[capture_id | CaptureOffset], world.player))
+                capture = world.get_location(world.location_id_to_name[capture_id | CaptureOffset])
+                add_rule(location, lambda state: state.can_reach_location(capture.name, world.player))
             add_rule(boss, lambda state, location=location: state.can_reach_location(location.name, world.player))
             add_rule(boss, ruleDict[boss.name](world))
     

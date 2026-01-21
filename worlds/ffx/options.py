@@ -105,9 +105,10 @@ class CaptureSanity(Choice):
     Includes a location for each unique capture, as well as each Monster Arena creation reward.
     Monster Arena boss kill locations are always excluded if Super Bosses is not enabled.
     The Monster Arena will be accessible directly from the Airship menu, instead of via the Calm Lands.
-    On: The Monster Arena region item will be placed in the multiworld, and captures will come into logic per region once the arena is accessible
-    Early Arena: The Monster Arena region item will be placed globally in sphere 1. Otherwise, the same as 'On'
-    Always Arena: Start with the Monster Arena region item, and captures are in logic immediately per region.
+    - Off: The Monster Arena region item will be placed in the mutliworld, but is never required for any checks. No locations in the arena are enabled.
+    - On: The Monster Arena region item will be placed in the multiworld, and captures will come into logic per region once the arena is accessible
+    - Early Arena: The Monster Arena region item will be placed globally in sphere 1. Otherwise, the same as 'On'
+    - Always Arena: Start with the Monster Arena region item, and captures are in logic immediately per region.
     Default is off.
     """
     display_name = "Capture Sanity"

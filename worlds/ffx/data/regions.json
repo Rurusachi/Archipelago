@@ -193,7 +193,7 @@
     "overdrives": [],
     "other": [8],
     "recruits": [14],
-    "leads_to": [41],
+    "leads_to": [41, 1010],
     "rules": ["Mi'ihen Highroad"]
   },
   {
@@ -205,7 +205,7 @@
     "overdrives": [],
     "other": [9],
     "recruits": [],
-    "leads_to": [42, 1004],
+    "leads_to": [42, 1011],
     "rules": ["Chocobo Eater"]
   },
   {
@@ -230,7 +230,7 @@
     "overdrives": [],
     "other": [10],
     "recruits": [],
-    "leads_to": [51, 1004],
+    "leads_to": [51, 1010, 1011, 1012, 1013],
     "rules": ["Mushroom Rock Road"]
   },
   {
@@ -267,7 +267,7 @@
     "overdrives": [],
     "other": [11],
     "recruits": [6],
-    "leads_to": [61],
+    "leads_to": [61, 1012, 1013, 1014],
     "rules": ["Djose"]
   },
   {
@@ -292,7 +292,7 @@
     "overdrives": [],
     "other": [],
     "recruits": [],
-    "leads_to": [71],
+    "leads_to": [71, 1013, 1014],
     "rules": ["Moonflow"]
   },
   {
@@ -635,7 +635,7 @@
     "overdrives": [],
     "other": [23],
     "recruits": [11, 17],
-    "leads_to": [141, 142, 200],
+    "leads_to": [141, 142, 200, 1015],
     "rules": ["Calm Lands"]
   },
   {
@@ -684,7 +684,7 @@
     "overdrives": [],
     "other": [25],
     "recruits": [],
-    "leads_to": [151, 1005],
+    "leads_to": [151, 1016, 1015],
     "rules": ["Cavern of the Stolen Fayth"]
   },
 
@@ -737,7 +737,7 @@
     "overdrives": [],
     "other": [35],
     "recruits": [],
-    "leads_to": [162, 1005],
+    "leads_to": [162, 1016, 1017],
     "rules": ["Biran and Yenke"]
   },
   {
@@ -749,7 +749,7 @@
     "overdrives": [],
     "other": [],
     "recruits": [],
-    "leads_to": [163, 1006],
+    "leads_to": [163, 1018, 1019],
     "rules": ["Seymour Flux"]
   },
   {
@@ -774,7 +774,7 @@
     "overdrives": [],
     "other": [],
     "recruits": [],
-    "leads_to": [171, 1006],
+    "leads_to": [171, 1017, 1018, 1019],
     "rules": ["Zanarkand Ruins"]
   },
   {
@@ -823,7 +823,7 @@
     "overdrives": [],
     "other": [],
     "recruits": [],
-    "leads_to": [181, 1007],
+    "leads_to": [181, 1020],
     "rules": ["Sin"]
   },
   {
@@ -835,7 +835,7 @@
     "overdrives": [],
     "other": [],
     "recruits": [],
-    "leads_to": [182, 1008],
+    "leads_to": [182, 1021, 1019],
     "rules": ["Seymour Omnis"]
   },
   {
@@ -860,7 +860,7 @@
     "overdrives": [],
     "other": [26],
     "recruits": [],
-    "leads_to": [191, 1007, 1008],
+    "leads_to": [191, 1020, 1021],
     "rules": ["Omega Ruins"]
   },
   {
@@ -937,8 +937,8 @@
     "rules": []
   },
   {
-    "name": "Captures: Oldroad & MRR",
-    "id": 1004,
+    "name": "Captures: Miihen Highroad & MRR",
+    "id": 1010,
     "treasures": [],
     "party_members": [],
     "bosses": [],
@@ -949,8 +949,8 @@
     "rules": []
   },
   {
-    "name": "Captures: CotSF & Gagazet",
-    "id": 1005,
+    "name": "Captures: Miihen Oldroad & MRR",
+    "id": 1011,
     "treasures": [],
     "party_members": [],
     "bosses": [],
@@ -961,8 +961,92 @@
     "rules": []
   },
   {
-    "name": "Captures: Gagazet Cave & Zanarkand",
-    "id": 1006,
+    "name": "Captures: MRR & Djose Highroad",
+    "id": 1012,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [],
+    "recruits": [],
+    "leads_to": [],
+    "rules": []
+  },
+  {
+    "name": "Captures: MRR, Djose Highroad & Moonflow",
+    "id": 1013,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [],
+    "recruits": [],
+    "leads_to": [],
+    "rules": []
+  },
+  {
+    "name": "Captures: Djose Highroad & Moonflow",
+    "id": 1014,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [],
+    "recruits": [],
+    "leads_to": [],
+    "rules": []
+  },
+  {
+    "name": "Captures: Calm Lands & Cavern of the Stolen Fayth",
+    "id": 1015,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [],
+    "recruits": [],
+    "leads_to": [],
+    "rules": []
+  },
+  {
+    "name": "Captures: Cavern of the Stolen Fayth & Mt. Gagazet",
+    "id": 1016,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [],
+    "recruits": [],
+    "leads_to": [],
+    "rules": []
+  },
+  {
+    "name": "Captures: Mt. Gagazet Slope & Zanarkand",
+    "id": 1017,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [],
+    "recruits": [],
+    "leads_to": [],
+    "rules": []
+  },
+  {
+    "name": "Captures: Mt. Gagazet Caves & Zanarkand",
+    "id": 1018,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [],
+    "recruits": [],
+    "leads_to": [],
+    "rules": []
+  },
+  {
+    "name": "Captures: Mt. Gagazet Caves, Zanarkand & City of Dying Dreams",
+    "id": 1019,
     "treasures": [],
     "party_members": [],
     "bosses": [],
@@ -974,7 +1058,7 @@
   },
   {
     "name": "Captures: Inside Sin & Omega Ruins",
-    "id": 1007,
+    "id": 1020,
     "treasures": [],
     "party_members": [],
     "bosses": [],
@@ -986,7 +1070,7 @@
   },
   {
     "name": "Captures: City of Dying Dreams & Omega Ruins",
-    "id": 1008,
+    "id": 1021,
     "treasures": [],
     "party_members": [],
     "bosses": [],

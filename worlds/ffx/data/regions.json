@@ -635,7 +635,7 @@
     "overdrives": [],
     "other": [23],
     "recruits": [11, 17],
-    "leads_to": [141, 142, 200, 1015],
+    "leads_to": [141, 142, 1015],
     "rules": ["Calm Lands"]
   },
   {

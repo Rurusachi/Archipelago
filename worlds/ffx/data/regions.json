@@ -18,9 +18,9 @@
     "party_members": [],
     "bosses": [1],
     "overdrives": [],
-    "other": [1],
+    "other": [],
     "recruits": [],
-    "leads_to": [2],
+    "leads_to": [2, 1000],
     "rules": []
   },
   {
@@ -55,9 +55,9 @@
     "party_members": [3],
     "bosses": [3, 4],
     "overdrives": [],
-    "other": [3],
+    "other": [],
     "recruits": [],
-    "leads_to": [12],
+    "leads_to": [12, 1001],
     "rules": ["Sin Fin", "Sinspawn Echuilles"]
   },
   {
@@ -117,9 +117,9 @@
     "party_members": [],
     "bosses": [],
     "overdrives": [],
-    "other": [5, 36],
+    "other": [36],
     "recruits": [5],
-    "leads_to": [23],
+    "leads_to": [23, 1002],
     "rules": []
   },
   {
@@ -193,7 +193,7 @@
     "overdrives": [],
     "other": [8],
     "recruits": [14],
-    "leads_to": [41],
+    "leads_to": [41, 1010],
     "rules": ["Mi'ihen Highroad"]
   },
   {
@@ -205,7 +205,7 @@
     "overdrives": [],
     "other": [9],
     "recruits": [],
-    "leads_to": [42],
+    "leads_to": [42, 1011],
     "rules": ["Chocobo Eater"]
   },
   {
@@ -230,7 +230,7 @@
     "overdrives": [],
     "other": [10],
     "recruits": [],
-    "leads_to": [51],
+    "leads_to": [51, 1010, 1011, 1012, 1013],
     "rules": ["Mushroom Rock Road"]
   },
   {
@@ -267,7 +267,7 @@
     "overdrives": [],
     "other": [11],
     "recruits": [6],
-    "leads_to": [61],
+    "leads_to": [61, 1012, 1013, 1014],
     "rules": ["Djose"]
   },
   {
@@ -292,7 +292,7 @@
     "overdrives": [],
     "other": [],
     "recruits": [],
-    "leads_to": [71],
+    "leads_to": [71, 1013, 1014],
     "rules": ["Moonflow"]
   },
   {
@@ -352,9 +352,9 @@
     "party_members": [],
     "bosses": [],
     "overdrives": [],
-    "other": [14],
+    "other": [],
     "recruits": [9],
-    "leads_to": [91],
+    "leads_to": [91, 1003],
     "rules": ["Thunder Plains"]
   },
   {
@@ -464,7 +464,7 @@
     "overdrives": [],
     "other": [],
     "recruits": [],
-    "leads_to": [111],
+    "leads_to": [111, 1000],
     "rules": ["Bikanel"]
   },
   {
@@ -476,7 +476,7 @@
     "overdrives": [],
     "other": [18, 17],
     "recruits": [],
-    "leads_to": [112],
+    "leads_to": [112, 1001, 1002, 1003],
     "rules": ["Zu"]
   },
   {
@@ -635,7 +635,7 @@
     "overdrives": [],
     "other": [23],
     "recruits": [11, 17],
-    "leads_to": [141, 142],
+    "leads_to": [141, 142, 200, 1015],
     "rules": ["Calm Lands"]
   },
   {
@@ -684,7 +684,7 @@
     "overdrives": [],
     "other": [25],
     "recruits": [],
-    "leads_to": [151],
+    "leads_to": [151, 1016, 1015],
     "rules": ["Cavern of the Stolen Fayth"]
   },
 
@@ -737,7 +737,7 @@
     "overdrives": [],
     "other": [35],
     "recruits": [],
-    "leads_to": [162],
+    "leads_to": [162, 1016, 1017],
     "rules": ["Biran and Yenke"]
   },
   {
@@ -749,7 +749,7 @@
     "overdrives": [],
     "other": [],
     "recruits": [],
-    "leads_to": [163],
+    "leads_to": [163, 1018, 1019],
     "rules": ["Seymour Flux"]
   },
   {
@@ -774,7 +774,7 @@
     "overdrives": [],
     "other": [],
     "recruits": [],
-    "leads_to": [171],
+    "leads_to": [171, 1017, 1018, 1019],
     "rules": ["Zanarkand Ruins"]
   },
   {
@@ -823,7 +823,7 @@
     "overdrives": [],
     "other": [],
     "recruits": [],
-    "leads_to": [181],
+    "leads_to": [181, 1020],
     "rules": ["Sin"]
   },
   {
@@ -835,7 +835,7 @@
     "overdrives": [],
     "other": [],
     "recruits": [],
-    "leads_to": [182],
+    "leads_to": [182, 1021, 1019],
     "rules": ["Seymour Omnis"]
   },
   {
@@ -860,7 +860,7 @@
     "overdrives": [],
     "other": [26],
     "recruits": [],
-    "leads_to": [191],
+    "leads_to": [191, 1020, 1021],
     "rules": ["Omega Ruins"]
   },
   {
@@ -886,5 +886,198 @@
     "recruits": [],
     "leads_to": [],
     "rules": ["Omega Weapon"]
+  },
+
+  {
+    "name": "Al Bhed Primer I",
+    "id": 1000,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [1],
+    "recruits": [],
+    "leads_to": [],
+    "rules": []
+  },
+  {
+    "name": "Al Bhed Primer III",
+    "id": 1001,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [3],
+    "recruits": [],
+    "leads_to": [],
+    "rules": []
+  },
+  {
+    "name": "Al Bhed Primer V",
+    "id": 1002,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [5],
+    "recruits": [],
+    "leads_to": [],
+    "rules": []
+  },
+  {
+    "name": "Al Bhed Primer XIV",
+    "id": 1003,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [14],
+    "recruits": [],
+    "leads_to": [],
+    "rules": []
+  },
+  {
+    "name": "Captures: Miihen Highroad & MRR",
+    "id": 1010,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [],
+    "recruits": [],
+    "leads_to": [],
+    "rules": []
+  },
+  {
+    "name": "Captures: Miihen Oldroad & MRR",
+    "id": 1011,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [],
+    "recruits": [],
+    "leads_to": [],
+    "rules": []
+  },
+  {
+    "name": "Captures: MRR & Djose Highroad",
+    "id": 1012,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [],
+    "recruits": [],
+    "leads_to": [],
+    "rules": []
+  },
+  {
+    "name": "Captures: MRR, Djose Highroad & Moonflow",
+    "id": 1013,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [],
+    "recruits": [],
+    "leads_to": [],
+    "rules": []
+  },
+  {
+    "name": "Captures: Djose Highroad & Moonflow",
+    "id": 1014,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [],
+    "recruits": [],
+    "leads_to": [],
+    "rules": []
+  },
+  {
+    "name": "Captures: Calm Lands & Cavern of the Stolen Fayth",
+    "id": 1015,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [],
+    "recruits": [],
+    "leads_to": [],
+    "rules": []
+  },
+  {
+    "name": "Captures: Cavern of the Stolen Fayth & Mt. Gagazet",
+    "id": 1016,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [],
+    "recruits": [],
+    "leads_to": [],
+    "rules": []
+  },
+  {
+    "name": "Captures: Mt. Gagazet Slope & Zanarkand",
+    "id": 1017,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [],
+    "recruits": [],
+    "leads_to": [],
+    "rules": []
+  },
+  {
+    "name": "Captures: Mt. Gagazet Caves & Zanarkand",
+    "id": 1018,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [],
+    "recruits": [],
+    "leads_to": [],
+    "rules": []
+  },
+  {
+    "name": "Captures: Mt. Gagazet Caves, Zanarkand & City of Dying Dreams",
+    "id": 1019,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [],
+    "recruits": [],
+    "leads_to": [],
+    "rules": []
+  },
+  {
+    "name": "Captures: Inside Sin & Omega Ruins",
+    "id": 1020,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [],
+    "recruits": [],
+    "leads_to": [],
+    "rules": []
+  },
+  {
+    "name": "Captures: City of Dying Dreams & Omega Ruins",
+    "id": 1021,
+    "treasures": [],
+    "party_members": [],
+    "bosses": [],
+    "overdrives": [],
+    "other": [],
+    "recruits": [],
+    "leads_to": [],
+    "rules": []
   }
 ]

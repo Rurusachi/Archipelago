@@ -40,7 +40,7 @@ normal_items: list[ItemData] = [ItemData(f"{x[0]} x {i}", x[1], x[2] | normalIte
     ("Ether",                ItemClassification.filler, 0x0004),
     ("Turbo Ether",          ItemClassification.filler, 0x0005),
     ("Phoenix Down",         ItemClassification.filler, 0x0006),
-    ("Mega Phoenix",         ItemClassification.filler, 0x0007),
+    ("Mega Phoenix",         ItemClassification.useful, 0x0007),
     ("Elixir",               ItemClassification.filler, 0x0008),
     ("Megalixir",            ItemClassification.filler, 0x0009),
     ("Antidote",             ItemClassification.filler, 0x000A),

@@ -199,7 +199,7 @@ def create_regions(world: FFXWorld, player) -> None:
     88:  "Bikanel 1st visit: Post-Zu",                                      # Cactuar
     89:  "Thunder Plains 1st visit",                                        # Larva
     90:  "Sin: Post-Seymour Omnis",                                         # Barbatos
-    91:  "Captures: MRR & Djose Highroad",                                  # Funguar
+    91:  "Captures: MRR, Djose Highroad & Moonflow",                        # Funguar
     92:  "Cavern of the Stolen Fayth 1st visit",                            # Thorn
     93:  "Sin: Pre-Seymour Omnis",                                          # Exoray
     94:  "Macalania Woods 1st visit: Pre-Spherimorph",                      # Xiphos

@@ -125,7 +125,7 @@ def create_regions(world: FFXWorld, player) -> None:
     14:  "Mt. Gagazet 1st visit: Post-Biran and Yenke",                     # Bandersnatch
     15:  "Besaid Island 1st visit",                                         # Water Flan
     16:  "Captures: Miihen Oldroad & MRR",                                  # Thunder Flan
-    17:  "Djose 1st visit",                                                 # Snow Flan
+    17:  "Captures: Djose Highroad & Moonflow",                             # Snow Flan
     18:  "Lake Macalania 1st visit: Pre-Crawler",                           # Ice Flan
     19:  "Calm Lands 1st visit: Pre-Defender X",                            # Flame Flan
     20:  "Captures: Mt. Gagazet Caves & Zanarkand",                         # Dark Flan

@@ -310,26 +310,27 @@ def set_rules(world: FFXWorld) -> None:
         ## Capture Rewards
         # Area Conquest
         area_conquest = [
-            (424, 49, ("Besaid Island 1st visit",                             )),  # Stratoavis
-            (425, 50, ("Kilika 1st visit: Pre-Geneaux",                       )),  # Malboro Menace
-            (426, 51, ("Mi'ihen Highroad 1st visit: Post-Chocobo Eater",      )),  # Kottos
-            (427, 52, ("Mushroom Rock Road 1st visit: Pre-Sinspawn Gui",      )),  # Coeurlregina
-            (428, 53, ("Djose 1st visit", "Moonflow 1st visit: Pre-Extractor",)),  # Jormungand
-            (429, 54, ("Thunder Plains 1st visit",                            )),  # Cactuar King
-            (430, 55, ("Lake Macalania 1st visit: Pre-Crawler",               )),  # Espada
-            (431, 56, ("Bikanel 1st visit: Post-Zu",                          )),  # Abyss Worm
-            (432, 57, ("Calm Lands 1st visit: Pre-Defender X",                )),  # Chimerageist
-            (433, 58, ("Cavern of the Stolen Fayth 1st visit",                )),  # Don Tonberry
-            (434, 59, ("Mt. Gagazet 1st visit: Post-Seymour Flux",            )),  # Catoblepas
-            (435, 60, ("Sin: Post-Seymour Omnis",                             )),  # Abaddon
-            (436, 61, ("Omega Ruins: Pre-Ultima Weapon",                      )),  # Vorban
+            (424, 49, (8, 15, 27                                      )),  # Stratoavis
+            (425, 50, (21, 30, 38, 61,                                )),  # Malboro Menace
+            (426, 51, (0, 9, 22, 34, 47, 50, 62, 85,                  )),  # Kottos
+            (427, 52, (5, 16, 23, 40, 51, 63, 91,                     )),  # Coeurlregina
+            (428, 53, (1, 10, 17, 28, 31, 79, 83                      )),  # Jormungand
+            (429, 54, (6, 24, 35, 52, 64, 76, 87, 89,                 )),  # Cactuar King
+            (430, 55, (2, 3, 11, 18, 25, 32, 36, 65, 71, 94           )),  # Espada
+            (431, 56, (12, 29, 41, 42, 53, 88                         )),  # Abyss Worm
+            (432, 57, (4, 13, 19, 33, 55, 57, 72, 73, 80              )),  # Chimerageist
+            (433, 58, (7, 26, 44, 48, 54, 66, 68, 92, 98              )),  # Don Tonberry
+            (434, 59, (14, 20, 37, 39, 45, 46, 49, 58, 60, 69, 84, 86,)),  # Catoblepas
+            (435, 60, (56, 70, 75, 77, 78, 81, 90, 93, 97             )),  # Abaddon
+            (436, 61, (67, 74, 82, 95, 96, 99, 100, 101, 102, 103     )),  # Vorban
         ]
-        for location_id, boss_id, regions in area_conquest:
+        for location_id, boss_id, fiend_ids in area_conquest:
             location = world.get_location(world.location_id_to_name[location_id | TreasureOffset])
             boss = world.get_location(world.location_id_to_name[boss_id | BossOffset])
             
-            for region in regions:
-                add_rule(location, lambda state: state.can_reach_region(region, world.player))
+            for fiend_id in fiend_ids:
+                fiend = world.get_location(world.location_id_to_name[fiend_id | CaptureOffset])
+                add_rule(location, lambda state, fiend=fiend: state.can_reach_location(fiend.name, world.player))
             add_rule(boss, lambda state, location=location: state.can_reach_location(location.name, world.player))
             add_rule(boss, ruleDict[boss.name](world))
 
@@ -357,7 +358,7 @@ def set_rules(world: FFXWorld) -> None:
             
             for capture_id in captures:
                 capture = world.get_location(world.location_id_to_name[capture_id | CaptureOffset])
-                add_rule(location, lambda state: state.can_reach_location(capture.name, world.player))
+                add_rule(location, lambda state, capture=capture: state.can_reach_location(capture.name, world.player))
             add_rule(boss, lambda state, location=location: state.can_reach_location(location.name, world.player))
             add_rule(boss, ruleDict[boss.name](world))
     
@@ -406,7 +407,7 @@ def set_rules(world: FFXWorld) -> None:
             boss = world.get_location(world.location_id_to_name[boss_id | BossOffset])
             
             for region in capture_regions:
-                add_rule(location, lambda state: state.can_reach_region(region, world.player))
+                add_rule(location, lambda state, region=region: state.can_reach_region(region, world.player))
             add_rule(boss, lambda state, location=location: state.can_reach_location(location.name, world.player))
             add_rule(boss, ruleDict[boss.name](world))
 

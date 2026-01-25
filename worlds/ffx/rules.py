@@ -309,19 +309,19 @@ def set_rules(world: FFXWorld) -> None:
     ## Capture Rewards
     # Area Conquest
     area_conquest = [
-        (424, 49, (8, 15, 27                                      )),  # Stratoavis
+        (424, 49, (8, 15, 27,                                     )),  # Stratoavis
         (425, 50, (21, 30, 38, 61,                                )),  # Malboro Menace
         (426, 51, (0, 9, 22, 34, 47, 50, 62, 85,                  )),  # Kottos
         (427, 52, (5, 16, 23, 40, 51, 63, 91,                     )),  # Coeurlregina
         (428, 53, (1, 10, 17, 28, 31, 79, 83                      )),  # Jormungand
         (429, 54, (6, 24, 35, 52, 64, 76, 87, 89,                 )),  # Cactuar King
-        (430, 55, (2, 3, 11, 18, 25, 32, 36, 65, 71, 94           )),  # Espada
-        (431, 56, (12, 29, 41, 42, 53, 88                         )),  # Abyss Worm
-        (432, 57, (4, 13, 19, 33, 55, 57, 72, 73, 80              )),  # Chimerageist
-        (433, 58, (7, 26, 44, 48, 54, 66, 68, 92, 98              )),  # Don Tonberry
+        (430, 55, (2, 3, 11, 18, 25, 32, 36, 65, 71, 94,          )),  # Espada
+        (431, 56, (12, 29, 41, 42, 53, 88,                        )),  # Abyss Worm
+        (432, 57, (4, 13, 19, 33, 55, 57, 72, 73, 80,             )),  # Chimerageist
+        (433, 58, (7, 26, 44, 48, 54, 66, 68, 92, 98,             )),  # Don Tonberry
         (434, 59, (14, 20, 37, 39, 45, 46, 49, 58, 60, 69, 84, 86,)),  # Catoblepas
-        (435, 60, (56, 70, 75, 77, 78, 81, 90, 93, 97             )),  # Abaddon
-        (436, 61, (67, 74, 82, 95, 96, 99, 100, 101, 102, 103     )),  # Vorban
+        (435, 60, (56, 70, 75, 77, 78, 81, 90, 93, 97,            )),  # Abaddon
+        (436, 61, (67, 74, 82, 95, 96, 99, 100, 101, 102, 103,    )),  # Vorban
     ]
     for location_id, boss_id, fiend_ids in area_conquest:
         location = world.get_location(world.location_id_to_name[location_id | TreasureOffset])
@@ -336,20 +336,20 @@ def set_rules(world: FFXWorld) -> None:
 
     # Species Conquest
     species_conquest = [
-        (437, 62, (8, 9, 10, 11, 12, 13, 14    )), # Fenrir
-        (438, 63, (21, 22, 23, 24, 25, 26, 100 )), # Ornitholestes
-        (439, 64, (27, 28, 29                  )), # Pteryx
-        (440, 65, (30, 31, 32, 33              )), # Hornet
-        (441, 66, (5, 6, 7                     )), # Vidatu
-        (442, 67, (34, 35, 36, 37, 102         )), # One-Eye
-        (443, 68, (15, 16, 17, 18, 19, 20      )), # Jumbo Flan
-        (444, 69, (61, 62, 63, 64, 65, 66, 67  )), # Nega Elemental
-        (445, 70, (0, 1, 2, 3, 4, 101          )), # Tanket
-        (446, 71, (50, 51, 52, 53, 54          )), # Fafnir
-        (447, 72, (91, 92, 93                  )), # Sleep Sprout
-        (448, 73, (85, 86, 95                  )), # Bomb King
-        (449, 74, (47, 48, 49                  )), # Juggernaut
-        (450, 75, (76, 77, 78                  )), # Ironclad
+        (437, 62, (8, 9, 10, 11, 12, 13, 14,   )), # Fenrir
+        (438, 63, (21, 22, 23, 24, 25, 26, 100,)), # Ornitholestes
+        (439, 64, (27, 28, 29,                 )), # Pteryx
+        (440, 65, (30, 31, 32, 33,             )), # Hornet
+        (441, 66, (5, 6, 7,                    )), # Vidatu
+        (442, 67, (34, 35, 36, 37, 102,        )), # One-Eye
+        (443, 68, (15, 16, 17, 18, 19, 20,     )), # Jumbo Flan
+        (444, 69, (61, 62, 63, 64, 65, 66, 67, )), # Nega Elemental
+        (445, 70, (0, 1, 2, 3, 4, 101,         )), # Tanket
+        (446, 71, (50, 51, 52, 53, 54,         )), # Fafnir
+        (447, 72, (91, 92, 93,                 )), # Sleep Sprout
+        (448, 73, (85, 86, 95,                 )), # Bomb King
+        (449, 74, (47, 48, 49,                 )), # Juggernaut
+        (450, 75, (76, 77, 78,                 )), # Ironclad
     ]
     for location_id, boss_id, captures in species_conquest:
         location = world.get_location(world.location_id_to_name[location_id | TreasureOffset])
@@ -401,10 +401,16 @@ def set_rules(world: FFXWorld) -> None:
         "Sin: Post-Seymour Omnis",
         "Omega Ruins: Pre-Ultima Weapon"
     ]
+    # capture_regions = []
+    # for location_id in range(104):
+    #     if (not location_id == 43 and not location_id == 59):
+    #         location = world.get_location(world.location_id_to_name[location_id | CaptureOffset])
+    #         if location.parent_region not in capture_regions:
+    #             capture_regions.append(location.parent_region)
+
     for location_id, boss_id in original_creation_captures:
         location = world.get_location(world.location_id_to_name[location_id | TreasureOffset])
         boss = world.get_location(world.location_id_to_name[boss_id | BossOffset])
-        
         for region in capture_regions:
             add_rule(location, lambda state, region=region: state.can_reach_region(region, world.player))
         add_rule(boss, lambda state, location=location: state.can_reach_location(location.name, world.player))

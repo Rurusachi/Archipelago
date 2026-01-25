@@ -11,7 +11,7 @@ class GoalRequirement(Choice):
     - Party Members: Requires unlocking a number of party members (not counting Aeons).
     - Party Members and Aeons: Requires unlocking a number of party members (including Aeons).
     - Pilgrimage: Complete all required temples, and defeat the boss in Zanarkand Ruins.
-    - Nemesis: Requires defeating Nemesis in the Monster Arena. To enable this option Capture Sanity must be enabled, as well as Arena Bosses being set to Original Creations
+    - Nemesis: Requires defeating Nemesis in the Monster Arena. To enable this option Capture Sanity must be enabled, and Creation Rewards & Arena Bosses must be set to Original Creations
     """
     display_name = "Goal Requirement"
     default = 0

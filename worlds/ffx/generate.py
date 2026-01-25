@@ -30,6 +30,9 @@ def options_validation(world: FFXWorld) -> None:
         if not world.options.capture_sanity.value:
             raise OptionError(f"[Final Fantasy X - '{world.player_name}'] "
                 "Goal Requirement: Nemesis cannot be chosen if Capture Sanity is disabled.")
+        elif not world.options.creation_rewards.value == world.options.creation_rewards.option_original:
+            raise OptionError(f"[Final Fantasy X - '{world.player_name}'] "
+                "Goal Requirement: Nemesis cannot be chosen if Creation Rewards is not set to Original Creations.")
         elif not world.options.arena_bosses.value == world.options.arena_bosses.option_original:
             raise OptionError(f"[Final Fantasy X - '{world.player_name}'] "
                 "Goal Requirement: Nemesis cannot be chosen if Arena Bosses is not set to Original Creations.")

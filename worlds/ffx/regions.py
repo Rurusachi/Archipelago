@@ -223,11 +223,6 @@ def create_regions(world: FFXWorld, player) -> None:
     region_data_list = json.loads(region_file)
     region_data_list = [RegionData(x) for x in region_data_list]
 
-    if not world.options.capture_sanity.value:
-        region_data_list = [RegionData(x) for x in region_data_list if RegionData(x).name != "Monster Arena"]
-    else:
-        region_data_list = [RegionData(x) for x in region_data_list]
-
     region_dict: dict[int, Region] = dict()
     region_rules: dict[int, list[str]] = dict()
 

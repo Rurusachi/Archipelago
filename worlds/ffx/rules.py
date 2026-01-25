@@ -299,139 +299,138 @@ def set_rules(world: FFXWorld) -> None:
 
     ## Captures
 
-    if world.options.capture_sanity.value:
-        # Fiend Captures
-        for location_id in range(104):
-            if (not location_id == 43 and not location_id == 59):
-                location = world.get_location(world.location_id_to_name[location_id | CaptureOffset])
-                add_rule(location, lambda state: state.can_reach_region("Monster Arena", world.player))
+    # Fiend Captures
+    for location_id in range(104):
+        if (not location_id == 43 and not location_id == 59):
+            location = world.get_location(world.location_id_to_name[location_id | CaptureOffset])
+            add_rule(location, lambda state: state.can_reach_region("Monster Arena", world.player))
 
 
-        ## Capture Rewards
-        # Area Conquest
-        area_conquest = [
-            (424, 49, (8, 15, 27                                      )),  # Stratoavis
-            (425, 50, (21, 30, 38, 61,                                )),  # Malboro Menace
-            (426, 51, (0, 9, 22, 34, 47, 50, 62, 85,                  )),  # Kottos
-            (427, 52, (5, 16, 23, 40, 51, 63, 91,                     )),  # Coeurlregina
-            (428, 53, (1, 10, 17, 28, 31, 79, 83                      )),  # Jormungand
-            (429, 54, (6, 24, 35, 52, 64, 76, 87, 89,                 )),  # Cactuar King
-            (430, 55, (2, 3, 11, 18, 25, 32, 36, 65, 71, 94           )),  # Espada
-            (431, 56, (12, 29, 41, 42, 53, 88                         )),  # Abyss Worm
-            (432, 57, (4, 13, 19, 33, 55, 57, 72, 73, 80              )),  # Chimerageist
-            (433, 58, (7, 26, 44, 48, 54, 66, 68, 92, 98              )),  # Don Tonberry
-            (434, 59, (14, 20, 37, 39, 45, 46, 49, 58, 60, 69, 84, 86,)),  # Catoblepas
-            (435, 60, (56, 70, 75, 77, 78, 81, 90, 93, 97             )),  # Abaddon
-            (436, 61, (67, 74, 82, 95, 96, 99, 100, 101, 102, 103     )),  # Vorban
-        ]
-        for location_id, boss_id, fiend_ids in area_conquest:
-            location = world.get_location(world.location_id_to_name[location_id | TreasureOffset])
-            boss = world.get_location(world.location_id_to_name[boss_id | BossOffset])
-            
-            for fiend_id in fiend_ids:
-                fiend = world.get_location(world.location_id_to_name[fiend_id | CaptureOffset])
-                add_rule(location, lambda state, fiend=fiend: state.can_reach_location(fiend.name, world.player))
-            add_rule(boss, lambda state, location=location: state.can_reach_location(location.name, world.player))
-            add_rule(boss, ruleDict[boss.name](world))
-
-
-        # Species Conquest
-        species_conquest = [
-            (437, 62, (8, 9, 10, 11, 12, 13, 14    )), # Fenrir
-            (438, 63, (21, 22, 23, 24, 25, 26, 100 )), # Ornitholestes
-            (439, 64, (27, 28, 29                  )), # Pteryx
-            (440, 65, (30, 31, 32, 33              )), # Hornet
-            (441, 66, (5, 6, 7                     )), # Vidatu
-            (442, 67, (34, 35, 36, 37, 102         )), # One-Eye
-            (443, 68, (15, 16, 17, 18, 19, 20      )), # Jumbo Flan
-            (444, 69, (61, 62, 63, 64, 65, 66, 67  )), # Nega Elemental
-            (445, 70, (0, 1, 2, 3, 4, 101          )), # Tanket
-            (446, 71, (50, 51, 52, 53, 54          )), # Fafnir
-            (447, 72, (91, 92, 93                  )), # Sleep Sprout
-            (448, 73, (85, 86, 95                  )), # Bomb King
-            (449, 74, (47, 48, 49                  )), # Juggernaut
-            (450, 75, (76, 77, 78                  )), # Ironclad
-        ]
-        for location_id, boss_id, captures in species_conquest:
-            location = world.get_location(world.location_id_to_name[location_id | TreasureOffset])
-            boss = world.get_location(world.location_id_to_name[boss_id | BossOffset])
-            
-            for capture_id in captures:
-                capture = world.get_location(world.location_id_to_name[capture_id | CaptureOffset])
-                add_rule(location, lambda state, capture=capture: state.can_reach_location(capture.name, world.player))
-            add_rule(boss, lambda state, location=location: state.can_reach_location(location.name, world.player))
-            add_rule(boss, ruleDict[boss.name](world))
-    
-
-        # Original Creations    
-        original_creation_conquests = [
-            (451, 76, area_conquest,    2), # Earth Eather
-            (452, 77, species_conquest, 2), # Greater Sphere
-            (453, 78, area_conquest,    6), # Catastrophe
-            (454, 79, species_conquest, 6), # Th'uban
-        ]
-        for location_id, boss_id, arena_type, creations_required in original_creation_conquests:
-            location = world.get_location(world.location_id_to_name[location_id | TreasureOffset])
-            boss = world.get_location(world.location_id_to_name[boss_id | BossOffset])
-            capture_locations = [world.get_location(world.location_id_to_name[arena_id | TreasureOffset]) for arena_id, _, _ in arena_type]
-            
-            add_rule(location, lambda state, capture_locations=capture_locations, creations_required=creations_required: 
-                    can_reach_minimum_locations(state, capture_locations, creations_required))
-            add_rule(boss, lambda state, location=location: state.can_reach_location(location.name, world.player))
-            add_rule(boss, ruleDict[boss.name](world))
+    ## Capture Rewards
+    # Area Conquest
+    area_conquest = [
+        (424, 49, (8, 15, 27                                      )),  # Stratoavis
+        (425, 50, (21, 30, 38, 61,                                )),  # Malboro Menace
+        (426, 51, (0, 9, 22, 34, 47, 50, 62, 85,                  )),  # Kottos
+        (427, 52, (5, 16, 23, 40, 51, 63, 91,                     )),  # Coeurlregina
+        (428, 53, (1, 10, 17, 28, 31, 79, 83                      )),  # Jormungand
+        (429, 54, (6, 24, 35, 52, 64, 76, 87, 89,                 )),  # Cactuar King
+        (430, 55, (2, 3, 11, 18, 25, 32, 36, 65, 71, 94           )),  # Espada
+        (431, 56, (12, 29, 41, 42, 53, 88                         )),  # Abyss Worm
+        (432, 57, (4, 13, 19, 33, 55, 57, 72, 73, 80              )),  # Chimerageist
+        (433, 58, (7, 26, 44, 48, 54, 66, 68, 92, 98              )),  # Don Tonberry
+        (434, 59, (14, 20, 37, 39, 45, 46, 49, 58, 60, 69, 84, 86,)),  # Catoblepas
+        (435, 60, (56, 70, 75, 77, 78, 81, 90, 93, 97             )),  # Abaddon
+        (436, 61, (67, 74, 82, 95, 96, 99, 100, 101, 102, 103     )),  # Vorban
+    ]
+    for location_id, boss_id, fiend_ids in area_conquest:
+        location = world.get_location(world.location_id_to_name[location_id | TreasureOffset])
+        boss = world.get_location(world.location_id_to_name[boss_id | BossOffset])
         
-
-        original_creation_captures = [
-            (455, 80), # Neslug (1x Capture)
-            (456, 81), # Ultima Buster (5x Captures)
-            (458, 83), # Nemesis (10x Captures)
-        ]
-        capture_regions = [
-            "Besaid Island 1st visit",
-            "Kilika 1st visit: Pre-Geneaux",
-            "Mi'ihen Highroad 1st visit: Post-Chocobo Eater",
-            "Mushroom Rock Road 1st visit: Pre-Sinspawn Gui",
-            "Djose 1st visit",
-            "Moonflow 1st visit: Pre-Extractor",
-            "Thunder Plains 1st visit",
-            "Lake Macalania 1st visit: Pre-Crawler",
-            "Bikanel 1st visit: Post-Zu",
-            "Calm Lands 1st visit: Pre-Defender X",
-            "Cavern of the Stolen Fayth 1st visit",
-            "Mt. Gagazet 1st visit: Post-Seymour Flux",
-            "Sin: Post-Seymour Omnis",
-            "Omega Ruins: Pre-Ultima Weapon"
-        ]
-        for location_id, boss_id in original_creation_captures:
-            location = world.get_location(world.location_id_to_name[location_id | TreasureOffset])
-            boss = world.get_location(world.location_id_to_name[boss_id | BossOffset])
-            
-            for region in capture_regions:
-                add_rule(location, lambda state, region=region: state.can_reach_region(region, world.player))
-            add_rule(boss, lambda state, location=location: state.can_reach_location(location.name, world.player))
-            add_rule(boss, ruleDict[boss.name](world))
-
-
-        # Shinryu (Underwater Captures in Gagazet)
-        location = world.get_location(world.location_id_to_name[457 | TreasureOffset])
-        boss = world.get_location(world.location_id_to_name[82 | BossOffset])
-        add_rule(location, lambda state: state.can_reach_region("Mt. Gagazet 1st visit: Post-Seymour Flux", world.player))
-        add_rule(boss, lambda state: state.can_reach_location(location.name, world.player))
+        for fiend_id in fiend_ids:
+            fiend = world.get_location(world.location_id_to_name[fiend_id | CaptureOffset])
+            add_rule(location, lambda state, fiend=fiend: state.can_reach_location(fiend.name, world.player))
+        add_rule(boss, lambda state, location=location: state.can_reach_location(location.name, world.player))
         add_rule(boss, ruleDict[boss.name](world))
 
 
-        # Nemesis requires killing all other creations
-        creation_bosses = [
-        49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61,     # Area Conquest
-        62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, # Species Conquest
-        76, 77, 78, 79, 80, 81, 82                              # Original Creations
-        ]
-        nemesis = world.get_location(world.location_id_to_name[83 | BossOffset])
-        # creation_bosses = [world.get_location(world.location_id_to_name[boss_id | BossOffset]) for boss_id in range(49, 83)]
-        for creation_id in creation_bosses:
-            creation_name = world.location_id_to_name[creation_id | BossOffset]
-            add_rule(nemesis, lambda state, creation_name=creation_name: state.can_reach_location(creation_name, world.player))
-        add_rule(nemesis, ruleDict[nemesis.name](world))
+    # Species Conquest
+    species_conquest = [
+        (437, 62, (8, 9, 10, 11, 12, 13, 14    )), # Fenrir
+        (438, 63, (21, 22, 23, 24, 25, 26, 100 )), # Ornitholestes
+        (439, 64, (27, 28, 29                  )), # Pteryx
+        (440, 65, (30, 31, 32, 33              )), # Hornet
+        (441, 66, (5, 6, 7                     )), # Vidatu
+        (442, 67, (34, 35, 36, 37, 102         )), # One-Eye
+        (443, 68, (15, 16, 17, 18, 19, 20      )), # Jumbo Flan
+        (444, 69, (61, 62, 63, 64, 65, 66, 67  )), # Nega Elemental
+        (445, 70, (0, 1, 2, 3, 4, 101          )), # Tanket
+        (446, 71, (50, 51, 52, 53, 54          )), # Fafnir
+        (447, 72, (91, 92, 93                  )), # Sleep Sprout
+        (448, 73, (85, 86, 95                  )), # Bomb King
+        (449, 74, (47, 48, 49                  )), # Juggernaut
+        (450, 75, (76, 77, 78                  )), # Ironclad
+    ]
+    for location_id, boss_id, captures in species_conquest:
+        location = world.get_location(world.location_id_to_name[location_id | TreasureOffset])
+        boss = world.get_location(world.location_id_to_name[boss_id | BossOffset])
+        
+        for capture_id in captures:
+            capture = world.get_location(world.location_id_to_name[capture_id | CaptureOffset])
+            add_rule(location, lambda state, capture=capture: state.can_reach_location(capture.name, world.player))
+        add_rule(boss, lambda state, location=location: state.can_reach_location(location.name, world.player))
+        add_rule(boss, ruleDict[boss.name](world))
+
+
+    # Original Creations    
+    original_creation_conquests = [
+        (451, 76, area_conquest,    2), # Earth Eather
+        (452, 77, species_conquest, 2), # Greater Sphere
+        (453, 78, area_conquest,    6), # Catastrophe
+        (454, 79, species_conquest, 6), # Th'uban
+    ]
+    for location_id, boss_id, arena_type, creations_required in original_creation_conquests:
+        location = world.get_location(world.location_id_to_name[location_id | TreasureOffset])
+        boss = world.get_location(world.location_id_to_name[boss_id | BossOffset])
+        capture_locations = [world.get_location(world.location_id_to_name[arena_id | TreasureOffset]) for arena_id, _, _ in arena_type]
+        
+        add_rule(location, lambda state, capture_locations=capture_locations, creations_required=creations_required: 
+                can_reach_minimum_locations(state, capture_locations, creations_required))
+        add_rule(boss, lambda state, location=location: state.can_reach_location(location.name, world.player))
+        add_rule(boss, ruleDict[boss.name](world))
+    
+
+    original_creation_captures = [
+        (455, 80), # Neslug (1x Capture)
+        (456, 81), # Ultima Buster (5x Captures)
+        (458, 83), # Nemesis (10x Captures)
+    ]
+    capture_regions = [
+        "Besaid Island 1st visit",
+        "Kilika 1st visit: Pre-Geneaux",
+        "Mi'ihen Highroad 1st visit: Post-Chocobo Eater",
+        "Mushroom Rock Road 1st visit: Pre-Sinspawn Gui",
+        "Djose 1st visit",
+        "Moonflow 1st visit: Pre-Extractor",
+        "Thunder Plains 1st visit",
+        "Lake Macalania 1st visit: Pre-Crawler",
+        "Bikanel 1st visit: Post-Zu",
+        "Calm Lands 1st visit: Pre-Defender X",
+        "Cavern of the Stolen Fayth 1st visit",
+        "Mt. Gagazet 1st visit: Post-Seymour Flux",
+        "Sin: Post-Seymour Omnis",
+        "Omega Ruins: Pre-Ultima Weapon"
+    ]
+    for location_id, boss_id in original_creation_captures:
+        location = world.get_location(world.location_id_to_name[location_id | TreasureOffset])
+        boss = world.get_location(world.location_id_to_name[boss_id | BossOffset])
+        
+        for region in capture_regions:
+            add_rule(location, lambda state, region=region: state.can_reach_region(region, world.player))
+        add_rule(boss, lambda state, location=location: state.can_reach_location(location.name, world.player))
+        add_rule(boss, ruleDict[boss.name](world))
+
+
+    # Shinryu (Underwater Captures in Gagazet)
+    location = world.get_location(world.location_id_to_name[457 | TreasureOffset])
+    boss = world.get_location(world.location_id_to_name[82 | BossOffset])
+    add_rule(location, lambda state: state.can_reach_region("Mt. Gagazet 1st visit: Post-Seymour Flux", world.player))
+    add_rule(boss, lambda state: state.can_reach_location(location.name, world.player))
+    add_rule(boss, ruleDict[boss.name](world))
+
+
+    # Nemesis requires killing all other creations
+    creation_bosses = [
+    49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61,     # Area Conquest
+    62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, # Species Conquest
+    76, 77, 78, 79, 80, 81, 82                              # Original Creations
+    ]
+    nemesis = world.get_location(world.location_id_to_name[83 | BossOffset])
+    # creation_bosses = [world.get_location(world.location_id_to_name[boss_id | BossOffset]) for boss_id in range(49, 83)]
+    for creation_id in creation_bosses:
+        creation_name = world.location_id_to_name[creation_id | BossOffset]
+        add_rule(nemesis, lambda state, creation_name=creation_name: state.can_reach_location(creation_name, world.player))
+    add_rule(nemesis, ruleDict[nemesis.name](world))
 
 
     ## Celestials

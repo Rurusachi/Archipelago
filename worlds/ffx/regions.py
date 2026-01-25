@@ -295,9 +295,8 @@ def create_regions(world: FFXWorld, player) -> None:
 
         # add_locations_by_ids(new_region, region_data.captures, FFXCaptureLocations, "Capture")
 
-    if world.options.capture_sanity.value:
-        for location_id, region_name in captureDict.items():
-            add_locations_by_ids(world.get_region(region_name), [location_id], FFXCaptureLocations, "Capture")
+    for location_id, region_name in captureDict.items():
+        add_locations_by_ids(world.get_region(region_name), [location_id], FFXCaptureLocations, "Capture")
 
     for region_data in region_data_list:
         curr_region = region_dict[region_data.id]
@@ -329,64 +328,6 @@ def create_regions(world: FFXWorld, player) -> None:
     #            continue
     #        world.multiworld.register_indirect_condition(this_region, menu_entrance)
 
-    if not world.options.super_bosses.value:
-        super_boss_location_ids = [
-             2, # "Besaid: Dark Valefor"
-            19, # "Bikanel: Dark Ifrit"
-            13, # "Thunder Plains: Dark Ixion"
-            18, # "Lake Macalania: Dark Shiva"
-            38, # "Zanarkand: Dark Bahamut"
-            31, # "Cavern of the Stolen Fayth: Dark Yojimbo"
-            45, # "Mushroom Rock Road: Dark Mindy"
-            46, # "Mushroom Rock Road: Dark Sandy"
-            47, # "Mushroom Rock Road: Dark Cindy"
-            34, # "Gagazet (Outside): Dark Anima"
-            25, # "Airship: Penance"
-            44, # "Omega Ruins: Omega Weapon"
-            49, # Stratoavis
-            50, # Malboro Menace
-            51, # Kottos
-            52, # Coeurlregina
-            53, # Jormungand
-            54, # Cactuar King
-            55, # Espada
-            56, # Abyss Worm
-            57, # Chimerageist
-            58, # Don Tonberry
-            59, # Catoblepas
-            60, # Abaddon
-            61, # Vorban
-            62, # Fenrir
-            63, # Ornitholestes
-            64, # Pteryx
-            65, # Hornet
-            66, # Vidatu
-            67, # One-Eye
-            68, # Jumbo Flan
-            69, # Nega Elemental
-            70, # Tanket
-            71, # Fafnir
-            72, # Sleep Sprout
-            73, # Bomb King
-            74, # Juggernaut
-            75, # Ironclad
-            76, # Earth Eater
-            77, # Greater Sphere
-            78, # Catastrophe
-            79, # Th'uban
-            80, # Neslug
-            81, # Ultima Buster
-            82, # Shinryu
-            83, # Nemesis
-        ]
-        for id in super_boss_location_ids:
-            location_name = world.location_id_to_name[id | BossOffset]
-            #world.get_location(location_name).progress_type = LocationProgressType.EXCLUDED
-            world.options.exclude_locations.value.add(location_name)
-        location_name = world.location_id_to_name[332 | TreasureOffset]
-        #world.get_location(location_name).progress_type = LocationProgressType.EXCLUDED
-        world.options.exclude_locations.value.add(location_name)
-
     if not world.options.mini_games.value:
         mini_game_location_ids = [
             338, # "Calm Lands: Lv. 1 Key Sphere x1 (Dodger Chocobo Minigame Reward)"
@@ -415,7 +356,6 @@ def create_regions(world: FFXWorld, player) -> None:
         ]
         for id in mini_game_location_ids:
             location_name = world.location_id_to_name[id | TreasureOffset]
-            #world.get_location(location_name).progress_type = LocationProgressType.EXCLUDED
             world.options.exclude_locations.value.add(location_name)
 
     if not world.options.recruit_sanity.value:
@@ -425,29 +365,129 @@ def create_regions(world: FFXWorld, player) -> None:
         for id in recruit_location_ids:
             location_name = world.location_id_to_name[id | RecruitOffset]
             world.options.exclude_locations.value.add(location_name)
-    
+
     if not world.options.capture_sanity.value:
-        reward_locations = [
-            113, 424, 425, 426, 427, 428, 429, 430, 431, 432, 433, 434, 435, 436,   # Area Conquest
-            437, 438, 439, 440, 441, 442, 443, 444, 445, 446, 447, 448, 449, 450,   # Species Conquest
-            451, 452, 453, 454, 455, 456, 457, 458                                  # Original Creations
-        ]
-        boss_locations = [
-            49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61,                     # Area Conquest
-            62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75,                 # Species Conquest
-            76, 77, 78, 79, 80, 81, 82, 83                                          # Original Creations
-        ]
-        for capture_location in FFXCaptureLocations:
-            world.options.exclude_locations.value.add(capture_location.name)
-        for reward_id in reward_locations:  # Monster Arena Reward Locations
-            reward_name = world.location_id_to_name[reward_id | TreasureOffset]
-            world.options.exclude_locations.value.add(reward_name)
-        if world.options.super_bosses.value:
-            for boss_id in boss_locations: # Monster Arena Super Bosses
-                boss_name = world.location_id_to_name[boss_id | BossOffset]
-                world.options.exclude_locations.value.add(boss_name)
+        for location_id, _ in captureDict.items():
+            location_name = world.location_id_to_name[location_id | CaptureOffset]
+            world.options.exclude_locations.value.add(location_name)
 
+    if not world.options.creation_rewards.value == world.options.creation_rewards.option_original:
+        arena_reward_location_ids = [
+            113, # Capture Every Calm Lands Fiend, Nirvana (Chest)
+            424, # Area Conquest - Capture 1 of Each Besaid Fiend (NPC)
+            425, # Area Conquest - Capture 1 of Each Kilika Fiend (NPC)
+            426, # Area Conquest - Capture 1 of Each Mi'ihen Highraod Fiend (NPC)
+            427, # Area Conquest - Capture 1 of Each MRR Fiend (NPC)
+            428, # Area Conquest - Capture 1 of Each Djose Highroad Fiend (NPC)
+            429, # Area Conquest - Capture 1 of Each Thunder Plains Fiend (NPC)
+            430, # Area Conquest - Capture 1 of Each Macalania Fiend (NPC)
+            431, # Area Conquest - Capture 1 of Each Bikanel Fiend (NPC)
+            432, # Area Conquest - Capture 1 of Each Calm Lands Fiend (NPC)
+            433, # Area Conquest - Capture 1 of Each CotSF Fiend (NPC)
+            434, # Area Conquest - Capture 1 of Each Gagazet Fiend (NPC)
+            435, # Area Conquest - Capture 1 of Each Inside Sin Fiend (NPC)
+            436, # Area Conquest - Capture 1 of Each Omega Ruins Fiend (NPC)
+            437, # Species Conquest - Capture 3 of Each Wolf Fiend (NPC)
+            438, # Species Conquest - Capture 3 of Each Reptile Fiend (NPC)
+            439, # Species Conquest - Capture 5 of Each Bird Fiend (NPC)
+            440, # Species Conquest - Capture 4 of Each Wasp Fiend (NPC)
+            441, # Species Conquest - Capture 4 of Each Imp Fiend (NPC)
+            442, # Species Conquest - Capture 4 of Each Eye Fiend (NPC)
+            443, # Species Conquest - Capture 3 of Each Flan Fiend (NPC)
+            444, # Species Conquest - Capture 3 of Each Elemental Fiend (NPC)
+            445, # Species Conquest - Capture 3 of Each Helm Fiend (NPC)
+            446, # Species Conquest - Capture 4 of Each Drake Fiend (NPC)
+            447, # Species Conquest - Capture 5 of Each Fungi Fiend (NPC)
+            448, # Species Conquest - Capture 5 of Each Bomb Fiend (NPC)
+            449, # Species Conquest - Capture 5 of Each Ruminant Fiend (NPC)
+            450, # Species Conquest - Capture 10 of Each Iron Giant Fiend (NPC)
+            451, # Original Creation - Complete 2 Area Conquests (NPC)
+            452, # Original Creation - Complete 2 Species Conquests (NPC)
+            453, # Original Creation - Complete 6 Area Conquests (NPC)
+            454, # Original Creation - Complete 6 Species Conquests (NPC)
+            455, # Original Creation - Capture 1 of Each Fiend (NPC)
+            456, # Original Creation - Capture 5 of Each Fiend (NPC)
+            457, # Original Creation - Capture 2 of Each Gagazet Underwater Fiend (NPC)
+            458, # Original Creation - Capture 10 of Each Fiend (NPC)
+        ]
+        match world.options.creation_rewards.value:
+            case world.options.creation_rewards.option_area:
+                arena_reward_location_ids = arena_reward_location_ids[14:]
+            case world.options.creation_rewards.option_species:
+                arena_reward_location_ids = arena_reward_location_ids[28:]
+        for id in arena_reward_location_ids:
+            location_name = world.location_id_to_name[id | TreasureOffset]
+            world.options.exclude_locations.value.add(location_name)
+    
+    if not world.options.arena_bosses.value == world.options.arena_bosses.option_original:
+        arena_boss_location_ids = [
+            49, # Stratoavis - Area Conquests
+            50, # Malboro Menace
+            51, # Kottos
+            52, # Coeurlregina
+            53, # Jormungand
+            54, # Cactuar King
+            55, # Espada
+            56, # Abyss Worm
+            57, # Chimerageist
+            58, # Don Tonberry
+            59, # Catoblepas
+            60, # Abaddon
+            61, # Vorban
+            62, # Fenrir - Species Conquests
+            63, # Ornitholestes
+            64, # Pteryx
+            65, # Hornet
+            66, # Vidatu
+            67, # One-Eye
+            68, # Jumbo Flan
+            69, # Nega Elemental
+            70, # Tanket
+            71, # Fafnir
+            72, # Sleep Sprout
+            73, # Bomb King
+            74, # Juggernaut
+            75, # Ironclad
+            76, # Earth Eater - Original Creations
+            77, # Greater Sphere
+            78, # Catastrophe
+            79, # Th'uban
+            80, # Neslug
+            81, # Ultima Buster
+            82, # Shinryu
+            83, # Nemesis
+        ]
+        match world.options.arena_bosses.value:
+            case world.options.arena_bosses.option_area:
+                arena_boss_location_ids = arena_boss_location_ids[13:]
+            case world.options.arena_bosses.option_species:
+                arena_boss_location_ids = arena_boss_location_ids[27:]       
+        for id in arena_boss_location_ids:
+            location_name = world.location_id_to_name[id | BossOffset]
+            world.options.exclude_locations.value.add(location_name)
 
+    if not world.options.super_bosses.value:
+        super_boss_location_ids = [
+             2, # "Besaid: Dark Valefor"
+            19, # "Bikanel: Dark Ifrit"
+            13, # "Thunder Plains: Dark Ixion"
+            18, # "Lake Macalania: Dark Shiva"
+            38, # "Zanarkand: Dark Bahamut"
+            31, # "Cavern of the Stolen Fayth: Dark Yojimbo"
+            45, # "Mushroom Rock Road: Dark Mindy"
+            46, # "Mushroom Rock Road: Dark Sandy"
+            47, # "Mushroom Rock Road: Dark Cindy"
+            34, # "Gagazet (Outside): Dark Anima"
+            25, # "Airship: Penance"
+            44, # "Omega Ruins: Omega Weapon"
+        ]
+        for id in super_boss_location_ids:
+            location_name = world.location_id_to_name[id | BossOffset]
+            world.options.exclude_locations.value.add(location_name)
+        location_name = world.location_id_to_name[332 | TreasureOffset]
+        world.options.exclude_locations.value.add(location_name)
+        
+    
     final_region = world.get_region("Sin: Braska's Final Aeon")
     final_region.add_event("Sin: Braska's Final Aeon", "Victory", location_type=FFXLocation, item_type=FFXItem)
     final_aeon = world.get_location("Sin: Braska's Final Aeon")

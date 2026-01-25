@@ -118,15 +118,15 @@ class FFXWorld(World):
 
         self.multiworld.push_precollected(self.create_item(starting_region))
 
-        if self.options.capture_sanity.value == self.options.capture_sanity.option_early_arena_access:
+        if self.options.arena_access.value == self.options.arena_access.option_early:
             self.multiworld.early_items[self.player]["Region: Monster Arena"] = 1
-        elif self.options.capture_sanity.value == self.options.capture_sanity.option_always_arena_access:
+        elif self.options.arena_access.value == self.options.arena_access.option_always:
             self.multiworld.push_precollected(self.create_item("Region: Monster Arena"))
 
         for item in region_unlock_items:
             if item.itemName != starting_region:
                 required_items.append(item.itemName)
-        if self.options.capture_sanity.value == self.options.capture_sanity.option_always_arena_access:
+        if self.options.arena_access.value == self.options.arena_access.option_always:
             required_items.remove("Region: Monster Arena")
 
         starting_character = party_member_items[0]
@@ -186,7 +186,8 @@ class FFXWorld(World):
             "goal_requirement": self.options.goal_requirement.value,
             "required_party_members": self.options.required_party_members.value,
             "required_primers": self.options.required_primers.value,
-            "sphere_grid_randomization": self.options.sphere_grid_randomization.value,
+            # "sphere_grid_randomization": self.options.sphere_grid_randomization.value,
+            "sphere_grid_randomization": 0,
             "super_bosses": self.options.super_bosses.value,
             "mini_games": self.options.mini_games.value,
             "logic_difficulty": self.options.logic_difficulty.value,

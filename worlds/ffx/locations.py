@@ -123,7 +123,7 @@ FFXBossLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+BossOffs
     ("Airship: Defeat Sin Right Fin (Boss)",                   22, False),
     ("Airship: Defeat Sin Core (Boss)",                        23, False),
     ("Airship: Defeat Overdrive Sin (Boss)",                   24, False),
-    ("Airship: Defeat Penance (Superboss)",                    25, False),
+    # ("Airship: Defeat Penance (Superboss)",                    25, False),
     ("Bevelle: Defeat Isaaru (Boss)",                          26, False),
     ("Bevelle: Defeat Evrae Altana (Boss)",                    27, False),
     ("Bevelle: Defeat Seymour Natus (Boss)",                   28, False),

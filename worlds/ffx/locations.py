@@ -182,7 +182,6 @@ FFXBossLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+BossOffs
     ("Monster Arena: Defeat Ultima Buster (Superboss)",        81, False),
     ("Monster Arena: Defeat Shinryu (Superboss)",              82, False),
     ("Monster Arena: Defeat Nemesis (Superboss)",              83, False),
-    ("Bikanel: Defeat Zu (Boss)",                              84, False),
 ]]
 
 FFXOverdriveLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+OverdriveOffset, *location) for location in [

@@ -188,11 +188,13 @@ class FFXWorld(World):
             "required_primers": self.options.required_primers.value,
             # "sphere_grid_randomization": self.options.sphere_grid_randomization.value,
             "sphere_grid_randomization": 0,
-            "super_bosses": self.options.super_bosses.value,
             "mini_games": self.options.mini_games.value,
-            "logic_difficulty": self.options.logic_difficulty.value,
             "recruit_sanity": self.options.recruit_sanity.value,
-            "capture_sanity": self.options.capture_sanity.value
+            "capture_sanity": self.options.capture_sanity.value,
+            "creation_rewards": self.options.creation_rewards.value,
+            "arena_bosses": self.options.arena_bosses.value,
+            "super_bosses": self.options.super_bosses.value,
+            "logic_difficulty": self.options.logic_difficulty.value,            
         }
         return slot_data
 

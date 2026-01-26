@@ -473,7 +473,7 @@ def create_regions(world: FFXWorld, player) -> None:
             46, # "Mushroom Rock Road: Dark Sandy"
             47, # "Mushroom Rock Road: Dark Cindy"
             34, # "Gagazet (Outside): Dark Anima"
-            25, # "Airship: Penance"
+          # 25, # "Airship: Penance"
             44, # "Omega Ruins: Omega Weapon"
         ]
         for id in super_boss_location_ids:

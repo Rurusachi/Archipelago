@@ -733,7 +733,7 @@ FFXTreasureLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+Trea
     ("Home: Living Quarters, East of Main Corridor - Quiz (Chest)",                                 395, False),  # Item: 1x Skill Sphere [204Dh]
     ("Home: Living Quarters, East of Main Corridor - Password (Chest)",                             396, False),  # Item: 1x Special Sphere [204Ch]
     ("Home: Living Quarters, South of Main Corridor - Vocabulary Test (Chest)",                     397, False),  # Item: 1x Friend Sphere [2061h]
-    ("Home: Living Quarters, South of Main Corridorh - What do I contain? (Chest)",                 398, False),  # Item: 1x Elixir [2008h]
+    ("Home: Living Quarters, South of Main Corridor - What do I contain? (Chest)",                  398, False),  # Item: 1x Elixir [2008h]
     #("Treasure 399 (Trashed)",                                                                     399, False),  # Item: 1x Hi-Potion [2001h] 
     #("Treasure 400 (Trashed)",                                                                     400, False),  # Item: 1x Mega-Potion [2003h] 
     #("Treasure 401 (Trashed)",                                                                     401, False),  # Item: 1x Soft [200Bh] 

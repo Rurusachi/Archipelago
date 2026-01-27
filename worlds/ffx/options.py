@@ -86,16 +86,6 @@ class RecruitSanity(Toggle):
     option_on = 1
 
 
-# class SphereGridRandomization(Choice):
-#     """
-#     Sets whether the Sphere Grid is randomized.
-#     Default is off.
-#     """
-#     display_name = "Sphere Grid Randomization"
-#     default = 0
-#     option_off = 0
-
-
 class CaptureSanity(Toggle):
     """
     Sets whether Fiend Captures are included or not. If off they will only have filler items.
@@ -195,6 +185,17 @@ class LogicDifficulty(Range):
     range_start = 1
     range_end = 10
 
+
+class SphereGridRandomization(Choice):
+    """
+    Sets whether the Sphere Grid is randomized.
+    Default is off.
+    """
+    display_name = "Sphere Grid Randomization"
+    default = 0
+    option_off = 0
+
+
 @dataclass
 class FFXOptions(PerGameCommonOptions):
     goal_requirement: GoalRequirement
@@ -208,6 +209,6 @@ class FFXOptions(PerGameCommonOptions):
     creation_rewards: CreationRewards
     arena_bosses: MonsterArenaBosses
     super_bosses: SuperBosses
-    # sphere_grid_randomization: SphereGridRandomization
+    sphere_grid_randomization: SphereGridRandomization
     trap_percentage: TrapPercentage
     logic_difficulty: LogicDifficulty

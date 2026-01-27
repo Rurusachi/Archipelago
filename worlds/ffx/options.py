@@ -57,7 +57,15 @@ class APMultiplier(Range):
 
 class MiniGames(Toggle):
     """
-    Sets whether minigames (blitzball, lightning dodging, etc.) are included or not. If off they will only have filler items.
+    Sets whether minigames are included or not. If off they will only have filler items.
+    Minigames include;
+    - Blitzball (World Champion & Jupiter Sigil)
+    - Luca Story Blitzball win
+    - Macalania Butterflies (Saturn Sigil)
+    - Thunder Plains Lightning Dodging (including Venus Sigil)
+    - Bikanel Cactuar Village (Mercury Sigil)
+    - Calm Lands Chocobo Training (Dodger, Hyper Dodger, Catcher, Caladbolg & Sun Sigil)
+    - Remiem Temple Chocobo Race (Cloudy Mirror)
     Default is off.
     """
     display_name = "Minigames"
@@ -69,6 +77,7 @@ class MiniGames(Toggle):
 class RecruitSanity(Toggle):
     """
     Sets whether Blitzball Free Agents are included or not. If off they will only have filler items.
+    There are 24 Free Agents throughout Spira
     Default is off.
     """
     display_name = "Recruit Sanity"
@@ -90,6 +99,7 @@ class RecruitSanity(Toggle):
 class CaptureSanity(Toggle):
     """
     Sets whether Fiend Captures are included or not. If off they will only have filler items.
+    A check is included for the first capture of each of the 102 unique capturable fiends
     Default is off.
     """
     display_name = "Capture Sanity"

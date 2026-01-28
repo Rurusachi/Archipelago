@@ -185,8 +185,8 @@ def create_regions(world: FFXWorld, player) -> None:
     74:  "Omega Ruins: Pre-Ultima Weapon",                                  # Master Coeurl
     75:  "Captures: City of Dying Dreams & Omega Ruins",                    # Demonolith
     76:  "Thunder Plains 1st visit",                                        # Iron Giant
-    77:  "Captures: Inside Sin & Omega Ruins",                              # Gemini Sword
-    78:  "Captures: Inside Sin & Omega Ruins",                              # Gemini Club
+    77:  "Sin: Pre-Seymour Omnis",                                          # Gemini Sword
+    78:  "Sin: Pre-Seymour Omnis",                                          # Gemini Club
     79:  "Djose 1st visit",                                                 # Basilisk
     80:  "Calm Lands 1st visit: Pre-Defender X",                            # Anacondaur
     81:  "Captures: Inside Sin & Omega Ruins",                              # Adamantoise

@@ -14,6 +14,8 @@ else:
     FFXWorld = object
 
 world_battle_levels: dict[str, int] = {
+"Monster Arena":               0,
+"Guadosalam":                  0,
 "Baaj Temple":                 1,
 "Besaid":                      2,
 "Kilika":                      3,
@@ -22,18 +24,16 @@ world_battle_levels: dict[str, int] = {
 "Mushroom Rock Road":          6,
 "Djose":                       7,
 "Moonflow":                    8,
-"Guadosalam":                  0,
 "Thunder Plains":              9,
 "Macalania":                  10,
 "Bikanel":                    11,
+"Airship":                    12,
 "Bevelle":                    12,
 "Calm Lands":                 13,
-"Monster Arena":               0,
 "Cavern of the Stolen Fayth": 13,
 "Mt. Gagazet":                14,
 "Zanarkand Ruins":            15,
 "Sin":                        16,
-"Airship":                    12,
 "Omega Ruins":                17,
 }
 

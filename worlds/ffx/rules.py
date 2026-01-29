@@ -72,15 +72,13 @@ def create_region_access_rule(world: FFXWorld, region_name: str):
         appropriate_level_regions = [other_region for other_region, other_level in world_battle_levels.items()
                                      if  other_region != region_name 
                                      and region_level > other_level >= region_level - world.options.logic_difficulty.value
-                                     and other_region != "Monster Arena"
                                     ]
 
         return lambda state: state.has(f"Region: {region_name}", world.player) and any([state.can_reach_region(region_to_first_visit[other_region], world.player) for other_region in appropriate_level_regions])
 
 def create_level_rule(world: FFXWorld, level: int):
     appropriate_level_regions = [other_region for other_region, other_level in world_battle_levels.items() if
-                                 level > other_level >= level - world.options.logic_difficulty.value and other_region != "Monster Arena"
-                                 ]
+                                 level > other_level >= level - world.options.logic_difficulty.value]
 
     return lambda state: any([state.can_reach_region(region_to_first_visit[other_region], world.player) for other_region in appropriate_level_regions])
 
@@ -126,7 +124,7 @@ def create_min_summon_rule(world: FFXWorld, num_aeons: int) -> CollectionRule:
     return lambda state: state.has(f"Party Member: Yuna", world.player) and state.has_from_list_unique([f"Party Member: {name}" for name in aeon_names], world.player, num_aeons)
 
 def create_ranged_rule(world: FFXWorld) -> CollectionRule:
-    return lambda state: (state.has_from_list_unique([f"Party Member: {name}" for name in ["Wakka", "Lulu", "Kimahri"]], world.player, 1) or 
+    return lambda state: (state.has_from_list_unique([f"Party Member: {name}" for name in ["Wakka", "Lulu"]], world.player, 1) or 
                             (state.has(f"Party Member: Yuna", world.player) and state.has_from_list_unique([f"Party Member: {name}" for name in aeon_names[:6] + aeon_names[7:]], world.player, 1))
                          )
 

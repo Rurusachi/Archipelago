@@ -237,7 +237,7 @@ FFXOtherLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+OtherOf
     ("S.S. Liki: Power Room & Bikanel: Oasis (Primer)",                             3, False), # Al Bhed Primer III
     ("Kilika: Tavern - On Counter (Primer)",                                        4, False), # Al Bhed Primer IV
     ("S.S. Winno: Bridge & Bikanel: Desert, East (Primer)",                         5, False), # Al Bhed Primer V
-    ("Luca: Stadium Basment B - Behind Isken (Primer)",                             6, False), # Al Bhed Primer VI
+    ("Luca: Stadium Basement B - Behind Isken (Primer)",                             6, False), # Al Bhed Primer VI
     ("Luca: Theater Reception - Bottom of Stairs, Left Side (Primer)",              7, False), # Al Bhed Primer VII
     ("Mi'ihen: Agency - Exit After Resting (Event) (2)",                            8, False), # Al Bhed Primer VIII
     ("Mi'ihen: Newroad, North - Peak of South Bend Before Shelinda (Primer)",       9, False), # Al Bhed Primer IX

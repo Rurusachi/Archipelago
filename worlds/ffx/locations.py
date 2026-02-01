@@ -434,7 +434,7 @@ FFXTreasureLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+Trea
     ("Mi'ihen: North End - Donate 10000 (NPC)",                                                      96, False),  # Gear: buki_get #29 [1Dh] { Yuna [01h], Armor {SOS Shell [8059h], SOS Protect [805Ah]} }
     ("Mi'ihen: Agency - Exit After Resting (Event) (1)",                                             97, False),  # Item: 2x Mega-Potion [2003h]
     ("MRR: Aftermath - Under Overhang, West Side (Chest)",                                           98, False),  # Item: 1x Hi-Potion [2001h]
-    ("MRR: Second Visit - Up Elevator in West Alcove, North Side (Event)",                           99, False),  # Gear: buki_get #30 [1Eh] { Auron [02h], Weapon Formula=Celestial Auron [13h] {No AP [8014h], Empty, Empty, Empty} }
+    ("MRR: Up Elevator in West Alcove, North Side (Event)",                                          99, False),  # Gear: buki_get #30 [1Eh] { Auron [02h], Weapon Formula=Celestial Auron [13h] {No AP [8014h], Empty, Empty, Empty} }
     ("Bevelle: Underwater After Evrae Altana, Right Side After First Turn (Chest)",                 100, False),  # Gear: buki_get #31 [1Fh] { Tidus [00h], Weapon {Counterattack [8003h]} }
     ("Bevelle: Underwater After Evrae Altana, Right Side Before First Turn (Chest)",                101, False),  # Gear: buki_get #32 [20h] { Wakka [04h], Weapon {Evade & Counter [8004h]} }
     ("Bevelle: Cloister - Left of Exit, 2 Bevelle Spheres Required (Chest)",                        102, False),  # Gear: buki_get #33 [21h] { Kimahri [03h], Weapon {Strength +3% [8062h], Strength +5% [8063h], Strength +10% [8064h]} }
@@ -607,7 +607,7 @@ FFXTreasureLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+Trea
     ("Mi'ihen: Oldroad, South - South End (Chest)",                                                 269, False),  # Key Item: Mars Crest [A027h]
     ("Gagazet: Prominence - Hidden Between Left Pillars (Chest)",                                   270, False),  # Key Item: Saturn Crest [A02Ah]
     ("Luca: Stadium Locker Room - Inside Back Right Locker (Event)",                                271, False),  # Key Item: Jupiter Crest [A02Ch]
-    ("Guadosalam: Second Visit, Farplane - West Side (Chest)",                                      272, False),  # Key Item: Venus Crest [A02Eh]
+    ("Guadosalam: Farplane - West Side (Chest)",                                                    272, False),  # Key Item: Venus Crest [A02Eh]
     ("Bikanel: Desert, West - First Western Alcove, Sinkhole (Chest)",                              273, False),  # Key Item: Mercury Crest [A030h]
     ("Calm Lands: Catcher chocobo Minigame, Time Under 0.00 (Event)",                               274, False),  # Key Item: Sun Sigil [A024h]
     ("Calm Lands: Remiem Temple - Defeat All Aeons and Send Belgemine (Event)",                     275, False),  # Key Item: Moon Sigil [A026h]

@@ -447,8 +447,6 @@ def set_rules(world: FFXWorld) -> None:
         188,
         #214, # Airship password location
     ]
-    if not world.options.capture_sanity.value:
-        celestial_weapon_locations.remove(113)
     for location_id in celestial_weapon_locations:
         add_rule(world.get_location(world.location_id_to_name[location_id | TreasureOffset]),
                  lambda state: state.has("Celestial Mirror", world.player))

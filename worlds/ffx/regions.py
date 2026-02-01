@@ -368,7 +368,6 @@ def create_regions(world: FFXWorld, player) -> None:
 
     if not world.options.creation_rewards.value == world.options.creation_rewards.option_original:
         arena_reward_location_ids = [
-            113, # Capture Every Calm Lands Fiend, Nirvana (Chest)
             424, # Area Conquest - Capture 1 of Each Besaid Fiend (NPC)
             425, # Area Conquest - Capture 1 of Each Kilika Fiend (NPC)
             426, # Area Conquest - Capture 1 of Each Mi'ihen Highraod Fiend (NPC)

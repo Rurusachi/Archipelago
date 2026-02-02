@@ -15,11 +15,15 @@ def setup_options_from_slot_data(world: FFXWorld) -> None:
             world.options.required_party_members.value    = world.passthrough["required_party_members"]
             world.options.required_primers.value          = world.passthrough["required_primers"]
             world.options.sphere_grid_randomization.value = world.passthrough["sphere_grid_randomization"]
-            world.options.super_bosses.value              = world.passthrough["super_bosses"]
             world.options.mini_games.value                = world.passthrough["mini_games"]
-            world.options.logic_difficulty.value          = world.passthrough["logic_difficulty"]
             world.options.recruit_sanity.value            = world.passthrough["recruit_sanity"]
             world.options.capture_sanity.value            = world.passthrough["capture_sanity"]
+            world.options.creation_rewards.value          = world.passthrough["creation_rewards"]
+            world.options.arena_bosses.value              = world.passthrough["arena_bosses"]  
+            world.options.super_bosses.value              = world.passthrough["super_bosses"]
+            world.options.logic_difficulty.value          = world.passthrough["logic_difficulty"]
+            
+            
 
         else:
             world.using_ut = False

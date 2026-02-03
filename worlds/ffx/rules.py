@@ -298,8 +298,9 @@ def set_rules(world: FFXWorld) -> None:
     ## Captures
 
     # Fiend Captures
+    # If AlwaysCapture, Arena region not required for Fiend Capture checks, only rewards & bosses
     for location_id in range(104):
-        if (not location_id == 43 and not location_id == 59):
+        if (not location_id == 43 and not location_id == 59 and not world.options.always_capture.value):
             location = world.get_location(world.location_id_to_name[location_id | CaptureOffset])
             add_rule(location, lambda state: state.can_reach_region("Monster Arena", world.player))
 

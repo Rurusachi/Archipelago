@@ -46,11 +46,13 @@ def options_validation(world: FFXWorld) -> None:
 
 def generate_output(world: FFXWorld, player: int, output_directory: str) -> None:
     miscellaneous_data = {
-        "SeedId": world.multiworld.get_out_file_name_base(world.player),
-        "GoalRequirement": world.options.goal_requirement.value,
+        "SeedId":               world.multiworld.get_out_file_name_base(world.player),
+        "GoalRequirement":      world.options.goal_requirement.value,
         "RequiredPartyMembers": world.options.required_party_members.value,
-        "RequiredPrimers": world.options.required_primers.value,
-        "APMultiplier": world.options.ap_multiplier.value,
+        "RequiredPrimers":      world.options.required_primers.value,
+        "APMultiplier":         world.options.ap_multiplier.value,
+        "AlwaysSensor":         world.options.always_sensor.value,
+        "AlwaysCapture":        world.options.always_capture.value
     }
 
     locations: dict[str, list[dict[str, int | str] | int] | str] = {x: list() for x in location_types.values()}

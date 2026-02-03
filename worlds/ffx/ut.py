@@ -21,6 +21,7 @@ def setup_options_from_slot_data(world: FFXWorld) -> None:
             world.options.creation_rewards.value          = world.passthrough["creation_rewards"]
             world.options.arena_bosses.value              = world.passthrough["arena_bosses"]  
             world.options.super_bosses.value              = world.passthrough["super_bosses"]
+            world.options.always_capture.value            = world.passthrough["always_capture"]
             world.options.logic_difficulty.value          = world.passthrough["logic_difficulty"]
             
             

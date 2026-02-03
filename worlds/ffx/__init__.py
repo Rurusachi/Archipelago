@@ -192,6 +192,7 @@ class FFXWorld(World):
             "creation_rewards": self.options.creation_rewards.value,
             "arena_bosses": self.options.arena_bosses.value,
             "super_bosses": self.options.super_bosses.value,
+            "always_capture": self.options.always_capture.value,
             "logic_difficulty": self.options.logic_difficulty.value,            
         }
         return slot_data

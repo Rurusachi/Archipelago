@@ -186,6 +186,28 @@ class LogicDifficulty(Range):
     range_end = 10
 
 
+class AlwaysSensor(Toggle):
+    """
+    Sets whether to always have the Sensor ability active, regardless of equipped weapon abilities
+    Default is off.
+    """
+    display_name = "Always Sensor"
+    default = 0
+    option_off = 0
+    option_on = 1
+
+
+class AlwaysCapture(Toggle):
+    """
+    Sets whether to always have the Capture ability active, regardless of equipped weapon abilities
+    Default is off.
+    """
+    display_name = "Always Capture"
+    default = 0
+    option_off = 0
+    option_on = 1
+
+
 class SphereGridRandomization(Choice):
     """
     Sets whether the Sphere Grid is randomized.
@@ -209,6 +231,8 @@ class FFXOptions(PerGameCommonOptions):
     creation_rewards: CreationRewards
     arena_bosses: MonsterArenaBosses
     super_bosses: SuperBosses
-    sphere_grid_randomization: SphereGridRandomization
     trap_percentage: TrapPercentage
     logic_difficulty: LogicDifficulty
+    always_sensor: AlwaysSensor
+    always_capture: AlwaysCapture
+    sphere_grid_randomization: SphereGridRandomization

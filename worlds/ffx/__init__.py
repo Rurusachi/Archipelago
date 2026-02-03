@@ -3,7 +3,7 @@ Archipelago World definition for Final Fantasy X
 """
 
 from typing import ClassVar, Any, Optional
-from random import Random
+from random import Random, shuffle
 from settings import Group, FilePath
 
 from BaseClasses import Tutorial, Item, ItemClassification, LocationProgressType
@@ -128,13 +128,20 @@ class FFXWorld(World):
         if self.options.arena_access.value == self.options.arena_access.option_always:
             required_items.remove("Region: Monster Arena")
 
-        starting_character = party_member_items[0]
 
+        starting_character = party_member_items[0]
         self.multiworld.push_precollected(self.create_item(starting_character.itemName))
         for party_member in party_member_items:
             if party_member == starting_character:
                 continue
             required_items.append(party_member.itemName)
+        
+        if self.options.early_party_members.value > 0:
+            partyMembers = party_member_items[1:8]
+            shuffle(partyMembers)
+            for i in range(self.options.early_party_members.value):
+                self.multiworld.early_items[self.player][partyMembers.pop(0).itemName] = 1
+
 
         unfilled_locations = len(self.multiworld.get_unfilled_locations(self.player))
 

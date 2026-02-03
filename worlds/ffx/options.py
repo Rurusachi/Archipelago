@@ -164,17 +164,6 @@ class SuperBosses(Toggle):
     option_on = 1
 
 
-class TrapPercentage(Range):
-    """
-    Sets the percentage of non-progression items that will be traps.
-    Default is 0.
-    """
-    display_name = "Traps Enabled"
-    default = 0
-    range_start = 0
-    range_end = 100
-
-
 class LogicDifficulty(Range):
     """
     Sets how strict the logic is for region access. Higher is harder / less restrictive.
@@ -184,6 +173,19 @@ class LogicDifficulty(Range):
     default = 3
     range_start = 1
     range_end = 10
+
+
+class EarlyPartyMembers(Range):
+    """
+    Sets how many additional party members will be placed globally in sphere 1.
+    This will allow players to have access to more characters earlier.
+    This value does **NOT** include the starting character
+    Default is 3.
+    """
+    display_name = "Early Party Members"
+    default = 0
+    range_start = 0
+    range_end = 7
 
 
 class AlwaysSensor(Toggle):
@@ -206,6 +208,17 @@ class AlwaysCapture(Toggle):
     default = 0
     option_off = 0
     option_on = 1
+
+
+class TrapPercentage(Range):
+    """
+    Sets the percentage of non-progression items that will be traps.
+    Default is 0.
+    """
+    display_name = "Traps Enabled"
+    default = 0
+    range_start = 0
+    range_end = 100
 
 
 class SphereGridRandomization(Choice):
@@ -233,6 +246,7 @@ class FFXOptions(PerGameCommonOptions):
     super_bosses: SuperBosses
     trap_percentage: TrapPercentage
     logic_difficulty: LogicDifficulty
+    early_party_members: EarlyPartyMembers
     always_sensor: AlwaysSensor
     always_capture: AlwaysCapture
     sphere_grid_randomization: SphereGridRandomization

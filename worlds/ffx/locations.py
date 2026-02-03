@@ -301,7 +301,7 @@ FFXPartyMemberLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+P
     ("Besaid: Name Valefor (Event)",                               8, False), # Party Member: Valefor
     ("Kilika: Name Ifrit (Event)",                                 9, False), # Party Member: Ifrit
     ("Djose: Name Ixion (Event)",                                 10, False), # Party Member: Ixion
-    ("Lake Macalaina: Fight Seymour (Boss)",                      11, False), # Party Member Shiva
+    ("Lake Macalaina: Fight Seymour (Boss)",                      11, False), # Party Member: Shiva
     ("Bevelle: Name Bahamut (Event)",                             12, False), # Party Member: Bahamut
     ("Baaj: Release Anima (Event)",                               13, False), # Party Member: Anima
     ("CotSF: Hire Yojimbo (Event)",                               14, False), # Party Member: Yojimbo
@@ -517,7 +517,7 @@ FFXTreasureLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+Trea
     ("Thunder Plains: South - West Side, South of Save Sphere (Chest)",                             178, False),  # Item: 2x Phoenix Down [2006h]
     ("Thunder Plains: South - West Side, North of Save Sphere (Chest)",                             179, False),  # Item: 2x Hi-Potion [2001h]
     ("Thunder Plains: South - West Side, Behind First Cactuar Statue (Chest)",                      180, False),  # Gil: 5000 [32h]
-    ("Thunder Plains: East Side, Alcove With Second Cactuar Statue (Chest)",                        181, False),  # Gear: buki_get #55 [37h] { Wakka [04h], Weapon {Waterstrike [802Ah], Empty} }
+    ("Thunder Plains: South - East Side, Alcove With Second Cactuar Statue (Chest)",                        181, False),  # Gear: buki_get #55 [37h] { Wakka [04h], Weapon {Waterstrike [802Ah], Empty} }
     ("Thunder Plains: North - East Side, Near Southeast Exit (Chest)",                              182, False),  # Item: 1x X-Potion [2002h]
     ("Thunder Plains: North - West Side, Behind Sheltered Lightning Rod (Chest)",                   183, False),  # Item: 1x Ether [2004h]
     ("Thunder Plains: North - West Side, Near North Exit (Chest)",                                  184, False),  # Item: 1x Remedy [200Fh]
@@ -536,7 +536,7 @@ FFXTreasureLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+Trea
     ("Moonflow: South Bank Road - West Corner as Path Bends East (Chest)",                          197, False),  # Item: 1x X-Potion [2002h]
     ("Moonflow: South Wharf - Near O'aka XXIII (Chest)",                                            198, False),  # Item: 2x Phoenix Down [2006h]
     ("Moonflow: South Wharf - Behind Lulu (Chest)",                                                 199, False),  # Gil: 5000 [32h]
-    ("Moonflow: North Wharf: Near Bench (Chest)",                                                   200, False),  # Item: 1x Ether [2004h]
+    ("Moonflow: North Wharf - Near Bench (Chest)",                                                   200, False),  # Item: 1x Ether [2004h]
     ("Moonflow: North Bank - East Side, Right After the Wooden Bridge (Chest)",                     201, False),  # Item: 4x Antidote [200Ah]
     ("Moonflow: North Bank Road - West Side, Before Guadosalam (Chest)",                            202, False),  # Item: 1x Mega-Potion [2003h]
     #("Baaj Temple: Grenades from Rikku",                                                           203, False),  # Item: 2x Grenade [2023h]

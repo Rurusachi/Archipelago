@@ -27,9 +27,21 @@ class APFFXFile(APPatch):
 
 def options_validation(world: FFXWorld) -> None:
     if world.options.goal_requirement.value == world.options.goal_requirement.option_nemesis:
-        if not world.options.super_bosses.value or not world.options.capture_sanity.value:
+        if not world.options.capture_sanity.value:
             raise OptionError(f"[Final Fantasy X - '{world.player_name}'] "
-                "Goal Requirement: Nemesis cannot be chosen if Capture Sanity or Super Bosses is disabled.")
+                "Goal Requirement: Nemesis cannot be chosen if Capture Sanity is disabled.")
+        elif not world.options.creation_rewards.value == world.options.creation_rewards.option_original:
+            raise OptionError(f"[Final Fantasy X - '{world.player_name}'] "
+                "Goal Requirement: Nemesis cannot be chosen if Creation Rewards is not set to Original Creations.")
+        elif not world.options.arena_bosses.value == world.options.arena_bosses.option_original:
+            raise OptionError(f"[Final Fantasy X - '{world.player_name}'] "
+                "Goal Requirement: Nemesis cannot be chosen if Arena Bosses is not set to Original Creations.")
+    elif world.options.creation_rewards.value and not world.options.capture_sanity.value:
+        raise OptionError(f"[Final Fantasy X - '{world.player_name}'] "
+                "Creation Rewards cannot be enabled if Capture Sanity is disabled.")
+    elif world.options.arena_bosses.value and not world.options.capture_sanity.value:
+        raise OptionError(f"[Final Fantasy X - '{world.player_name}'] "
+                "Arena Bosses cannot be enabled if Capture Sanity is disabled.")
 
 
 def generate_output(world: FFXWorld, player: int, output_directory: str) -> None:

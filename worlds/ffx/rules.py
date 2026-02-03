@@ -14,6 +14,8 @@ else:
     FFXWorld = object
 
 world_battle_levels: dict[str, int] = {
+"Monster Arena":               0,
+"Guadosalam":                  0,
 "Baaj Temple":                 1,
 "Besaid":                      2,
 "Kilika":                      3,
@@ -22,17 +24,16 @@ world_battle_levels: dict[str, int] = {
 "Mushroom Rock Road":          6,
 "Djose":                       7,
 "Moonflow":                    8,
-"Guadosalam":                  0,
 "Thunder Plains":              9,
 "Macalania":                  10,
 "Bikanel":                    11,
+"Airship":                    12,
 "Bevelle":                    12,
 "Calm Lands":                 13,
 "Cavern of the Stolen Fayth": 13,
 "Mt. Gagazet":                14,
 "Zanarkand Ruins":            15,
 "Sin":                        16,
-"Airship":                    12,
 "Omega Ruins":                17,
 }
 
@@ -51,6 +52,7 @@ region_to_first_visit: dict[str, str] = {
 "Bikanel":                    "Bikanel 1st visit: Pre-Zu",
 "Bevelle":                    "Bevelle 1st visit: Pre-Isaaru",
 "Calm Lands":                 "Calm Lands 1st visit: Pre-Defender X",
+"Monster Arena":              "Monster Arena",  
 "Cavern of the Stolen Fayth": "Cavern of the Stolen Fayth 1st visit",
 "Mt. Gagazet":                "Mt. Gagazet 1st visit: Pre-Biran and Yenke",
 "Zanarkand Ruins":            "Zanarkand Ruins 1st visit: Pre-Spectral Keeper",
@@ -67,8 +69,10 @@ def create_region_access_rule(world: FFXWorld, region_name: str):
     if region_level < 5:
         return lambda state: state.has(f"Region: {region_name}", world.player)
     else:
-        appropriate_level_regions = [other_region for other_region, other_level in world_battle_levels.items() if
-                                     other_region != region_name and region_level > other_level >= region_level - world.options.logic_difficulty.value]
+        appropriate_level_regions = [other_region for other_region, other_level in world_battle_levels.items()
+                                     if  other_region != region_name 
+                                     and region_level > other_level >= region_level - world.options.logic_difficulty.value
+                                    ]
 
         return lambda state: state.has(f"Region: {region_name}", world.player) and any([state.can_reach_region(region_to_first_visit[other_region], world.player) for other_region in appropriate_level_regions])
 
@@ -167,34 +171,34 @@ ruleDict: dict[str, Callable[[FFXWorld], CollectionRule]] = {
     "MRR: Defeat Dark Sandy (Superboss)":                   lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
     "MRR: Defeat Dark Cindy (Superboss)":                   lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
 
-    "Monster Arena: Defeat Stratoavis (Superboss)":         lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Monster Arena: Defeat Malboro Menace (Superboss)":     lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Monster Arena: Defeat Kottos (Superboss)":             lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Monster Arena: Defeat Coeurlregina (Superboss)":       lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Monster Arena: Defeat Jormungand (Superboss)":         lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Monster Arena: Defeat Cactuar King (Superboss)":       lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Monster Arena: Defeat Espada (Superboss)":             lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Monster Arena: Defeat Abyss Worm (Superboss)":         lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Monster Arena: Defeat Chimerageist (Superboss)":       lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Monster Arena: Defeat Don Tonberry (Superboss)":       lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Monster Arena: Defeat Catoblepas (Superboss)":         lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Monster Arena: Defeat Abaddon (Superboss)":            lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Monster Arena: Defeat Vorban (Superboss)":             lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Defeat Stratoavis (Arena Boss)":        lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Defeat Malboro Menace (Arena Boss)":    lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Defeat Kottos (Arena Boss)":            lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Defeat Coeurlregina (Arena Boss)":      lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Defeat Jormungand (Arena Boss)":        lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Defeat Cactuar King (Arena Boss)":      lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Defeat Espada (Arena Boss)":            lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Defeat Abyss Worm (Arena Boss)":        lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Defeat Chimerageist (Arena Boss)":      lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Defeat Don Tonberry (Arena Boss)":      lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Defeat Catoblepas (Arena Boss)":        lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Defeat Abaddon (Arena Boss)":           lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Defeat Vorban (Arena Boss)":            lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
 
-    "Monster Arena: Defeat Fenrir (Superboss)":             lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Monster Arena: Defeat Ornitholestes (Superboss)":      lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Monster Arena: Defeat Pteryx (Superboss)":             lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Monster Arena: Defeat Hornet (Superboss)":             lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Monster Arena: Defeat Vidatu (Superboss)":             lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Monster Arena: Defeat One-Eye (Superboss)":            lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Monster Arena: Defeat Jumbo Flan (Superboss)":         lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Monster Arena: Defeat Nega Elemental (Superboss)":     lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Monster Arena: Defeat Tanket (Superboss)":             lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Monster Arena: Defeat Fafnir (Superboss)":             lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Monster Arena: Defeat Sleep Sprout (Superboss)":       lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Monster Arena: Defeat Bomb King (Superboss)":          lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Monster Arena: Defeat Juggernaut (Superboss)":         lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
-    "Monster Arena: Defeat Ironclad (Superboss)":           lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Defeat Fenrir (Arena Boss)":            lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Defeat Ornitholestes (Arena Boss)":     lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Defeat Pteryx (Arena Boss)":            lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Defeat Hornet (Arena Boss)":            lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Defeat Vidatu (Arena Boss)":            lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Defeat One-Eye (Arena Boss)":           lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Defeat Jumbo Flan (Arena Boss)":        lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Defeat Nega Elemental (Arena Boss)":    lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Defeat Tanket (Arena Boss)":            lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Defeat Fafnir (Arena Boss)":            lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Defeat Sleep Sprout (Arena Boss)":      lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Defeat Bomb King (Arena Boss)":         lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Defeat Juggernaut (Arena Boss)":        lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
+    "Monster Arena: Defeat Ironclad (Arena Boss)":          lambda world: lambda state: create_level_rule(world, 17)(state) and create_min_party_rule   (world, 3)(state),
     
     "Monster Arena: Defeat Earth Eater (Superboss)":        lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
     "Monster Arena: Defeat Greater Sphere (Superboss)":     lambda world: lambda state: create_level_rule(world, 18)(state) and create_min_party_rule   (world, 3)(state),
@@ -219,6 +223,7 @@ ruleDict: dict[str, Callable[[FFXWorld], CollectionRule]] = {
     "Bikanel":                    lambda world: create_region_access_rule(world, "Bikanel"),
     "Bevelle":                    lambda world: create_region_access_rule(world, "Bevelle"),
     "Calm Lands":                 lambda world: create_region_access_rule(world, "Calm Lands"),
+    "Monster Arena":              lambda world: create_region_access_rule(world, "Monster Arena"),
     "Cavern of the Stolen Fayth": lambda world: create_region_access_rule(world, "Cavern of the Stolen Fayth"),
     "Mt. Gagazet":                lambda world: create_region_access_rule(world, "Mt. Gagazet"),
     "Zanarkand Ruins":            lambda world: create_region_access_rule(world, "Zanarkand Ruins"),
@@ -291,67 +296,69 @@ def set_rules(world: FFXWorld) -> None:
 
 
     ## Captures
+
     # Fiend Captures
     for location_id in range(104):
         if (not location_id == 43 and not location_id == 59):
-            add_rule(world.get_location(world.location_id_to_name[location_id | CaptureOffset]), 
-                lambda state: state.can_reach_region("Monster Arena", world.player)
-            )
+            location = world.get_location(world.location_id_to_name[location_id | CaptureOffset])
+            add_rule(location, lambda state: state.can_reach_region("Monster Arena", world.player))
 
 
     ## Capture Rewards
     # Area Conquest
     area_conquest = [
-        (424, 49, ("Besaid Island 1st visit",                             )),  # Stratoavis
-        (425, 50, ("Kilika 1st visit: Pre-Geneaux",                       )),  # Malboro Menace
-        (426, 51, ("Mi'ihen Highroad 1st visit: Post-Chocobo Eater",      )),  # Kottos
-        (427, 52, ("Mushroom Rock Road 1st visit: Pre-Sinspawn Gui",      )),  # Coeurlregina
-        (428, 53, ("Djose 1st visit", "Moonflow 1st visit: Pre-Extractor",)),  # Jormungand
-        (429, 54, ("Thunder Plains 1st visit",                            )),  # Cactuar King
-        (430, 55, ("Lake Macalania 1st visit: Pre-Crawler",               )),  # Espada
-        (431, 56, ("Bikanel 1st visit",                                   )),  # Abyss Worm
-        (432, 57, ("Calm Lands 1st visit: Pre-Defender X",                )),  # Chimerageist
-        (433, 58, ("Cavern of the Stolen Fayth 1st visit",                )),  # Don Tonberry
-        (434, 59, ("Mt. Gagazet 1st visit: Post-Seymour Flux",            )),  # Catoblepas
-        (435, 60, ("Sin: Post-Seymour Omnis",                             )),  # Abaddon
-        (436, 61, ("Omega Ruins: Pre-Ultima Weapon",                      )),  # Vorban
+        (424, 49, (8, 15, 27,                                     )),  # Stratoavis
+        (425, 50, (21, 30, 38, 61,                                )),  # Malboro Menace
+        (426, 51, (0, 9, 22, 34, 47, 50, 62, 85,                  )),  # Kottos
+        (427, 52, (5, 16, 23, 40, 51, 63, 91,                     )),  # Coeurlregina
+        (428, 53, (1, 10, 17, 28, 31, 79, 83                      )),  # Jormungand
+        (429, 54, (6, 24, 35, 52, 64, 76, 87, 89,                 )),  # Cactuar King
+        (430, 55, (2, 3, 11, 18, 25, 32, 36, 65, 71, 94,          )),  # Espada
+        (431, 56, (12, 29, 41, 42, 53, 88,                        )),  # Abyss Worm
+        (432, 57, (4, 13, 19, 33, 55, 57, 72, 73, 80,             )),  # Chimerageist
+        (433, 58, (7, 26, 44, 48, 54, 66, 68, 92, 98,             )),  # Don Tonberry
+        (434, 59, (14, 20, 37, 39, 45, 46, 49, 58, 60, 69, 84, 86,)),  # Catoblepas
+        (435, 60, (56, 70, 75, 77, 78, 81, 90, 93, 97,            )),  # Abaddon
+        (436, 61, (67, 74, 82, 95, 96, 99, 100, 101, 102, 103,    )),  # Vorban
     ]
-    for location_id, boss_id, regions in area_conquest:
+    for location_id, boss_id, fiend_ids in area_conquest:
         location = world.get_location(world.location_id_to_name[location_id | TreasureOffset])
         boss = world.get_location(world.location_id_to_name[boss_id | BossOffset])
         
-        for region in regions:
-            add_rule(location, lambda state: state.can_reach_region(region, world.player))
+        for fiend_id in fiend_ids:
+            fiend = world.get_location(world.location_id_to_name[fiend_id | CaptureOffset])
+            add_rule(location, lambda state, fiend=fiend: state.can_reach_location(fiend.name, world.player))
         add_rule(boss, lambda state, location=location: state.can_reach_location(location.name, world.player))
         add_rule(boss, ruleDict[boss.name](world))
 
 
     # Species Conquest
     species_conquest = [
-        (437, 62, (8, 9, 10, 11, 12, 13, 14    )), # Fenrir
-        (438, 63, (21, 22, 23, 24, 25, 26, 100 )), # Ornitholestes
-        (439, 64, (27, 28, 29                  )), # Pteryx
-        (440, 65, (30, 31, 32, 33              )), # Hornet
-        (441, 66, (5, 6, 7                     )), # Vidatu
-        (442, 67, (34, 35, 36, 37, 102         )), # One-Eye
-        (443, 68, (15, 16, 17, 18, 19, 20      )), # Jumbo Flan
-        (444, 69, (61, 62, 63, 64, 65, 66, 67  )), # Nega Elemental
-        (445, 69, (0, 1, 2, 3, 4, 101          )), # Tanket
-        (446, 70, (50, 51, 52, 53, 54          )), # Fafnir
-        (447, 71, (91, 92, 93                  )), # Sleep Sprout
-        (448, 72, (85, 86, 95                  )), # Bomb King
-        (449, 73, (47, 48, 49                  )), # Juggernaut
-        (450, 74, (76, 77, 78                  )), # Ironclad
+        (437, 62, (8, 9, 10, 11, 12, 13, 14,   )), # Fenrir
+        (438, 63, (21, 22, 23, 24, 25, 26, 100,)), # Ornitholestes
+        (439, 64, (27, 28, 29,                 )), # Pteryx
+        (440, 65, (30, 31, 32, 33,             )), # Hornet
+        (441, 66, (5, 6, 7,                    )), # Vidatu
+        (442, 67, (34, 35, 36, 37, 102,        )), # One-Eye
+        (443, 68, (15, 16, 17, 18, 19, 20,     )), # Jumbo Flan
+        (444, 69, (61, 62, 63, 64, 65, 66, 67, )), # Nega Elemental
+        (445, 70, (0, 1, 2, 3, 4, 101,         )), # Tanket
+        (446, 71, (50, 51, 52, 53, 54,         )), # Fafnir
+        (447, 72, (91, 92, 93,                 )), # Sleep Sprout
+        (448, 73, (85, 86, 95,                 )), # Bomb King
+        (449, 74, (47, 48, 49,                 )), # Juggernaut
+        (450, 75, (76, 77, 78,                 )), # Ironclad
     ]
     for location_id, boss_id, captures in species_conquest:
         location = world.get_location(world.location_id_to_name[location_id | TreasureOffset])
         boss = world.get_location(world.location_id_to_name[boss_id | BossOffset])
         
         for capture_id in captures:
-            add_rule(location, lambda state: state.can_reach_location(world.location_id_to_name[capture_id | CaptureOffset], world.player))
+            capture = world.get_location(world.location_id_to_name[capture_id | CaptureOffset])
+            add_rule(location, lambda state, capture=capture: state.can_reach_location(capture.name, world.player))
         add_rule(boss, lambda state, location=location: state.can_reach_location(location.name, world.player))
         add_rule(boss, ruleDict[boss.name](world))
- 
+
 
     # Original Creations    
     original_creation_conquests = [
@@ -385,19 +392,25 @@ def set_rules(world: FFXWorld) -> None:
         "Moonflow 1st visit: Pre-Extractor",
         "Thunder Plains 1st visit",
         "Lake Macalania 1st visit: Pre-Crawler",
-        "Bikanel 1st visit",
+        "Bikanel 1st visit: Post-Zu",
         "Calm Lands 1st visit: Pre-Defender X",
         "Cavern of the Stolen Fayth 1st visit",
         "Mt. Gagazet 1st visit: Post-Seymour Flux",
         "Sin: Post-Seymour Omnis",
         "Omega Ruins: Pre-Ultima Weapon"
     ]
+    # capture_regions = []
+    # for location_id in range(104):
+    #     if (not location_id == 43 and not location_id == 59):
+    #         location = world.get_location(world.location_id_to_name[location_id | CaptureOffset])
+    #         if location.parent_region not in capture_regions:
+    #             capture_regions.append(location.parent_region)
+
     for location_id, boss_id in original_creation_captures:
         location = world.get_location(world.location_id_to_name[location_id | TreasureOffset])
         boss = world.get_location(world.location_id_to_name[boss_id | BossOffset])
-        
         for region in capture_regions:
-            add_rule(location, lambda state: state.can_reach_region(region, world.player))
+            add_rule(location, lambda state, region=region: state.can_reach_region(region, world.player))
         add_rule(boss, lambda state, location=location: state.can_reach_location(location.name, world.player))
         add_rule(boss, ruleDict[boss.name](world))
 

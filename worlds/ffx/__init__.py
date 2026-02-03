@@ -111,14 +111,22 @@ class FFXWorld(World):
         # for item in stat_abilities:
         #     required_items.extend([item.itemName for _ in range(1)])
 
-        possible_starting_regions = [f"Region: {region}" for region, level in world_battle_levels.items() if
-                                     level <= min(self.options.logic_difficulty.value, 3)]
+        possible_starting_regions = [f"Region: {region}" for region, level in world_battle_levels.items() 
+                                     if 0 < level <= min(self.options.logic_difficulty.value, 3)]
         starting_region = self.random.choice(possible_starting_regions)
 
         self.multiworld.push_precollected(self.create_item(starting_region))
+
+        if self.options.arena_access.value == self.options.arena_access.option_early:
+            self.multiworld.early_items[self.player]["Region: Monster Arena"] = 1
+        elif self.options.arena_access.value == self.options.arena_access.option_always:
+            self.multiworld.push_precollected(self.create_item("Region: Monster Arena"))
+
         for item in region_unlock_items:
             if item.itemName != starting_region:
                 required_items.append(item.itemName)
+        if self.options.arena_access.value == self.options.arena_access.option_always:
+            required_items.remove("Region: Monster Arena")
 
         starting_character = party_member_items[0]
 
@@ -178,17 +186,19 @@ class FFXWorld(World):
             "required_party_members": self.options.required_party_members.value,
             "required_primers": self.options.required_primers.value,
             "sphere_grid_randomization": self.options.sphere_grid_randomization.value,
-            "super_bosses": self.options.super_bosses.value,
             "mini_games": self.options.mini_games.value,
-            "logic_difficulty": self.options.logic_difficulty.value,
             "recruit_sanity": self.options.recruit_sanity.value,
-            "capture_sanity": self.options.capture_sanity.value
+            "capture_sanity": self.options.capture_sanity.value,
+            "creation_rewards": self.options.creation_rewards.value,
+            "arena_bosses": self.options.arena_bosses.value,
+            "super_bosses": self.options.super_bosses.value,
+            "logic_difficulty": self.options.logic_difficulty.value,            
         }
         return slot_data
 
     def generate_output(self, output_directory: str) -> None:
 
         # Visualize regions
-        visualize_regions(self.multiworld.get_region("Menu", self.player), f"ffx {self.player}.puml", show_entrance_names=True)
+        #visualize_regions(self.multiworld.get_region("Menu", self.player), f"ffx {self.player}.puml", show_entrance_names=True)
 
         generate_output(self, self.player, output_directory)

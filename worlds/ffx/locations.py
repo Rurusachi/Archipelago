@@ -296,11 +296,11 @@ FFXPartyMemberLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+P
     ("Besaid: Enter the Valley (Event)",                           4, False), # Party Member: Wakka
     ("Besaid: Village Slope - Element Tutorial (Event)",           5, False), # Party Member: Lulu
     ("Moonflow: North Bank - Mix Tutorial (Event)",                6, False), # Party Member: Rikku
-    ("Party Member: Seymour",                                      7, False), # Party Member: Seymour
+    ("MRR: Encounter Sinspawn Gui Second Phase (Boss)",            7, False), # Party Member: Seymour
     ("Besaid: Name Valefor (Event)",                               8, False), # Party Member: Valefor
     ("Kilika: Name Ifrit (Event)",                                 9, False), # Party Member: Ifrit
     ("Djose: Name Ixion (Event)",                                 10, False), # Party Member: Ixion
-    ("Lake Macalaina: Fight Seymour (Boss)",                      11, False), # Party Member Shiva
+    ("Lake Macalaina: Fight Seymour (Boss)",                      11, False), # Party Member: Shiva
     ("Bevelle: Name Bahamut (Event)",                             12, False), # Party Member: Bahamut
     ("Baaj: Release Anima (Event)",                               13, False), # Party Member: Anima
     ("CotSF: Hire Yojimbo (Event)",                               14, False), # Party Member: Yojimbo
@@ -402,7 +402,7 @@ FFXTreasureLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+Trea
     ("Guadosalam: House - Back Wall (Chest)",                                                        64, False),  # Gil: 3000 [1Eh]
     ("Guadosalam: East of Mansion (Chest)",                                                          65, False),  # Item: 1x Mega-Potion [2003h]
     ("Guadosalam: Upper Level, South Side (Chest)",                                                  66, False),  # Item: 1x Elixir [2008h]
-    ("Guadosalam: Mansion, Entrance- Upper Level (Chest)",                                           67, False),  # Item: 2x Hi-Potion [2001h]
+    ("Guadosalam: Mansion, Entrance - Upper Level (Chest)",                                          67, False),  # Item: 2x Hi-Potion [2001h]
     ("Macalania Woods: South - Near North Exit (Chest)",                                             68, False),  # Gil: 2000 [14h]
     ("Macalania Woods: South - Hidden Behind Tree in Middle of S-Bend (Chest)",                      69, False),  # Gear: buki_get #20 [14h] { Lulu [05h], Weapon {Sleeptouch [803Fh]} }
     ("Macalania Woods: Central - Hidden Behind Tree Before Spiral Down (Chest)",                     70, False),  # Item: 3x Phoenix Down [2006h]
@@ -420,7 +420,7 @@ FFXTreasureLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+Trea
     #("Treasure 82 (Trashed)",                                                                       82, False),  # Item: 1x Mega-Potion [2003h]
     ("Lake Macalania: Hall - North Side (Chest)",                                                    83, False),  # Gil: 5000 [32h]
     ("Lake Macalania: Hall - South Side (Chest)",                                                    84, False),  # Item: 2x X-Potion [2002h]
-    ("Lake Macalania: Hall - Gift from Trommel upon Entrance (Event)",                               85, False),  # Gear: buki_get #24 [18h] { Rikku [06h], Armor {SOS Shell [8059h]} }
+    ("Lake Macalania: Hall - Gift from Tromell upon Entrance (Event)",                               85, False),  # Gear: buki_get #24 [18h] { Rikku [06h], Armor {SOS Shell [8059h]} }
     ("Lake Macalania: Monks' Chamber (Chest)",                                                       86, False),  # Item: 3x Phoenix Down [2006h]
     ("Lake Macalania: Nuns' Chamber (Chest)",                                                        87, False),  # Item: 2x Remedy [200Fh]
     #("Treasure 88 (Trashed)",                                                                       88, False),  # Gear: buki_get #25 [19h] { Kimahri [03h], Armor {Poison Ward [803Dh], Confuse Ward [804Fh], Silence Ward [8045h], Empty} }
@@ -516,7 +516,7 @@ FFXTreasureLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+Trea
     ("Thunder Plains: South - West Side, South of Save Sphere (Chest)",                             178, False),  # Item: 2x Phoenix Down [2006h]
     ("Thunder Plains: South - West Side, North of Save Sphere (Chest)",                             179, False),  # Item: 2x Hi-Potion [2001h]
     ("Thunder Plains: South - West Side, Behind First Cactuar Statue (Chest)",                      180, False),  # Gil: 5000 [32h]
-    ("Thunder Plains: East Side, Alcove With Second Cactuar Statue (Chest)",                        181, False),  # Gear: buki_get #55 [37h] { Wakka [04h], Weapon {Waterstrike [802Ah], Empty} }
+    ("Thunder Plains: South - East Side, Alcove With Second Cactuar Statue (Chest)",                        181, False),  # Gear: buki_get #55 [37h] { Wakka [04h], Weapon {Waterstrike [802Ah], Empty} }
     ("Thunder Plains: North - East Side, Near Southeast Exit (Chest)",                              182, False),  # Item: 1x X-Potion [2002h]
     ("Thunder Plains: North - West Side, Behind Sheltered Lightning Rod (Chest)",                   183, False),  # Item: 1x Ether [2004h]
     ("Thunder Plains: North - West Side, Near North Exit (Chest)",                                  184, False),  # Item: 1x Remedy [200Fh]
@@ -535,7 +535,7 @@ FFXTreasureLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+Trea
     ("Moonflow: South Bank Road - West Corner as Path Bends East (Chest)",                          197, False),  # Item: 1x X-Potion [2002h]
     ("Moonflow: South Wharf - Near O'aka XXIII (Chest)",                                            198, False),  # Item: 2x Phoenix Down [2006h]
     ("Moonflow: South Wharf - Behind Lulu (Chest)",                                                 199, False),  # Gil: 5000 [32h]
-    ("Moonflow: North Wharf: Near Bench (Chest)",                                                   200, False),  # Item: 1x Ether [2004h]
+    ("Moonflow: North Wharf - Near Bench (Chest)",                                                   200, False),  # Item: 1x Ether [2004h]
     ("Moonflow: North Bank - East Side, Right After the Wooden Bridge (Chest)",                     201, False),  # Item: 4x Antidote [200Ah]
     ("Moonflow: North Bank Road - West Side, Before Guadosalam (Chest)",                            202, False),  # Item: 1x Mega-Potion [2003h]
     #("Baaj Temple: Grenades from Rikku",                                                           203, False),  # Item: 2x Grenade [2023h]

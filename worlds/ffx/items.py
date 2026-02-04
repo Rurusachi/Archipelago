@@ -668,7 +668,7 @@ abilities: list[ItemData] = [
 ]
 
 trap_items: list[ItemData] = [ItemData(x[0], x[1], x[2] | trapItemOffset) for x in [
-    ("Stay away from the summoner", ItemClassification.trap, 0x0000),
+    ("Voice Trap", ItemClassification.trap, 0x0000),
 ]]
 
 stat_abilities = [ability for ability in abilities_per_character if ability.itemID & 0xFF <= 0x26]

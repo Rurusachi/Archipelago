@@ -180,7 +180,7 @@ class EarlyPartyMembers(Range):
     Sets how many additional party members will be placed globally in sphere 1.
     This will allow players to have access to more characters earlier.
     This value does **NOT** include the starting character
-    Default is 3.
+    Default is 0.
     """
     display_name = "Early Party Members"
     default = 0

@@ -354,7 +354,7 @@ FFXTreasureLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+Trea
     ("S.S. Liki: Cabin (Chest)",                                                                     16, False),  # Item: 1x Remedy [200Fh]
     ("Kilika: House - Right of Collapsing House (Chest)",                                            17, False),  # Item: 3x Potion [2000h]
     ("Kilika: Tavern - After Rescuing Kulukan's Sister from Collapsing House (Chest)",               18, False),  # Item: 1x Ether [2004h]
-    ("Kilika: Trials - Destruction Sphere (Chest)",                                                  19, False),  # Gear: buki_get #6 [06h] { Kimahri [03h], Armor {Fire Ward [801Fh], Ice Ward [8023h], Lightning Ward [8027h]} }
+    ("Kilika: Cloister - Destruction Sphere (Chest)",                                                  19, False),  # Gear: buki_get #6 [06h] { Kimahri [03h], Armor {Fire Ward [801Fh], Ice Ward [8023h], Lightning Ward [8027h]} }
     #("Treasure 20 (Potentially Trashed Chest)",                                                     20, False),  # Gear: buki_get #7 [07h] { Lulu [05h], Armor {Berserk Ward [8051h]} }
     #("Treasure 21 (Potentially Trashed Chest)",                                                     21, False),  # Item: 1x Potion [2000h] #Likely 21-26 are Potions from Yuna's Luggage as entries are near by S.S. Liki's treasure ID's
     #("Treasure 22 (Potentially Trashed Chest)",                                                     22, False),  # Item: 1x Potion [2000h]
@@ -544,7 +544,7 @@ FFXTreasureLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+Trea
     ("Luca: Dock 5 - End, Hidden Behind Boxes, Right (Chest)",                                      206, False),  # Item: 1x Magic Sphere [2059h]
     ("Besaid: Exit the Village (Event) (1)",                                                        207, False),  # Gear: buki_get #1 [01h] { Tidus [00h], Weapon {Strength +5% [8063h], Strength +10% [8064h], Waterstrike [802Ah], Sensor [8000h]} }
     ("Brotherhood?",                                                                                208, False),  # Gear: buki_get #1 [01h] { Tidus [00h], Weapon {Strength +5% [8063h], Strength +10% [8064h], Waterstrike [802Ah], Sensor [8000h]} }
-    ("Zanarkand: Destruction Sphere (Chest)",                                                       209, False),  # Gear: buki_get #60 [3Ch] { Yuna [01h], Weapon {Half MP Cost [800Ch], Empty, Empty} }
+    ("Zanarkand: Cloister - Destruction Sphere (Chest)",                                            209, False),  # Gear: buki_get #60 [3Ch] { Yuna [01h], Weapon {Half MP Cost [800Ch], Empty, Empty} }
     ("Bikanel: Oasis - Next to Tent (Chest)",                                                       210, False),  # Item: 8x Al Bhed Potion [2014h]
     ("Bikanel: Desert, East - Near First Tent, Left (Chest)",                                       211, False),  # Item: 8x Al Bhed Potion [2014h]
     ("Bikanel: Desert, Central - Right of Save Sphere (Chest)",                                     212, False),  # Item: 8x Al Bhed Potion [2014h]
@@ -819,8 +819,8 @@ FFXTreasureLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+Trea
     ("Mi'ihen Highroad: Mi'ihen Ruins - X35 Y57 Sonar",                                             481, False),  # Gear: buki_get #76 [4Ch] { Rikku [06h], Weapon {Initiative [8002h], Poisonstrike [803Ah], Empty} }
     ("MRR: Battle Site - X41 Y57 Phantom Bangle",                                                   482, False),  # Gear: buki_get #77 [4Dh] { Lulu [05h], Armor {Ice Eater [8025h], Fire Eater [8021h], !Water Eater [802Dh]} }
     ("Bikanel: Sanubia Sands - X15 Y42 Ascalon",                                                    483, False),  # Gear: buki_get #78 [4Eh] { Tidus [00h], Weapon {Double AP [8012h]} }
-    ("Djose: Trial - Destruction Sphere (Chest)",                                                   484, False),  # Item: 1x Magic Sphere [2059h]
-    ("Lake Macalania: Cloister - Destruction Sphere (Chest)",                                       485, False),  # Item: 1x Luck Sphere [205Eh]
+    ("Djose: Cloister - Destruction Sphere (Chest)",                                                484, False),  # Item: 1x Magic Sphere [2059h]
+    ("Macalania: Cloister - Destruction Sphere (Chest)",                                            485, False),  # Item: 1x Luck Sphere [205Eh]
     ("Inside Sin: Prism Ball (Point of No Return)",                                                 486, False),  # Gear: buki_get #79 [4Fh] { Wakka [04h], Weapon {Magic Counter [8005h], Empty} }
     ("Inside Sin: Stillblade (Point of No Return)",                                                 487, False),  # Gear: buki_get #80 [50h] { Auron [02h], Weapon {Silencestrike [8042h], Stonestrike [8036h], Empty} }
     ("Inside Sin: Skill Sphere x1 (Point of No Return)",                                            488, False),  # Item: 1x Skill Sphere [204Dh]

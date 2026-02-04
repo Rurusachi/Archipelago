@@ -58,7 +58,7 @@ encounter_to_id = {
     "MRR: Defeat Sinspawn Gui Second Phase (Boss)"  : ["kino03_10"],
     "Moonflow: Defeat Extractor (Boss)"             : ["genk09_00"],
     "Thunder Plains: Defeat Dark Ixion (Superboss)" : ["kami03_71"],
-    "Macalania Woods: Defeat Spherimorph (Boss) (1)": ["mcfr03_00"],
+    "Macalania Woods: Defeat Spherimorph (Boss)"    : ["mcfr03_00"],
     "Lake Macalania: Defeat Crawler (Boss)"         : ["maca02_00"],
     "Lake Macalaina: Defeat Seymour (Boss)"         : ["mcyt06_00"],
     "Lake Macalania: Defeat Wendigo (Boss)"         : ["maca02_01"],
@@ -112,7 +112,7 @@ FFXBossLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+BossOffs
     #("MRR: Defeat Dark Magus Sisters (Superboss)",            11, False),
     ("Moonflow: Defeat Extractor (Boss)",                      12, False),
     ("Thunder Plains: Defeat Dark Ixion (Superboss)",          13, False),
-    ("Macalania Woods: Defeat Spherimorph (Boss) (1)",         14, False),
+    ("Macalania Woods: Defeat Spherimorph (Boss)",             14, False),
     ("Lake Macalania: Defeat Crawler (Boss)",                  15, False),
     ("Lake Macalaina: Defeat Seymour (Boss)",                  16, False),
     ("Lake Macalania: Defeat Wendigo (Boss)",                  17, False),
@@ -259,7 +259,7 @@ FFXOtherLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+OtherOf
     ("CotSF: Dead End West of Third Intersection (Primer)",                         25, False), # Al Bhed Primer XXV
     ("Omega Ruins: North Side of Four Chest Intersection (Primer)",                 26, False), # Al Bhed Primer XXVI
  
-    #("Macalania Woods: Defeat Spherimorph (Boss) (2)",                        27, False),
+    #("Macalania Woods: Spherimorph Jecht Sphere",                             27, False),
     #("Besaid: Village - East of Temple (Jecht Sphere)",                       28, False),
     #("Jecht Sphere - S.S. Liki",                                              29, False),
     #("Luca: Stadium Basement A - East Locker Hall (Jecht Sphere)",            30, False),

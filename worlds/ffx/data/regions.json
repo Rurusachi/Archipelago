@@ -373,7 +373,7 @@
   {
     "name": "Macalania Woods 1st visit: Pre-Spherimorph",
     "id": 100,
-    "treasures": [69, 68, 70, 277, 73],
+    "treasures": [69, 68, 70, 73],
     "party_members": [],
     "bosses": [],
     "overdrives": [],
@@ -445,7 +445,7 @@
   {
     "name": "Lake Macalania 2nd visit",
     "id": 106,
-    "treasures": [111],
+    "treasures": [111, 277],
     "party_members": [],
     "bosses": [18],
     "overdrives": [],

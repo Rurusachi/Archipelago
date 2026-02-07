@@ -823,7 +823,7 @@
     "overdrives": [],
     "other": [],
     "recruits": [],
-    "leads_to": [181, 1020],
+    "leads_to": [181, 1019, 1020],
     "rules": ["Sin"]
   },
   {
@@ -835,7 +835,7 @@
     "overdrives": [],
     "other": [],
     "recruits": [],
-    "leads_to": [182, 1019, 1021],
+    "leads_to": [182, 1021],
     "rules": ["Seymour Omnis"]
   },
   {
@@ -1045,7 +1045,7 @@
     "rules": []
   },
   {
-    "name": "Captures: Mt. Gagazet Caves, Zanarkand & City of Dying Dreams",
+    "name": "Captures: Mt. Gagazet Caves, Zanarkand & Inside Sin",
     "id": 1019,
     "treasures": [],
     "party_members": [],

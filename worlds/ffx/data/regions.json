@@ -409,7 +409,7 @@
   {
     "name": "Lake Macalania 1st visit: Post-Crawler",
     "id": 103,
-    "treasures": [78, 305, 85, 83, 84, 87, 308, 307, 306, 86],
+    "treasures": [77, 78, 305, 85, 83, 84, 87, 308, 307, 306, 86],
     "party_members": [],
     "bosses": [15],
     "overdrives": [],
@@ -421,7 +421,7 @@
   {
     "name": "Lake Macalania 1st visit: Post-Seymour/Anima",
     "id": 104,
-    "treasures": [485, 77],
+    "treasures": [485],
     "party_members": [11],
     "bosses": [16],
     "overdrives": [],

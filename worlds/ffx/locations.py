@@ -241,23 +241,23 @@ FFXOtherLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+OtherOf
     ("Luca: Theater Reception - Bottom of Stairs, Left Side (Primer)",              7, False), # Al Bhed Primer VII
     ("Mi'ihen: Agency - Exit After Resting (Event) (2)",                            8, False), # Al Bhed Primer VIII
     ("Mi'ihen: Newroad, North - Peak of South Bend Before Shelinda (Primer)",       9, False), # Al Bhed Primer IX
-    ("MRR: Precipice - End of Curved Path West of North Elevator (Primer)",         10, False), # Al Bhed Primer X
-    ("Djose: Highroad - South End, Behind Left Pillar (Primer)",                    11, False), # Al Bhed Primer XI
-    ("Moonflow: North Wharf - Up Slope Right of Hypello (Primer)",                  12, False), # Al Bhed Primer XII
-    ("Guadosalam: House - On Floor (Primer)",                                       13, False), # Al Bhed Primer XIII
-    ("Thunder Plains: Agency & Bikanel: Desert, East (Primer)",                     14, False), # Al Bhed Primer XIV
-    ("Macalania Woods: Lake Road - Near Southeast Exit (Primer)",                   15, False), # Al Bhed Primer XV
-    ("Lake Macalania: Agency Front - Left Side (Primer)",                           16, False), # Al Bhed Primer XVI
-    ("Bikanel: Desert, Central - Northeast Structure of Northwest Zone (Primer)",   17, False), # Al Bhed Primer XVII
-    ("Bikanel: Desert, Central - Near Sign At Northeast Exit (Primer)",             18, False), # Al Bhed Primer XVIII
-    ("Home: Left of Entrance (Primer)",                                             19, False), # Al Bhed Primer XIX
-    ("Home: Living Quarters, South of Main Corridor - On Bed (Primer)",             20, False), # Al Bhed Primer XX
-    ("Home: Main Corridor - Northeast Corner (Primer)",                             21, False), # Al Bhed Primer XXI
-    ("Bevelle: Priests' Passage - Corner South of Save Point (Primer)",             22, False), # Al Bhed Primer XXII
-    ("Calm Lands: North - Northwest Corner (Primer)",                               23, False), # Al Bhed Primer XXIII
-    ("Calm Lands: Remiem Temple - Northwest Corner (Primer)",                       24, False), # Al Bhed Primer XXIV
-    ("CotSF: Dead End West of Third Intersection (Primer)",                         25, False), # Al Bhed Primer XXV
-    ("Omega Ruins: North Side of Four Chest Intersection (Primer)",                 26, False), # Al Bhed Primer XXVI
+    ("MRR: Precipice - End of Curved Path West of North Elevator (Primer)",        10, False), # Al Bhed Primer X
+    ("Djose: Highroad - South End, Behind Left Pillar (Primer)",                   11, False), # Al Bhed Primer XI
+    ("Moonflow: North Wharf - Up Slope Right of Hypello (Primer)",                 12, False), # Al Bhed Primer XII
+    ("Guadosalam: House - On Floor (Primer)",                                      13, False), # Al Bhed Primer XIII
+    ("Thunder Plains: Agency & Bikanel: Desert, East (Primer)",                    14, False), # Al Bhed Primer XIV
+    ("Macalania Woods: Lake Road - Near Southeast Exit (Primer)",                  15, False), # Al Bhed Primer XV
+    ("Lake Macalania: Agency Front - Left Side (Primer)",                          16, False), # Al Bhed Primer XVI
+    ("Bikanel: Desert, Central - Northeast Structure of Northwest Zone (Primer)",  17, False), # Al Bhed Primer XVII
+    ("Bikanel: Desert, Central - Near Sign At Northeast Exit (Primer)",            18, False), # Al Bhed Primer XVIII
+    ("Home: Left of Entrance (Primer)",                                            19, False), # Al Bhed Primer XIX
+    ("Home: Living Quarters, South of Main Corridor - On Bed (Primer)",            20, False), # Al Bhed Primer XX
+    ("Home: Main Corridor - Northeast Corner (Primer)",                            21, False), # Al Bhed Primer XXI
+    ("Bevelle: Priests' Passage - Corner South of Save Point (Primer)",            22, False), # Al Bhed Primer XXII
+    ("Calm Lands: North - Northwest Corner (Primer)",                              23, False), # Al Bhed Primer XXIII
+    ("Calm Lands: Remiem Temple - Northwest Corner (Primer)",                      24, False), # Al Bhed Primer XXIV
+    ("CotSF: Dead End West of Third Intersection (Primer)",                        25, False), # Al Bhed Primer XXV
+    ("Omega Ruins: North Side of Four Chest Intersection (Primer)",                26, False), # Al Bhed Primer XXVI
  
     #("Macalania Woods: Spherimorph Jecht Sphere",                             27, False),
     #("Besaid: Village - East of Temple (Jecht Sphere)",                       28, False),
@@ -354,7 +354,7 @@ FFXTreasureLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+Trea
     ("S.S. Liki: Cabin (Chest)",                                                                     16, False),  # Item: 1x Remedy [200Fh]
     ("Kilika: House - Right of Collapsing House (Chest)",                                            17, False),  # Item: 3x Potion [2000h]
     ("Kilika: Tavern - After Rescuing Kulukan's Sister from Collapsing House (Chest)",               18, False),  # Item: 1x Ether [2004h]
-    ("Kilika: Cloister - Destruction Sphere (Chest)",                                                  19, False),  # Gear: buki_get #6 [06h] { Kimahri [03h], Armor {Fire Ward [801Fh], Ice Ward [8023h], Lightning Ward [8027h]} }
+    ("Kilika: Cloister - Destruction Sphere (Chest)",                                                19, False),  # Gear: buki_get #6 [06h] { Kimahri [03h], Armor {Fire Ward [801Fh], Ice Ward [8023h], Lightning Ward [8027h]} }
     #("Treasure 20 (Potentially Trashed Chest)",                                                     20, False),  # Gear: buki_get #7 [07h] { Lulu [05h], Armor {Berserk Ward [8051h]} }
     #("Treasure 21 (Potentially Trashed Chest)",                                                     21, False),  # Item: 1x Potion [2000h] #Likely 21-26 are Potions from Yuna's Luggage as entries are near by S.S. Liki's treasure ID's
     #("Treasure 22 (Potentially Trashed Chest)",                                                     22, False),  # Item: 1x Potion [2000h]
@@ -470,7 +470,7 @@ FFXTreasureLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+Trea
     ("Gagazet: Trail - Under Bridge After Wantz Left (Chest)",                                      132, False),  # Item: 1x HP Sphere [2055h]
     #("Treasure 133 (Trashed)",                                                                     133, False),  # Item: 1x Potion [2000h]
     #("Treasure 134 (Trashed)",                                                                     134, False),  # Item: 1x Potion [2000h]
-    ("Gagazet: Cave - After Both Trials, Left Alcove, Northwest of Save Sphere (Chest)",            135, False), # Gear: buki_get #41 [29h] { Wakka [04h], Armor {SOS NulFrost [805Fh], SOS NulShock [8060h], SOS NulBlaze [8061h]} }
+    ("Gagazet: Cave - After Both Trials, Left Alcove, Northwest of Save Sphere (Chest)",            135, False),  # Gear: buki_get #41 [29h] { Wakka [04h], Armor {SOS NulFrost [805Fh], SOS NulShock [8060h], SOS NulBlaze [8061h]} }
     ("Gagazet: Submerged Passage - Reward from First Trial (Chest)",                                136, False),  # Item: 1x Lv. 1 Key Sphere [2051h]
     ("Gagazet: Submerged Passage - Reward From Second Trial (Chest)",                               137, False),  # Item: 1x Fortune Sphere [204Ah]
     ("Gagazet: Submerged Passage - After Both Trials, East Exit From Save Sphere, Left (Chest)",    138, False),  # Item: 1x Return Sphere [2060h]
@@ -535,7 +535,7 @@ FFXTreasureLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+Trea
     ("Moonflow: South Bank Road - West Corner as Path Bends East (Chest)",                          197, False),  # Item: 1x X-Potion [2002h]
     ("Moonflow: South Wharf - Near O'aka XXIII (Chest)",                                            198, False),  # Item: 2x Phoenix Down [2006h]
     ("Moonflow: South Wharf - Behind Lulu (Chest)",                                                 199, False),  # Gil: 5000 [32h]
-    ("Moonflow: North Wharf - Near Bench (Chest)",                                                   200, False),  # Item: 1x Ether [2004h]
+    ("Moonflow: North Wharf - Near Bench (Chest)",                                                  200, False),  # Item: 1x Ether [2004h]
     ("Moonflow: North Bank - East Side, Right After the Wooden Bridge (Chest)",                     201, False),  # Item: 4x Antidote [200Ah]
     ("Moonflow: North Bank Road - West Side, Before Guadosalam (Chest)",                            202, False),  # Item: 1x Mega-Potion [2003h]
     #("Baaj Temple: Grenades from Rikku",                                                           203, False),  # Item: 2x Grenade [2023h]

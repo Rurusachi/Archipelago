@@ -45,108 +45,108 @@ def get_location_type(location_id: int):
     return location_types[location_id & 0xF000]
 
 encounter_to_id = {
-    "BAAJ: Defeat Klikk (Boss)"                     : ["bjyt04_01"],
-    "ALBS: Defeat Tros (Boss)"              : ["cdsp07_00"],
-    "BSIL: Defeat Dark Valefor (Superboss)"       : ["bsil07_70"],
-    "SSLI: Defeat Sin Fin (Boss)"              : ["slik02_00"],
-    "SSLI: Defeat Sinspawn Echuilles (Boss)"   : ["slik02_01"],
-    "KILK: Woods - Defeat Lord Ochu (Boss)"       : ["klyt00_00"],
-    "KILK: Defeat Sinspawn Geneaux (Boss)"        : ["klyt01_00"],
-    "LUCA: Defeat Oblitzerator (Boss)"              : ["cdsp02_00"],
-    "MIHN: Defeat Chocobo Eater (Boss)"          : ["mihn02_00"],
+    "BAAJ: Defeat Klikk (Boss)"                      : ["bjyt04_01"],
+    "ALBS: Defeat Tros (Boss)"                       : ["cdsp07_00"],
+    "BSIL: Defeat Dark Valefor (Superboss)"          : ["bsil07_70"],
+    "SSLI: Defeat Sin Fin (Boss)"                    : ["slik02_00"],
+    "SSLI: Defeat Sinspawn Echuilles (Boss)"         : ["slik02_01"],
+    "KILK: Woods - Defeat Lord Ochu (Boss)"          : ["klyt00_00"],
+    "KILK: Defeat Sinspawn Geneaux (Boss)"           : ["klyt01_00"],
+    "LUCA: Defeat Oblitzerator (Boss)"               : ["cdsp02_00"],
+    "MIHN: Defeat Chocobo Eater (Boss)"              : ["mihn02_00"],
     "MUSH: Defeat Sinspawn Gui First Phase (Boss)"   : ["kino02_00"],
     "MUSH: Defeat Sinspawn Gui Second Phase (Boss)"  : ["kino03_10"],
-    "MOON: Defeat Extractor (Boss)"             : ["genk09_00"],
-    "THPL: Defeat Dark Ixion (Superboss)" : ["kami03_71"],
-    "MCWO: Defeat Spherimorph (Boss)"    : ["mcfr03_00"],
-    "MCLA: Defeat Crawler (Boss)"         : ["maca02_00"],
-    "MCLA: Defeat Seymour (Boss)"         : ["mcyt06_00"],
-    "MCLA: Defeat Wendigo (Boss)"         : ["maca02_01"],
-    "MCLA: Defeat Dark Shiva (Superboss)" : ["mcyt00_70"],
-    "BIKA: Defeat Dark Ifrit (Superboss)"        : ["bika03_70"],
-    "AIRS: Defeat Evrae (Boss)"                  : ["hiku15_00"],
-    "AIRS: Defeat Sin Left Fin (Boss)"           : ["ssbt00_00"],
-    "AIRS: Defeat Sin Right Fin (Boss)"          : ["ssbt01_00"],
-    "AIRS: Defeat Sin Core (Boss)"               : ["ssbt02_00"],
-    "AIRS: Defeat Overdrive Sin (Boss)"          : ["ssbt03_00"],
-    "AIRS: Defeat Penance (Superboss)"           : ["hiku15_70"],
-    "BEVL: Defeat Isaaru (Boss)"                 : ["bvyt09_12"], # Probably?
-    "BEVL: Defeat Evrae Altana (Boss)"           : ["stbv00_10"],
-    "BEVL: Defeat Seymour Natus (Boss)"          : ["stbv01_10"],
-    "CALM: Defeat Defender X (Boss)"          : ["nagi01_00"],
-    "MOAR: Defeat Nemesis (Superboss)"     : ["zzzz02_76"],
-    "COSF: Defeat Dark Yojimbo (Superboss)"        : ["nagi05_74"],
-    "MTGZ: Defeat Biran and Yenke (Boss)"        : ["mtgz01_10"],
-    "MTGZ: Defeat Seymour Flux (Boss)"           : ["mtgz02_00"],
-    "MTGZ: Defeat Dark Anima (Superboss)"        : ["mtgz01_70"],
-    "MTGC: Defeat Sanctuary Keeper (Boss)"       : ["mtgz08_00"],
-    "ZNKD: Defeat Spectral Keeper (Boss)"      : ["dome02_00"],
-    "ZNKD: Defeat Yunalesca (Boss)"            : ["dome06_00"],
-    "ZNKD: Defeat Dark Bahamut (Superboss)"    : ["dome06_70"],
+    "MOON: Defeat Extractor (Boss)"                  : ["genk09_00"],
+    "THPL: Defeat Dark Ixion (Superboss)"            : ["kami03_71"],
+    "MCWO: Defeat Spherimorph (Boss)"                : ["mcfr03_00"],
+    "MCLA: Defeat Crawler (Boss)"                    : ["maca02_00"],
+    "MCLA: Defeat Seymour (Boss)"                    : ["mcyt06_00"],
+    "MCLA: Defeat Wendigo (Boss)"                    : ["maca02_01"],
+    "MCLA: Defeat Dark Shiva (Superboss)"            : ["mcyt00_70"],
+    "BIKA: Defeat Dark Ifrit (Superboss)"            : ["bika03_70"],
+    "AIRS: Defeat Evrae (Boss)"                      : ["hiku15_00"],
+    "AIRS: Defeat Sin Left Fin (Boss)"               : ["ssbt00_00"],
+    "AIRS: Defeat Sin Right Fin (Boss)"              : ["ssbt01_00"],
+    "AIRS: Defeat Sin Core (Boss)"                   : ["ssbt02_00"],
+    "AIRS: Defeat Overdrive Sin (Boss)"              : ["ssbt03_00"],
+    "AIRS: Defeat Penance (Superboss)"               : ["hiku15_70"],
+    "BEVL: Defeat Isaaru (Boss)"                     : ["bvyt09_12"], # Probably?
+    "BEVL: Defeat Evrae Altana (Boss)"               : ["stbv00_10"],
+    "BEVL: Defeat Seymour Natus (Boss)"              : ["stbv01_10"],
+    "CALM: Defeat Defender X (Boss)"                 : ["nagi01_00"],
+    "MOAR: Defeat Nemesis (Superboss)"               : ["zzzz02_76"],
+    "COSF: Defeat Dark Yojimbo (Superboss)"          : ["nagi05_74"],
+    "MTGZ: Defeat Biran and Yenke (Boss)"            : ["mtgz01_10"],
+    "MTGZ: Defeat Seymour Flux (Boss)"               : ["mtgz02_00"],
+    "MTGZ: Defeat Dark Anima (Superboss)"            : ["mtgz01_70"],
+    "MTGC: Defeat Sanctuary Keeper (Boss)"           : ["mtgz08_00"],
+    "ZNKD: Defeat Spectral Keeper (Boss)"            : ["dome02_00"],
+    "ZNKD: Defeat Yunalesca (Boss)"                  : ["dome06_00"],
+    "ZNKD: Defeat Dark Bahamut (Superboss)"          : ["dome06_70"],
     "SINS: Defeat Seymour Omnis (Boss)"              : ["sins03_00"],
     "SINS: Defeat Braska's Final Aeon (Boss)"        : ["sins06_00"],
     "SINS: Defeat Yuna's Aeons (Boss)"               : ["sins07_0x"],
     "SINS: Defeat Yu Yevon (Boss)"                   : ["sins07_10"],
-    "OMGR: Defeat Ultima (Boss)"             : ["omeg00_10"],
-    "OMGR: Defeat Omega (Superboss)"         : ["omeg01_10"],
+    "OMGR: Defeat Ultima (Boss)"                     : ["omeg00_10"],
+    "OMGR: Defeat Omega (Superboss)"                 : ["omeg01_10"],
     "MUSH: Defeat Dark Mindy (Superboss)"            : ["kino00_70", "kino01_70", "kino01_72", "kino05_71"],
     "MUSH: Defeat Dark Sandy (Superboss)"            : ["kino00_70", "kino01_70", "kino01_72", "kino05_70"],
     "MUSH: Defeat Dark Cindy (Superboss)"            : ["kino00_70", "kino01_70", "kino01_71"],
-    "BAAJ: Defeat Geosgaeno (Boss)"                 : ["bjyt02_02"],
-    "BIKA: Defeat Zu (Boss)"                     : ["bika00_10"],
+    "BAAJ: Defeat Geosgaeno (Boss)"                  : ["bjyt02_02"],
+    "BIKA: Defeat Zu (Boss)"                         : ["bika00_10"],
 }
 
 
 FFXBossLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+BossOffset, *location) for location in [
-    ("BAAJ: Defeat Klikk (Boss)",                               0, False),
-    ("ALBS: Defeat Tros (Boss)",                        1, False),
-    ("BSIL: Defeat Dark Valefor (Superboss)",                 2, False),
-    ("SSLI: Defeat Sin Fin (Boss)",                        3, False),
-    ("SSLI: Defeat Sinspawn Echuilles (Boss)",             4, False),
-    ("KILK: Woods - Defeat Lord Ochu (Boss)",                 5, False),
-    ("KILK: Defeat Sinspawn Geneaux (Boss)",                  6, False),
-    ("LUCA: Defeat Oblitzerator (Boss)",                        7, False),
-    ("MIHN: Defeat Chocobo Eater (Boss)",                    8, False),
-    ("MUSH: Defeat Sinspawn Gui First Phase (Boss)",             9, False),
-    ("MUSH: Defeat Sinspawn Gui Second Phase (Boss)",           10, False),
-    #("MUSH: Defeat Dark Magus Sisters (Superboss)",            11, False),
-    ("MOON: Defeat Extractor (Boss)",                      12, False),
-    ("THPL: Defeat Dark Ixion (Superboss)",          13, False),
-    ("MCWO: Defeat Spherimorph (Boss)",             14, False),
-    ("MCLA: Defeat Crawler (Boss)",                  15, False),
-    ("MCLA: Defeat Seymour (Boss)",                  16, False),
-    ("MCLA: Defeat Wendigo (Boss)",                  17, False),
-    ("MCLA: Defeat Dark Shiva (Superboss)",          18, False),
-    ("BIKA: Defeat Dark Ifrit (Superboss)",                 19, False),
-    ("AIRS: Defeat Evrae (Boss)",                           20, False),
-    ("AIRS: Defeat Sin Left Fin (Boss)",                    21, False),
-    ("AIRS: Defeat Sin Right Fin (Boss)",                   22, False),
-    ("AIRS: Defeat Sin Core (Boss)",                        23, False),
-    ("AIRS: Defeat Overdrive Sin (Boss)",                   24, False),
-    # ("AIRS: Defeat Penance (Superboss)",                    25, False),
-    ("BEVL: Defeat Isaaru (Boss)",                          26, False),
-    ("BEVL: Defeat Evrae Altana (Boss)",                    27, False),
-    ("BEVL: Defeat Seymour Natus (Boss)",                   28, False),
-    ("CALM: Defeat Defender X (Boss)",                   29, False),
+    ("BAAJ: Defeat Klikk (Boss)",                      0, False),
+    ("ALBS: Defeat Tros (Boss)",                       1, False),
+    ("BSIL: Defeat Dark Valefor (Superboss)",          2, False),
+    ("SSLI: Defeat Sin Fin (Boss)",                    3, False),
+    ("SSLI: Defeat Sinspawn Echuilles (Boss)",         4, False),
+    ("KILK: Woods - Defeat Lord Ochu (Boss)",          5, False),
+    ("KILK: Defeat Sinspawn Geneaux (Boss)",           6, False),
+    ("LUCA: Defeat Oblitzerator (Boss)",               7, False),
+    ("MIHN: Defeat Chocobo Eater (Boss)",              8, False),
+    ("MUSH: Defeat Sinspawn Gui First Phase (Boss)",   9, False),
+    ("MUSH: Defeat Sinspawn Gui Second Phase (Boss)", 10, False),
+    #("MUSH: Defeat Dark Magus Sisters (Superboss)",  11, False),
+    ("MOON: Defeat Extractor (Boss)",                 12, False),
+    ("THPL: Defeat Dark Ixion (Superboss)",           13, False),
+    ("MCWO: Defeat Spherimorph (Boss)",               14, False),
+    ("MCLA: Defeat Crawler (Boss)",                   15, False),
+    ("MCLA: Defeat Seymour (Boss)",                   16, False),
+    ("MCLA: Defeat Wendigo (Boss)",                   17, False),
+    ("MCLA: Defeat Dark Shiva (Superboss)",           18, False),
+    ("BIKA: Defeat Dark Ifrit (Superboss)",           19, False),
+    ("AIRS: Defeat Evrae (Boss)",                     20, False),
+    ("AIRS: Defeat Sin Left Fin (Boss)",              21, False),
+    ("AIRS: Defeat Sin Right Fin (Boss)",             22, False),
+    ("AIRS: Defeat Sin Core (Boss)",                  23, False),
+    ("AIRS: Defeat Overdrive Sin (Boss)",             24, False),
+    # ("AIRS: Defeat Penance (Superboss)",            25, False),
+    ("BEVL: Defeat Isaaru (Boss)",                    26, False),
+    ("BEVL: Defeat Evrae Altana (Boss)",              27, False),
+    ("BEVL: Defeat Seymour Natus (Boss)",             28, False),
+    ("CALM: Defeat Defender X (Boss)",                29, False),
     ("MOAR: Defeat Nemesis (Superboss)",              30, False),
-    ("COSF: Defeat Dark Yojimbo (Superboss)",                 31, False),
-    ("MTGZ: Defeat Biran and Yenke (Boss)",                 32, False),
-    ("MTGZ: Defeat Seymour Flux (Boss)",                    33, False),
-    ("MTGZ: Defeat Dark Anima (Superboss)",                 34, False),
-    ("MTGC: Defeat Sanctuary Keeper (Boss)",                35, False),
-    ("ZNKD: Defeat Spectral Keeper (Boss)",               36, False),
-    ("ZNKD: Defeat Yunalesca (Boss)",                     37, False),
-    ("ZNKD: Defeat Dark Bahamut (Superboss)",             38, False),
-    ("SINS: Defeat Seymour Omnis (Boss)",                       39, False),
-    #("SINS: Defeat Braska's Final Aeon (Boss)",                40, False),
-    #("SINS: Defeat Yuna's Aeons (Boss)",                       41, False),
-    #("SINS: Defeat Yu Yevon (Boss)",                           42, False),
-    ("OMGR: Defeat Ultima (Boss)",                      43, False),
-    ("OMGR: Defeat Omega (Superboss)",                  44, False),
-    ("MUSH: Defeat Dark Mindy (Superboss)",                     45, False),
-    ("MUSH: Defeat Dark Sandy (Superboss)",                     46, False),
-    ("MUSH: Defeat Dark Cindy (Superboss)",                     47, False),
-    ("BAAJ: Defeat Geosgaeno (Boss)",                          48, False),
+    ("COSF: Defeat Dark Yojimbo (Superboss)",         31, False),
+    ("MTGZ: Defeat Biran and Yenke (Boss)",           32, False),
+    ("MTGZ: Defeat Seymour Flux (Boss)",              33, False),
+    ("MTGZ: Defeat Dark Anima (Superboss)",           34, False),
+    ("MTGC: Defeat Sanctuary Keeper (Boss)",          35, False),
+    ("ZNKD: Defeat Spectral Keeper (Boss)",           36, False),
+    ("ZNKD: Defeat Yunalesca (Boss)",                 37, False),
+    ("ZNKD: Defeat Dark Bahamut (Superboss)",         38, False),
+    ("SINS: Defeat Seymour Omnis (Boss)",             39, False),
+    #("SINS: Defeat Braska's Final Aeon (Boss)",      40, False),
+    #("SINS: Defeat Yuna's Aeons (Boss)",             41, False),
+    #("SINS: Defeat Yu Yevon (Boss)",                 42, False),
+    ("OMGR: Defeat Ultima (Boss)",                    43, False),
+    ("OMGR: Defeat Omega (Superboss)",                44, False),
+    ("MUSH: Defeat Dark Mindy (Superboss)",           45, False),
+    ("MUSH: Defeat Dark Sandy (Superboss)",           46, False),
+    ("MUSH: Defeat Dark Cindy (Superboss)",           47, False),
+    ("BAAJ: Defeat Geosgaeno (Boss)",                 48, False),
     ("MOAR: Defeat Stratoavis (Arena Boss)",          49, False),
     ("MOAR: Defeat Malboro Menace (Arena Boss)",      50, False),
     ("MOAR: Defeat Kottos (Arena Boss)",              51, False),
@@ -602,134 +602,134 @@ FFXTreasureLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+Trea
     ("Blitzball Reward 44",                                                                         264, False),  # Item: 1x X-Potion [2002h]
     ("Blitzball Reward 45",                                                                         265, False),  # Item: 1x Mega-Potion [2003h]
     ("Blitzball Reward 46",                                                                         266, False),  # Item: 2x Remedy [200Fh]
-    ("ZNKD: Dome Beyond - Chest After Taking Left/Right in Yunalesca Arena (Chest)",           267, False),  # Key Item: Sun Crest [A023h]
-    ("BSIL: Beach - East Alcove (Chest)",                                                         268, False),  # Key Item: Moon Crest [A025h]
-    ("MIHN: Oldroad, South - South End (Chest)",                                                 269, False),  # Key Item: Mars Crest [A027h]
-    ("MTGZ: Prominence - Hidden Between Left Pillars (Chest)",                                   270, False),  # Key Item: Saturn Crest [A02Ah]
+    ("ZNKD: Dome Beyond - Chest After Taking Left/Right in Yunalesca Arena (Chest)",                267, False),  # Key Item: Sun Crest [A023h]
+    ("BSIL: Beach - East Alcove (Chest)",                                                           268, False),  # Key Item: Moon Crest [A025h]
+    ("MIHN: Oldroad, South - South End (Chest)",                                                    269, False),  # Key Item: Mars Crest [A027h]
+    ("MTGZ: Prominence - Hidden Between Left Pillars (Chest)",                                      270, False),  # Key Item: Saturn Crest [A02Ah]
     ("LUCA: Stadium Locker Room - Inside Back Right Locker (Event)",                                271, False),  # Key Item: Jupiter Crest [A02Ch]
-    ("GUAD: Farplane - West Side (Chest)",                                                    272, False),  # Key Item: Venus Crest [A02Eh]
-    ("BIKA: Desert, West - First Western Alcove, Sinkhole (Chest)",                              273, False),  # Key Item: Mercury Crest [A030h]
-    ("CALM: Catcher chocobo Minigame, Time Under 0.00 (Event)",                               274, False),  # Key Item: Sun Sigil [A024h]
-    ("REMI: Defeat All Aeons and Send Belgemine (Event)",                     275, False),  # Key Item: Moon Sigil [A026h]
-    ("MOAR: Unlock Ten Arena Creations (Event)",                                           276, False),  # Key Item: Mars Sigil [A028h]
-    ("MCWO: Finish Butterfly Minigame (Event)",                                          277, False),  # Key Item: Saturn Sigil [A02Bh]
-    ("THPL: Lightning Dodger - 200 Consecutive Dodges (Event)",                           278, False),  # Key Item: Venus Sigil [A02Fh]
-    ("BIKA: Desert - Complete Cactuar Village Quest (Event)",                                    279, False),  # Key Item: Mercury Sigil [A031h]
-    ("MCLA: Megalixir x2 (Butterfly Game after defeating Spherimorph)",                   280, False),  # Item: 2x Megalixir [2009h]
-    ("MCLA: Elixir x2 (Butterfly Game after defeating Spherimorph)",                      281, False),  # Item: 2x Elixir [2008h]
-    ("BSIL: Beach - Datto (NPC)",                                                                 282, False),  # Item: 1x Hi-Potion [2001h]
-    ("BSIL: Beach - Jassu (NPC)",                                                                 283, False),  # Item: 3x Potion [2000h]
-    ("BSIL: Beach - Botta (NPC)",                                                                 284, False),  # Item: 2x Potion [2000h]
-    ("BSIL: Beach - Keepa (NPC)",                                                                 285, False),  # Gil: 200 [02h]
-    ("BSIL: Beach, Dock - Boy (NPC)",                                                             286, False),  # Item: 1x Remedy [200Fh]
-    ("BSIL: Beach, Dock - Monk (NPC)",                                                            287, False),  # Gear: buki_get #62 [3Eh] { Yuna [01h], Armor {HP +10% [8073h]} }
-    ("BSIL: Beach, Dock - Woman (NPC)",                                                           288, False),  # Item: 3x Phoenix Down [2006h]
-    ("BSIL: Beach, Dock - Shirtless Man (NPC)",                                                   289, False),  # Gil: 400 [04h]
-    ("BSIL: Beach, Dock - Green Shirt (NPC)",                                                     290, False),  # Item: 1x Ether [2004h]
-    ("KILK: Woods - Luzzu Before Beating Lord Ochu (NPC)",                                        291, False),  # Item: 4x Antidote [200Ah]
-    ("KILK: Woods - Luzzu After Beating Lord Ochu (NPC)",                                         292, False),  # Item: 1x Elixir [2008h]
-    ("KILK: Woods - Crusader Commander West of Lord Ochu (NPC)",                                  293, False),  # Item: 1x Remedy [200Fh]
-    #("KILK: Phoenix Down x3 (Guard NPC, fight Ochu from west and run?)",                         294, False),  # Item: 3x Phoenix Down [2006h]
-    ("KILK: Woods - Crusader Commander North of Lord Ochu (NPC)",                                 295, False),  # Item: 1x Hi-Potion [2001h]
-    ("ALBS: Deck - Yellow Al Bhed, on Left (NPC)",                                          296, False),  # Item: 3x Potion [2000h]
-    ("DJOS: Highroad - South End, Silver/Purple Armor (NPC)",                                      297, False),  # Gear: buki_get #63 [3Fh] { Tidus [00h], Weapon {Strength +3% [8062h], Empty, Empty, Empty} }
-    ("DJOS: Highroad - South End, Purple Armor (NPC)",                                             298, False),  # Gear: buki_get #64 [40h] { Yuna [01h], Armor {Stoneproof [8038h], Empty} }
-    ("DJOS: Highroad - Monk Pacing Between Crusaders (NPC)",                                       299, False),  # Item: 1x Hi-Potion [2001h]
-    ("DJOS: Highroad - Midway, Yellow Armor (NPC)",                                                300, False),  # Item: 1x Ether [2004h]
-    ("DJOS: Highroad - North End, Purple Armor (NPC)",                                             301, False),  # Item: 1x Mega-Potion [2003h]
-    ("DJOS: Pilgrimage Road - North End, Purple Armor (NPC)",                                      302, False),  # Gear: buki_get #65 [41h] { Kimahri [03h], Weapon {Magic +20% [8069h], Empty} }
-    ("DJOS: Pilgrimage Road - South End, Silver/Purple Armor (NPC)",                               303, False),  # Item: 10x Potion [2000h]
-    ("DJOS: Pilgrimage Road - Monk Pacing Along Bridge (NPC)",                                     304, False),  # Item: 2x Hi-Potion [2001h]
-    ("MCLA: Road - Linna, at Bottom of Stairs (NPC)",                                     305, False),  # Gil: 400 [04h]
-    ("MCLA: Monks' Chamber - Purple Monk (NPC)",                                          306, False),  # Item: 1x Elixir [2008h]
-    ("MCLA: Monks' Chamber - Brown Monk (NPC)",                                           307, False),  # Item: 1x Ether [2004h]
-    ("MCLA: Nuns' Chamber - Yellow Nun (NPC)",                                            308, False),  # Item: 2x Hi-Potion [2001h]
-    ("MIHN: South End - Blue/White Man, Looping North to South (NPC)",                           309, False),  # Gear: buki_get #66 [42h] { Kimahri [03h], Weapon {Piercing [800Bh], Sensor [8000h], Strength +10% [8064h]} }
-    ("MIHN: South End - Red Skirt Girl, Pacing Between Maechen and Ruins (NPC)",                 310, False),  # Item: 2x Antidote [200Ah]
-    ("MIHN: South End - Yellow Man, Looping South to North (NPC)",                               311, False),  # Item: 1x Hi-Potion [2001h]
-    ("MIHN: South - Boy Before Kicking the Blitzball (NPC)",                                     312, False),  # Item: 3x Soft [200Bh]
-    ("MIHN: South - Crusader Running East then West (NPC)",                                      313, False),  # Gear: buki_get #67 [43h] { Yuna [01h], Armor {HP +10% [8073h], Fire Ward [801Fh]} }
-    ("MIHN: Central - Purple Crusader Freaking Out, West Side (NPC)",                            314, False),  # Item: 1x Ether [2004h]
-    ("MIHN: Central - Woman on North End, West Side (NPC)",                                      315, False),  # Item: 1x Hi-Potion [2001h]
-    ("MIHN: Central - Male Yellow Crusader, Looping North to South (NPC)",                       316, False),  # Gil: 600 [06h]
-    ("MIHN: Central - Purple Crusader, Looping South to North (NPC)",                            317, False),  # Item: 1x Lv. 1 Key Sphere [2051h]
-    ("MIHN: Central - Female Yellow Crusader, Looping North to South (NPC)",                     318, False),  # Item: 4x Antidote [200Ah]
-    ("MUSH: First Screen - Right Near Southern Exit (NPC)",                                          319, False),  # Gear: buki_get #68 [44h] { Lulu [05h], Armor {HP +20% [8074h], Empty} }
-    ("MUSH: First Screen - Pacing Between Blue Commander and North Exit (NPC)",                      320, False),  # Item: 2x Phoenix Down [2006h]
-    ("MUSH: First Screen - Left Near Southern Exit (NPC)",                                           321, False),  # Item: 1x Remedy [200Fh]
-    ("MUSH: First Screen - Blue Commander on Left Side (NPC)",                                       322, False),  # Item: 1x Hi-Potion [2001h]
-    ("MUSH: First Screen - Pacing Between Blue Commander and South Exit (NPC)",                      323, False),  # Item: 1x Ether [2004h]
-    ("MUSH: Valley - Woman Before First Elevator (NPC)",                                             324, False),  # Item: 1x Hi-Potion [2001h]
-    ("MUSH: Valley - North Alcove After First Elevator (NPC)",                                       325, False),  # Item: 10x Potion [2000h]
-    ("MUSH: Precipice - Pacing Between North Elevator and East Ridge (NPC)",                         326, False),  # Gil: 400 [04h]
-    ("MUSH: Precipice - Near South Elevator (NPC)",                                                  327, False),  # Item: 1x X-Potion [2002h]
-    ("MUSH: Precipice - Near Large Elevator (NPC)",                                                  328, False),  # Item: 1x Mega-Potion [2003h]
-    ("OMGR: 12th Chest Reward for Minigame (Chest)",                                         329, False),  # Item: 99x Warp Sphere [2063h]
-    ("OMGR: Press Both Glyphs, Then Take Narrow Central Path (Chest)",                       330, False),  # Item: 1x Teleport Sphere [2062h]
-    ("OMGR: Zone After Ultima, West Path (Chest)",                                           331, False),  # Item: 1x Friend Sphere [2061h]
-    ("OMGR: Omega Boss Arena (Chest)",                                                       332, False),  # Item: 1x Magic Sphere [2059h]
+    ("GUAD: Farplane - West Side (Chest)",                                                          272, False),  # Key Item: Venus Crest [A02Eh]
+    ("BIKA: Desert, West - First Western Alcove, Sinkhole (Chest)",                                 273, False),  # Key Item: Mercury Crest [A030h]
+    ("CALM: Catcher chocobo Minigame, Time Under 0.00 (Event)",                                     274, False),  # Key Item: Sun Sigil [A024h]
+    ("REMI: Defeat All Aeons and Send Belgemine (Event)",                                           275, False),  # Key Item: Moon Sigil [A026h]
+    ("MOAR: Unlock Ten Arena Creations (Event)",                                                    276, False),  # Key Item: Mars Sigil [A028h]
+    ("MCWO: Finish Butterfly Minigame (Event)",                                                     277, False),  # Key Item: Saturn Sigil [A02Bh]
+    ("THPL: Lightning Dodger - 200 Consecutive Dodges (Event)",                                     278, False),  # Key Item: Venus Sigil [A02Fh]
+    ("BIKA: Desert - Complete Cactuar Village Quest (Event)",                                       279, False),  # Key Item: Mercury Sigil [A031h]
+    ("MCLA: Megalixir x2 (Butterfly Game after defeating Spherimorph)",                             280, False),  # Item: 2x Megalixir [2009h]
+    ("MCLA: Elixir x2 (Butterfly Game after defeating Spherimorph)",                                281, False),  # Item: 2x Elixir [2008h]
+    ("BSIL: Beach - Datto (NPC)",                                                                   282, False),  # Item: 1x Hi-Potion [2001h]
+    ("BSIL: Beach - Jassu (NPC)",                                                                   283, False),  # Item: 3x Potion [2000h]
+    ("BSIL: Beach - Botta (NPC)",                                                                   284, False),  # Item: 2x Potion [2000h]
+    ("BSIL: Beach - Keepa (NPC)",                                                                   285, False),  # Gil: 200 [02h]
+    ("BSIL: Beach, Dock - Boy (NPC)",                                                               286, False),  # Item: 1x Remedy [200Fh]
+    ("BSIL: Beach, Dock - Monk (NPC)",                                                              287, False),  # Gear: buki_get #62 [3Eh] { Yuna [01h], Armor {HP +10% [8073h]} }
+    ("BSIL: Beach, Dock - Woman (NPC)",                                                             288, False),  # Item: 3x Phoenix Down [2006h]
+    ("BSIL: Beach, Dock - Shirtless Man (NPC)",                                                     289, False),  # Gil: 400 [04h]
+    ("BSIL: Beach, Dock - Green Shirt (NPC)",                                                       290, False),  # Item: 1x Ether [2004h]
+    ("KILK: Woods - Luzzu Before Beating Lord Ochu (NPC)",                                          291, False),  # Item: 4x Antidote [200Ah]
+    ("KILK: Woods - Luzzu After Beating Lord Ochu (NPC)",                                           292, False),  # Item: 1x Elixir [2008h]
+    ("KILK: Woods - Crusader Commander West of Lord Ochu (NPC)",                                    293, False),  # Item: 1x Remedy [200Fh]
+    #("KILK: Phoenix Down x3 (Guard NPC, fight Ochu from west and run?)",                           294, False),  # Item: 3x Phoenix Down [2006h]
+    ("KILK: Woods - Crusader Commander North of Lord Ochu (NPC)",                                   295, False),  # Item: 1x Hi-Potion [2001h]
+    ("ALBS: Deck - Yellow Al Bhed, on Left (NPC)",                                                  296, False),  # Item: 3x Potion [2000h]
+    ("DJOS: Highroad - South End, Silver/Purple Armor (NPC)",                                       297, False),  # Gear: buki_get #63 [3Fh] { Tidus [00h], Weapon {Strength +3% [8062h], Empty, Empty, Empty} }
+    ("DJOS: Highroad - South End, Purple Armor (NPC)",                                              298, False),  # Gear: buki_get #64 [40h] { Yuna [01h], Armor {Stoneproof [8038h], Empty} }
+    ("DJOS: Highroad - Monk Pacing Between Crusaders (NPC)",                                        299, False),  # Item: 1x Hi-Potion [2001h]
+    ("DJOS: Highroad - Midway, Yellow Armor (NPC)",                                                 300, False),  # Item: 1x Ether [2004h]
+    ("DJOS: Highroad - North End, Purple Armor (NPC)",                                              301, False),  # Item: 1x Mega-Potion [2003h]
+    ("DJOS: Pilgrimage Road - North End, Purple Armor (NPC)",                                       302, False),  # Gear: buki_get #65 [41h] { Kimahri [03h], Weapon {Magic +20% [8069h], Empty} }
+    ("DJOS: Pilgrimage Road - South End, Silver/Purple Armor (NPC)",                                303, False),  # Item: 10x Potion [2000h]
+    ("DJOS: Pilgrimage Road - Monk Pacing Along Bridge (NPC)",                                      304, False),  # Item: 2x Hi-Potion [2001h]
+    ("MCLA: Road - Linna, at Bottom of Stairs (NPC)",                                               305, False),  # Gil: 400 [04h]
+    ("MCLA: Monks' Chamber - Purple Monk (NPC)",                                                    306, False),  # Item: 1x Elixir [2008h]
+    ("MCLA: Monks' Chamber - Brown Monk (NPC)",                                                     307, False),  # Item: 1x Ether [2004h]
+    ("MCLA: Nuns' Chamber - Yellow Nun (NPC)",                                                      308, False),  # Item: 2x Hi-Potion [2001h]
+    ("MIHN: South End - Blue/White Man, Looping North to South (NPC)",                              309, False),  # Gear: buki_get #66 [42h] { Kimahri [03h], Weapon {Piercing [800Bh], Sensor [8000h], Strength +10% [8064h]} }
+    ("MIHN: South End - Red Skirt Girl, Pacing Between Maechen and Ruins (NPC)",                    310, False),  # Item: 2x Antidote [200Ah]
+    ("MIHN: South End - Yellow Man, Looping South to North (NPC)",                                  311, False),  # Item: 1x Hi-Potion [2001h]
+    ("MIHN: South - Boy Before Kicking the Blitzball (NPC)",                                        312, False),  # Item: 3x Soft [200Bh]
+    ("MIHN: South - Crusader Running East then West (NPC)",                                         313, False),  # Gear: buki_get #67 [43h] { Yuna [01h], Armor {HP +10% [8073h], Fire Ward [801Fh]} }
+    ("MIHN: Central - Purple Crusader Freaking Out, West Side (NPC)",                               314, False),  # Item: 1x Ether [2004h]
+    ("MIHN: Central - Woman on North End, West Side (NPC)",                                         315, False),  # Item: 1x Hi-Potion [2001h]
+    ("MIHN: Central - Male Yellow Crusader, Looping North to South (NPC)",                          316, False),  # Gil: 600 [06h]
+    ("MIHN: Central - Purple Crusader, Looping South to North (NPC)",                               317, False),  # Item: 1x Lv. 1 Key Sphere [2051h]
+    ("MIHN: Central - Female Yellow Crusader, Looping North to South (NPC)",                        318, False),  # Item: 4x Antidote [200Ah]
+    ("MUSH: First Screen - Right Near Southern Exit (NPC)",                                         319, False),  # Gear: buki_get #68 [44h] { Lulu [05h], Armor {HP +20% [8074h], Empty} }
+    ("MUSH: First Screen - Pacing Between Blue Commander and North Exit (NPC)",                     320, False),  # Item: 2x Phoenix Down [2006h]
+    ("MUSH: First Screen - Left Near Southern Exit (NPC)",                                          321, False),  # Item: 1x Remedy [200Fh]
+    ("MUSH: First Screen - Blue Commander on Left Side (NPC)",                                      322, False),  # Item: 1x Hi-Potion [2001h]
+    ("MUSH: First Screen - Pacing Between Blue Commander and South Exit (NPC)",                     323, False),  # Item: 1x Ether [2004h]
+    ("MUSH: Valley - Woman Before First Elevator (NPC)",                                            324, False),  # Item: 1x Hi-Potion [2001h]
+    ("MUSH: Valley - North Alcove After First Elevator (NPC)",                                      325, False),  # Item: 10x Potion [2000h]
+    ("MUSH: Precipice - Pacing Between North Elevator and East Ridge (NPC)",                        326, False),  # Gil: 400 [04h]
+    ("MUSH: Precipice - Near South Elevator (NPC)",                                                 327, False),  # Item: 1x X-Potion [2002h]
+    ("MUSH: Precipice - Near Large Elevator (NPC)",                                                 328, False),  # Item: 1x Mega-Potion [2003h]
+    ("OMGR: 12th Chest Reward for Minigame (Chest)",                                                329, False),  # Item: 99x Warp Sphere [2063h]
+    ("OMGR: Press Both Glyphs, Then Take Narrow Central Path (Chest)",                              330, False),  # Item: 1x Teleport Sphere [2062h]
+    ("OMGR: Zone After Ultima, West Path (Chest)",                                                  331, False),  # Item: 1x Friend Sphere [2061h]
+    ("OMGR: Omega Boss Arena (Chest)",                                                              332, False),  # Item: 1x Magic Sphere [2059h]
     #("Treasure 333 (Old Entry?)",                                                                  333, False),  # Key Item: Blossom Crown [A032h]
-    ("REMI: Defeat Bahamut (Boss)",                                           334, False),  # Key Item: Flower Scepter [A033h]
+    ("REMI: Defeat Bahamut (Boss)",                                                                 334, False),  # Key Item: Flower Scepter [A033h]
     #("Treasure 335 (Trashed)",                                                                     335, False),  # Item: 1x Potion [2000h]
-    ("SSLI: Clasko, After Breeder Encouragement in Macalania (Event)",                         336, False),  # Item: 1x Friend Sphere [2061h] # Talk to Clasko before Crawler and make sure to have him become a Chocobo Breeder
-    ("CALM: Wobbly Chocobo Minigame (Event)",                                                 337, False),  # Item: 1x Elixir [2008h]
-    ("CALM: Dodger Chocobo Minigame (Event)",                                                 338, False),  # Item: 1x Lv. 1 Key Sphere [2051h]
-    ("CALM: Hyper Dodger Chocobo Minigame (Event)",                                           339, False),  # Item: 1x Lv. 2 Key Sphere [2052h]
-    ("CALM: Catcher Chocobo Minigame (Event)",                                                340, False),  # Item: 1x Lv. 3 Key Sphere [2053h]
+    ("SSLI: Clasko, After Breeder Encouragement in Macalania (Event)",                              336, False),  # Item: 1x Friend Sphere [2061h] # Talk to Clasko before Crawler and make sure to have him become a Chocobo Breeder
+    ("CALM: Wobbly Chocobo Minigame (Event)",                                                       337, False),  # Item: 1x Elixir [2008h]
+    ("CALM: Dodger Chocobo Minigame (Event)",                                                       338, False),  # Item: 1x Lv. 1 Key Sphere [2051h]
+    ("CALM: Hyper Dodger Chocobo Minigame (Event)",                                                 339, False),  # Item: 1x Lv. 2 Key Sphere [2052h]
+    ("CALM: Catcher Chocobo Minigame (Event)",                                                      340, False),  # Item: 1x Lv. 3 Key Sphere [2053h]
     #("Treasure 341 (Trashed)",                                                                     341, False),  # Item: 1x X-Potion [2002h]
     #("Treasure 342 (Trashed)",                                                                     342, False),  # Item: 1x Mega-Potion [2003h]
     #("Treasure 343 (Trashed)",                                                                     343, False),  # Item: 1x Ether [2004h]
     #("Treasure 344 (Trashed)",                                                                     344, False),  # Item: 1x Turbo Ether [2005h]
-    ("THPL: Agency Front (Ground Item)",                                                  345, False),  # Gear: buki_get #69 [45h] { Tidus [00h], Armor {Lightningproof [8028h], Empty} }
-    ("BIKA: Oasis - In Southwest Corner of Water (Chest)",                                       346, False),  # Item: 4x Remedy [200Fh]
-    ("BIKA: Desert, East - Near First Tent, Right (Chest)",                                      347, False),  # Item: 2x Ether [2004h]
-    ("BIKA: Desert, East - Western Alcove, Near Structure (Chest)",                              348, False),  # Item: 4x Hi-Potion [2001h]
-    ("BIKA: Desert, Central - Far West Corner (Chest)",                                          349, False),  # Item: 2x Mega-Potion [2003h]
-    ("BIKA: Desert, Central - Rock Ridge Southwest of Save Sphere (Chest)",                      350, False),  # Item: 2x X-Potion [2002h]
-    ("BIKA: Desert, Central - Structure Southeast of Save Sphere (Chest)",                       351, False),  # Item: 4x Hi-Potion [2001h]
-    ("BIKA: Desert, Central - Southwest Corner of Northwest Zone (Chest)",                       352, False),  # Item: 1x Elixir [2008h]
-    ("BIKA: Desert, Central - Central Structure of Northwest Zone, Bottom (Chest)",              353, False),  # Gil: 10000 [64h]
-    ("BIKA: Desert, Central - Central Structure of Northwest Zone, Top (Chest)",                 354, False),  # Item: 1x Lv. 2 Key Sphere [2052h]
-    ("BIKA: Desert, West - First Western Alcove, Between Rocks (Chest)",                         355, False),  # Item: 8x Hi-Potion [2001h]
-    ("BIKA: Desert, West - Second Western Alcove, Hidden Behind Rock (Chest)",                   356, False),  # Item: 3x Mega-Potion [2003h]
-    ("BIKA: Desert, West - Second Western Alcove, North Side (Chest)",                           357, False),  # Item: 2x X-Potion [2002h]
-    ("BIKA: Desert, West - Left Sinkhole on Main Path (Chest)",                                  358, False),  # Item: 3x Megalixir [2009h]
-    ("BIKA: Desert, West - Right Sinkhole on Main Path (Chest)",                                359, False),  # Item: 2x Teleport Sphere [2062h]
+    ("THPL: Agency Front (Ground Item)",                                                            345, False),  # Gear: buki_get #69 [45h] { Tidus [00h], Armor {Lightningproof [8028h], Empty} }
+    ("BIKA: Oasis - In Southwest Corner of Water (Chest)",                                          346, False),  # Item: 4x Remedy [200Fh]
+    ("BIKA: Desert, East - Near First Tent, Right (Chest)",                                         347, False),  # Item: 2x Ether [2004h]
+    ("BIKA: Desert, East - Western Alcove, Near Structure (Chest)",                                 348, False),  # Item: 4x Hi-Potion [2001h]
+    ("BIKA: Desert, Central - Far West Corner (Chest)",                                             349, False),  # Item: 2x Mega-Potion [2003h]
+    ("BIKA: Desert, Central - Rock Ridge Southwest of Save Sphere (Chest)",                         350, False),  # Item: 2x X-Potion [2002h]
+    ("BIKA: Desert, Central - Structure Southeast of Save Sphere (Chest)",                          351, False),  # Item: 4x Hi-Potion [2001h]
+    ("BIKA: Desert, Central - Southwest Corner of Northwest Zone (Chest)",                          352, False),  # Item: 1x Elixir [2008h]
+    ("BIKA: Desert, Central - Central Structure of Northwest Zone, Bottom (Chest)",                 353, False),  # Gil: 10000 [64h]
+    ("BIKA: Desert, Central - Central Structure of Northwest Zone, Top (Chest)",                    354, False),  # Item: 1x Lv. 2 Key Sphere [2052h]
+    ("BIKA: Desert, West - First Western Alcove, Between Rocks (Chest)",                            355, False),  # Item: 8x Hi-Potion [2001h]
+    ("BIKA: Desert, West - Second Western Alcove, Hidden Behind Rock (Chest)",                      356, False),  # Item: 3x Mega-Potion [2003h]
+    ("BIKA: Desert, West - Second Western Alcove, North Side (Chest)",                              357, False),  # Item: 2x X-Potion [2002h]
+    ("BIKA: Desert, West - Left Sinkhole on Main Path (Chest)",                                     358, False),  # Item: 3x Megalixir [2009h]
+    ("BIKA: Desert, West - Right Sinkhole on Main Path (Chest)",                                    359, False),  # Item: 2x Teleport Sphere [2062h]
     ("HOME: Main Corridor - North Hall, Left (Chest)",                                              360, False),  # Item: 6x Al Bhed Potion [2014h]
     ("HOME: Main Corridor - Bottom of South Stairs, Hidden Behind Left Smoke (Chest)",              361, False),  # Item: 4x Al Bhed Potion [2014h]
     ("HOME: Outside Summoner's Sanctum - Right (Chest)",                                            362, False),  # Item: 1x Lv. 2 Key Sphere [2052h]
     ("HOME: Outside Summoner's Sanctum - Left (Chest)",                                             363, False),  # Item: 1x Lv. 4 Key Sphere [2054h]
     ("HOME: Environment Controls (Chest)",                                                          364, False),  # Gil: 10000 [64h]
-    ("SSWI: Deck - Top Floor, Counting Gulls (NPC)",                                          365, False),  # Gear: buki_get #70 [46h] { Wakka [04h], Weapon {Magic +20% [8069h], Magic +10% [8068h], Magic +5% [8067h], Magic +3% [8066h]} }
-    ("MIHN: South End - Fight Belgemine (Lose) (Event)",                                         366, False),  # Gear: buki_get #71 [47h] { Yuna [01h], Armor {HP +10% [8073h], Empty} }
+    ("SSWI: Deck - Top Floor, Counting Gulls (NPC)",                                                365, False),  # Gear: buki_get #70 [46h] { Wakka [04h], Weapon {Magic +20% [8069h], Magic +10% [8068h], Magic +5% [8067h], Magic +3% [8066h]} }
+    ("MIHN: South End - Fight Belgemine (Lose) (Event)",                                            366, False),  # Gear: buki_get #71 [47h] { Yuna [01h], Armor {HP +10% [8073h], Empty} }
     ("HOME: Keyakku, on Ground (NPC)",                                                              367, False),  # Item: 2x Hi-Potion [2001h]
-    #("MUSH: Valley - Code VICTORIOUS",                                                              368, False),  # Gear: buki_get #72 [48h] { Rikku [06h], Armor {Lightningproof [8028h], Fireproof [8020h], Iceproof [8024h], Empty} } UNCOMMENT WHEN CODES ARE INCORPORATED
-    #("BSIL: BSIL Ruins - Code MURASAME",                                                       369, False),  # Gear: buki_get #73 [49h] { Auron [02h], Weapon {Piercing [800Bh], One MP Cost [800Dh], Empty, Empty} } UNCOMMENT WHEN CODES ARE INCORPORATED
-    ("CALM: Speed Sphere x30 (Lose Aeon Fight)",                                              370, False),  # Item: 30x Speed Sphere [2048h]
+    #("MUSH: Valley - Code VICTORIOUS",                                                             368, False),  # Gear: buki_get #72 [48h] { Rikku [06h], Armor {Lightningproof [8028h], Fireproof [8020h], Iceproof [8024h], Empty} } UNCOMMENT WHEN CODES ARE INCORPORATED
+    #("BSIL: BSIL Ruins - Code MURASAME",                                                           369, False),  # Gear: buki_get #73 [49h] { Auron [02h], Weapon {Piercing [800Bh], One MP Cost [800Dh], Empty, Empty} } UNCOMMENT WHEN CODES ARE INCORPORATED
+    ("CALM: Speed Sphere x30 (Lose Aeon Fight)",                                                    370, False),  # Item: 30x Speed Sphere [2048h]
     ("Defeat Belgemine Twice",                                                                      371, False),  # Key Item: Aeon's Soul [A01Fh]
-    ("MOON: South Bank Road - Fight Belgemine (Win) (Event) (1)",                               372, False),  # Item: 2x Dragon Scale [2021h]
-    ("MOON: South Bank Road - Fight Belgemine (Lose) (Event) (1)",                              373, False),  # Item: 6x Smoke Bomb [2028h]
+    ("MOON: South Bank Road - Fight Belgemine (Win) (Event) (1)",                                   372, False),  # Item: 2x Dragon Scale [2021h]
+    ("MOON: South Bank Road - Fight Belgemine (Lose) (Event) (1)",                                  373, False),  # Item: 6x Smoke Bomb [2028h]
     ("Defeat Belgemine Once",                                                                       374, False),  # Key Item: Summoner's Soul [A01Eh]
-    ("AIRS: Cabin - Before Evrae, Yellow Al Bhed on Left (NPC)",                                 375, False),  # Item: 4x Al Bhed Potion [2014h]
-    ("MOON: South Bank Road - Right of Shelinda (Chest)",                                       376, False),  # Item: 3x Lv. 1 Key Sphere [2051h]
-    ("MOON: South Bank Road - East Alcove as Path Bends North (Chest)",                         377, False),  # Item: 3x Lv. 1 Key Sphere [2051h]
-    ("MOON: South Bank Road - West Alcove in Forest Past Belgemine (Chest)",                    378, False),  # Item: 1x Magic Def Sphere [205Ah]
-    ("REMI: Defeat Valefor (Boss)",                                           379, False),  # Item: 4x Lightning Gem [201Fh]
-    ("REMI: Valefor Post First Fight (Boss)",                                 380, False),  # Item: 4x Power Sphere [2046h]
-    ("REMI: Defeat Ifrit (Boss)",                                             381, False),  # Item: 30x X-Potion [2002h]
-    ("REMI: Ifrit Post First Fight (Boss)",                                   382, False),  # Item: 5x Mana Sphere [2047h]
-    ("REMI: Defeat Ixion (Boss)",                                             383, False),  # Item: 10x Chocobo Feather [2036h]
-    ("REMI: Ixion Post First Fight (Boss)",                                   384, False),  # Item: 8x Power Sphere [2046h]
-    ("REMI: Defeat Shiva (Boss)",                                             385, False),  # Item: 60x Mega-Potion [2003h]
-    ("REMI: Shiva Post First Fight (Boss)",                                   386, False),  # Item: 6x Star Curtain [203Ah]
-    ("REMI: Bahamut Post First Fight (Boss)",                                 387, False),  # Item: 8x Mana Sphere [2047h]
-    ("REMI: Defeat Yojimbo (Boss)",                                           388, False),  # Item: 8x Shadow Gem [2029h]
-    ("REMI: Yojimbo Post First Fight (Boss)",                                 389, False),  # Item: 10x Power Sphere [2046h]
-    ("REMI: Defeat Anima (Boss)",                                             390, False),  # Item: 60x Stamina Spring [203Dh]
-    ("REMI: Anima Post First Fight (Boss)",                                   391, False),  # Item: 10x Mana Sphere [2047h]
-    ("REMI: Defeat Magus Sisters (Boss)",                                     392, False),  # Item: 40x Shining Gem [202Ah]
-    ("REMI: Magus Sisters Post First Fight (Boss)",                           393, False),  # Item: 12x Power Sphere [2046h]
-    ("MCLA: Teleport Sphere x1 (Butterfly Game after Airship)",                           394, False),  # Item: 1x Teleport Sphere [2062h]
+    ("AIRS: Cabin - Before Evrae, Yellow Al Bhed on Left (NPC)",                                    375, False),  # Item: 4x Al Bhed Potion [2014h]
+    ("MOON: South Bank Road - Right of Shelinda (Chest)",                                           376, False),  # Item: 3x Lv. 1 Key Sphere [2051h]
+    ("MOON: South Bank Road - East Alcove as Path Bends North (Chest)",                             377, False),  # Item: 3x Lv. 1 Key Sphere [2051h]
+    ("MOON: South Bank Road - West Alcove in Forest Past Belgemine (Chest)",                        378, False),  # Item: 1x Magic Def Sphere [205Ah]
+    ("REMI: Defeat Valefor (Boss)",                                                                 379, False),  # Item: 4x Lightning Gem [201Fh]
+    ("REMI: Valefor Post First Fight (Boss)",                                                       380, False),  # Item: 4x Power Sphere [2046h]
+    ("REMI: Defeat Ifrit (Boss)",                                                                   381, False),  # Item: 30x X-Potion [2002h]
+    ("REMI: Ifrit Post First Fight (Boss)",                                                         382, False),  # Item: 5x Mana Sphere [2047h]
+    ("REMI: Defeat Ixion (Boss)",                                                                   383, False),  # Item: 10x Chocobo Feather [2036h]
+    ("REMI: Ixion Post First Fight (Boss)",                                                         384, False),  # Item: 8x Power Sphere [2046h]
+    ("REMI: Defeat Shiva (Boss)",                                                                   385, False),  # Item: 60x Mega-Potion [2003h]
+    ("REMI: Shiva Post First Fight (Boss)",                                                         386, False),  # Item: 6x Star Curtain [203Ah]
+    ("REMI: Bahamut Post First Fight (Boss)",                                                       387, False),  # Item: 8x Mana Sphere [2047h]
+    ("REMI: Defeat Yojimbo (Boss)",                                                                 388, False),  # Item: 8x Shadow Gem [2029h]
+    ("REMI: Yojimbo Post First Fight (Boss)",                                                       389, False),  # Item: 10x Power Sphere [2046h]
+    ("REMI: Defeat Anima (Boss)",                                                                   390, False),  # Item: 60x Stamina Spring [203Dh]
+    ("REMI: Anima Post First Fight (Boss)",                                                         391, False),  # Item: 10x Mana Sphere [2047h]
+    ("REMI: Defeat Magus Sisters (Boss)",                                                           392, False),  # Item: 40x Shining Gem [202Ah]
+    ("REMI: Magus Sisters Post First Fight (Boss)",                                                 393, False),  # Item: 12x Power Sphere [2046h]
+    ("MCLA: Teleport Sphere x1 (Butterfly Game after Airship)",                                     394, False),  # Item: 1x Teleport Sphere [2062h]
     ("HOME: Living Quarters, East of Main Corridor - Quiz (Chest)",                                 395, False),  # Item: 1x Skill Sphere [204Dh]
     ("HOME: Living Quarters, East of Main Corridor - Password (Chest)",                             396, False),  # Item: 1x Special Sphere [204Ch]
     ("HOME: Living Quarters, South of Main Corridor - Vocabulary Test (Chest)",                     397, False),  # Item: 1x Friend Sphere [2061h]
@@ -740,11 +740,11 @@ FFXTreasureLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+Trea
     #("Treasure 402 (Trashed)",                                                                     402, False),  # Item: 1x Potion [2000h]
     #("Treasure 403 (Trashed)",                                                                     403, False),  # Item: 1x Remedy [200Fh]
     #("Treasure 404 (Trashed)",                                                                     404, False),  # Item: 2x Potion [2000h]
-    ("AIRS: Collect All Primers, Talk to Rin (NPC)",                                             405, False),  # Item: 99x Underdog's Secret [206Eh]
-    ("BSIL: Fayth Revisit - Northwest (Chest)",                                                   406, False),  # Item: 1x Wht Magic Sphere [204Eh]
-    ("BSIL: Fayth Revisit - Northeast (Chest)",                                                   407, False),  # Item: 1x Elixir [2008h]
-    ("BSIL: Fayth Revisit - Southwest (Chest)",                                                   408, False),  # Item: 1x Hi-Potion [2001h]
-    ("BSIL: Fayth Revisit - Southeast (Chest)",                                                   409, False),  # Item: 2x Potion [2000h]
+    ("AIRS: Collect All Primers, Talk to Rin (NPC)",                                                405, False),  # Item: 99x Underdog's Secret [206Eh]
+    ("BSIL: Fayth Revisit - Northwest (Chest)",                                                     406, False),  # Item: 1x Wht Magic Sphere [204Eh]
+    ("BSIL: Fayth Revisit - Northeast (Chest)",                                                     407, False),  # Item: 1x Elixir [2008h]
+    ("BSIL: Fayth Revisit - Southwest (Chest)",                                                     408, False),  # Item: 1x Hi-Potion [2001h]
+    ("BSIL: Fayth Revisit - Southeast (Chest)",                                                     409, False),  # Item: 2x Potion [2000h]
     #("S.S Liki: Potion (Yuna's suitcase)",                                                         410, False),  # Item: 1x Potion [2000h] # Definitely Yuna's Suitcase
     #("Treasure 411 (Trashed)",                                                                     411, False),  # Item: 1x Potion [2000h]
     #("Treasure 412 (Trashed)",                                                                     412, False),  # Item: 1x Potion [2000h]
@@ -752,20 +752,20 @@ FFXTreasureLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+Trea
     #("Treasure 414 (Trashed)",                                                                     414, False),  # Item: 1x Potion [2000h]
     #("Treasure 415 (Trashed)",                                                                     415, False),  # Item: 1x Potion [2000h]
     #("Treasure 416 (Trashed)",                                                                     416, False),  # Item: 1x Potion [2000h]
-    ("REMI: 1st Chest in Chocobo Race",                                                       417, False),  # Item: 1x Elixir [2008h]
-    ("REMI: 2nd Chest in Chocobo Race",                                                       418, False),  # Item: 1x Megalixir [2009h]
-    ("REMI: 3rd Chest in Chocobo Race",                                                       419, False),  # Item: 60x Three Stars [2045h]
-    ("REMI: 4th Chest in Chocobo Race",                                                       420, False),  # Item: 30x Pendulum [2069h]
-    ("REMI: 5th Chest in Chocobo Race",                                                       421, False),  # Item: 30x Wings to Discovery [206Ch]
+    ("REMI: 1st Chest in Chocobo Race",                                                             417, False),  # Item: 1x Elixir [2008h]
+    ("REMI: 2nd Chest in Chocobo Race",                                                             418, False),  # Item: 1x Megalixir [2009h]
+    ("REMI: 3rd Chest in Chocobo Race",                                                             419, False),  # Item: 60x Three Stars [2045h]
+    ("REMI: 4th Chest in Chocobo Race",                                                             420, False),  # Item: 30x Pendulum [2069h]
+    ("REMI: 5th Chest in Chocobo Race",                                                             421, False),  # Item: 30x Wings to Discovery [206Ch]
     #("Treasure 422",                                                                               422, False),  # Item: 1x Potion [2000h]
-    ("MIHN: Agency - Green NPC After Resting (Event)",                                           423, False),  # Item: 1x Lv. 1 Key Sphere [2051h]
-    ("MOAR: Area Conquest - Capture 1 of Each Besaid Fiend (NPC)",                         424, False),  # Item: 99x Stamina Tonic [2043h]
-    ("MOAR: Area Conquest - Capture 1 of Each Kilika Fiend (NPC)",                         425, False),  # Item: 99x Poison Fang [202Dh]
-    ("MOAR: Area Conquest - Capture 1 of Each Mi'ihen Highroad Fiend (NPC)",               426, False),  # Item: 99x Soul Spring [203Eh]
-    ("MOAR: Area Conquest - Capture 1 of Each Mushroom Rock Road Fiend (NPC)",             427, False),  # Item: 99x Candle of Life [2030h]
-    ("MOAR: Area Conquest - Capture 1 of Each Djose Road Fiend (NPC)",                     428, False),  # Item: 99x Petrify Grenade [2031h]
-    ("MOAR: Area Conquest - Capture 1 of Each Thunder Plains Fiend (NPC)",                 429, False),  # Item: 99x Chocobo Wing [2037h]
-    ("MOAR: Area Conquest - Capture 1 of Each Macalania Fiend (NPC)",                      430, False),  # Item: 60x Shining Gem [202Ah]
+    ("MIHN: Agency - Green NPC After Resting (Event)",                                              423, False),  # Item: 1x Lv. 1 Key Sphere [2051h]
+    ("MOAR: Area Conquest - Capture 1 of Each Besaid Fiend (NPC)",                                  424, False),  # Item: 99x Stamina Tonic [2043h]
+    ("MOAR: Area Conquest - Capture 1 of Each Kilika Fiend (NPC)",                                  425, False),  # Item: 99x Poison Fang [202Dh]
+    ("MOAR: Area Conquest - Capture 1 of Each Mi'ihen Highroad Fiend (NPC)",                        426, False),  # Item: 99x Soul Spring [203Eh]
+    ("MOAR: Area Conquest - Capture 1 of Each Mushroom Rock Road Fiend (NPC)",                      427, False),  # Item: 99x Candle of Life [2030h]
+    ("MOAR: Area Conquest - Capture 1 of Each Djose Road Fiend (NPC)",                              428, False),  # Item: 99x Petrify Grenade [2031h]
+    ("MOAR: Area Conquest - Capture 1 of Each Thunder Plains Fiend (NPC)",                          429, False),  # Item: 99x Chocobo Wing [2037h]
+    ("MOAR: Area Conquest - Capture 1 of Each Macalania Fiend (NPC)",                              430, False),  # Item: 60x Shining Gem [202Ah]
     ("MOAR: Area Conquest - Capture 1 of Each Bikanel Fiend (NPC)",                        431, False),  # Item: 99x Shadow Gem [2029h]
     ("MOAR: Area Conquest - Capture 1 of Each Calm Lands Fiend (NPC)",                     432, False),  # Item: 60x Farplane Wind [2033h]
     ("MOAR: Area Conquest - Capture 1 of Each CotSF Fiend (NPC)",                          433, False),  # Item: 40x Silver Hourglass [202Eh]
@@ -815,8 +815,8 @@ FFXTreasureLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+Trea
     ("KILK: Fayth Revisit - Northeast (Chest)",                                                   477, False),  # Item: 1x Defense Sphere [2058h]
     ("KILK: Fayth Revisit (Event)",                                                               478, False),  # Item: 1x Luck Sphere [205Eh]
     ("KILK: Fayth Revisit - Southeast (Chest)",                                                   479, False),  # Item: 1x Accuracy Sphere [205Dh]
-    ("BSIL: BSIL Falls - X31 Y75, Dragoon Lance",                                               480, False),  # Gear: buki_get #75 [4Bh] { Kimahri [03h], Weapon {Magic Counter [8005h], Evade & Counter [8004h], Empty, Empty} }
-    ("Mi'ihen Highroad: Mi'ihen Ruins - X35 Y57 Sonar",                                             481, False),  # Gear: buki_get #76 [4Ch] { Rikku [06h], Weapon {Initiative [8002h], Poisonstrike [803Ah], Empty} }
+    ("BSIL: Besaid Falls - X31 Y75, Dragoon Lance",                                               480, False),  # Gear: buki_get #75 [4Bh] { Kimahri [03h], Weapon {Magic Counter [8005h], Evade & Counter [8004h], Empty, Empty} }
+    ("MIHN: Mi'ihen Ruins - X35 Y57 Sonar",                                             481, False),  # Gear: buki_get #76 [4Ch] { Rikku [06h], Weapon {Initiative [8002h], Poisonstrike [803Ah], Empty} }
     ("MUSH: Battle Site - X41 Y57 Phantom Bangle",                                                   482, False),  # Gear: buki_get #77 [4Dh] { Lulu [05h], Armor {Ice Eater [8025h], Fire Eater [8021h], !Water Eater [802Dh]} }
     ("BIKA: Sanubia Sands - X15 Y42 Ascalon",                                                    483, False),  # Gear: buki_get #78 [4Eh] { Tidus [00h], Weapon {Double AP [8012h]} }
     ("DJOS: Cloister - Destruction Sphere (Chest)",                                                484, False),  # Item: 1x Magic Sphere [2059h]
@@ -831,7 +831,7 @@ FFXTreasureLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+Trea
     ("SINS: Wicked Cait Sith (Point of No Return)",                                           493, False),  # Gear: buki_get #84 [54h] { Lulu [05h], Weapon {Deathstrike [802Eh], Empty, Empty, Empty} }
     ("SINS: Attribute Sphere x1 (Point of No Return)",                                        494, False),  # Item: 1x Attribute Sphere [204Bh]
     ("SINS: Hrunting (Point of No Return)",                                                   495, False),  # Gear: buki_get #85 [55h] { Tidus [00h], Weapon {SOS Overdrive [8010h]} }
-    ("MOAR: Defeat Nemesis",                                                               496, False),  # Key Item: Mark of Conquest [A029h]
+    ("MOAR: Defeat Nemesis",                                                              496, False),  # Key Item: Mark of Conquest [A029h]
     ("LUCA: Win the Story Blitzball Tournament (Event)",                                            497, False),  # Item: 1x Strength Sphere [2057h]
 ]]
 

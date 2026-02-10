@@ -60,7 +60,7 @@ encounter_to_id = {
     "THPL: Defeat Dark Ixion (Superboss)" : ["kami03_71"],
     "MCWO: Defeat Spherimorph (Boss)"    : ["mcfr03_00"],
     "MCLA: Defeat Crawler (Boss)"         : ["maca02_00"],
-    "Lake Macalaina: Defeat Seymour (Boss)"         : ["mcyt06_00"],
+    "MCLA: Defeat Seymour (Boss)"         : ["mcyt06_00"],
     "MCLA: Defeat Wendigo (Boss)"         : ["maca02_01"],
     "MCLA: Defeat Dark Shiva (Superboss)" : ["mcyt00_70"],
     "BIKA: Defeat Dark Ifrit (Superboss)"        : ["bika03_70"],
@@ -79,7 +79,7 @@ encounter_to_id = {
     "MTGZ: Defeat Biran and Yenke (Boss)"        : ["mtgz01_10"],
     "MTGZ: Defeat Seymour Flux (Boss)"           : ["mtgz02_00"],
     "MTGZ: Defeat Dark Anima (Superboss)"        : ["mtgz01_70"],
-    "MTGZ: Defeat Sanctuary Keeper (Boss)"       : ["mtgz08_00"],
+    "MTGC: Defeat Sanctuary Keeper (Boss)"       : ["mtgz08_00"],
     "ZNKD: Defeat Spectral Keeper (Boss)"      : ["dome02_00"],
     "ZNKD: Defeat Yunalesca (Boss)"            : ["dome06_00"],
     "ZNKD: Defeat Dark Bahamut (Superboss)"    : ["dome06_70"],
@@ -114,7 +114,7 @@ FFXBossLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+BossOffs
     ("THPL: Defeat Dark Ixion (Superboss)",          13, False),
     ("MCWO: Defeat Spherimorph (Boss)",             14, False),
     ("MCLA: Defeat Crawler (Boss)",                  15, False),
-    ("Lake Macalaina: Defeat Seymour (Boss)",                  16, False),
+    ("MCLA: Defeat Seymour (Boss)",                  16, False),
     ("MCLA: Defeat Wendigo (Boss)",                  17, False),
     ("MCLA: Defeat Dark Shiva (Superboss)",          18, False),
     ("BIKA: Defeat Dark Ifrit (Superboss)",                 19, False),
@@ -133,7 +133,7 @@ FFXBossLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+BossOffs
     ("MTGZ: Defeat Biran and Yenke (Boss)",                 32, False),
     ("MTGZ: Defeat Seymour Flux (Boss)",                    33, False),
     ("MTGZ: Defeat Dark Anima (Superboss)",                 34, False),
-    ("MTGZ: Defeat Sanctuary Keeper (Boss)",                35, False),
+    ("MTGC: Defeat Sanctuary Keeper (Boss)",                35, False),
     ("ZNKD: Defeat Spectral Keeper (Boss)",               36, False),
     ("ZNKD: Defeat Yunalesca (Boss)",                     37, False),
     ("ZNKD: Defeat Dark Bahamut (Superboss)",             38, False),
@@ -300,7 +300,7 @@ FFXPartyMemberLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+P
     ("BSIL: Name Valefor (Event)",                               8, False), # Party Member: Valefor
     ("KILK: Name Ifrit (Event)",                                 9, False), # Party Member: Ifrit
     ("DJOS: Name Ixion (Event)",                                 10, False), # Party Member: Ixion
-    ("Lake Macalaina: Fight Seymour (Boss)",                      11, False), # Party Member: Shiva
+    ("MCLA: Fight Seymour (Boss)",                      11, False), # Party Member: Shiva
     ("BEVL: Name Bahamut (Event)",                             12, False), # Party Member: Bahamut
     ("BAAJ: Release Anima (Event)",                               13, False), # Party Member: Anima
     ("COSF: Hire Yojimbo (Event)",                               14, False), # Party Member: Yojimbo
@@ -356,7 +356,7 @@ FFXTreasureLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+Trea
     ("KILK: Tavern - After Rescuing Kulukan's Sister from Collapsing House (Chest)",               18, False),  # Item: 1x Ether [2004h]
     ("KILK: Cloister - Destruction Sphere (Chest)",                                                  19, False),  # Gear: buki_get #6 [06h] { Kimahri [03h], Armor {Fire Ward [801Fh], Ice Ward [8023h], Lightning Ward [8027h]} }
     #("Treasure 20 (Potentially Trashed Chest)",                                                     20, False),  # Gear: buki_get #7 [07h] { Lulu [05h], Armor {Berserk Ward [8051h]} }
-    #("Treasure 21 (Potentially Trashed Chest)",                                                     21, False),  # Item: 1x Potion [2000h] #Likely 21-26 are Potions from Yuna's Luggage as entries are near by SSLI's treasure ID's
+    #("Treasure 21 (Potentially Trashed Chest)",                                                     21, False),  # Item: 1x Potion [2000h] #Likely 21-26 are Potions from Yuna's Luggage as entries are near by S.S. Liki's treasure ID's
     #("Treasure 22 (Potentially Trashed Chest)",                                                     22, False),  # Item: 1x Potion [2000h]
     #("Treasure 23 (Potentially Trashed Chest)",                                                     23, False),  # Item: 1x Potion [2000h]
     #("Treasure 24 (Potentially Trashed Chest)",                                                     24, False),  # Item: 1x Potion [2000h]
@@ -463,18 +463,18 @@ FFXTreasureLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+Trea
     ("COSF: Teleport East from Back of Cavern, Bottom (Chest)",                                    125, False),  # Item: 1x MP Sphere [2056h]
     ("COSF: Teleport East from Back of Cavern, Top (Chest)",                                       126, False),  # Item: 2x X-Potion [2002h]
     #("Treasure 127 (Trashed)",                                                                     127, False),  # Item: 1x Potion [2000h]
-    ("MTGZ: Trail - Top of Right Ridge Near South Exit (Chest)",                                 128, False),  # Gil: 20000 [C8h]
-    ("MTGZ: Trail - Left Alcove Near South Exit (Chest)",                                        129, False),  # Item: 2x Mega-Potion [2003h]
-    ("MTGZ: Trail - West Branch Before Bridge to Wantz (Chest)",                                 130, False),  # Gear: buki_get #40 [28h] { Auron [02h], Armor {Stoneproof [8038h], Poisonproof [803Ch]} }
-    ("MTGZ: Trail - Under Bridge After Wantz Right (Chest)",                                     131, False),  # Item: 1x Lv. 4 Key Sphere [2054h]
-    ("MTGZ: Trail - Under Bridge After Wantz Left (Chest)",                                      132, False),  # Item: 1x HP Sphere [2055h]
+    ("MTGS: Trail - Top of Right Ridge Near South Exit (Chest)",                                 128, False),  # Gil: 20000 [C8h]
+    ("MTGS: Trail - Left Alcove Near South Exit (Chest)",                                        129, False),  # Item: 2x Mega-Potion [2003h]
+    ("MTGS: Trail - West Branch Before Bridge to Wantz (Chest)",                                 130, False),  # Gear: buki_get #40 [28h] { Auron [02h], Armor {Stoneproof [8038h], Poisonproof [803Ch]} }
+    ("MTGS: Trail - Under Bridge After Wantz Right (Chest)",                                     131, False),  # Item: 1x Lv. 4 Key Sphere [2054h]
+    ("MTGS: Trail - Under Bridge After Wantz Left (Chest)",                                      132, False),  # Item: 1x HP Sphere [2055h]
     #("Treasure 133 (Trashed)",                                                                     133, False),  # Item: 1x Potion [2000h]
     #("Treasure 134 (Trashed)",                                                                     134, False),  # Item: 1x Potion [2000h]
-    ("MTGZ: Cave - After Both Trials, Left Alcove, Northwest of Save Sphere (Chest)",            135, False), # Gear: buki_get #41 [29h] { Wakka [04h], Armor {SOS NulFrost [805Fh], SOS NulShock [8060h], SOS NulBlaze [8061h]} }
-    ("MTGZ: Submerged Passage - Reward from First Trial (Chest)",                                136, False),  # Item: 1x Lv. 1 Key Sphere [2051h]
-    ("MTGZ: Submerged Passage - Reward From Second Trial (Chest)",                               137, False),  # Item: 1x Fortune Sphere [204Ah]
-    ("MTGZ: Submerged Passage - After Both Trials, East Exit From Save Sphere, Left (Chest)",    138, False),  # Item: 1x Return Sphere [2060h]
-    ("MTGZ: Submerged Passage - After Both Trials, East Exit From Save Sphere, Right (Chest)",   139, False),  # Gear: buki_get #42 [2Ah] { Yuna [01h], Armor {HP Stroll [801Bh]} }
+    ("MTGC: Cave - After Both Trials, Left Alcove, Northwest of Save Sphere (Chest)",            135, False), # Gear: buki_get #41 [29h] { Wakka [04h], Armor {SOS NulFrost [805Fh], SOS NulShock [8060h], SOS NulBlaze [8061h]} }
+    ("MTGC: Submerged Passage - Reward from First Trial (Chest)",                                136, False),  # Item: 1x Lv. 1 Key Sphere [2051h]
+    ("MTGC: Submerged Passage - Reward From Second Trial (Chest)",                               137, False),  # Item: 1x Fortune Sphere [204Ah]
+    ("MTGC: Submerged Passage - After Both Trials, East Exit From Save Sphere, Left (Chest)",    138, False),  # Item: 1x Return Sphere [2060h]
+    ("MTGC: Submerged Passage - After Both Trials, East Exit From Save Sphere, Right (Chest)",   139, False),  # Gear: buki_get #42 [2Ah] { Yuna [01h], Armor {HP Stroll [801Bh]} }
     #("Treasure 140 (Trashed)",                                                                     140, False),  # Item: 1x Potion [2000h]
     #("Treasure 141 (Trashed)",                                                                     141, False),  # Item: 1x Potion [2000h]
     #("Treasure 142 (Trashed)",                                                                     142, False),  # Item: 1x Potion [2000h]
@@ -523,7 +523,7 @@ FFXTreasureLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+Trea
     ("THPL: North - East of Final Lightning Rod (Chest)",                                 185, False),  # Gil: 2000 [14h]
     ("MIHN: South End - Fight Belgemine (Win) (Event)",                                          186, False),  # Gear: buki_get #74 [4Ah] { Yuna [01h], Armor {HP +10% [8073h], Silence Ward [8045h]} }
     ("REMI: Beat Belgemine (NPC)",                                                            187, False),  # Item: 30x Power Sphere [2046h]
-    ("Cactuar Statue Minigame (Event)",                                                             188, False),  # Gear: buki_get #56 [38h] { Kimahri [03h], Weapon Formula=Celestial HP-based [11h] {No AP [8014h], Empty, Empty, Empty} }
+    ("THPL: Cactuar Statue Minigame (Event)",                                                             188, False),  # Gear: buki_get #56 [38h] { Kimahri [03h], Weapon Formula=Celestial HP-based [11h] {No AP [8014h], Empty, Empty, Empty} }
     ("THPL: Lightning Dodger - 5 Consecutive Dodges (Event)",                             189, False),  # Item: 2x X-Potion [2002h]
     ("THPL: Lightning Dodger - 10 Consecutive Dodges (Event)",                            190, False),  # Item: 2x Mega-Potion [2003h]
     ("THPL: Lightning Dodger - 20 Consecutive Dodges (Event)",                            191, False),  # Item: 2x MP Sphere [2056h]

@@ -216,7 +216,7 @@ key_items: list[ItemData] = [ItemData(x[0], x[1], x[2] | keyItemOffset) for x in
 
 equip_items: list[ItemData] = [ItemData(x[0], x[1], x[2] | equipItemOffset) for x in [
     ("Weapon (Tidus): Crystal Sword",       ItemClassification.useful     , 0x0000),  # Offset=0014 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Firestrike [801Eh], Icestrike [8022h], Lightningstrike [8026h], Waterstrike [802Ah]} }
-    ("Weapon (Tidus): Brotherhood",         ItemClassification.progression, 0x0001),  # Offset=0024 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Strength +5% [8063h], Strength +10% [8064h], Waterstrike [802Ah], Sensor [8000h]}, Brotherhood }
+    ("Progressive Brotherhood",             ItemClassification.progression, 0x0001),  # Offset=0024 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {Strength +5% [8063h], Strength +10% [8064h], Waterstrike [802Ah], Sensor [8000h]}, Brotherhood }
     ("Weapon (Yuna): Astral Rod",           ItemClassification.useful     , 0x0002),  # Offset=0034 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=4 {One MP Cost [800Dh], Empty, Empty, Empty} }
     ("Progressive Onion Knight",            ItemClassification.progression, 0x0003),  # Offset=0044 Weapon [00h], Formula=Celestial MP-based [12h], Power=16, Crit=3%, Slots=4 {No AP [8014h], Empty, Empty, Empty}, Celestial }
     ("Weapon (Tidus): Flametongue",         ItemClassification.useful     , 0x0004),  # Offset=0054 Weapon [00h], Formula=STR vs DEF [01h], Power=16, Crit=3%, Slots=1 {Firestrike [801Eh]} }

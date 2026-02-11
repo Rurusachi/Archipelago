@@ -373,7 +373,7 @@
   {
     "name": "Macalania Woods 1st visit: Pre-Spherimorph",
     "id": 100,
-    "treasures": [69, 68, 70, 277, 73],
+    "treasures": [69, 68, 70, 73],
     "party_members": [],
     "bosses": [],
     "overdrives": [],
@@ -409,7 +409,7 @@
   {
     "name": "Lake Macalania 1st visit: Post-Crawler",
     "id": 103,
-    "treasures": [78, 305, 85, 83, 84, 87, 308, 307, 306, 86],
+    "treasures": [77, 78, 305, 85, 83, 84, 87, 308, 307, 306, 86],
     "party_members": [],
     "bosses": [15],
     "overdrives": [],
@@ -421,7 +421,7 @@
   {
     "name": "Lake Macalania 1st visit: Post-Seymour/Anima",
     "id": 104,
-    "treasures": [485, 77],
+    "treasures": [485],
     "party_members": [11],
     "bosses": [16],
     "overdrives": [],
@@ -445,7 +445,7 @@
   {
     "name": "Lake Macalania 2nd visit",
     "id": 106,
-    "treasures": [111],
+    "treasures": [111, 277],
     "party_members": [],
     "bosses": [18],
     "overdrives": [],
@@ -823,7 +823,7 @@
     "overdrives": [],
     "other": [],
     "recruits": [],
-    "leads_to": [181, 1020],
+    "leads_to": [181, 1019, 1020],
     "rules": ["Sin"]
   },
   {
@@ -835,7 +835,7 @@
     "overdrives": [],
     "other": [],
     "recruits": [],
-    "leads_to": [182, 1019, 1021],
+    "leads_to": [182, 1021],
     "rules": ["Seymour Omnis"]
   },
   {
@@ -1045,7 +1045,7 @@
     "rules": []
   },
   {
-    "name": "Captures: Mt. Gagazet Caves, Zanarkand & City of Dying Dreams",
+    "name": "Captures: Mt. Gagazet Caves, Zanarkand & Inside Sin",
     "id": 1019,
     "treasures": [],
     "party_members": [],

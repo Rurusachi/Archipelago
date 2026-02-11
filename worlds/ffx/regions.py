@@ -145,7 +145,7 @@ def create_regions(world: FFXWorld, player) -> None:
     34:  "Captures: Miihen Highroad & MRR",                                 # Floating Eye
     35:  "Thunder Plains 1st visit",                                        # Buer
     36:  "Lake Macalania 1st visit: Pre-Crawler",                           # Evil Eye
-    37:  "Captures: Mt. Gagazet Caves, Zanarkand & City of Dying Dreams",   # Ahriman
+    37:  "Captures: Mt. Gagazet Caves, Zanarkand & Inside Sin",             # Ahriman
     38:  "Kilika 1st visit: Pre-Geneaux",                                   # Ragora
     39:  "Mt. Gagazet 1st visit: Post-Biran and Yenke",                     # Grat
     40:  "Mushroom Rock Road 1st visit: Pre-Sinspawn Gui",                  # Garuda

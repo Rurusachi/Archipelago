@@ -497,13 +497,13 @@ FFXTreasureLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+Trea
     ("OMGR: 8th Chest Reward for Minigame (Chest)",                                                 159, False),  # Gear: buki_get #47 [2Fh] { Yuna [01h], Armor {Ice Eater [8025h], Fire Eater [8021h], Lightning Eater [8029h], Empty} }
     ("OMGR: 9th Chest Reward for Minigame (Chest)",                                                 160, False),  # Gear: buki_get #48 [30h] { Lulu [05h], Weapon {Half MP Cost [800Ch]} }
     ("OMGR: 10th Chest Reward for Minigame (Chest)",                                                161, False),  # Gear: buki_get #49 [31h] { Rikku [06h], Weapon {Double AP [8012h], !Double Overdrive [800Eh]} }
-    ("OMGR: Teleport Sphere x2 (Chest)/Yojimbo 3x Reward",                                          162, False),  # Item: 2x Teleport Sphere [2062h]
+    ("OMGR: Yojimbo 3x Reward",                                                                     162, False),  # Item: 2x Teleport Sphere [2062h]
     ("SINS: Sea of Sorrow - Northwestern Alcove (Chest)",                                           163, False),  # Item: 1x Elixir [2008h]
     ("SINS: Sea of Sorrow - Atop Eastern Falls (Chest)",                                            164, False),  # Gear: buki_get #50 [32h] { Kimahri [03h], Weapon {Magic +3% [8066h], Magic +5% [8067h], Magic +10% [8068h], Empty} }
     ("SINS: Sea of Sorrow - Eastern Alcove, Near Final North Branch (Chest)",                       165, False),  # Item: 1x Lv. 3 Key Sphere [2053h]
     ("SINS: Sea of Sorrow - West Alcove (Chest)",                                                   166, False),  # Gear: buki_get #51 [33h] { Yuna [01h], Armor {Water Eater [802Dh], Fire Eater [8021h], Lightning Eater [8029h], Empty} }
     ("SINS: Sea of Sorrow - Atop Western Falls (Chest)",                                            167, False),  # Item: 1x Special Sphere [204Ch]
-    ("SINS: City of Dying Dreams - East Glyph Near South Exit, Defeat 10/10/15 Fiends (Chest)",     168, False),  # Item: 1x Lv. 4 Key Sphere [2054h]
+    ("SINS: City of Dying Dreams - East Glyph Near South Exit, Defeat 10-10-15 Fiends (Chest)",     168, False),  # Item: 1x Lv. 4 Key Sphere [2054h]
     ("SINS: City of Dying Dreams - South Side, Lift on Small Bridge (Chest)",                       169, False),  # Gear: buki_get #52 [34h] { Wakka [04h], Weapon {Waterstrike [802Ah], Firestrike [801Eh], Lightningstrike [8026h], Icestrike [8022h]} }
     ("SINS: City of Dying Dreams - South of First Open Area, Push North Wall Down (Chest)",         170, False),  # Gear: buki_get #53 [35h] { Auron [02h], Armor {Darkproof [8048h], Deathproof [8030h], Empty, Empty} }
     ("SINS: City of Dying Dreams - First Open Area, Ramp Down in Center (Chest)",                   171, False),  # Gil: 20000 [C8h]
@@ -602,7 +602,7 @@ FFXTreasureLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+Trea
     ("Blitzball Reward 44",                                                                         264, False),  # Item: 1x X-Potion [2002h]
     ("Blitzball Reward 45",                                                                         265, False),  # Item: 1x Mega-Potion [2003h]
     ("Blitzball Reward 46",                                                                         266, False),  # Item: 2x Remedy [200Fh]
-    ("ZNKD: Dome Beyond - Chest After Taking Left/Right in Yunalesca Arena (Chest)",                267, False),  # Key Item: Sun Crest [A023h]
+    ("ZNKD: Dome Beyond - Chest After Taking Left or Right in Yunalesca Arena (Chest)",             267, False),  # Key Item: Sun Crest [A023h]
     ("BSIL: Beach - East Alcove (Chest)",                                                           268, False),  # Key Item: Moon Crest [A025h]
     ("MIHN: Oldroad, South - South End (Chest)",                                                    269, False),  # Key Item: Mars Crest [A027h]
     ("MTGZ: Prominence - Hidden Between Left Pillars (Chest)",                                      270, False),  # Key Item: Saturn Crest [A02Ah]
@@ -632,19 +632,19 @@ FFXTreasureLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+Trea
     #("KILK: Phoenix Down x3 (Guard NPC, fight Ochu from west and run?)",                           294, False),  # Item: 3x Phoenix Down [2006h]
     ("KILK: Woods - Crusader Commander North of Lord Ochu (NPC)",                                   295, False),  # Item: 1x Hi-Potion [2001h]
     ("ALBS: Deck - Yellow Al Bhed, on Left (NPC)",                                                  296, False),  # Item: 3x Potion [2000h]
-    ("DJOS: Highroad - South End, Silver/Purple Armor (NPC)",                                       297, False),  # Gear: buki_get #63 [3Fh] { Tidus [00h], Weapon {Strength +3% [8062h], Empty, Empty, Empty} }
+    ("DJOS: Highroad - South End, Silver & Purple Armor (NPC)",                                     297, False),  # Gear: buki_get #63 [3Fh] { Tidus [00h], Weapon {Strength +3% [8062h], Empty, Empty, Empty} }
     ("DJOS: Highroad - South End, Purple Armor (NPC)",                                              298, False),  # Gear: buki_get #64 [40h] { Yuna [01h], Armor {Stoneproof [8038h], Empty} }
     ("DJOS: Highroad - Monk Pacing Between Crusaders (NPC)",                                        299, False),  # Item: 1x Hi-Potion [2001h]
     ("DJOS: Highroad - Midway, Yellow Armor (NPC)",                                                 300, False),  # Item: 1x Ether [2004h]
     ("DJOS: Highroad - North End, Purple Armor (NPC)",                                              301, False),  # Item: 1x Mega-Potion [2003h]
     ("DJOS: Pilgrimage Road - North End, Purple Armor (NPC)",                                       302, False),  # Gear: buki_get #65 [41h] { Kimahri [03h], Weapon {Magic +20% [8069h], Empty} }
-    ("DJOS: Pilgrimage Road - South End, Silver/Purple Armor (NPC)",                                303, False),  # Item: 10x Potion [2000h]
+    ("DJOS: Pilgrimage Road - South End, Silver & Purple Armor (NPC)",                              303, False),  # Item: 10x Potion [2000h]
     ("DJOS: Pilgrimage Road - Monk Pacing Along Bridge (NPC)",                                      304, False),  # Item: 2x Hi-Potion [2001h]
     ("MCLA: Road - Linna, at Bottom of Stairs (NPC)",                                               305, False),  # Gil: 400 [04h]
     ("MCLA: Monks' Chamber - Purple Monk (NPC)",                                                    306, False),  # Item: 1x Elixir [2008h]
     ("MCLA: Monks' Chamber - Brown Monk (NPC)",                                                     307, False),  # Item: 1x Ether [2004h]
     ("MCLA: Nuns' Chamber - Yellow Nun (NPC)",                                                      308, False),  # Item: 2x Hi-Potion [2001h]
-    ("MIHN: South End - Blue/White Man, Looping North to South (NPC)",                              309, False),  # Gear: buki_get #66 [42h] { Kimahri [03h], Weapon {Piercing [800Bh], Sensor [8000h], Strength +10% [8064h]} }
+    ("MIHN: South End - Blue & White Man, Looping North to South (NPC)",                            309, False),  # Gear: buki_get #66 [42h] { Kimahri [03h], Weapon {Piercing [800Bh], Sensor [8000h], Strength +10% [8064h]} }
     ("MIHN: South End - Red Skirt Girl, Pacing Between Maechen and Ruins (NPC)",                    310, False),  # Item: 2x Antidote [200Ah]
     ("MIHN: South End - Yellow Man, Looping South to North (NPC)",                                  311, False),  # Item: 1x Hi-Potion [2001h]
     ("MIHN: South - Boy Before Kicking the Blitzball (NPC)",                                        312, False),  # Item: 3x Soft [200Bh]

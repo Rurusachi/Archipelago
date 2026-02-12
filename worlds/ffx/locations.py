@@ -497,7 +497,7 @@ FFXTreasureLocations: List[FFXLocationData] = [ FFXLocationData(location[1]+Trea
     ("OMGR: 8th Chest Reward for Minigame (Chest)",                                                 159, False),  # Gear: buki_get #47 [2Fh] { Yuna [01h], Armor {Ice Eater [8025h], Fire Eater [8021h], Lightning Eater [8029h], Empty} }
     ("OMGR: 9th Chest Reward for Minigame (Chest)",                                                 160, False),  # Gear: buki_get #48 [30h] { Lulu [05h], Weapon {Half MP Cost [800Ch]} }
     ("OMGR: 10th Chest Reward for Minigame (Chest)",                                                161, False),  # Gear: buki_get #49 [31h] { Rikku [06h], Weapon {Double AP [8012h], !Double Overdrive [800Eh]} }
-    ("OMGR: Yojimbo 3x Reward",                                                                     162, False),  # Item: 2x Teleport Sphere [2062h]
+    ("OMGR: Teleport Sphere x2 (Chest) & Yojimbo 3x Reward",                                        162, False),  # Item: 2x Teleport Sphere [2062h]
     ("SINS: Sea of Sorrow - Northwestern Alcove (Chest)",                                           163, False),  # Item: 1x Elixir [2008h]
     ("SINS: Sea of Sorrow - Atop Eastern Falls (Chest)",                                            164, False),  # Gear: buki_get #50 [32h] { Kimahri [03h], Weapon {Magic +3% [8066h], Magic +5% [8067h], Magic +10% [8068h], Empty} }
     ("SINS: Sea of Sorrow - Eastern Alcove, Near Final North Branch (Chest)",                       165, False),  # Item: 1x Lv. 3 Key Sphere [2053h]
